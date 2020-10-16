@@ -138,7 +138,7 @@ class Accounting extends Model {
 			// 						->WHERE('dev_invoices_registration.quot_date','LIKE','%'.$date_month.'%')
 			// 						->WHERE('del_flg',0);
 				$db = DB::connection('mysql');
-		$Estimate = $db->TABLE($db->raw("(SELECT main.quot_date,main.id,main.user_id,main.trading_destination_selection,main.payment_date,main.del_flg,main.copyFlg,main.project_name,main.classification,
+		$Estimate = $db->TABLE($db->raw("(SELECT main.quot_date,main.id,main.user_id,main.trading_destination_selection,dev_payment_registration.payment_date,main.del_flg,main.copyFlg,main.project_name,main.classification,
 main.created_by,main.pdf_flg,main.project_type_selection,main.mailFlg, 
 main.paid_date,main.paid_status,main.tax,main.estimate_id,main.company_name,main.bankid,main.bankbranchid,main.acc_no,works.amount,
 works.work_specific,works.quantity,works.unit_price,works.remarks,works.emp_id,(CASE 

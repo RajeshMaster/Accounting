@@ -201,6 +201,14 @@
 			   	</thead>
 			   	<tbody>
 			   		<?php $i=0; ?>
+			   		@php 
+
+	   				$paymenttotal = 0; 
+	   				$paidtotal = 0; 
+	   				$differencetotal = 0; 
+
+
+   				@endphp
 			   		@forelse($TotEstquery as $key => $data)
 			   		{{--*/ $invoice_balance[$key] = Helpers::fnfetchinvoicebalance($data->id); /*--}}
 			   			<tr>
@@ -208,7 +216,7 @@
 								{{ ($TotEstquery->currentpage()-1) * $TotEstquery->perpage() + $i + 1 }}
 							</td>
 							<td class="tal pr10 vat pt5">
-								<div class="">
+								<div class="text-center">
 									<label class="pm0 vam" style="color:#136E83;">
 										{{ $data->user_id }}
 									</label>
@@ -238,6 +246,156 @@
 							<td class="" align="center" >
 								{{ $data->payment_date }}
 							</td>
+
+							<td class="" align="center" >
+
+											{{ $data->totalval }}
+			   					<?php  $totalval += preg_replace('/,/', '', $data->totalval); ?>
+			   					{{--*/ $getTaxquery = Helpers::fnGetTaxDetails($data->quot_date); /*--}}
+							<?php 
+									if(!empty($data->totalval)) {
+										if($data->tax != 2) {
+			   								$totroundval = preg_replace("/,/", "", $data->totalval);
+			   								$dispval = (($totroundval * intval((isset($getTaxquery[0]->Tax)?$getTaxquery[0]->Tax:0)))/100);
+			   								$dispval1 = number_format($dispval);
+			   								$grandtotal = $totroundval + $dispval;
+			   							} else {
+			   								$totroundval = preg_replace("/,/", "", $data->totalval);
+											$dispval = 0;
+											$grandtotal = $totroundval + $dispval;
+											$dispval1 = $dispval;
+										}
+									}
+			   						$grand_total = number_format($grandtotal);
+									$divtotal += str_replace(",", "",$grand_total);
+
+									if ($data->paid_status != 1) {
+										$grand_style = "style='font-weight:bold;color:red;'";
+										$balance += $grandtotal;
+									} else {
+										$grand_style = "style='font-weight:bold;color:green;'";
+										$paid_amo += $grandtotal;
+									}
+									if($data->paid_status == 1) {
+										$pay_balance = str_replace(",", "",(isset($invoice_balance[$key][0]->totalval)?$invoice_balance[$key][0]->totalval:0));
+										$gr_total = number_format($grandtotal);
+										$grand_tot = str_replace(",", "",$gr_total);
+										$paid_amount += (isset($invoice_balance[$key][0]->deposit_amount)?$invoice_balance[$key][0]->deposit_amount:0);
+										$bal_amount = $divtotal-$paid_amount;
+									}
+									if($data->paid_status != 1) {
+										$gr_total = number_format($grandtotal);
+										$grand_tot = str_replace(",", "",$gr_total);
+										$bal_amount = $divtotal-$paid_amount;
+									}
+			   						if(isset($invbal[$key])) {
+			   							if($invbal[$key]['bal_amount'] > 0) {
+			   								$balance_style = "style='font-weight:bold;color:red;'";
+			   							} else {
+			   								$balance_style = "style='font-weight:bold;color:green;'";
+			   							}
+			   						}
+			   						?>
+			   					@if(!empty($data->totalval))
+			   					<div class="ml5 mb2 smallBlue">
+			   					<?php echo "<span style='background-color:#136E83;color:white;'>"; ?> {{trans('messages.lbl_tax')}}<?php echo"</span>&nbsp;" . $dispval1;$dispval1 = ''; ?>
+			   					</div>
+			   					@endif
+			   					<div class="ml5 mb2 smallBlue" <?php echo $grand_style; ?>>
+			   						{{ number_format($grandtotal) }}
+			   					</div>
+			   					
+							</td>
+
+							<td class="" align="center" >
+								@if(isset($invbal[$key]))
+	   									@if($invbal[$key]['bal_amount'] > 0)
+	   										@if($invbal[$key]['bal_amount']==0)
+	   										@php 
+				   								$paidAmount = 0;
+				   							@endphp 
+	   										 {{ 0 }} 
+	   										@else
+	   										@php 
+	   											$paidAmount = $grandtotal - $invbal[$key]['bal_amount'] ;
+	   										 @endphp
+	   										{{ number_format($paidAmount) }}
+	   										@endif
+	   									@else
+	   										@if($invbal[$key]['bal_amount']==0)
+	   										@php 
+				   								$paidAmount = 0;
+				   							@endphp 
+	   										{{ 0 }}
+	   										@else
+	   										@php 
+	   											$paidAmount = $grandtotal - $invbal[$key]['bal_amount'] 
+	   										 @endphp
+	   										{{ number_format($paidAmount ) }}
+	   										@endif
+	   									@endif
+	   							@else
+	   								@php  
+										$paidAmount = 0;
+	   								@endphp
+	   								{{ 0 }}	
+	   							@endif
+							</td>
+
+							<td class="" align="center" >
+								<div class="ml5 mb2 smallBlue" <?php echo $balance_style; ?>>
+	   								@if(isset($invbal[$key]))
+	   									@if($invbal[$key]['bal_amount'] > 0)
+	   										@if($invbal[$key]['bal_amount']==0)
+	   										@php  
+												$difftot = 0;
+	   										@endphp
+	   											{{ 0 }}
+	   										@else
+	   										<span class="vat font-s15">△</span>
+												@php  
+													$difftot = $invbal[$key]['bal_amount'];
+	   											@endphp
+
+	   										{{ number_format($invbal[$key]['bal_amount']) }}
+	   										@endif
+	   									@else
+	   										@if($invbal[$key]['bal_amount']==0)
+												@php  
+													$difftot = 0;
+		   										@endphp
+	   											{{ 0 }}
+	   										@else
+	   										<span class="font-s20">●</span>
+		   										@php  
+													$difftot = $invbal[$key]['bal_amount'];
+		   										@endphp
+	   										{{ number_format($invbal[$key]['bal_amount']) }}
+	   										@endif
+	   									@endif
+	   									@else
+	   									@php  
+											$difftot = 0;
+		   								@endphp
+	   								{{ 0 }}
+	   								@endif
+			   					</div>
+							</td>
+			   				@php 
+
+				   				$paymenttotal += $grandtotal; 
+				   				$paidtotal += $paidAmount; 
+				   				$differencetotal += $difftot; 
+
+
+			   				@endphp
+
+
+			   				@php $grandtotal=0; @endphp
+
+							<td class="" align="center">
+
+							</td>
 						</tr>
 						<?php $i=$i+1; ?>
 			   		@empty
@@ -245,6 +403,30 @@
 							<td class="text-center" colspan="4" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
 						</tr>
 					@endforelse
+					@if(count($TotEstquery) != 0)
+						<tr>
+							<td colspan="6" align="left">
+								Total
+							</td>
+							<td align="right">
+								{{ number_format($paymenttotal) }}
+							</td>
+							<td  align="right">
+								{{ number_format($paidtotal) }}
+							</td>
+							<td align="right">
+								{{ number_format($differencetotal) }}
+							</td>
+							<td align="right">
+
+								@php
+									$statusamout = $paymenttotal - $paidtotal -$differencetotal;
+								@endphp
+								
+								{{ number_format($statusamout) }}
+							</td>
+						</tr>
+					@endif
 			   	</tbody>
 			</table>
 		</div>
