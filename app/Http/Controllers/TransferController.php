@@ -155,6 +155,7 @@ class TransferController extends Controller {
 		$month = "";
 		$totalexptra = "";
 		$getbktr_det = array();
+		$subCatDetails = array();
 		foreach ($slbk_query as $key => $value) {
 			if($value->amount != "") {
 				if($value->amount <0){
