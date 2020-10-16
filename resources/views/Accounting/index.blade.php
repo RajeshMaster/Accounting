@@ -232,9 +232,7 @@
 							<td class="" align="left" >
 								<div class="ml5 pt5">
 									<div class="mb2">
-										<a href="javascript:customernameclick('{{ $data->company_name }}');" class="blue">
-											<b class="blue">{{$data->company_name}}</b>
-										</a>
+										<b class="blue">{{$data->company_name}}</b>
 									</div>
 								</div>
 							</td>
@@ -400,7 +398,7 @@
 						<?php $i=$i+1; ?>
 			   		@empty
 						<tr>
-							<td class="text-center" colspan="4" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
+							<td class="text-center" colspan="10" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
 						</tr>
 					@endforelse
 					@if(count($TotEstquery) != 0)

@@ -1187,19 +1187,13 @@ return [
     'lbl_alreadypaid' => 'Already Paid',
     
 	/* Accounting Invoice */
-
 	'lbl_accounting' => 'Accounting',
-
 	'lbl_paidamt' => 'Paid Amount',
-
 	/* Salary Calc */
 
 	'lbl_amt_dif' => 'Amt Diff',
-
 	'lbl_empwise' => 'Employeewise',
-
 	'lbl_mastwise' => 'Masterwise',
-
 	'lbl_train_daily' => 'Train Daily',
 
 ];

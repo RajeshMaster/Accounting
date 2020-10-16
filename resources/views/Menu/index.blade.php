@@ -305,10 +305,15 @@
 			</div>
 			@if(Auth::user()->userclassification == 4)
 			<div class="col-xs-3" style="padding-left: 53px;">
-				<div class="image_b div_inline mb15 mr90">{{ trans('messages.lbl_ourdetails') }}</div>
+				<div class="image_b div_inline mb15 mr90">{{ trans('messages.lbl_accounting') }}</div>
 				<div class="alinkEng ml20 mt5 tal">
-					<a class="pageload csrp btn-link" href="{{ url('Ourdetail/index?mainmenu=Ourdetail&time='.date('Ymdhis')) }}" style="color:blue;font-size: 13px;">
-						{{ trans('messages.lbl_ourdetails') }}
+					<a class="pageload csrp btn-link" href="{{ url('Accounting/index?mainmenu=Accounting&time='.date('Ymdhis')) }}" style="color:blue;font-size: 13px;">
+						{{ trans('messages.lbl_invoice') }}
+					</a>
+				</div>
+				<div class="alinkEng ml20 mt5 tal">
+					<a class="pageload csrp btn-link" href="{{ url('salarycalc/index?mainmenu=salarycalc&time='.date('Ymdhis')) }}" style="color:blue;font-size: 13px;">
+						{{ trans('messages.lbl_salary_det') }}
 					</a>
 				</div>
 			</div>
@@ -324,6 +329,13 @@
 							{{ trans('messages.lbl_setting') }}
 						</a>
 					</div>
+
+					<div class="alinkEng ml20 mt5">
+						<a class="pageload csrp btn-link" href="{{ url('Ourdetail/index?mainmenu=Ourdetail&time='.date('Ymdhis')) }}" style="color:blue;font-size: 13px;">
+							{{ trans('messages.lbl_ourdetails') }}
+						</a>
+					</div>
+					
 				<div class="alinkEng ml20 mt5">
 					{{ Form::hidden('langvalue', Session::get('setlanguageval'), array('id' => 'langvalue')) }}
 				@if (Session::get('setlanguageval') == 'en')

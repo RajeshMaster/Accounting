@@ -350,7 +350,7 @@
 	
 			@if(isset($request->mainmenu) && ($request->mainmenu == "Accounting" || $request->mainmenu == "salarycalc"))
 				<div id="accounting_sub_1">
-					<a href="{{ url('Setting/index?mainmenu=Setting&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_invoice') }}</a>
+					<a href="{{ url('Accounting/index?mainmenu=Accounting&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_invoice') }}</a>
 				</div>
 
 				<div id="accounting_sub_2">

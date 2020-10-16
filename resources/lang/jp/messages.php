@@ -1363,17 +1363,12 @@ return [
 	/* Accounting Invoice */
 
 	'lbl_accounting' => 'Accounting',
-
 	'lbl_paidamt' => 'Paid Amount',
 
 	/* Salary Calc */
 
 	'lbl_amt_dif' => '金額差',
-
 	'lbl_empwise' => '社員側',
-
 	'lbl_mastwise' => 'マスター側',
-
 	'lbl_train_daily' => 'Train Daily',
-
 ];
