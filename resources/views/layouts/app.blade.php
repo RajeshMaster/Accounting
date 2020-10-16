@@ -123,12 +123,12 @@
 							{{ trans('messages.lbl_customer') }}</a>
 						</li>
 						@endif
-						@if(Session::get('userclassification') == 4)
+						<!-- @if(Session::get('userclassification') == 4)
 						<li class="btn_ourdetails jop_btn">
 							<a href="{{ url('Ourdetail/index?mainmenu=Ourdetail&time='.date('Ymdhis')) }}">
 							{{ trans('messages.lbl_ourdetails') }}</a>
 						</li>
-						@endif
+						@endif -->
 						@if(Session::get('userclassification') == 4 || Session::get('userclassification') == 1)
 						<li class="btn_setting jop_btn">
 							<a href="{{ url('Setting/index?mainmenu=Setting&time='.date('Ymdhis')) }}">
@@ -353,17 +353,16 @@
 				@endif
 			<!-- //Customer sub -->
 			@endif
-			@if (isset($request->mainmenu) && $request->mainmenu == "Ourdetail")
-			<!-- Master Sub -->
-				<div id="our_details_sub_1">
-					<a href="{{ url('Ourdetail/index?mainmenu=Ourdetail&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_ourdetails') }}</a>
-				</div>
-			<!-- //Master Sub -->
-			@endif
-			<?php if ($request->mainmenu == "Setting") {?>
+	
+		
+			<?php if ($request->mainmenu == "Setting" || $request->mainmenu == "Ourdetail") {?>
 			<!-- Setting Sub -->
 				<div id="setting_sub_1">
-					<a href="#" style="text-decoration:none;color:white;">{{ trans('messages.lbl_setting') }}</a>
+					<a href="{{ url('Setting/index?mainmenu=Setting&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_setting') }}</a>
+				</div>
+
+				<div id="setting_sub_2">
+					<a href="{{ url('Ourdetail/index?mainmenu=Ourdetail&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_ourdetails') }}</a>
 				</div>
 			<!-- // Setting Sub -->
 			<?php }?>
