@@ -72,7 +72,6 @@ $(document).ready(function() {
 			rules: {
 				txt_startdate: {required: true,date: true,correctformatdate: true, accessDateCheck: "#accessdate"},
 				mainsubject: {required: true},
-				subsubject: {required: true},
 				bankname: {required: true},
 				amount_1: {required: true,money: true},
 				charge_1: {required: true,money: true},
@@ -236,7 +235,7 @@ function gotoindexexpenses2(yr,mnth,mainmenu,limit,page,flg) {
 	} else if($('#backflg').val() == "4") {
 		$('#page').val('');
 		$('#plimit').val('');
-	 	$('#selMonth').val(mnth);
+		$('#selMonth').val(mnth);
 		$('#selYear').val(yr);
 		$('#transferhistory').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
 		$("#transferhistory").submit();
@@ -440,10 +439,10 @@ function backhistorytoindex(mainmenu) {
 	window.history.back();
 }
 function download(file,path) {
-    // var confirm_download = "Do You Want To Download?";
-    if(confirm(err_download)) {
-        window.location.href="../app/Http/Common/downloadfile.php?file="+file+"&path="+path+"/";
-    }
+	// var confirm_download = "Do You Want To Download?";
+	if(confirm(err_download)) {
+		window.location.href="../app/Http/Common/downloadfile.php?file="+file+"&path="+path+"/";
+	}
 }
 function pageClick(pageval) {
 	$('#page').val(pageval);
@@ -461,52 +460,52 @@ function gotoadd(mainmenu,flg) {
 	$("#transferindex").submit();
 }
 function gotoindexpage(viewflg,mainmenu) {
-    if (cancel_check == false) {
-        if (!confirm("Do You Want To Cancel the Page?")) {
-            return false;
-        }
-    }
-    if (viewflg == "1") {
-      pageload();
-        $('#transferaddeditcancel').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
-        $("#transferaddeditcancel").submit();
-    } else {
-      pageload();
-        $('#transferaddeditcancel').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
-        $("#transferaddeditcancel").submit();
-    }
+	if (cancel_check == false) {
+		if (!confirm("Do You Want To Cancel the Page?")) {
+			return false;
+		}
+	}
+	if (viewflg == "1") {
+	  pageload();
+		$('#transferaddeditcancel').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+		$("#transferaddeditcancel").submit();
+	} else {
+	  pageload();
+		$('#transferaddeditcancel').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+		$("#transferaddeditcancel").submit();
+	}
 }
 function gotoindexpage_1(viewflg,mainmenu) {
-    if (cancel_check == false) {
-        if (!confirm("Do You Want To Cancel the Page?")) {
-            return false;
-        }
-    }
-    if (viewflg == "1") {
-      pageload();
-        $('#loanaddeditcancel').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
-        $("#loanaddeditcancel").submit();
-    } else {
-      pageload();
-        $('#loanaddeditcancel').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
-        $("#loanaddeditcancel").submit();
-    }
+	if (cancel_check == false) {
+		if (!confirm("Do You Want To Cancel the Page?")) {
+			return false;
+		}
+	}
+	if (viewflg == "1") {
+	  pageload();
+		$('#loanaddeditcancel').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+		$("#loanaddeditcancel").submit();
+	} else {
+	  pageload();
+		$('#loanaddeditcancel').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+		$("#loanaddeditcancel").submit();
+	}
 }
 function gotoindexpageback(viewflg,mainmenu) {
-    if (cancel_check == false) {
-        if (!confirm("Do You Want To Cancel the Page?")) {
-            return false;
-        }
-    }
-    if (viewflg == "1") {
-      pageload();
-        $('#transfermultiaddeditcancel').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
-        $("#transfermultiaddeditcancel").submit();
-    } else {
-      pageload();
-        $('#transfermultiaddeditcancel').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
-        $("#transfermultiaddeditcancel").submit();
-    }
+	if (cancel_check == false) {
+		if (!confirm("Do You Want To Cancel the Page?")) {
+			return false;
+		}
+	}
+	if (viewflg == "1") {
+	  pageload();
+		$('#transfermultiaddeditcancel').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+		$("#transfermultiaddeditcancel").submit();
+	} else {
+	  pageload();
+		$('#transfermultiaddeditcancel').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+		$("#transfermultiaddeditcancel").submit();
+	}
 }
 function fngetsubsubject(mainid,subid) {
 	$('#subsubject').find('option').not(':first').remove();
@@ -569,7 +568,7 @@ function fngetloanname(mainid,subid) {
 					fnSetLoanNo('loanname');
 				} else {
 					$("#empidd").text('');
-			    }
+				}
 				// $('select[name="loanname"]').val(subid);
 			}
 			if (subid != undefined) {
@@ -591,8 +590,8 @@ function edit_view(j) {
 			if (x.style.display === 'none') {
 				x.style.display = 'inline-block';
 			} else {
-	        	x.style.display = 'none';
-	    	}
+				x.style.display = 'none';
+			}
 			$("#mul"+e).attr("style", "display:none");
 			$("#add").attr("style", "display:none");
 			$("#Chk_all").attr("style", "display:none");
@@ -660,7 +659,7 @@ function transfer_addreg(mainmenu){
 		alert("Please Select Any Checkbox");
 	} else {
 		$('#transferindex').attr('action', 'mulreg'+'?mainmenu='+mainmenu+'&time='+datetime); 
-    	$("#transferindex").submit();
+		$("#transferindex").submit();
 	}
 }
 function EditbkrsRecord(id,delflg,mainmenu,flg) {
@@ -739,9 +738,9 @@ function gototransadd(mainmenu) {
 }
 function filedownload(path,file) {
 	var confirm_download = "Do You Want To Download?";
-    if(confirm(confirm_download)) {
-        window.location.href="../app/Http/Common/downloadfile.php?file="+file+"&path="+path+"/";
-    }
+	if(confirm(confirm_download)) {
+		window.location.href="../app/Http/Common/downloadfile.php?file="+file+"&path="+path+"/";
+	}
 }
 function getdate() {
 	$('#txt_startdate').val(dates);
@@ -800,12 +799,12 @@ function fnRemoveZero(fname) {
 }
 function transferexceldownload(mainmenu, selectedyearmonth) {
 	var confirm_create="Do you Want to Download Transfer details";
-    if(confirm(confirm_create)) {
-    	$('#actionName').val("transfersexceldownload");
-    	$('#selYearMonth').val(selectedyearmonth);
-    	$('#frmtransferexceldownload').attr('action', 'transferexceldownload?mainmenu='+mainmenu+'&time='+datetime);
+	if(confirm(confirm_create)) {
+		$('#actionName').val("transfersexceldownload");
+		$('#selYearMonth').val(selectedyearmonth);
+		$('#frmtransferexceldownload').attr('action', 'transferexceldownload?mainmenu='+mainmenu+'&time='+datetime);
 		$("#frmtransferexceldownload").submit();
-    }
+	}
 }
 function EditothersRecord(type,id,mainmenu){
 	$('#editflg').val(type);
@@ -815,19 +814,19 @@ function EditothersRecord(type,id,mainmenu){
 }
 function gotoindexpageothers(viewflg,mainmenu){
 	 if (cancel_check == false) {
-        if (!confirm("Do You Want To Cancel the Page?")) {
-            return false;
-        }
-    }
-    if (viewflg == "1") {
-     	 pageload();
-        $('#editotherscancel').attr('action', '../Transfer/index?mainmenu='+mainmenu+'&time='+datetime);
-        $("#editotherscancel").submit();
-    }else{
-     	 pageload();
-    	$('#editotherscancel').attr('action', '../Transfer/index?mainmenu='+mainmenu+'&time='+datetime);
-        $("#editotherscancel").submit();
-    }
+		if (!confirm("Do You Want To Cancel the Page?")) {
+			return false;
+		}
+	}
+	if (viewflg == "1") {
+		 pageload();
+		$('#editotherscancel').attr('action', '../Transfer/index?mainmenu='+mainmenu+'&time='+datetime);
+		$("#editotherscancel").submit();
+	}else{
+		 pageload();
+		$('#editotherscancel').attr('action', '../Transfer/index?mainmenu='+mainmenu+'&time='+datetime);
+		$("#editotherscancel").submit();
+	}
 }
 function CopyothersRecord(id,mainmenu,date){
 	$('#editid').val(id);
@@ -835,5 +834,58 @@ function CopyothersRecord(id,mainmenu,date){
 	$('#transferindex').attr('action', 'others?mainmenu='+mainmenu+'&time='+datetime);
 	$("#transferindex").submit();
 }
-
+function popupenable(mainmenu) {
+	popupopenclose(1);
+	$('#empnamepopup').load('../Transfer/empnamepopup?mainmenu='+mainmenu+'&time='+datetime);
+	$("#empnamepopup").modal({
+		backdrop: 'static',
+		keyboard: false
+		});
+	$('#empnamepopup').modal('show');
+}
+function fnaddempid(){
+	var table_id=$('#table_id').val();
+	var kananame = "empKanaNames"+table_id;
+	var empids = "emp_ID"+table_id;
+	var empid=$('#empid').val();
+	var empKanaName=$('#empKanaName').val();
+	$('#'+kananame).text(empKanaName);
+	$('#'+empids).val(empid);
+	$('#'+table_id).addClass("highlight1");
+	$('#crossid'+table_id).css('display','inline');
+	$('#divid'+table_id).css('display','inline');
+	$('#empnamepopup').modal('toggle');
+}
+function fngetDet(id,empid,empname,name) {
+	$("#"+empid).prop("checked", true);
+	if($.trim(name) == "" || $.trim(name) == null) {
+		name = empname;
+	}
+	// var name = empname.concat(" ").concat(name);
+	$('#txt_empname').val(name);
+	var table_id=$('#table_id').val();
+	var kananame = "empKanaNames"+table_id;
+	var empids = "emp_ID"+table_id;
+	$('#empid').val(empid);
+	$('#empKanaName').val(name);
+}
+function fndbclick(id,empid,empname,name) {
+	$("#"+empid).prop("checked", true);
+	//var name = empname.concat(" ").concat(name);
+	if($.trim(name) == "" || $.trim(name) == null) {
+		name = empname;
+	}
+	$('#txt_empname').val(name);
+	var table_id=$('#table_id').val();
+	var kananame = "empKanaNames"+table_id;
+	var empids = "emp_ID"+table_id;
+	var empid=$('#empid').val();
+	var empKanaName=$('#empKanaName').val();
+	$('#'+kananame).text(empKanaName);
+	$('#'+empids).val(empid);
+	$('#'+table_id).addClass("highlight1");
+	$('#crossid'+table_id).css('display','inline');
+	$('#divid'+table_id).css('display','inline');
+	$('#empnamepopup').modal('toggle');
+}
 

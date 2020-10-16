@@ -50,17 +50,17 @@
 		{{ Form::hidden('selMonth', $request->selMonth, array('id' => 'selMonth')) }}
 		{{ Form::hidden('selYear', $request->selYear, array('id' => 'selYear')) }}
 		{{ Form::hidden('prevcnt', $request->prevcnt, array('id' => 'prevcnt')) }}
-	    {{ Form::hidden('lang',Session::get('languageval') , array('id' => 'lang')) }}
+		{{ Form::hidden('lang',Session::get('languageval') , array('id' => 'lang')) }}
 		{{ Form::hidden('nextcnt', $request->nextcnt, array('id' => 'nextcnt')) }}
 		{{ Form::hidden('dateflg', $request->dateflg, array('id' => 'dateflg')) }}
 		{{ Form::hidden('id', $request->id, array('id' => 'id')) }}
 		{{ Form::hidden('account_val', $request->account_val, array('id' => 'account_val')) }}
 		{{ Form::hidden('previou_next_year', $request->previou_next_year, array('id' => 'previou_next_year')) }}
 		@if (Auth::user()->userclassification == 1) 
-	    	{{ Form::hidden('accessdate',Auth::user()->accessDate, array('id' => 'accessdate')) }}
-	    @else
-	    	{{ Form::hidden('accessdate','0001-01-01', array('id' => 'accessdate')) }}
-	    @endif
+			{{ Form::hidden('accessdate',Auth::user()->accessDate, array('id' => 'accessdate')) }}
+		@else
+			{{ Form::hidden('accessdate','0001-01-01', array('id' => 'accessdate')) }}
+		@endif
 	<div class="row hline pm0">
 		<div class="col-xs-12">
 			<img class="pull-left box35 mt10" src="{{ URL::asset('resources/assets/images/expenses_icon.png') }}">
@@ -95,6 +95,19 @@
 		@else
 		<div class="col-xs-12 mt15">
 		@endif
+			
+			<div class="col-xs-3 text-right clr_blue">
+				<label>{{ trans('messages.lbl_empName') }}</label>
+			</div>
+			<div class="col-xs-9 mb5">
+				{{ Form::hidden('empid','',array('id'=>'empid')) }}
+				{{ Form::hidden('empID',(isset($query[0]->emp_ID)) ? $query[0]->emp_ID : '',array('id'=>'empID')) }}
+							{{ Form::text('txt_empname',(isset($EmpName)) ? $EmpName : '',array('id'=>'txt_empname', 'name' => 'txt_empname',
+																'class'=>'form-control box25per',
+																'readonly','readonly','data-label' => trans('messages.lbl_empName'))) }}
+				<button type="button" id="bnkpopup" class="btn btn-success box75 pt3 h30" style ="color:white;background-color: green;cursor: pointer;" onclick="return popupenable('{{ $request->mainmenu }}');">{{ trans('messages.lbl_Browse') }}</button> 
+			</div>
+		
 			<div class="col-xs-3 text-right clr_blue">
 				<label>{{ trans('messages.lbl_Date') }}<span class="fr ml2 red"> * </span></label>
 			</div>
@@ -147,7 +160,7 @@
 		</div>
 		<div class="col-xs-12 mt5">
 			<div class="col-xs-3 text-right clr_blue">
-				<label>{{ trans('messages.lbl_subsubject') }}<span class="fr ml2 red"> * </span></label>
+				<label>{{ trans('messages.lbl_subsubject') }}</label>
 			</div>
 			<div class="col-xs-9">
 				{{ Form::select('subsubject',[null=>''],'', array(
@@ -301,4 +314,12 @@
 		{{ Form::hidden('nextcnt', $request->nextcnt, array('id' => 'nextcnt')) }}
 		{{ Form::hidden('account_val', $request->account_val, array('id' => 'account_val')) }}
 		{{ Form::hidden('previou_next_year', $request->previou_next_year, array('id' => 'previou_next_year')) }}
+	{{ Form::close() }}
+		<div id="empnamepopup" class="modal fade">
+		<div id="login-overlay">
+			<div class="modal-content">
+				<!-- Popup will be loaded here -->
+			</div>
+		</div>
+	</div>
 @endsection

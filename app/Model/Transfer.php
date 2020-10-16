@@ -118,9 +118,9 @@ class Transfer extends Model {
 										LEFT JOIN mstbank bank on main.bankname=bank.BankName and main.bankaccno=bank.AccNo
 										LEFT JOIN mstbanks banks ON banks.id=bank.BankName 
 										LEFT JOIN emp_mstemployees emp ON emp.Emp_ID=main.emp_ID
-					   	 				WHERE year='$year' AND month='$month' 
-					   	 				$conditionAppend
-					   	 				AND salaryFlg!=1 
+										WHERE year='$year' AND month='$month' 
+										$conditionAppend
+										AND salaryFlg!=1 
 
 									UNION ALL
 										SELECT main.id,
@@ -174,10 +174,10 @@ class Transfer extends Model {
 										LEFT JOIN mstbank bank on main.bankname=bank.BankName and main.bankaccno=bank.AccNo
 										LEFT JOIN mstbanks banks ON banks.id=bank.BankName 
 										LEFT JOIN emp_mstemployees emp ON emp.Emp_ID=main.emp_ID
-					   	 				WHERE year='$year' AND month='$month' 
-					   	 				AND others!=1 
-					   	 				$conditionAppend
-					   	 				AND salaryFlg!=1 
+										WHERE year='$year' AND month='$month' 
+										AND others!=1 
+										$conditionAppend
+										AND salaryFlg!=1 
 
 							UNION ALL
 								SELECT sal.id,
@@ -404,9 +404,9 @@ class Transfer extends Model {
 										LEFT JOIN mstbank bank on main.bankname=bank.BankName and main.bankaccno=bank.AccNo
 										LEFT JOIN mstbanks banks ON banks.id=bank.BankName 
 										LEFT JOIN emp_mstemployees emp ON emp.Emp_ID=main.emp_ID
-					   	 				WHERE year='$year' AND month='$month' 
-					   	 				$conditionAppend
-					   	 				AND salaryFlg!=1 
+										WHERE year='$year' AND month='$month' 
+										$conditionAppend
+										AND salaryFlg!=1 
 
 
 									UNION ALL
@@ -461,10 +461,10 @@ class Transfer extends Model {
 										LEFT JOIN mstbank bank on main.bankname=bank.BankName and main.bankaccno=bank.AccNo
 										LEFT JOIN mstbanks banks ON banks.id=bank.BankName 
 										LEFT JOIN emp_mstemployees emp ON emp.Emp_ID=main.emp_ID
-					   	 				WHERE year='$year' AND month='$month' 
-					   	 				AND others!=1 
-					   	 				$conditionAppend
-					   	 				AND salaryFlg!=1 
+										WHERE year='$year' AND month='$month' 
+										AND others!=1 
+										$conditionAppend
+										AND salaryFlg!=1 
 
 							UNION ALL
 								SELECT sal.id,
@@ -1024,7 +1024,7 @@ class Transfer extends Model {
 			->insert(
 				['id' => '',
 				'billno' => $valueget,
-				'emp_ID' => $request->emp_IDs, 
+				'emp_ID' => $request->empid, 
 				'bankdate' => $request->txt_startdate,
 				'subject' => $request->mainsubject,
 				'details' => $request->subsubject,
@@ -1061,7 +1061,7 @@ class Transfer extends Model {
 		$spldm = explode('-', $request->date);
 		$insert=DB::table('dev_banktransfer')
 							->insert(
-						    ['id'	=>	'', 
+							['id'	=>	'', 
 							'bankdate' => $request->date, 
 							'bankname' => $request->bankname, 
 							'bankname' => $bank[0],
@@ -1103,12 +1103,19 @@ class Transfer extends Model {
 		} else {
 			$files = $request->pdffiles;
 		}
+		if($request->empid != "") {
+			$EMPID = $request->empid;
+		} else {
+			$EMPID = $request->empID;
+		}
 		$bank = explode("-", $request->bankname);
 		$db = DB::connection('mysql');
 		$update=DB::table('dev_banktransfer')
 			->where('id', $request->id)
 			->update(
-				['bankdate' => $request->txt_startdate,
+				[
+				'emp_ID' =>  $EMPID,
+				'bankdate' => $request->txt_startdate,
 				'subject' => $request->mainsubject,
 				'details' => $request->subsubject,
 				'bankname' => $bank[0],
@@ -1138,21 +1145,21 @@ class Transfer extends Model {
 	public static function transfermultiregister($id,$month,$year) {
 		$db = DB::connection('mysql');
 		$sql = "SELECT mstbank.id as mainbankid,dev_banktransfer.*,mstbanks.BankName,mstbank.AccNo,mstbank.Bank_NickName,
-				    	IF(dev_banktransfer.loan_flg=1, mstbanks.BankName, dev_expensesetting.Subject) as mainSubject,
+						IF(dev_banktransfer.loan_flg=1, mstbanks.BankName, dev_expensesetting.Subject) as mainSubject,
 						IF(dev_banktransfer.loan_flg=1, mstbanks.BankName, dev_expensesetting.Subject_jp) as Subject_jp,
 						inv_set_expensesub.sub_eng,inv_set_expensesub.sub_jap 
-				    FROM dev_banktransfer  
-				    LEFT JOIN dev_expensesetting ON dev_expensesetting.id=dev_banktransfer.subject 
+					FROM dev_banktransfer  
+					LEFT JOIN dev_expensesetting ON dev_expensesetting.id=dev_banktransfer.subject 
 					LEFT JOIN inv_set_expensesub ON inv_set_expensesub.mainid=dev_expensesetting.id AND inv_set_expensesub.id=dev_banktransfer.details
-				    LEFT JOIN mstbanks ON 
-				    	IF(dev_banktransfer.loan_flg=1,mstbanks.id=(SELECT BankName FROM mstbank WHERE id=dev_banktransfer.bankname),
+					LEFT JOIN mstbanks ON 
+						IF(dev_banktransfer.loan_flg=1,mstbanks.id=(SELECT BankName FROM mstbank WHERE id=dev_banktransfer.bankname),
 						mstbanks.id=dev_banktransfer.bankname)
-				    LEFT JOIN mstbank ON IF(dev_banktransfer.loan_flg=1,
+					LEFT JOIN mstbank ON IF(dev_banktransfer.loan_flg=1,
 						mstbank.id=dev_banktransfer.bankname,
 						mstbank.BankName=mstbanks.id AND mstbank.AccNo=dev_banktransfer.bankaccno ) 
-				    WHERE year='".$year."'
-				    AND month='".$month."' AND dev_banktransfer.id IN ($id)
-				    ORDER BY dev_banktransfer.bankname ASC,mstbank.AccNo ASC,dev_banktransfer.bankdate ASC,dev_banktransfer.Ins_TM ASC";
+					WHERE year='".$year."'
+					AND month='".$month."' AND dev_banktransfer.id IN ($id)
+					ORDER BY dev_banktransfer.bankname ASC,mstbank.AccNo ASC,dev_banktransfer.bankdate ASC,dev_banktransfer.Ins_TM ASC";
 		$cards = DB::select($sql);
 		return $cards;
 	}
@@ -1875,14 +1882,14 @@ class Transfer extends Model {
 		// END ACCESS RIGHTS
 			$sql = "SELECT emp_mstemployees.FirstName,emp_mstemployees.LastName,inv_salary.salary as amount,inv_salary.charge as 	 fee, inv_salary.salaryDate as bankdate,inv_salary.*,mstbanks.BankName,mstbank.AccNo As bankaccno 
 					FROM inv_salary LEFT JOIN mstbank ON mstbank.id=inv_salary.bankId 
-			 		LEFT JOIN mstbanks ON mstbanks.id=mstbank.BankName 
-			 		LEFT JOIN emp_mstemployees 
-				  	ON inv_salary.empNo=emp_mstemployees.Emp_ID WHERE  inv_salary.empNo='$request->empid' $conditionAppend";
-				  	if($yr!=""&&$mnth!=""){			
+					LEFT JOIN mstbanks ON mstbanks.id=mstbank.BankName 
+					LEFT JOIN emp_mstemployees 
+					ON inv_salary.empNo=emp_mstemployees.Emp_ID WHERE  inv_salary.empNo='$request->empid' $conditionAppend";
+					if($yr!=""&&$mnth!=""){			
 						$sql.=" AND year='$yr' AND  month='$mnth'";
 					} 
 					$sql .= " ORDER BY inv_salary.year DESC, inv_salary.month DESC,inv_salary.salaryDate ASC,inv_salary.empNo ASC";
-		    $cards = DB::select($sql);
+			$cards = DB::select($sql);
 		return $cards;
 		}
 	public static function excel_download($request) {
@@ -1949,10 +1956,10 @@ class Transfer extends Model {
 										LEFT JOIN mstbank bank on main.bankname=bank.BankName and main.bankaccno=bank.AccNo
 										LEFT JOIN mstbanks banks ON banks.id=bank.BankName 
 										LEFT JOIN emp_mstemployees emp ON emp.Emp_ID=main.emp_ID
-					   	 				WHERE year='$year' AND month='$month' 
-					   	 				AND others!=1 
-					   	 				$conditionAppend
-					   	 				AND salaryFlg!=1 
+										WHERE year='$year' AND month='$month' 
+										AND others!=1 
+										$conditionAppend
+										AND salaryFlg!=1 
 
 
 									UNION ALL
@@ -2006,10 +2013,10 @@ class Transfer extends Model {
 										LEFT JOIN mstbank bank on main.bankname=bank.BankName and main.bankaccno=bank.AccNo
 										LEFT JOIN mstbanks banks ON banks.id=bank.BankName 
 										LEFT JOIN emp_mstemployees emp ON emp.Emp_ID=main.emp_ID
-					   	 				WHERE year='$year' AND month='$month' 
-					   	 				AND others!=1 
-					   	 				$conditionAppend
-					   	 				AND salaryFlg!=1 
+										WHERE year='$year' AND month='$month' 
+										AND others!=1 
+										$conditionAppend
+										AND salaryFlg!=1 
 
 							UNION ALL
 								SELECT sal.id,
@@ -2180,7 +2187,7 @@ class Transfer extends Model {
 		$update=DB::table('dev_banktransfer')
 							->where('id','=',$request->editid)
 							->update(
-						    ['bankdate' => $request->txt_startdate, 
+							['bankdate' => $request->txt_startdate, 
 							'bankname' => $request->bankname, 
 							'bankname' => $bank[0],
 							'bankaccno' => $bank[1],
@@ -2210,7 +2217,7 @@ class Transfer extends Model {
 		$spldm = explode('-', $request->txt_startdate);
 		$insert=DB::table('dev_banktransfer')
 							->insert(
-						    ['id'	=>'', 
+							['id'	=>'', 
 							'bankdate' => $request->txt_startdate, 
 							'bankname' => $request->bankname, 
 							'bankname' => $bank[0],
@@ -2231,5 +2238,36 @@ class Transfer extends Model {
 							'UP_TM' => date('H:i:s'),
 							'UpdatedBy' => $name]);
 		return $insert;
+	}
+	public static function fnGetEmpDetails($request) {
+		$query= DB::table('emp_mstemployees')
+						->select('Emp_ID','FirstName','LastName','nickname','KanaFirstName','KanaLastName',DB::RAW("CONCAT(FirstName,' ', LastName) AS Empname"),DB::RAW("CONCAT(KanaFirstName,'　', KanaLastName) AS Kananame"))
+						->WHERE('delFlg', '=', 0)
+						->WHERE('resign_id', '=', 0)
+						->WHERE('Title', '=', 2)
+						->WHERE('Emp_ID', 'NOT LIKE', '%NST%')
+						->orderBy('Emp_ID', 'ASC')
+						->get();
+		return $query;
+	}
+	public static function fnGetNonstaffEmpDetails($request) {
+		$query= DB::table('emp_mstemployees')
+						->select('Emp_ID','FirstName','LastName','nickname','KanaFirstName','KanaLastName',DB::RAW("CONCAT(FirstName,' ', LastName) AS Empname"),DB::RAW("CONCAT(KanaFirstName,'　', KanaLastName) AS Kananame"))
+						->WHERE('delFlg', '=', 0)
+						->WHERE('resign_id', '=', 0)
+						->WHERE('Emp_ID', 'LIKE', '%NST%')
+						->orderBy('Emp_ID', 'ASC')
+						->get();
+		return $query;
+	}
+	public static function 	EmpNamedet($request) {
+		$db = DB::connection('mysql');
+		$query = $db->table('dev_banktransfer As banDet')
+					->SELECT('*')
+					->leftjoin('emp_mstemployees AS emp', 'emp.emp_ID', '=', 'banDet.emp_ID')
+					->where('banDet.id','=',$request->id)
+					->where('banDet.del_Flg','=',0)
+					->get();
+		return $query;
 	}
 }

@@ -75,10 +75,10 @@ class TransferController extends Controller {
 			}
 		} else {
 			if (date('m') > $account_close_mn) {
-			    $current_year = date('Y')+1;
+				$current_year = date('Y')+1;
 				$last_year = date('Y');
 			} else {
-			    $current_year = date('Y');
+				$current_year = date('Y');
 				$last_year = date('Y') - 1;
 			}
 		}
@@ -368,47 +368,47 @@ class TransferController extends Controller {
 			$curTime = date('Y/m/d  H:i:s');
 			$template_name = 'resources/assets/uploadandtemplates/templates/transfer_bank_download.xls';
 			$tempname = "Transfer_details";
-		  	$excel_name=$tempname;
-		  	Excel::load($template_name, function($objTpl) use($request, $curTime, $selectedYearMonth, $slbk_query) {
+			$excel_name=$tempname;
+			Excel::load($template_name, function($objTpl) use($request, $curTime, $selectedYearMonth, $slbk_query) {
 			$selectedYearMonth = explode("-", $request->selYearMonth);
 			$year = $selectedYearMonth[0];
 			$month = $selectedYearMonth[1];
-		  	$slbk_query = Transfer::download_transferforexcel($request,$year,$month);
+			$slbk_query = Transfer::download_transferforexcel($request,$year,$month);
 			$disp = count($slbk_query);
 			if($disp>0){
 				$objTpl->getActiveSheet()->getStyle('A3:L3')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('76933C');
-			  	$objTpl->getActiveSheet()->getStyle('A4:L4')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('C4D79B');
-			  	$objTpl->getActiveSheet()->setCellValue('L1', $selectedYearMonth[0]."年".$selectedYearMonth[1]."月分");
-			  	
-			  	$objTpl->getActiveSheet()
-			  	->setCellValue('B4', (trans('messages.lbl_Date')))
-			  	->setCellValue('D4', (trans('messages.lbl_item_name')))
-			  	->setCellValue('E4', (trans('messages.lbl_employee_no')))
-			  	->setCellValue('F4', (trans('messages.lbl_ryo_claim')))
-			  	->setCellValue('G4', (trans('messages.lbl_loan')))
-			  	->setCellValue('H4', (trans('messages.lbl_sal_exp')))
-			  	->setCellValue('I4', (trans('messages.lbl_cash_withdrawal')))
-			  	->setCellValue('J4', (trans('messages.lbl_withdrawal_deposit')))
-			  	->setCellValue('K4', (trans('messages.lbl_sales_deposit')))
-			  	->setCellValue('L4', (trans('messages.lbl_balance_confirmed')));
+				$objTpl->getActiveSheet()->getStyle('A4:L4')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('C4D79B');
+				$objTpl->getActiveSheet()->setCellValue('L1', $selectedYearMonth[0]."年".$selectedYearMonth[1]."月分");
+				
+				$objTpl->getActiveSheet()
+				->setCellValue('B4', (trans('messages.lbl_Date')))
+				->setCellValue('D4', (trans('messages.lbl_item_name')))
+				->setCellValue('E4', (trans('messages.lbl_employee_no')))
+				->setCellValue('F4', (trans('messages.lbl_ryo_claim')))
+				->setCellValue('G4', (trans('messages.lbl_loan')))
+				->setCellValue('H4', (trans('messages.lbl_sal_exp')))
+				->setCellValue('I4', (trans('messages.lbl_cash_withdrawal')))
+				->setCellValue('J4', (trans('messages.lbl_withdrawal_deposit')))
+				->setCellValue('K4', (trans('messages.lbl_sales_deposit')))
+				->setCellValue('L4', (trans('messages.lbl_balance_confirmed')));
 
-			  	/*$objTpl->getActiveSheet()->getStyle('B8:F8')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('D9D9D9');
-			  	$objTpl->getActiveSheet()->getStyle('K8')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('E6B8B7');
-			  	$objTpl->getActiveSheet()->getStyle('A10:L10')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('948A54');*/
+				/*$objTpl->getActiveSheet()->getStyle('B8:F8')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('D9D9D9');
+				$objTpl->getActiveSheet()->getStyle('K8')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('E6B8B7');
+				$objTpl->getActiveSheet()->getStyle('A10:L10')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('948A54');*/
 
-			  	
-			  	$k = 0;
-			  	//$x = 6;
-			  	$loc1 = "";
+				
+				$k = 0;
+				//$x = 6;
+				$loc1 = "";
 				$temp1 = "";
-			  	$getbktr_det = array();
-			  	$sumtotalval = 0;
-			  	$sumWithdrawTotalval = 0;
-			  	$sumDepositTotalval = 0;
-			  	$sumTotalval = 0;
-			  	$getsuj = "";
-			  	$destinationPath = '../InvoiceUpload/Expenses/';
-			  	// print_r($slbk_query);exit();
+				$getbktr_det = array();
+				$sumtotalval = 0;
+				$sumWithdrawTotalval = 0;
+				$sumDepositTotalval = 0;
+				$sumTotalval = 0;
+				$getsuj = "";
+				$destinationPath = '../InvoiceUpload/Expenses/';
+				// print_r($slbk_query);exit();
 				foreach ($slbk_query as $key => $value) {
 					$getbktr_det[$k]['empNo'] = $value->empNo;
 					$getbktr_det[$k]['bankdate'] = $value->bankdate;
@@ -437,7 +437,7 @@ class TransferController extends Controller {
 
 					if ($getbktr_det[$k]['loan_flg'] == 1) {
 						$getbktr_det[$k]['details'] = trans('messages.lbl_loanpay');
-					    $sqlbankquery = Transfer::regGetBankId($value->bankname);
+						$sqlbankquery = Transfer::regGetBankId($value->bankname);
 						foreach ($sqlbankquery as $key => $value2) {
 							$getbktr_det[$k]['bankaccno'] = $value2->AccNo;
 							$getbktr_det[$k]['Bank_NickName'] = $value2->Bank_NickName;
@@ -555,7 +555,7 @@ class TransferController extends Controller {
 								$objTpl->getActiveSheet()->setCellValue('I'.$temp_i, $withdrawamt)->getStyle('A'.$temp_i.':'.'I'.$temp_i)->getFont()->setBold(true);
 								$withdraw = 0;
 							} else {
-							  	$withdrawamt=$withdraw;
+								$withdrawamt=$withdraw;
 								$objTpl->getActiveSheet()->setCellValue('I'.$temp_i, $withdrawamt)->getStyle('A'.$temp_i.':'.'I'.$temp_i)->getFont()->setBold(true);
 								$withdraw = 0;
 							}
@@ -565,7 +565,7 @@ class TransferController extends Controller {
 								$objTpl->getActiveSheet()->setCellValue('J'.$temp_i, $depositamt)->getStyle('A'.$temp_i.':'.'J'.$temp_i)->getFont()->setBold(true);
 								$deposit = 0;
 							} else {
-							  	$depositamt=$deposit;
+								$depositamt=$deposit;
 								$objTpl->getActiveSheet()->setCellValue('J'.$temp_i, $depositamt)->getStyle('A'.$temp_i.':'.'J'.$temp_i)->getFont()->setBold(true);
 								$deposit = 0;
 							}
@@ -575,7 +575,7 @@ class TransferController extends Controller {
 								$objTpl->getActiveSheet()->setCellValue('K'.$temp_i, $creditamt)->getStyle('A'.$temp_i.':'.'K'.$temp_i)->getFont()->setBold(true);
 								$credit = 0;
 							} else {
-							  	$creditamt=$credit;
+								$creditamt=$credit;
 								$objTpl->getActiveSheet()->setCellValue('K'.$temp_i, $creditamt)->getStyle('A'.$temp_i.':'.'K'.$temp_i)->getFont()->setBold(true);
 								$credit = 0;
 							}
@@ -585,7 +585,7 @@ class TransferController extends Controller {
 								$objTpl->getActiveSheet()->setCellValue('G'.$temp_i, $loanamt)->getStyle('A'.$temp_i.':'.'G'.$temp_i)->getFont()->setBold(true);
 								$loan = 0;
 							} else {
-							  	$loanamt=$loan;
+								$loanamt=$loan;
 								$objTpl->getActiveSheet()->setCellValue('G'.$temp_i, $loanamt)->getStyle('A'.$temp_i.':'.'G'.$temp_i)->getFont()->setBold(true);
 								$loan = 0;
 							}
@@ -595,7 +595,7 @@ class TransferController extends Controller {
 								$objTpl->getActiveSheet()->setCellValue('H'.$temp_i, $expenamt)->getStyle('A'.$temp_i.':'.'H'.$temp_i)->getFont()->setBold(true);
 								$expen = 0;
 							} else {
-							  	$expenamt=$expen;
+								$expenamt=$expen;
 								$objTpl->getActiveSheet()->setCellValue('H'.$temp_i, $expenamt)->getStyle('A'.$temp_i.':'.'H'.$temp_i)->getFont()->setBold(true);
 								$expen = 0;
 							}
@@ -604,7 +604,7 @@ class TransferController extends Controller {
 								$objTpl->getActiveSheet()->setCellValue('K'.$temp_i, $salesamt)->getStyle('A'.$temp_i.':'.'K'.$temp_i)->getFont()->setBold(true);
 								$sales = 0;
 							} else {
-							  	$salesamt=$sales;
+								$salesamt=$sales;
 								$objTpl->getActiveSheet()->setCellValue('K'.$temp_i, $salesamt)->getStyle('A'.$temp_i.':'.'K'.$temp_i)->getFont()->setBold(true);
 								$sales = 0;
 							}
@@ -647,9 +647,9 @@ class TransferController extends Controller {
 						$objTpl->getActiveSheet()
 						 ->setCellValue('A'.$temp_i, $bank_data);
 						$objTpl->getActiveSheet()->mergeCells('A'.$temp_i.':'.'L'.$temp_i)->getStyle('A'.$temp_i.':'.'L'.$temp_i)->getFont()->setBold(true);
-			  			$objTpl->getActiveSheet()->getStyle('A'.$temp_i.':'.'L'.$temp_i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('B7DEE8');
-			  			$objTpl->getActiveSheet()->getStyle('A'.$temp_i.':'.'L'.$temp_i)->getBorders()->getAllborders()->setBorderStyle(PHPExcel_Style_Border::BORDER_DOTTED);
-			  			$objTpl->getActiveSheet()->getStyle('A'.$temp_i.':'.'L'.$temp_i)->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+						$objTpl->getActiveSheet()->getStyle('A'.$temp_i.':'.'L'.$temp_i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('B7DEE8');
+						$objTpl->getActiveSheet()->getStyle('A'.$temp_i.':'.'L'.$temp_i)->getBorders()->getAllborders()->setBorderStyle(PHPExcel_Style_Border::BORDER_DOTTED);
+						$objTpl->getActiveSheet()->getStyle('A'.$temp_i.':'.'L'.$temp_i)->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
 						$temp_i++;
 					}
 					$objTpl->getActiveSheet()->getRowDimension($temp_i)->setRowHeight(19);
@@ -672,7 +672,7 @@ class TransferController extends Controller {
 							$withdraw += preg_replace('/,/', '', $Amtdisplay);
 							// $sumWithdrawTotalval += $totalval;
 						} else if ($getbktr_det[$i]['transaction_flg']==2) {
-						 	$objTpl->getActiveSheet()->setCellValue('K'.$temp_i, number_format(round($Amtdisplay)))->getStyle('K'.$temp_i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+							$objTpl->getActiveSheet()->setCellValue('K'.$temp_i, number_format(round($Amtdisplay)))->getStyle('K'.$temp_i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
 							$sales += preg_replace('/,/', '', $Amtdisplay);
 						}
 						else if ($getbktr_det[$i]['transfer_flg']==2){
@@ -706,7 +706,7 @@ class TransferController extends Controller {
 								$objTpl->getActiveSheet()->setCellValue('I'.$temp_i, $withdrawamt)->getStyle('A'.$temp_i.':'.'I'.$temp_i)->getFont()->setBold(true);
 								$withdraw = 0;
 							} else {
-							  	$withdrawamt=$withdraw;
+								$withdrawamt=$withdraw;
 								$objTpl->getActiveSheet()->setCellValue('I'.$temp_i, $withdrawamt)->getStyle('A'.$temp_i.':'.'I'.$temp_i)->getFont()->setBold(true);
 								$withdraw = 0;
 							}
@@ -716,7 +716,7 @@ class TransferController extends Controller {
 								$objTpl->getActiveSheet()->setCellValue('J'.$temp_i, $depositamt)->getStyle('A'.$temp_i.':'.'J'.$temp_i)->getFont()->setBold(true);
 								$deposit = 0;
 							} else {
-							  	$depositamt=$deposit;
+								$depositamt=$deposit;
 								$objTpl->getActiveSheet()->setCellValue('J'.$temp_i, $depositamt)->getStyle('A'.$temp_i.':'.'J'.$temp_i)->getFont()->setBold(true);
 								$deposit = 0;
 							}
@@ -726,7 +726,7 @@ class TransferController extends Controller {
 								$objTpl->getActiveSheet()->setCellValue('K'.$temp_i, $creditamt)->getStyle('A'.$temp_i.':'.'K'.$temp_i)->getFont()->setBold(true);
 								$credit = 0;
 							} else {
-							  	$creditamt=$credit;
+								$creditamt=$credit;
 								$objTpl->getActiveSheet()->setCellValue('K'.$temp_i, $creditamt)->getStyle('A'.$temp_i.':'.'K'.$temp_i)->getFont()->setBold(true);
 								$credit = 0;
 							}
@@ -736,7 +736,7 @@ class TransferController extends Controller {
 								$objTpl->getActiveSheet()->setCellValue('G'.$temp_i, $loanamt)->getStyle('A'.$temp_i.':'.'G'.$temp_i)->getFont()->setBold(true);
 								$loan = 0;
 							} else {
-							  	$loanamt=$loan;
+								$loanamt=$loan;
 								$objTpl->getActiveSheet()->setCellValue('G'.$temp_i, $loanamt)->getStyle('A'.$temp_i.':'.'G'.$temp_i)->getFont()->setBold(true);
 								$loan = 0;
 							}
@@ -746,7 +746,7 @@ class TransferController extends Controller {
 								$objTpl->getActiveSheet()->setCellValue('H'.$temp_i, $expenamt)->getStyle('A'.$temp_i.':'.'H'.$temp_i)->getFont()->setBold(true);
 								$expen = 0;
 							} else {
-							  	$expenamt=$expen;
+								$expenamt=$expen;
 								$objTpl->getActiveSheet()->setCellValue('H'.$temp_i, $expenamt)->getStyle('A'.$temp_i.':'.'H'.$temp_i)->getFont()->setBold(true);
 								$expen = 0;
 							}
@@ -756,7 +756,7 @@ class TransferController extends Controller {
 								$objTpl->getActiveSheet()->setCellValue('K'.$temp_i, $salesamt)->getStyle('A'.$temp_i.':'.'K'.$temp_i)->getFont()->setBold(true);
 								$sales = 0;
 							} else {
-							  	$salesamt=$sales;
+								$salesamt=$sales;
 								$objTpl->getActiveSheet()->setCellValue('K'.$temp_i, $salesamt)->getStyle('A'.$temp_i.':'.'K'.$temp_i)->getFont()->setBold(true);
 								$sales = 0;
 							}
@@ -765,9 +765,9 @@ class TransferController extends Controller {
 						$objTpl->getActiveSheet()
 						 ->setCellValue('A'.$temp_i);
 						 $temp_i++;
-		  				
-		  				$result=$loanamt+$expenamt+$withdrawamt;
-		  					if($result== 0){
+						
+						$result=$loanamt+$expenamt+$withdrawamt;
+							if($result== 0){
 								$resultamt="";
 								$objTpl->getActiveSheet()->setCellValue('I'.$temp_i, $resultamt)->getStyle('A'.$temp_i.':'.'K'.$temp_i)->getFont()->setBold(true);
 							} else{
@@ -793,7 +793,7 @@ class TransferController extends Controller {
 						$objTpl->getActiveSheet()
 						 ->setCellValue('A'.$temp_i);
 						 $temp_i++;
-		  				}
+						}
 
 					$temp1 = $loc1;
 				}
@@ -812,15 +812,15 @@ class TransferController extends Controller {
 				// $objTpl->getActiveSheet()->getStyle('A'.($temp_i+1).':'.'L'.($temp_i+1))->getBorders()->getAllborders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
 			}
 
-		  	$objTpl->setActiveSheetIndex();
+			$objTpl->setActiveSheetIndex();
 			$objTpl->getActiveSheet(0)->setSelectedCells('A1');
 			$noofdays=cal_days_in_month(CAL_GREGORIAN,$selectedYearMonth[1],$selectedYearMonth[0]);
 			$objTpl->getActiveSheet()->setTitle($selectedYearMonth[1]."月1～".$noofdays."日");
-	      	$flpath='.xls';
-	      	header('Content-Type: application/vnd.ms-excel');
-	      	header('Content-Disposition: attachment;filename="'.$flpath.'"');
-	      	header('Cache-Control: max-age=0');
-	      	})->setFilename($excel_name)->download('xls');
+			$flpath='.xls';
+			header('Content-Type: application/vnd.ms-excel');
+			header('Content-Disposition: attachment;filename="'.$flpath.'"');
+			header('Cache-Control: max-age=0');
+			})->setFilename($excel_name)->download('xls');
 		}
 		return view('Transfer.index',['account_val' => $account_val,
 									'year_month' => $year_month1,
@@ -870,7 +870,10 @@ class TransferController extends Controller {
 			return Redirect::to('Transfer/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 		}
 		$bankedit = "";
+		$EmpName = "";
 		$query = Transfer::editquery($request);
+		$EmpNamedet = Transfer::EmpNamedet($request);
+		$EmpName = $EmpNamedet[0]->FirstName."&nbsp;".$EmpNamedet[0]->LastName;
 		$mainsub = Transfer::getmainsub($request);
 		$bankname = Transfer::fetchbankname($request);
 		// if (empty($query)) {
@@ -880,6 +883,7 @@ class TransferController extends Controller {
 		return view('Transfer.addedit',['mainsub' => $mainsub,
 										'bankname' => $bankname,
 										'query' => $query,
+										'EmpName' => $EmpName,
 										'bankedit' => $bankedit,
 										'request' => $request]);
 	}
@@ -889,18 +893,18 @@ class TransferController extends Controller {
 			$Loanno="Expenses_".date('YmdHis');
 			$fileid="file1";
 			$filename="";
-            if($request->$fileid != "") {
-              $extension = Input::file($fileid)->getClientOriginalExtension();
-              $filename=$Loanno.'.'.$extension;
-              $file = $request->$fileid;
-              $destinationPath = '../InvoiceUpload/Expenses';
-              if(!is_dir($destinationPath)) {
-	            	mkdir($destinationPath, true);
-	            }
-	            chmod($destinationPath, 0777);
-	            $file->move($destinationPath,$filename);
-	            chmod($destinationPath."/".$filename, 0777);
-            } else {
+			if($request->$fileid != "") {
+			  $extension = Input::file($fileid)->getClientOriginalExtension();
+			  $filename=$Loanno.'.'.$extension;
+			  $file = $request->$fileid;
+			  $destinationPath = '../InvoiceUpload/Expenses';
+			  if(!is_dir($destinationPath)) {
+					mkdir($destinationPath, true);
+				}
+				chmod($destinationPath, 0777);
+				$file->move($destinationPath,$filename);
+				chmod($destinationPath."/".$filename, 0777);
+			} else {
 				$filename = $request->pdffiles; 
 			}
 			$spldm = explode('-', $request->txt_startdate);
@@ -943,13 +947,13 @@ class TransferController extends Controller {
 				$filename = $request->pdffiles; 
 			}
 			$update = Transfer::UpdatetransferRec($request,$filename);
-			// if($update) {
+			if($update) {
 				Session::flash('success', 'Updated Sucessfully!'); 
 				Session::flash('type', 'alert-success'); 
-			// } else {
-			// 	Session::flash('type', 'Updated Unsucessfully!'); 
-			// 	Session::flash('type', 'alert-danger'); 
-			// }
+			} else {
+				Session::flash('type', 'Updated Unsucessfully!'); 
+				Session::flash('type', 'alert-danger'); 
+			}
 			$spldm = explode('-', $request->txt_startdate);
 			Session::flash('selMonth', $spldm[1]); 
 			Session::flash('selYear', $spldm[0]);  
@@ -1153,9 +1157,9 @@ class TransferController extends Controller {
 					->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 				} else {
 					$objPHPExcel->getActiveSheet()
-				 	->setCellValue("A1", "経費");
-				 	$objPHPExcel->getActiveSheet()->getStyle("A1")->getAlignment()
-				 	->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+					->setCellValue("A1", "経費");
+					$objPHPExcel->getActiveSheet()->getStyle("A1")->getAlignment()
+					->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 				}
 				$objPHPExcel->getActiveSheet()
 					 ->setCellValue('G1', $request->selYear."年".$request->selMonth."月");
@@ -1209,9 +1213,9 @@ class TransferController extends Controller {
 					$get_det[$k]['EmpName'] = ucwords(strtolower($value->LastName)). ".".
 					ucwords(mb_substr($value->FirstName, 0, 1,'utf-8'));
 					if($value->carryForwardFlg == '1')
-			    	{
-						 	$gett += $value->amount;
-			    	}
+					{
+							$gett += $value->amount;
+					}
 					if($value->subject == 'LastMonthTotal') {
 						$get_det[$k]['bank']= 'LastMonthTotal';										
 					} else if($value->subject == 'Last Month Balance') {
@@ -1252,7 +1256,7 @@ class TransferController extends Controller {
 					if($value->amount!= "" && $value->del_flg== "2") {
 						if($value->amount<0 && $value->del_flg == "2"){
 							$get_det[$k]['cash']= number_format($value->amount);
-	                	    $get_det[$k]['totalamount']=$rsTotalAmount += $get_det[$k]['amount'];
+							$get_det[$k]['totalamount']=$rsTotalAmount += $get_det[$k]['amount'];
 						} else if($value->amount==0 && $value->del_flg == "2") {
 							$get_det[$k]['cash']= number_format($value->amount);
 							$get_det[$k]['totalamount']=$rsTotalAmount += $get_det[$k]['amount'];
@@ -1270,7 +1274,7 @@ class TransferController extends Controller {
 					else if($value->amount!= "" && $value->del_flg == "1") {
 						if($value->amount <0 && $value->del_flg == "1"){
 							$get_det[$k]['expenses']=number_format($value->amount);
-	                    	$exp_rsTotalAmount += $get_det[$k]['amount'];
+							$exp_rsTotalAmount += $get_det[$k]['amount'];
 						} else if($value->amount==0 && $value->del_flg == "1") {
 							$get_det[$k]['expenses']=number_format($value->amount);
 							$exp_rsTotalAmount += $get_det[$k]['amount'];
@@ -1307,9 +1311,9 @@ class TransferController extends Controller {
 				if($loc != $temp){
 					$transferdate=$get_det[$i]['datedetail'];
 					$transdate=explode("-" , $transferdate);
-		 			$date_val = $transdate[2].'日';
-		 			$temp_val = $i;
-		 			if($rowclr==1){
+					$date_val = $transdate[2].'日';
+					$temp_val = $i;
+					if($rowclr==1){
 						$style='dff1f4ff';
 						$rowclr=0;
 					} else {
@@ -1574,14 +1578,14 @@ class TransferController extends Controller {
 					->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 				} else {
 					$objPHPExcel->getActiveSheet()
-				 	->setCellValue("A".$trans1, "振込");
-				 	$objPHPExcel->getActiveSheet()->getStyle("A".$trans1)->getAlignment()
-				 	->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+					->setCellValue("A".$trans1, "振込");
+					$objPHPExcel->getActiveSheet()->getStyle("A".$trans1)->getAlignment()
+					->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 				}
 				$objPHPExcel->getActiveSheet()
 					 ->setCellValue('G'.$trans1, $request->selYear."年".$request->selMonth."月");
 				$objPHPExcel->getActiveSheet()->getStyle("G".$trans1)->getAlignment()
-				 	->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+					->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 				$i = 0;
 				$totval = 0;
 				$k = 0;
@@ -1602,9 +1606,9 @@ class TransferController extends Controller {
 					$getbktr_det[$k]['Bank_NickName']= $value1->Bank_NickName;
 					$getbktr_det[$k]['AccNo']= $value1->bankaccno;
 					$getbktr_det[$k]['remark_dtl'] =$value1->remark_dtl;
-				    $getbktr_det[$k]['del_flg'] =$value1->del_flg;
-				    $getbktr_det[$k]['loan_flg'] =$value1->loan_flg;
-				    $getbktr_det[$k]['salaryFlg'] = $value1->salaryFlg;
+					$getbktr_det[$k]['del_flg'] =$value1->del_flg;
+					$getbktr_det[$k]['loan_flg'] =$value1->loan_flg;
+					$getbktr_det[$k]['salaryFlg'] = $value1->salaryFlg;
 					$getbktr_det[$k]['file_dtl']= $value1->file_dtl; 
 					$get_det[$k]['EmpName'] = ucwords(strtolower($value1->LastName)). ".".
 					ucwords(mb_substr($value1->FirstName, 0, 1,'utf-8'));
@@ -1643,7 +1647,7 @@ class TransferController extends Controller {
 					} else if($value1->amount!= "") {
 						if($value1->amount<0){
 							$getbktr_det[$k]['Amountdisplay']=  number_format($value1->amount);
-                        	$rsTotalAmount += $value1->amount;
+							$rsTotalAmount += $value1->amount;
 						} else if($value1->amount==0) {
 							$getbktr_det[$k]['Amountdisplay']=  number_format($value1->amount);
 							$rsTotalAmount +=$value1->amount;
@@ -1657,7 +1661,7 @@ class TransferController extends Controller {
 					if($value1->fee != "") {
 						if($value1->fee<0){
 						$getbktr_det[$k]['charge']= number_format($value1->fee);
-                    	$fee_rsTotalAmount += $value1->fee;
+						$fee_rsTotalAmount += $value1->fee;
 						} else if($value1->fee==0) {
 							$getbktr_det[$k]['charge']= number_format($value1->fee);
 							$fee_rsTotalAmount += $value1->fee;
@@ -1678,7 +1682,7 @@ class TransferController extends Controller {
 						$getbktr_det[$k]['year']= $value1->year;
 					} 
 					if ($getbktr_det[$k]['loan_flg'] == 1) {
-						    $sqlbankquery = Transfer::regGetBankId($getbktr_det[$k]['banknameId']);
+							$sqlbankquery = Transfer::regGetBankId($getbktr_det[$k]['banknameId']);
 							foreach ($sqlbankquery as $key => $value2) {
 								$getbktr_det[$k]['AccNo'] = $value2->AccNo;
 								$getbktr_det[$k]['Bank_NickName'] = $value2->Bank_NickName;
@@ -1707,9 +1711,9 @@ class TransferController extends Controller {
 							$date_val = $transferdate[9].'日'; 
 						}
 						else{
-			 				$date_val = $transferdate[8].$transferdate[9].'日';
+							$date_val = $transferdate[8].$transferdate[9].'日';
 						}
-			 			if($rowclr==1){
+						if($rowclr==1){
 							$style='dff1f4ff';
 							$rowclr=0;
 						} else {
@@ -1755,8 +1759,8 @@ class TransferController extends Controller {
 						$temp_i++;
 						//print_r($temp_i);exit();
 						$objPHPExcel->getActiveSheet()
-					 	 ->setCellValue('A'.$temp_i, $sno)
-					 	 ->setCellValue('B'.$temp_i, ltrim($date_val, '0'))
+						 ->setCellValue('A'.$temp_i, $sno)
+						 ->setCellValue('B'.$temp_i, ltrim($date_val, '0'))
 						 ->setCellValue('C'.$temp_i, $Mainsubject)
 						 ->setCellValue('D'.$temp_i, $Subsubject)
 						 ->setCellValue('E'.$temp_i, $getbktr_det[$i]['Amountdisplay'])
@@ -1770,18 +1774,18 @@ class TransferController extends Controller {
 						$objPHPExcel->getActiveSheet()->getStyle('F'.$temp_i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
 						$objPHPExcel->getActiveSheet()->getStyle('E'.$temp_i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
 						$objPHPExcel->getActiveSheet()->getStyle('G'.$temp_i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-					 	$mercell_date_val1=$temp_val+$initial_value;
-					 	$mercell_date_val2=abs($temp_val-$i)+$mercell_date_val1;
-					 	if ($temp_inc == 1) {
+						$mercell_date_val1=$temp_val+$initial_value;
+						$mercell_date_val2=abs($temp_val-$i)+$mercell_date_val1;
+						if ($temp_inc == 1) {
 							$temp_i++;
 							$mercell_date_val1=$temp_val+$initial_value;
 							$mercell_date_val2=abs($temp_val-$i)+$mercell_date_val1;
 						} 
 					}else{
-					    $sno++;
+						$sno++;
 						$objPHPExcel->getActiveSheet()
-					 	 ->setCellValue('A'.$temp_i, $sno)
-					 	 ->setCellValue('B'.$temp_i, ltrim($date_val, '0'))
+						 ->setCellValue('A'.$temp_i, $sno)
+						 ->setCellValue('B'.$temp_i, ltrim($date_val, '0'))
 						 ->setCellValue('C'.$temp_i, $Mainsubject)
 						 ->setCellValue('D'.$temp_i, $Subsubject)
 						 ->setCellValue('E'.$temp_i, $getbktr_det[$i]['Amountdisplay'])
@@ -1870,9 +1874,9 @@ class TransferController extends Controller {
 			}
 		}
 			$flpath='.xls';
-	      	header('Content-Type: application/vnd.ms-excel');
-	      	header('Content-Disposition: attachment;filename="'.$flpath.'"');
-	      	header('Cache-Control: max-age=0');
+			header('Content-Type: application/vnd.ms-excel');
+			header('Content-Disposition: attachment;filename="'.$flpath.'"');
+			header('Cache-Control: max-age=0');
 		})->setFilename($excel_name. "_" . date("Ymd"))->download('xls');
 	}
 	public static function transferhistory(Request $request) {
@@ -2066,25 +2070,25 @@ class TransferController extends Controller {
 		$yr = $request->selYear;
 		$mnth = $request->selMonth;
 		$mnsub = $request->subject;
- 		$salaryflg = $request->salaryflg;
- 		$get_det = array();
- 		$row = array();
- 		$disp = 0;
+		$salaryflg = $request->salaryflg;
+		$get_det = array();
+		$row = array();
+		$disp = 0;
 		$i = 0;
 		$totval = 0;
 		$i=0;
 		$chargeTotal=0;
 		$amountTotal=0;
- 		$slbk_query = Transfer::transfer_subhistorydetails($request,$mnsub,$yr,$mnth);
+		$slbk_query = Transfer::transfer_subhistorydetails($request,$mnsub,$yr,$mnth);
 		// print_r($request->all());
- 		// For Amount without Pagination 
- 		$slbk_query1 = Transfer::transfer_subhistorydetailsamount1($request,$mnsub,$yr,$mnth);
+		// For Amount without Pagination 
+		$slbk_query1 = Transfer::transfer_subhistorydetailsamount1($request,$mnsub,$yr,$mnth);
 		$disp = count($slbk_query);
 		foreach ($slbk_query1 as $key => $value1) {
 			if ($value1->BankName == "") {
 				$value1->BankName = "Cash";
 			}
-        	if ( $value1->BankName != "" ) {
+			if ( $value1->BankName != "" ) {
 				$amountTotal = $amountTotal+$value1->amount;
 			} 
 			if ( $value1->fee != "" ) {
@@ -2156,27 +2160,27 @@ class TransferController extends Controller {
 			}
 		$disp = 0;
 		$disp = count($salaryquery);
-	 	$i = 0;
-	 	foreach ($salaryquery as $key => $value) {
-	 		$getsalary[$i]['id'] = $value->id;
-	 		$getsalary[$i]['bankdate'] = $value->bankdate;
-	 		$getsalary[$i]['month'] = $value->month;
-	 		$getsalary[$i]['year'] = $value->year;
-	 		if(isset($value->Subject) || isset($value->remarks) || isset($value->file_dtl) || isset($value->salaryFlg)) {
-	 			$getsalary[$i]['Subject'] = $value->Subject;
-	 			$getsalary[$i]['remarks'] = $value->remarks;
-	 			$getsalary[$i]['file_dtl'] = $value->file_dtl;
-	 			$getsalary[$i]['salaryFlg'] = $value->salaryFlg;
-	 		}
-	 		$getsalary[$i]['BankName'] = $value->BankName;
-	 		$getsalary[$i]['amount'] = $value->amount;
-	 		$getsalary[$i]['fee'] = $value->fee;
-	 		$getsalary[$i]['bankId'] = $value->bankId;
-	 		$getsalary[$i]['bankaccno'] = $value->bankaccno;
-	 		$i++;
-	 	}
-	 	$filecount = count($getsalary);
-	 	return view('Transfer.empsalaryhistory',['index' => $salaryquery,
+		$i = 0;
+		foreach ($salaryquery as $key => $value) {
+			$getsalary[$i]['id'] = $value->id;
+			$getsalary[$i]['bankdate'] = $value->bankdate;
+			$getsalary[$i]['month'] = $value->month;
+			$getsalary[$i]['year'] = $value->year;
+			if(isset($value->Subject) || isset($value->remarks) || isset($value->file_dtl) || isset($value->salaryFlg)) {
+				$getsalary[$i]['Subject'] = $value->Subject;
+				$getsalary[$i]['remarks'] = $value->remarks;
+				$getsalary[$i]['file_dtl'] = $value->file_dtl;
+				$getsalary[$i]['salaryFlg'] = $value->salaryFlg;
+			}
+			$getsalary[$i]['BankName'] = $value->BankName;
+			$getsalary[$i]['amount'] = $value->amount;
+			$getsalary[$i]['fee'] = $value->fee;
+			$getsalary[$i]['bankId'] = $value->bankId;
+			$getsalary[$i]['bankaccno'] = $value->bankaccno;
+			$i++;
+		}
+		$filecount = count($getsalary);
+		return view('Transfer.empsalaryhistory',['index' => $salaryquery,
 										'amountTotal' => $amountTotal,
 										'chargeTotal' => $chargeTotal,
 										'disp' => $disp,
@@ -2393,13 +2397,13 @@ class TransferController extends Controller {
 						$get_det[$i]['bankname']="Cash";
 					}
 					$nickname = Transfer::nickname($get_det[$i]['bankaccno'],$value1->bankid);
-		       		    foreach ($nickname as $key => $value4) {
-		       		    	if (isset($value4->Bank_NickName)) {
-		       		    		$row[$i]['Bank_NickName']=$value4->Bank_NickName;	
-		       		    	} else {
-		       		    		$row[$i]['Bank_NickName']="";
-		       		    	}
-		       		    }
+						foreach ($nickname as $key => $value4) {
+							if (isset($value4->Bank_NickName)) {
+								$row[$i]['Bank_NickName']=$value4->Bank_NickName;	
+							} else {
+								$row[$i]['Bank_NickName']="";
+							}
+						}
 					$i++;
 				} 
 				$temp_i = 3;
@@ -2408,20 +2412,20 @@ class TransferController extends Controller {
 				$bluecolor = '#0000FFff';
 				$headerbgcolor = 'D3D3D3';
 				if($request->pettyflg == 1 && $request->delflg == 0 ) {
-               		$get_title = "PettyCash";
-               } else if($request->delflg == 1){
-               		$get_title = "PettyCash"."->"."Expenses";
-               } else {
-               		$get_title = "PettyCash"."->"."Cash";
-               }
-			    if($request->loan_flg == 1) {
-			    	$get_det[0]['Subject'] = $get_det[0]['bankname']."-".$get_det[0]['AccNo'];
-			    	$get_det[0]['Subject_jp'] = $get_det[0]['bankname']."-".$get_det[0]['AccNo'];
-			    } else if($request->salaryflg == 1){
-			    	$get_det[0]['Subject'] = $get_det[0]['bankname']."-".$get_det[0]['bankaccno'];
-			    	$get_det[0]['Subject_jp'] = $get_det[0]['bankname']."-".$get_det[0]['bankaccno'];
-			    }
-			    if (count($get_det)=="") {
+					$get_title = "PettyCash";
+			   } else if($request->delflg == 1){
+					$get_title = "PettyCash"."->"."Expenses";
+			   } else {
+					$get_title = "PettyCash"."->"."Cash";
+			   }
+				if($request->loan_flg == 1) {
+					$get_det[0]['Subject'] = $get_det[0]['bankname']."-".$get_det[0]['AccNo'];
+					$get_det[0]['Subject_jp'] = $get_det[0]['bankname']."-".$get_det[0]['AccNo'];
+				} else if($request->salaryflg == 1){
+					$get_det[0]['Subject'] = $get_det[0]['bankname']."-".$get_det[0]['bankaccno'];
+					$get_det[0]['Subject_jp'] = $get_det[0]['bankname']."-".$get_det[0]['bankaccno'];
+				}
+				if (count($get_det)=="") {
 					$objPHPExcel->getActiveSheet()->setCellValue('C1', "");
 				}else{
 					if ($request->pettyflg == 1) {
@@ -2453,8 +2457,8 @@ class TransferController extends Controller {
 					if ($j == 0 ) { 
 						$objPHPExcel->getActiveSheet()->mergeCells('A3:D3');
 						$objPHPExcel->getActiveSheet()
-					 	 ->setCellValue('A3', "Grand Total")
-					 	 ->setCellValue('E3', "¥ ".number_format($amountTotal))
+						 ->setCellValue('A3', "Grand Total")
+						 ->setCellValue('E3', "¥ ".number_format($amountTotal))
 						 ->setCellValue('F3', "¥ ".number_format($chargeTotal));
 						$objPHPExcel->getActiveSheet()->getRowDimension('3')->setRowHeight(20);
 						$objPHPExcel->getActiveSheet()->getStyle('A3:F3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
@@ -2485,7 +2489,7 @@ class TransferController extends Controller {
 						foreach ($sql1 as $key => $value3) {
 							if ($request->salaryflg == "1") {
 								$amount = str_replace(",", "", $value3->amount);
-				        		$feeval = str_replace(",", "", $value3->fee);
+								$feeval = str_replace(",", "", $value3->fee);
 							} else {
 								$amount =  $value3->amount;
 								if (isset($value3->fee)) {
@@ -2499,8 +2503,8 @@ class TransferController extends Controller {
 						}
 						$objPHPExcel->getActiveSheet()->mergeCells('A'.$temp_i.':D'.$temp_i);
 						$objPHPExcel->getActiveSheet()
-					 	 ->setCellValue('A'.$temp_i, $get_det[$j]['year']."年".$get_det[$j]['month']."月")
-					 	 ->setCellValue('E'.$temp_i,number_format($amt))
+						 ->setCellValue('A'.$temp_i, $get_det[$j]['year']."年".$get_det[$j]['month']."月")
+						 ->setCellValue('E'.$temp_i,number_format($amt))
 						 ->setCellValue('F'.$temp_i,number_format($fee));
 						$objPHPExcel->getActiveSheet()->getStyle('A'.$temp_i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 						$objPHPExcel->getActiveSheet()->getStyle('E'.$temp_i.':F'.$temp_i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
@@ -2525,52 +2529,52 @@ class TransferController extends Controller {
 						$objPHPExcel->getActiveSheet()->setCellValue('B'.$temp_i, $get_det[$j]['date']);
 					}
 					if(isset($get_det[$j]['loan_flg']) && $get_det[$j]['loan_flg'] == 1 ) {
-			     		$objPHPExcel->getActiveSheet()->setCellValue('C'.$temp_i, 'Loan');
-				    } else if($request->pettyflg == 1 ){
-				    	if ($get_det[$j]['del_flg'] == 1) {
+						$objPHPExcel->getActiveSheet()->setCellValue('C'.$temp_i, 'Loan');
+					} else if($request->pettyflg == 1 ){
+						if ($get_det[$j]['del_flg'] == 1) {
 							if (Session::get('languageval') == "en") {
-				    			$objPHPExcel->getActiveSheet()->setCellValue('C'.$temp_i,  
-				    				$get_det[$j]['Subject']);
-				    		} else {
-				    			$objPHPExcel->getActiveSheet()->setCellValue('C'.$temp_i,  
-				    				$get_det[$j]['Subject_jp']);
-				    		} 
-				    	} else {
-				    		$objPHPExcel->getActiveSheet()->setCellValue('C'.$temp_i,  
-				    			$get_det[$j]['Bank_NickName']."-".$get_det[$j]['bankaccno']);
-				    	}
-				    } else if($request->salaryflg == 1 ){ 
-				    	$objPHPExcel->getActiveSheet()->setCellValue('C'.$temp_i, $get_det[$j]['EmpName']);
-				    } else {
-				    		// echo $get_det[$j]['bankname'];
-					     	if ($get_det[$j]['bankname']=="Cash") {
-					     		$objPHPExcel->getActiveSheet()->setCellValue('C'.$temp_i, 'Cash');
-					     	} else {
-					     		$bankNickname="";
-					     		if (isset($row[$j]['Bank_NickName'])) {
-					     			$bankNickname = $row[$j]['Bank_NickName'];
-					     		}
-					     		$objPHPExcel->getActiveSheet()->setCellValue('C'.$temp_i, $bankNickname."-".$get_det[$j]['bankaccno']);
-					     		// $objPHPExcel->getActiveSheet()->setCellValue('C'.$temp_i, 'Cash');
-					     	}
-			     	}
-			     	if($request->loan_flg == 1 ) {
-				     	if (Session::get('languageval') == "en") {
+								$objPHPExcel->getActiveSheet()->setCellValue('C'.$temp_i,  
+									$get_det[$j]['Subject']);
+							} else {
+								$objPHPExcel->getActiveSheet()->setCellValue('C'.$temp_i,  
+									$get_det[$j]['Subject_jp']);
+							} 
+						} else {
+							$objPHPExcel->getActiveSheet()->setCellValue('C'.$temp_i,  
+								$get_det[$j]['Bank_NickName']."-".$get_det[$j]['bankaccno']);
+						}
+					} else if($request->salaryflg == 1 ){ 
+						$objPHPExcel->getActiveSheet()->setCellValue('C'.$temp_i, $get_det[$j]['EmpName']);
+					} else {
+							// echo $get_det[$j]['bankname'];
+							if ($get_det[$j]['bankname']=="Cash") {
+								$objPHPExcel->getActiveSheet()->setCellValue('C'.$temp_i, 'Cash');
+							} else {
+								$bankNickname="";
+								if (isset($row[$j]['Bank_NickName'])) {
+									$bankNickname = $row[$j]['Bank_NickName'];
+								}
+								$objPHPExcel->getActiveSheet()->setCellValue('C'.$temp_i, $bankNickname."-".$get_det[$j]['bankaccno']);
+								// $objPHPExcel->getActiveSheet()->setCellValue('C'.$temp_i, 'Cash');
+							}
+					}
+					if($request->loan_flg == 1 ) {
+						if (Session::get('languageval') == "en") {
 							$objPHPExcel->getActiveSheet()->setCellValue('D'.$temp_i, 'Loan Payment');
 						} else {
 							$objPHPExcel->getActiveSheet()->setCellValue('D'.$temp_i, 'Loan Payment');
 						}
-			     	} else if($request->salaryflg == 1 ) {
+					} else if($request->salaryflg == 1 ) {
 							$objPHPExcel->getActiveSheet()->setCellValue('D'.$temp_i, 'Salary');
-			     	}else if($request->pettyflg == 1 ) {
-			     		if($get_det[$j]['del_flg'] == 1){
-			     			if (Session::get('languageval') == "en") {
-			     				$objPHPExcel->getActiveSheet()->setCellValue('D'.$temp_i, $get_det[$j]['sub_eng']);
-			     			} else {
-			     				$objPHPExcel->getActiveSheet()->setCellValue('D'.$temp_i, $get_det[$j]['sub_jap']);
-			     			}
-			     		} else {
-			     			if($get_det[$j]['transaction_flg'] == 1){
+					}else if($request->pettyflg == 1 ) {
+						if($get_det[$j]['del_flg'] == 1){
+							if (Session::get('languageval') == "en") {
+								$objPHPExcel->getActiveSheet()->setCellValue('D'.$temp_i, $get_det[$j]['sub_eng']);
+							} else {
+								$objPHPExcel->getActiveSheet()->setCellValue('D'.$temp_i, $get_det[$j]['sub_jap']);
+							}
+						} else {
+							if($get_det[$j]['transaction_flg'] == 1){
 								$objPHPExcel->getActiveSheet()->setCellValue('D'.$temp_i, 
 									'Debit');
 							} else {
@@ -2578,30 +2582,30 @@ class TransferController extends Controller {
 									'Credit');
 							}
 						}
-     				}
-     				else {
-						if (Session::get('languageval') == "en") {
-			     				$objPHPExcel->getActiveSheet()->setCellValue('D'.$temp_i, $get_det[$j]['sub_eng']);
-			     			} else {
-			     				$objPHPExcel->getActiveSheet()->setCellValue('D'.$temp_i, $get_det[$j]['sub_jap']);
-			     			}
 					}
-			     	if($request->salaryflg != 1 ) {
-			     		$amunt = number_format($get_det[$j]['amount']);
-			     	} else {
-			     		$amunt = $get_det[$j]['amount'];
-			     	}
-			     	if($request->salaryflg != 1 ) {
-			     		$fee = number_format($get_det[$j]['fee']);
-			     	} else {
-			     		$fee = $get_det[$j]['fee'];
-			     	}
+					else {
+						if (Session::get('languageval') == "en") {
+								$objPHPExcel->getActiveSheet()->setCellValue('D'.$temp_i, $get_det[$j]['sub_eng']);
+							} else {
+								$objPHPExcel->getActiveSheet()->setCellValue('D'.$temp_i, $get_det[$j]['sub_jap']);
+							}
+					}
+					if($request->salaryflg != 1 ) {
+						$amunt = number_format($get_det[$j]['amount']);
+					} else {
+						$amunt = $get_det[$j]['amount'];
+					}
+					if($request->salaryflg != 1 ) {
+						$fee = number_format($get_det[$j]['fee']);
+					} else {
+						$fee = $get_det[$j]['fee'];
+					}
 					$objPHPExcel->getActiveSheet()->setCellValue('E'.$temp_i, $amunt);
 					if ($get_det[$j]['bankname']=="Cash") {
-			     		$objPHPExcel->getActiveSheet()->setCellValue('F'.$temp_i, $fee);
-			     	} else {
-			     		$objPHPExcel->getActiveSheet()->setCellValue('F'.$temp_i, $fee);
-			     	}
+						$objPHPExcel->getActiveSheet()->setCellValue('F'.$temp_i, $fee);
+					} else {
+						$objPHPExcel->getActiveSheet()->setCellValue('F'.$temp_i, $fee);
+					}
 					$objPHPExcel->getActiveSheet()->setCellValue('G'.$temp_i, $get_det[$j]['remarks']);
 					
 					$objPHPExcel->getActiveSheet()->getStyle('A'.$temp_i.":G".$temp_i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
@@ -2625,8 +2629,8 @@ class TransferController extends Controller {
 			}
 		$flpath='.xls';
 		header('Content-Type: application/vnd.ms-excel');
-	    header('Content-Disposition: attachment;filename="'.$flpath.'"');
-	    header('Cache-Control: max-age=0');
+		header('Content-Disposition: attachment;filename="'.$flpath.'"');
+		header('Cache-Control: max-age=0');
 		})->setFilename($excel_name. "_" . date("Ymd"))->download('xls');
 	}
 	public static function salaryhistorydownload(Request $request) {
@@ -2766,8 +2770,8 @@ class TransferController extends Controller {
 					if ( $j == 0 ) { 
 						$objPHPExcel->getActiveSheet()->mergeCells('A3:E3');
 						$objPHPExcel->getActiveSheet()
-					 	 ->setCellValue('A3', "Grand Total")
-					 	 ->setCellValue('F3', "¥ ".number_format($amtval))
+						 ->setCellValue('A3', "Grand Total")
+						 ->setCellValue('F3', "¥ ".number_format($amtval))
 						 ->setCellValue('G3', "¥ ".number_format($feeval));
 						$objPHPExcel->getActiveSheet()->getRowDimension('3')->setRowHeight(20);
 						$objPHPExcel->getActiveSheet()->getStyle('A3:G3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
@@ -2792,8 +2796,8 @@ class TransferController extends Controller {
 						}
 						$objPHPExcel->getActiveSheet()->mergeCells('A'.$temp_i.':E'.$temp_i);
 						$objPHPExcel->getActiveSheet()
-					 	 ->setCellValue('A'.$temp_i, $get_det[$j]['year']."年".$get_det[$j]['month']."月")
-					 	 ->setCellValue('F'.$temp_i, " ".number_format($amt))
+						 ->setCellValue('A'.$temp_i, $get_det[$j]['year']."年".$get_det[$j]['month']."月")
+						 ->setCellValue('F'.$temp_i, " ".number_format($amt))
 						 ->setCellValue('G'.$temp_i, " ".number_format($fee));
 						$objPHPExcel->getActiveSheet()->getStyle('A'.$temp_i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 						$objPHPExcel->getActiveSheet()->getStyle('F'.$temp_i.':G'.$temp_i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
@@ -2892,8 +2896,8 @@ class TransferController extends Controller {
 				}
 		$flpath='.xls';
 		header('Content-Type: application/vnd.ms-excel');
-	    header('Content-Disposition: attachment;filename="'.$flpath.'"');
-	    header('Cache-Control: max-age=0');
+		header('Content-Disposition: attachment;filename="'.$flpath.'"');
+		header('Cache-Control: max-age=0');
 		})->setFilename($excel_name. "_" . date("Ymd"))->download('xls');
 	}
 	public static function transfersubhistorydownload(Request $request) {
@@ -2936,12 +2940,12 @@ class TransferController extends Controller {
 					->setCellValue('F2', "備考");
 				}
 				$yr = $request->selYear;
-		       	$mnth = $request->selMonth;
-		       	$mnsub = $request->subject;
-		       	$sql = Transfer::transfer_subhistorydetails($request,$mnsub,$yr,$mnth);
-		       	$disp = 0;
-		       	$get_det = array();
-		       	$row = array();
+				$mnth = $request->selMonth;
+				$mnsub = $request->subject;
+				$sql = Transfer::transfer_subhistorydetails($request,$mnsub,$yr,$mnth);
+				$disp = 0;
+				$get_det = array();
+				$row = array();
 				$disp = count($sql);
 				$i = 0;
 				$totval = 0;
@@ -2953,7 +2957,7 @@ class TransferController extends Controller {
 					if ($value->BankName == "") {
 						$value->BankName = "Cash";
 					}
-		        	if($value->BankName != "") {
+					if($value->BankName != "") {
 						$amountTotal = $amountTotal+$value->amount;
 					} 
 					if ($value->fee != "") {
@@ -2983,7 +2987,7 @@ class TransferController extends Controller {
 					}
 					 $sql = Transfer::nickname($get_det[$i]['bankaccno'],$value1->bankid);
 					 foreach ($sql as $key => $value2) {
-					 	$get_det[$i]['Bank_NickName']=$value2->Bank_NickName;
+						$get_det[$i]['Bank_NickName']=$value2->Bank_NickName;
 					 }
 					$i++;
 				}
@@ -3017,8 +3021,8 @@ class TransferController extends Controller {
 					if ($j == 0 ) { 
 						$objPHPExcel->getActiveSheet()->mergeCells('A3:C3');
 						$objPHPExcel->getActiveSheet()
-					 	 ->setCellValue('A3', "Grand Total")
-					 	 ->setCellValue('D3', "¥ ".number_format($amountTotal))
+						 ->setCellValue('A3', "Grand Total")
+						 ->setCellValue('D3', "¥ ".number_format($amountTotal))
 						 ->setCellValue('E3', "¥ ".number_format($chargeTotal));
 						$objPHPExcel->getActiveSheet()->getStyle('A3:E3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
 						$objPHPExcel->getActiveSheet()->getStyle('A3:E3')->getFont()->getColor()->setARGB($bluecolor);
@@ -3030,17 +3034,17 @@ class TransferController extends Controller {
 					if($tmpyr!=$get_det[$j]['year']||$tmpmth!=$get_det[$j]['month']) {
 						$amt=0;$results=0;$result1=0;$fee=0;
 						$temp_i++;
-		       			$view = Transfer::transfer_subhistorydetails($request,$mnsub,$get_det[$j]['year'],$get_det[$j]['month']);
-		       			foreach ($view as $key => $value3) {
-		       				$results=$value3->amount;
+						$view = Transfer::transfer_subhistorydetails($request,$mnsub,$get_det[$j]['year'],$get_det[$j]['month']);
+						foreach ($view as $key => $value3) {
+							$results=$value3->amount;
 							$result1=$value3->fee;
 							$amt=$amt+$results;
 							$fee=$fee+$result1;
-		       			}
+						}
 						$objPHPExcel->getActiveSheet()->mergeCells('A'.$temp_i.':C'.$temp_i);
 						$objPHPExcel->getActiveSheet()
-					 	 ->setCellValue('A'.$temp_i, $get_det[$j]['year']."年".$get_det[$j]['month']."月")
-					 	 ->setCellValue('D'.$temp_i, number_format($amt))
+						 ->setCellValue('A'.$temp_i, $get_det[$j]['year']."年".$get_det[$j]['month']."月")
+						 ->setCellValue('D'.$temp_i, number_format($amt))
 						 ->setCellValue('E'.$temp_i, number_format($fee));
 						$objPHPExcel->getActiveSheet()->getStyle('A'.$temp_i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 						$objPHPExcel->getActiveSheet()->getStyle('D'.$temp_i.':E'.$temp_i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
@@ -3056,23 +3060,23 @@ class TransferController extends Controller {
 					$sno++;
 					$objPHPExcel->getActiveSheet()->getStyle('A'.$temp_i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 					$objPHPExcel->getActiveSheet()
-				 	 ->setCellValue('A'.$temp_i, $sno);
+					 ->setCellValue('A'.$temp_i, $sno);
 					if ($tempdate !=$get_det[$j]['date']) {
 						$objPHPExcel->getActiveSheet()->setCellValue('B'.$temp_i, $get_det[$j]['date']);
 					}
-				     	if ($get_det[$j]['bankname']=="Cash") {
-				     		$objPHPExcel->getActiveSheet()->setCellValue('C'.$temp_i, 'Cash');
-				     	} else {
-				     		if(isset($get_det[$j]['Bank_NickName'])) {
-					     		$objPHPExcel->getActiveSheet()->setCellValue('C'.$temp_i, $get_det[$j]['Bank_NickName']."-".$get_det[$j]['bankaccno']);
-				     		}
-				     	}
+						if ($get_det[$j]['bankname']=="Cash") {
+							$objPHPExcel->getActiveSheet()->setCellValue('C'.$temp_i, 'Cash');
+						} else {
+							if(isset($get_det[$j]['Bank_NickName'])) {
+								$objPHPExcel->getActiveSheet()->setCellValue('C'.$temp_i, $get_det[$j]['Bank_NickName']."-".$get_det[$j]['bankaccno']);
+							}
+						}
 					$objPHPExcel->getActiveSheet()->setCellValue('D'.$temp_i, number_format($get_det[$j]['amount']));
 					if ($get_det[$j]['bankname']=="Cash") {
-			     		$objPHPExcel->getActiveSheet()->setCellValue('E'.$temp_i, "");
-			     	} else {
-			     		$objPHPExcel->getActiveSheet()->setCellValue('E'.$temp_i, number_format($get_det[$j]['fee']));
-			     	}
+						$objPHPExcel->getActiveSheet()->setCellValue('E'.$temp_i, "");
+					} else {
+						$objPHPExcel->getActiveSheet()->setCellValue('E'.$temp_i, number_format($get_det[$j]['fee']));
+					}
 					$objPHPExcel->getActiveSheet()->setCellValue('F'.$temp_i, $get_det[$j]['remarks']);
 					$objPHPExcel->getActiveSheet()->getStyle('A'.$temp_i.":F".$temp_i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
 					$objPHPExcel->getActiveSheet()->getStyle('A'.$temp_i.":F".$temp_i)->getFill()->getStartColor()->setRGB($style);
@@ -3097,8 +3101,8 @@ class TransferController extends Controller {
 			$objPHPExcel->getActiveSheet()->setTitle($request->selYear."-".$request->selMonth);
 			$flpath='.xls';
 			header('Content-Type: application/vnd.ms-excel');
-	    	header('Content-Disposition: attachment;filename="'.$flpath.'"');
-	    	header('Cache-Control: max-age=0');
+			header('Content-Disposition: attachment;filename="'.$flpath.'"');
+			header('Cache-Control: max-age=0');
 		})->setFilename($excel_name. "_" . date("Ymd"))->download('xls');
 	}
 	public static function others(Request $request){
@@ -3141,5 +3145,12 @@ class TransferController extends Controller {
 			Session::flash('selYear', $spldm[0]);  
 		return Redirect::to('Transfer/index?mainmenu=company_transfer&time='.date('YmdHis'));
 
+	}
+	public static function empnamepopup(Request $request) {
+		$empname = Transfer::fnGetEmpDetails($request);
+		$empnamenonstaff = Transfer::fnGetNonstaffEmpDetails($request);
+		return view('Invoice.empnamepopup',['empname' => $empname,
+										'empnamenonstaff' => $empnamenonstaff,
+										'request' => $request]);
 	}
 }
