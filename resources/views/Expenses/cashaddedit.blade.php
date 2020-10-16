@@ -91,10 +91,22 @@
 @if($request->cashflg==2)
 	{{ Form::hidden('id',$expcash_sql[0]->id, array('id' => 'id')) }}
 @endif
-	@if($request->cashflg==1)
+	@if($request->cashflg == 1)
 		<div class="col-xs-12 pt10">
-				<div class="col-xs-6" style="text-align: left;margin-left: -15px;">
-				<a href="javascript:gotoexpensesadd('{{ $request->mainmenu }}');" class="btn btn-success box19per"><span class="fa fa-plus"></span> {{ trans('messages.lbl_expenses') }}</a>
+			<div class="col-xs-6" style="text-align: left;margin-left: -15px;">
+				<a href="javascript:gotoexpensesadd('{{ $request->mainmenu }}');" class="btn btn-success box25per"><span class="fa fa-plus"></span>
+					@if($request->mainmenu == "pettycash")
+						{{ trans('messages.lbl_pettyexpenses') }}
+					@else
+						{{ trans('messages.lbl_expenses') }}
+					@endif</a>
+				<a href="#" class="btn btn-success box20per disabled"><span class="fa fa-plus"></span> 
+					@if($request->mainmenu == "pettycash")
+						{{ trans('messages.lbl_pettycash') }}
+					@else
+						{{ trans('messages.lbl_cash') }}
+					@endif
+				</a>
 			</div>
 		</div>
 	@endif
