@@ -86,8 +86,23 @@
 </div>
 	@if($edit_flg != 1 && $edit_flg != 3)
 		<div class="col-xs-12 pt10">
-				<div class="col-xs-6" style="text-align: left;margin-left: -15px;">
-				<a href="javascript:gotocashadd('{{ $request->mainmenu }}',1);" class="btn btn-success box17per"><span class="fa fa-plus"></span> {{ trans('messages.lbl_cash') }}</a>
+			<div class="col-xs-6" style="text-align: left;margin-left: -15px;">
+				<a href="#" class="btn btn-success box25per disabled"><span class="fa fa-plus"></span> 
+					@if($request->mainmenu == "pettycash")
+						{{ trans('messages.lbl_pettyexpenses') }}
+					@elseif($request->mainmenu == "company_transfer")
+						{{ trans('messages.lbl_transfer') }}
+					@else
+						{{ trans('messages.lbl_expenses') }}
+					@endif
+				</a>
+				<a href="javascript:gotocashadd('{{ $request->mainmenu }}',1);" class="btn btn-success box20per"><span class="fa fa-plus"></span>
+					@if($request->mainmenu == "pettycash")
+						{{ trans('messages.lbl_pettycash') }}
+					@else
+						{{ trans('messages.lbl_cash') }}
+					@endif
+				</a>
 			</div>
 		</div>
 	@endif
