@@ -85,7 +85,7 @@ class ExpensesDetailsController extends Controller {
 				}
 			} else { 
 				$currYr = Expdetails::datapreyear();
-				if($currYr[0]->date){
+				if(isset($currYr[0]->date)){
 					if (substr($currYr[0]->date,5,2)> $account_close_mn) {
 					    $current_year = substr($currYr[0]->date,0,4)+1;
 						$last_year =substr($currYr[0]->date,0,4);

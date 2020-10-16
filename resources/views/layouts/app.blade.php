@@ -228,24 +228,10 @@
 					<a class="pageload" href="{{ url('Expenses/index?mainmenu=pettycash&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_pettycash') }}</a>
 				</div>
 				@if(Session::get('userclassification') == 4)
-				<div id="expenses_sub_10">
-					<a href="{{ url('Salaryplus/index?mainmenu=salaryplus&time='.date('Ymdhis')) }}" 
-					style="text-decoration:none;color:white;">
-					{{ trans('messages.lbl_salaryplus') }}</a>
-				</div>
-				<div id="expenses_sub_11">
-					<a href="{{ url('salarycalc/index?mainmenu=salarycalc&time='.date('Ymdhis')) }}" 
-					style="text-decoration:none;color:white;">
-					{{ trans('messages.lbl_salary_cal') }}</a>
-				</div>
 				<div id="expenses_sub_5">
 					<a class="pageload" href="{{ url('Salary/index?mainmenu=company_salary&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_salary') }}</a>
 				</div>
 				@endif
-				<div id="expenses_sub_9">
-					<a class="pageload" href="{{ url('Engineerdetails/expenseindex?mainmenu=engineerexpdetails&time='.date('Ymdhis')) }}" 
-						 style="text-decoration:none;color:white;">{{ trans('messages.lbl_enggexp_details') }}</a>
-				</div>
 				@if(Session::get('userclassification') == 4)
 				<div id="expenses_sub_7">
 					<a class="pageload" href="{{ url('ExpensesDetails/index?mainmenu=expdetails&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_expdetail') }}</a>
