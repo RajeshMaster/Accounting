@@ -14,25 +14,30 @@
 Route::get('/', function () {
     return view('login.login');
 });
+
 Route::get('/pdf', function () {
     Fpdf::AddPage();
     Fpdf::SetFont('Courier', 'B', 38);
     Fpdf::Cell(50, 25, 'Hello Worlda!');
     Fpdf::Output();
 });
+
 // LOGIN PAGE
 Route::get('login', 'LoginController@index');
 Route::post('login', 'LoginController@authenticate');
 // END LOGIN PAGE
+
 // FORGET_PASSWORD
 Route::any('forgetpassword', 'LoginController@forgetpassword');
 Route::any('formValidation', 'LoginController@formValidation');
 Route::any('addeditprocess', 'LoginController@addeditprocess');
 // END_FORGET_PASSWORD
+
 // LOGOUT PROCESS
 Route::get('logout', 'Auth\AuthController@logout');
 // Route::get('logout', 'LoginController@logout');
 // END LOGOUT PROCESS
+
 Route::group(['prefix'=>'Ourdetail', 'middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
     Route::any('index', 'OurdetailController@index');
@@ -44,7 +49,8 @@ Route::group(['prefix'=>'Ourdetail', 'middleware' => 'auth'], function() {
     Route::any('taxprocess', 'OurdetailController@taxprocess');
     Route::any('balsheetprocess', 'OurdetailController@balsheetprocess');
 });
-//Master User
+
+// Master User
 Route::group(['prefix'=>'User', 'middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
     Route::any('index', 'UserController@index');
@@ -55,7 +61,8 @@ Route::group(['prefix'=>'User', 'middleware' => 'auth'], function() {
     Route::any('changepassword', 'UserController@changepassword');
     Route::any('passwordchangeprocess', 'UserController@passwordchangeprocess');
 });
-//Master Bank
+
+// Master Bank
 Route::group(['prefix'=>'Bank', 'middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
     Route::any('index', 'BankController@index');
@@ -69,7 +76,8 @@ Route::group(['prefix'=>'Bank', 'middleware' => 'auth'], function() {
     Route::any('addeditprocess', 'BankController@addeditprocess');
     Route::any('branch_ajax', 'BankController@branch_ajax');
 });
-//Customer Employee History
+
+// Customer Employee History
 Route::group(['prefix'=>'Customer', 'middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
     Route::any('index', 'CustomerController@index');
@@ -87,18 +95,20 @@ Route::group(['prefix'=>'Customer', 'middleware' => 'auth'], function() {
     Route::any('coverletterpopup', 'CustomerController@coverletterpopup');
     Route::any('letterupload', 'CustomerController@letterupload');
 });
-//Customer+ Employee History
+
+// Customer+ Employee History
 Route::group(['prefix'=>'Engineerdetails', 'middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
     Route::any('index', 'EngineerdetailsController@index');
-    Route::any('expenseindex', 'EngineerdetailsController@expenseindex');
 });
-//Engineerdetails+ 
+
+// Engineerdetails+ 
 Route::group(['prefix'=>'Engineerdetailsplus', 'middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
     Route::any('index', 'EngineerdetailsplusController@index');
 });
-//Staff
+
+// Staff
 Route::group(['prefix'=>'Staff', 'middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
     Route::any('index', 'StaffController@index');
@@ -111,7 +121,8 @@ Route::group(['prefix'=>'Staff', 'middleware' => 'auth'], function() {
     Route::any('resign', 'StaffController@resign');
     Route::any('resignadd', 'StaffController@resignadd');
 });
-//NonStaff
+
+// NonStaff
 Route::group(['prefix'=>'NonStaff', 'middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
     Route::any('index', 'NonStaffController@index');
@@ -119,7 +130,8 @@ Route::group(['prefix'=>'NonStaff', 'middleware' => 'auth'], function() {
 	Route::any('nonstaffaddeditprocess', 'NonStaffController@nonstfaddeditprocess');
 	Route::any('nonstaffview', 'NonStaffController@nonstaffview');
 });
-//Timesheet
+
+// Timesheet
 Route::group(['prefix'=>'Timesheet', 'middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
     Route::any('timesheetindex', 'TimesheetController@index');
@@ -137,7 +149,8 @@ Route::group(['prefix'=>'Timesheet', 'middleware' => 'auth'], function() {
     Route::any('uploadprocess', 'TimesheetController@uploadprocess');
 
 });
-//Billing
+
+// Billing
 Route::group(['prefix'=>'Billing', 'middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
     Route::any('index', 'BillingController@index');
@@ -150,7 +163,8 @@ Route::group(['prefix'=>'Billing', 'middleware' => 'auth'], function() {
     Route::any('ajaxbranchname', 'BillingController@ajaxbranchname');
     Route::any('getpreviousdetails', 'BillingController@getpreviousdetails');
 });
-//Expenses
+
+// Expenses
 Route::group(['prefix'=>'Expenses', 'middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
     Route::any('index', 'ExpensesController@index');
@@ -185,7 +199,7 @@ Route::group(['prefix'=>'Expenses', 'middleware' => 'auth'], function() {
     Route::any('transfersubhistorydownload', 'TransferController@transfersubhistorydownload');
 });
 
-//Estimation
+// Estimation
 Route::group(['prefix'=>'Estimation', 'middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
     Route::any('index', 'EstimationController@index');
@@ -204,7 +218,8 @@ Route::group(['prefix'=>'Estimation', 'middleware' => 'auth'], function() {
     Route::any('specification', 'InvoiceController@specification');
     Route::any('newexceldownloadprocess', 'EstimationController@newexceldownloadprocess');
 });
-//Invoice
+
+// Invoice
 Route::group(['prefix'=>'Invoice', 'middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
     Route::any('index', 'InvoiceController@index');
@@ -232,7 +247,8 @@ Route::group(['prefix'=>'Invoice', 'middleware' => 'auth'], function() {
     Route::any('newexceldownloadprocess', 'InvoiceController@newexceldownloadprocess');
     Route::any('allinvoiceexceldownloadprocess', 'InvoiceController@allinvoiceexceldownloadprocess');
 });
-//COMPANY EXPENSES - LOAN DETAILS
+
+// COMPANY EXPENSES - LOAN DETAILS
 Route::group(['prefix'=>'Loandetails', 'middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
     Route::any('index', 'LoanController@index');
@@ -244,12 +260,14 @@ Route::group(['prefix'=>'Loandetails', 'middleware' => 'auth'], function() {
     Route::any('addeditprocess', 'LoanController@addeditprocess');
     Route::any('loanaddedit', 'TransferController@loanaddedit');
 });
+
 // Employee History
 Route::group(['prefix'=>'EmpHistory', 'middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
     Route::any('index', 'EmpHistoryController@index');
 });
-//COMPANY EXPENSES - SALARY
+
+// COMPANY EXPENSES - SALARY
 Route::group(['prefix'=>'Salary', 'middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
     Route::any('index', 'SalaryController@index');
@@ -265,6 +283,7 @@ Route::group(['prefix'=>'Salary', 'middleware' => 'auth'], function() {
     Route::any('copycheck', 'SalaryController@copycheck');
     Route::any('multiaddeditprocess', 'SalaryController@multiaddeditprocess');
 });
+
 // Staff Contract
 Route::group(['prefix'=>'StaffContr', 'middleware' => 'auth'], function() { 
     Route::get('changelanguage', 'AjaxController@index');
@@ -305,7 +324,7 @@ Route::group(['prefix'=>'Mailsignature', 'middleware' => 'auth'], function() {
     Route::any('getdatexist', 'MailsignatureController@getdatexist');
 });
 
-//COMPANY EXPENSES - Bankdetails
+// COMPANY EXPENSES - Bankdetails
 Route::group(['prefix'=>'Bankdetails', 'middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
     Route::any('index', 'BankdetailController@index');
@@ -316,7 +335,7 @@ Route::group(['prefix'=>'Bankdetails', 'middleware' => 'auth'], function() {
     Route::any('addeditprocess', 'BankdetailController@addeditprocess');
 });
 
-//COMPANY EXPENSES - Transfer
+// COMPANY EXPENSES - Transfer
 Route::group(['prefix'=>'Transfer', 'middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
     Route::any('index', 'TransferController@index');
@@ -347,8 +366,7 @@ Route::group(['prefix'=>'Transfer', 'middleware' => 'auth'], function() {
     Route::any('others', 'TransferController@others');
 });
 
-
-//MeetingDetails 
+// MeetingDetails 
 Route::group(['prefix'=>'MeetingDetails', 'middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
     Route::any('index', 'MeetingdetailsController@index');  
@@ -364,7 +382,8 @@ Route::group(['prefix'=>'MeetingDetails', 'middleware' => 'auth'], function() {
     Route::any('customerregister', 'MeetingdetailsController@newcustomerregpopup');
     
 });
-//Sales - Payment
+
+// Sales - Payment
 Route::group(['prefix'=>'Payment', 'middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
     Route::any('index', 'PaymentController@index');
@@ -374,12 +393,14 @@ Route::group(['prefix'=>'Payment', 'middleware' => 'auth'], function() {
     Route::any('customerview', 'PaymentController@customerview');
     Route::any('customerspecification', 'PaymentController@specificationview');
 });
+
 // Home
 Route::group(['prefix'=>'Menu', 'middleware' => 'auth'], function() {
     Route::get('index', 'MenuController@index');
     Route::get('changelanguage', 'AjaxController@index');
 });
-// Home
+
+// Expenses Details
 Route::group(['prefix'=>'ExpensesDetails', 'middleware' => 'auth'], function() {
     Route::any('index', 'ExpensesDetailsController@index');
     Route::get('changelanguage', 'AjaxController@index');
@@ -403,7 +424,8 @@ Route::any('uploadpopup', 'SettingController@uploadpopup');
 Route::any('useNotuse', 'SettingController@useNotuse');
 Route::any('settingpopupupload', 'SettingController@settingpopupupload');
 });
-//Staff -> Salary
+
+// Staff -> Salary
 Route::group(['prefix'=>'StaffSalary','middleware' => 'auth'], function() {
     Route::any('index', 'StaffSalaryController@index');
     Route::get('changelanguage', 'AjaxController@index');
@@ -412,18 +434,20 @@ Route::group(['prefix'=>'StaffSalary','middleware' => 'auth'], function() {
     Route::any('salarystaff_ajax', 'StaffSalaryController@salarystaff_ajax');
     Route::any('singleview', 'StaffSalaryController@singleview');
 });
+
 // Sales Details
 Route::group(['prefix'=>'Salesdetails', 'middleware' => 'auth'], function() {
-Route::any('index', 'SalesdetailsController@index');
-Route::any('salesexceldownloadprocess', 'SalesdetailsController@index');
-Route::get('changelanguage', 'AjaxController@index');
+	Route::any('index', 'SalesdetailsController@index');
+	Route::any('salesexceldownloadprocess', 'SalesdetailsController@index');
+	Route::get('changelanguage', 'AjaxController@index');
 });
 
 Route::group(['prefix'=>'Salesplus', 'middleware' => 'auth'], function() {
-Route::any('index', 'SalesplusController@index');
-Route::any('salesexceldownloadprocess', 'SalesplusController@index');
-Route::get('changelanguage', 'AjaxController@index');
+	Route::any('index', 'SalesplusController@index');
+	Route::any('salesexceldownloadprocess', 'SalesplusController@index');
+	Route::get('changelanguage', 'AjaxController@index');
 });
+
 // Visa Renew
 Route::group(['prefix'=>'Visarenew', 'middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
@@ -434,41 +458,6 @@ Route::group(['prefix'=>'Visarenew', 'middleware' => 'auth'], function() {
     Route::any('addeditprocess', 'VisarenewController@addeditprocess');
     Route::any('visaview', 'VisarenewController@visaview');
     Route::any('visaExtensionFormDownload', 'VisarenewController@visaExtensionFormDownload');
-});
-//Staff -> Salary Plus
-Route::group(['prefix'=>'Salaryplus','middleware' => 'auth'], function() {
-    Route::get('changelanguage', 'AjaxController@index');
-    Route::any('index', 'SalaryplusController@index');
-    Route::any('view', 'SalaryplusController@view');
-    Route::any('addedit', 'SalaryplusController@addedit');
-    Route::any('edit', 'SalaryplusController@edit');
-    Route::any('getdatexist', 'SalaryplusController@getdatexist');
-    Route::any('addeditprocess', 'SalaryplusController@addeditprocess');
-    Route::any('salarypluspopup', 'SalaryplusController@salarypluspopup');
-    Route::any('empselectprocess', 'SalaryplusController@empselectprocess');
-    Route::any('multiaddedit', 'SalaryplusController@multiaddedit');
-    Route::any('multieditprocess', 'SalaryplusController@multieditprocess');
-    Route::any('multiregister', 'SalaryplusController@multiregister');
-    Route::any('multipaymentscreen', 'SalaryplusController@multipaymentscreen');
-    Route::any('multiaddeditprocess', 'SalaryplusController@multiaddeditprocess');
-    Route::any('addeditnew', 'SalaryplusController@addeditnew');
-    Route::any('addeditprocessnew', 'SalaryplusController@addeditprocessnew');
-    Route::any('singleview', 'SalaryplusController@singleview');
-    Route::any('editprocess', 'SalaryplusController@editprocess');
-});
-//Staff -> Salary Plus
-Route::group(['prefix'=>'salarycalc','middleware' => 'auth'], function() {
-    Route::get('changelanguage', 'AjaxController@index');
-    Route::any('index', 'SalarycalcController@index');
-    Route::any('view', 'SalarycalcController@view');
-    Route::any('edit', 'SalarycalcController@edit');
-    Route::any('addedit', 'SalarycalcController@addedit');
-    Route::any('addeditprocess', 'SalarycalcController@addeditprocess');
-    Route::any('multieditprocess', 'SalarycalcController@multieditprocess');
-    Route::any('multiregister', 'SalarycalcController@multiregister');
-    Route::any('salarypopup', 'SalarycalcController@salarypopup');
-    Route::any('empselectprocess', 'SalarycalcController@empselectprocess');
-    Route::any('mailsendprocess', 'SalarycalcController@mailsendprocess');
 });
 
 // Tax Details Process

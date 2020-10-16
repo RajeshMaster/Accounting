@@ -147,28 +147,9 @@
 					</a>
 				</div>
 				@if(Auth::user()->userclassification == 4)
-				<div class="alinkEng ml20 mt5">
-					<a class="pageload csrp btn-link" 
-					href="{{ url('Salaryplus/index?mainmenu=salaryplus&time='.date('Ymdhis')) }}" 
-					style="color:blue;font-size: 13px;">
-						{{ trans('messages.lbl_salaryplus') }}
-					</a>
-				</div>
-				<div class="alinkEng ml20 mt5">
-					<a class="pageload csrp btn-link" 
-					href="{{ url('salarycalc/index?mainmenu=salaryplus&time='.date('Ymdhis')) }}" 
-					style="color:blue;font-size: 13px;">
-						{{ trans('messages.lbl_salary_calc') }}
-					</a>
-				</div>
 				 <div class="alinkEng ml20 mt5 tal">
 					<a class="pageload csrp btn-link" href="{{ url('Salary/index?mainmenu=company_salary&time='.date('Ymdhis')) }}" style="color:blue;font-size: 13px;">
 						{{ trans('messages.lbl_salary') }}
-					</a>
-				</div>
-				<div class="alinkEng ml20 mt5 tal">
-					<a class="pageload csrp btn-link" href="{{ url('Engineerdetails/expenseindex?mainmenu=engineerexpdetails&time='.date('Ymdhis')) }}" style="color:blue;font-size: 13px;">
-						{{ trans('messages.lbl_enggexp_details') }}
 					</a>
 				</div>
 				<div class="alinkEng ml20 mt5 tal">
