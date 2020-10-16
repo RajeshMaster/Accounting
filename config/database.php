@@ -51,7 +51,8 @@ return [
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
             'prefix' => '',
         ],
-        // DB_Connection_For_Invoice_System
+
+        // DB_Connection_For_Accounting_System
         'mysql' => [
             'driver' => 'mysql',
             'host' => env('DB_HOST', 'localhost'),
@@ -66,8 +67,9 @@ return [
             'engine' => null,
             
         ],
-        // End_DB_Connection_For_Invoice_System
-         // DB_Connection_For_mbsys
+        // End_DB_Connection_For_Accounting_Syste
+
+        // DB_Connection_For_OtherDB
         'otherdb' => [
             'driver' => 'mysql',
             'host' => env('DB_HOST', 'localhost'),
@@ -81,21 +83,55 @@ return [
             'strict' => false,
             'engine' => null,
         ],
-        // End_DB_Connection_For_mbsys
-        // DB_Connection_For_SSDB
-        'mysql_SS' => [
+        // End_DB_Connection_For_OtherDB
+
+        // DB_Connection_For_MBDB
+        'mysql_MB' => [
             'driver' => 'mysql',
             'host' => env('DB_HOST', 'localhost'),
             'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE_SS', 'vps10081_ss_staff_devdb'),
-            'username' => env('DB_USERNAME_SS', 'vps10081_stafdev'),
-            'password' => env('DB_PASSWORD_SS', 'LKW4(F#%{5&V'),
+            'database' => env('DB_DATABASE_MB', 'mbsys_db'),
+            'username' => env('DB_USERNAME_MB', 'root'),
+            'password' => env('DB_PASSWORD_MB', ''),
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',
             'strict' => false,
             'engine' => null,
         ],
+        // End_DB_Connection_For_MBDB
+
+        // DB_Connection_For_SSDB
+        'mysql_SS' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST', 'localhost'),
+            'port' => env('DB_PORT', '3306'),
+            'database' => env('DB_DATABASE_SS', 'sathisys_db'),
+            'username' => env('DB_USERNAME_SS', 'root'),
+            'password' => env('DB_PASSWORD_SS', ''),
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
+            'strict' => false,
+            'engine' => null,
+        ],
+        // End_DB_Connection_For_SSDB
+
+         // DB_Connection_For_SSDB
+        'mysql_Salary' => [
+            'driver' => 'mysql',
+            'host' => env('DB_HOST', 'localhost'),
+            'port' => env('DB_PORT', '3306'),
+            'database' => env('DB_DATABASE_SS', 'salarycalc'),
+            'username' => env('DB_USERNAME_SS', 'root'),
+            'password' => env('DB_PASSWORD_SS', ''),
+            'charset' => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix' => '',
+            'strict' => false,
+            'engine' => null,
+        ],
+
         // End_DB_Connection_For_mbsys
         'pgsql' => [
             'driver' => 'pgsql',

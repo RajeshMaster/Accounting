@@ -364,6 +364,7 @@ Route::group(['prefix'=>'Transfer', 'middleware' => 'auth'], function() {
     Route::any('transferexceldownload', 'TransferController@index');
     Route::any('editothersprocess', 'TransferController@editothersprocess');
     Route::any('others', 'TransferController@others');
+    Route::any('empnamepopup', 'TransferController@empnamepopup');
 });
 
 // MeetingDetails 
@@ -477,4 +478,24 @@ Route::group(['prefix'=>'Tax','middleware' => 'auth'], function() {
 Route::group(['prefix'=>'Accounting','middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
     Route::any('index', 'AccountingController@index');
+});
+
+//Staff -> Salary Calculation
+Route::group(['prefix'=>'salarycalc','middleware' => 'auth'], function() {
+    Route::get('changelanguage', 'AjaxController@index');
+    Route::any('index', 'SalarycalcController@index');
+    Route::any('view', 'SalarycalcController@view');
+    Route::any('edit', 'SalarycalcController@edit');
+    Route::any('addedit', 'SalarycalcController@addedit');
+    Route::any('addeditprocess', 'SalarycalcController@addeditprocess');
+    Route::any('multieditprocess', 'SalarycalcController@multieditprocess');
+    Route::any('multiregister', 'SalarycalcController@multiregister');
+    Route::any('salarypopup', 'SalarycalcController@salarypopup');
+    Route::any('empselectprocess', 'SalarycalcController@empselectprocess');
+    Route::any('mailsendprocess', 'SalarycalcController@mailsendprocess');
+    Route::any('salarydownload', 'SalarycalcController@salarydownload');
+    Route::any('history', 'SalarycalcController@history');
+    Route::any('getdataExists', 'SalarycalcController@getdataExists');
+    Route::any('dataReg', 'SalarycalcController@dataReg');
+    Route::get('getlastmonthdet', 'SalarycalcController@getlastmonthdet');
 });
