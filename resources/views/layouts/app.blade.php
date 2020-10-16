@@ -222,7 +222,7 @@
 			 ($request->mainmenu == "company_transfer") || ($request->mainmenu == "pettycash") || 
 			 ($request->mainmenu == "company_loan") || ($request->mainmenu == "company_salary") ||
 			  ($request->mainmenu == "company_bankdetails") || ($request->mainmenu == "expdetails") || 
-			  ($request->mainmenu == "engineerexpdetails") || ($request->mainmenu == "salaryplus")  || ($request->mainmenu == "salarycalc"))
+			  ($request->mainmenu == "engineerexpdetails"))
 			<!-- Expenses Sub -->
 				<div id="expenses_sub_1">
 					<a class="pageload" href="{{ url('Expenses/index?mainmenu=expenses&time='.date('Ymdhis')) }}" 
@@ -348,16 +348,16 @@
 			<!-- //Customer sub -->
 			@endif
 	
-			<?php if ($request->mainmenu == "Accounting" || $request->mainmenu == "Accounting") {?>
+			@if(isset($request->mainmenu) && ($request->mainmenu == "Accounting" || $request->mainmenu == "salarycalc"))
 				<div id="accounting_sub_1">
 					<a href="{{ url('Setting/index?mainmenu=Setting&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_invoice') }}</a>
 				</div>
 
 				<div id="accounting_sub_2">
-					<a href="{{ url('Ourdetail/index?mainmenu=Ourdetail&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_salary_det') }}</a>
+					<a href="{{ url('salarycalc/index?mainmenu=salarycalc&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_salary_det') }}</a>
 				</div>
-			<?php } ?>
-			<?php if ($request->mainmenu == "Setting" || $request->mainmenu == "Ourdetail") {?>
+			@endif
+			@if(isset($request->mainmenu) && ($request->mainmenu == "Setting" || $request->mainmenu == "Ourdetail"))
 			<!-- Setting Sub -->
 				<div id="setting_sub_1">
 					<a href="{{ url('Setting/index?mainmenu=Setting&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_setting') }}</a>
@@ -367,7 +367,7 @@
 					<a href="{{ url('Ourdetail/index?mainmenu=Ourdetail&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_ourdetails') }}</a>
 				</div>
 			<!-- // Setting Sub -->
-			<?php } ?>
+			@endif
 			</div>
 		</div>
 	<!-- end_sub_tab -->

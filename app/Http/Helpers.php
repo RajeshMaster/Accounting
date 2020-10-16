@@ -411,4 +411,86 @@ class Helpers {
 			echo "<span style='cursor:pointer'><img src='" . '../resources/assets/images/' . $n_filename . "' width='15' height='15' onclick = 'return getData($n_mnt,$n_yr, 1, $prevcnt, $nextcnt, $account_period,$lastyear, $currentyear, ($account_val + 1))';></span>&nbsp;";
 			echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 	}
+	public static function displayYear($prev_yrs,$cur_year,$total_yrs,$curtime){
+      //SYSTEM CURRENT YEAR
+      $months[] = "";
+      $sys_cur_month=date('m');
+      $sys_cur_year=date('Y');
+      $count_yrs=count($total_yrs);
+      //YEAR ROW
+      echo "<div class=\"yrBorder\" align=\"center\" style=\"margin-top:-18px;\"><div style=\"background-color: white;margin-top:0px;\">&nbsp;&nbsp;";
+      if($count_yrs==0) {
+        echo "<b>1&nbsp;年間</b>&nbsp;&nbsp;";
+      } else {
+        echo "<b>".$count_yrs."&nbsp;年間</b>&nbsp;&nbsp;";
+      }
+      if($count_yrs==0){
+        echo "＜＜&nbsp;<span class=\"currentheader\">&nbsp;".$sys_cur_year."年&nbsp;</span>&nbsp;＞＞";
+      } else if($count_yrs==1){
+        echo "＜＜&nbsp;<span class=\"currentheader\">&nbsp;".$total_yrs[0]."年&nbsp;</span>&nbsp;＞＞";
+      } else if($count_yrs<=2){
+        $cnt=$count_yrs-1;
+        echo "<span>＜＜</span>";
+        for($year=0;$year<$count_yrs;$year++){
+          if($cur_year==$total_yrs[$year]){
+            echo "<span class=\"currentheader\">&nbsp;".$cur_year."年&nbsp;</span>&nbsp;";
+          } else {
+            $yr=$total_yrs[$year];
+            echo "<span class=\"spnOver\"><a href=\"javascript:getData('$yr','$curtime');\" class=\"bordera pageload\">&nbsp;".$yr."年&nbsp;</a></span>&nbsp;";
+          }
+        }
+        echo "<span>＞＞</span>";
+      } else if($count_yrs>2){
+        //FIND THE INDEX OF THE SELECTED YEAR
+        $inx=0;
+        $cnt=$count_yrs;
+        for($year=0;$year<$count_yrs;$year++){
+          if($cur_year==$total_yrs[$year]){
+            $inx=$year;
+          }
+        }
+        if($inx==0) {            //FIRST YEAR
+          echo "<span>＜＜</span>";
+          echo "<span class=\"currentheader \">&nbsp;".$total_yrs[$inx]."年&nbsp;</span>&nbsp;";
+          $yr=$total_yrs[$inx+1];
+          echo "<span class=\"spnOver\">&nbsp;<a href=\"javascript:getData('$yr','$curtime');\" class=\"bordera pageload\">".$yr."年</a></span>";
+          /*echo "<span class=\"spnOver\">&nbsp;<a href=\"javascript:getData('$yr','$curtime');\" class=\"bordera\">".$yr."年</a></span>";
+           $yr=$total_yrs[$inx+3];*/
+          echo "<span class=\"spnOver\">&nbsp;<a href=\"javascript:getData('$yr','$curtime');\" class=\"bordera pageload\">＞＞</a></span>";
+        } else if($inx==$cnt-1){       //LAST YEAR
+          $yr=$total_yrs[$inx-1];
+          echo "<span class=\"spnOver\">&nbsp;<a href=\"javascript:getData('$yr','$curtime');\" class=\"bordera pageload\">＜＜</a></span>";
+          /*$yr=$total_yrs[$inx-2];
+           echo "<span class=\"spnOver\">&nbsp;<a href=\"javascript:getData('$yr','$curtime');\" class=\"bordera\">".$yr."年</a></span>";*/
+          $yr=$total_yrs[$inx-1];
+          echo "<span class=\"spnOver\">&nbsp;<a href=\"javascript:getData('$yr','$curtime');\" class=\"bordera pageload\">".$yr."年</a></span>&nbsp;";
+          echo "<span class=\"currentheader\">&nbsp;".$total_yrs[$inx]."年&nbsp;</span>";
+          echo "<span>＞＞</span>";
+        } else {                //OTHERWISE
+          if($inx-2 > 0) {
+            $yr = $total_yrs[$inx-1]; 
+          } else {
+            $yr = $total_yrs[$inx-1]; 
+          }
+          if($yr==''){
+            echo "<span>＜＜</span>";
+          }else {
+            echo "<span class=\"spnOver\">&nbsp;<a href=\"javascript:getData('$yr','$curtime');\" class=\"bordera pageload\">＜＜</a></span>";
+          }
+          $yr=$total_yrs[$inx-1];
+          echo "<span class=\"spnOver\">&nbsp;<a href=\"javascript:getData('$yr','$curtime');\" class=\"bordera pageload\">".$yr."年</a></span>&nbsp;";
+          echo "<span class=\"currentheader\">&nbsp;".$total_yrs[$inx]."年&nbsp;</span>";
+          $yr=$total_yrs[$inx+1];
+          /*echo "<span class=\"spnOver\">&nbsp;<a href=\"javascript:getData('$yr','$curtime');\" class=\"bordera\">".$yr."年</a></span>";
+           $yr=$total_yrs[$inx+2];*/
+          if($yr==''){
+            echo "<span>＞＞</span>";
+          }else{
+            echo "<span class=\"spnOver\">&nbsp;<a href=\"javascript:getData('$yr','$curtime');\" class=\"bordera pageload\">＞＞</a></span>";
+          }
+        }
+      }
+      echo "&nbsp;&nbsp;";
+      echo "</div></div>";
+    }
 }
