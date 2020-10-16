@@ -1359,4 +1359,9 @@ return [
     'lbl_notpaid' => 'Not Paid',
 
     'lbl_alreadypaid' => 'Already Paid',
+
+	/*Accounting Start*/
+    'lbl_accounting' => 'Accounting',
+    'lbl_paidamt' => 'Paid Amount',
+    /*Accounting End*/
 ];

@@ -129,12 +129,19 @@
 							{{ trans('messages.lbl_ourdetails') }}</a>
 						</li>
 						@endif -->
+						<li class="btn_accounting jop_btn">
+							<a href="{{ url('Accounting/index?mainmenu=Accounting&time='.date('Ymdhis')) }}">
+							{{ trans('messages.lbl_accounting') }}</a>
+						</li>
+
 						@if(Session::get('userclassification') == 4 || Session::get('userclassification') == 1)
 						<li class="btn_setting jop_btn">
 							<a href="{{ url('Setting/index?mainmenu=Setting&time='.date('Ymdhis')) }}">
 							{{ trans('messages.lbl_setting') }}</a>
 						</li>
 						@endif
+
+						
 					</ul>
 				</nav>
 			</div>
@@ -341,7 +348,15 @@
 			<!-- //Customer sub -->
 			@endif
 	
-		
+			<?php if ($request->mainmenu == "Accounting" || $request->mainmenu == "Accounting") {?>
+				<div id="accounting_sub_1">
+					<a href="{{ url('Setting/index?mainmenu=Setting&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_invoice') }}</a>
+				</div>
+
+				<div id="accounting_sub_2">
+					<a href="{{ url('Ourdetail/index?mainmenu=Ourdetail&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_salary_det') }}</a>
+				</div>
+			<?php } ?>
 			<?php if ($request->mainmenu == "Setting" || $request->mainmenu == "Ourdetail") {?>
 			<!-- Setting Sub -->
 				<div id="setting_sub_1">
