@@ -1,0 +1,78 @@
+@charset "utf-8";
+/* ---------- RESET_CSS_FOR_h2_AND_label ---------- */
+h2 ,label {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* ---------- END_RESET_CSS_FOR_h2_AND_label ---------- */
+body {
+	background-color: #e6e6e6;
+	color: #000;
+	font-family: "Varela Round", Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	line-height: 1.5em;
+}
+/* ---------- LOGIN_BODY_DESIGN ---------- */
+#login {
+	margin: 50px auto;
+	width: 400px;
+}
+#login h2 {
+	background-color: #3C8DBC;
+	-webkit-border-radius: 20px 20px 0 0;
+	-moz-border-radius: 20px 20px 0 0;
+	border-radius: 20px 20px 0 0;
+	color: #fff;
+	font-size: 28px;
+	padding: 20px 26px;
+}
+#login h2 span[class*="fontawesome-"] {
+	margin-right: 14px;
+}
+#login fieldset {
+	background-color: #fff;
+	-webkit-border-radius: 0 0 20px 20px;
+	-moz-border-radius: 0 0 20px 20px;
+	border-radius: 0 0 20px 20px;
+	padding: 10px 26px;
+}
+#login fieldset p {
+	color: #777;
+	margin-bottom: 14px;
+}
+#login fieldset p:last-child {
+	margin-bottom: 0;
+}
+#login fieldset input {
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+#login fieldset input[type="username"], #login fieldset input[type="password"] {
+	background-color: #fff;
+	color: #777;
+	padding: 4px 10px;
+	width: 328px;
+}
+#login fieldset input[type="submit"] {
+	background-color: #3C8DBC;
+	color: #fff;
+	display: block;
+	margin: 0 auto;
+	padding: 4px 0;
+	width: 100px;
+}
+#login fieldset input[type="submit"]:hover {
+	background-color: #64a7ce;
+}
+.loginusername {
+	background-color: #fff;
+	color: #777;
+	padding: 4px 10px;
+	width: 328px;
+}
+/* ---------- END_LOGIN_BODY_DESIGN ---------- */

@@ -1,0 +1,92 @@
+DROP PROCEDURE IF EXISTS get_enggplus_details;
+-- DELIMITER $$
+CREATE PROCEDURE get_enggplus_details(IN `PERIOD` VARCHAR(5), IN `UNIT` INT)
+
+BEGIN
+	DECLARE ERROR_FLG INT DEFAULT 0;
+
+  SET SESSION group_concat_max_len = 1000000;
+
+
+	DROP TABLE IF EXISTS tmpTblEngPlusCurrPeriodTotal;
+
+	SET @sql = NULL;
+	SET @sqlTotal = NULL;
+
+	IF PERIOD IS NOT NULL THEN 
+		SELECT 
+			GROUP_CONCAT(
+				DISTINCT 
+				CONCAT(
+					'if (ap_ym = \'', ap_ym,'\' COLLATE utf8_unicode_ci, ROUND(amount/',UNIT,'), 0) ym', REPLACE(ap_ym, '/', '')
+				)
+				ORDER BY ap_ym DESC
+			),
+			GROUP_CONCAT(
+				DISTINCT 
+				CONCAT(
+					"SUM(if (ap_ym = '", ap_ym,"'  COLLATE utf8_unicode_ci, ROUND(amount/",UNIT,"), 0)) ym", REPLACE(ap_ym, '/', '')
+				)
+				ORDER BY ap_ym DESC
+			) INTO @sql, @sqlTotal
+		FROM v_kessan_account_period_list
+		WHERE account_period = PERIOD;
+
+		SET @sql = CONCAT(
+			'CREATE OR REPLACE VIEW v_engg_plus_current_period_list AS (
+				SELECT emp_id, ROUND(SUM(amount)/',UNIT,') cp_total, ', @sql, '
+				FROM v_engg_plus_list 
+				WHERE account_period = ', PERIOD, '
+				GROUP BY emp_id
+			);'
+		);
+		PREPARE stmt FROM @sql;
+		EXECUTE stmt;
+
+		SET @sqlTotal = CONCAT(
+			'CREATE OR REPLACE VIEW v_engg_plus_current_period_list_total AS (
+				SELECT NULL emp_id, ROUND(SUM(amount)/',UNIT,') cp_total, ', @sqlTotal, '
+				FROM v_engg_plus_list 
+				WHERE account_period = ', PERIOD, '
+			);'
+		);
+
+		PREPARE stmt FROM @sqlTotal;
+		EXECUTE stmt;
+	ELSE
+		SELECT 
+			GROUP_CONCAT(
+				DISTINCT 
+				CONCAT(
+					'SUM(if (account_period = ', account_period,', ROUND(amount/',UNIT,'), 0)) cp', account_period
+				)
+				ORDER BY account_period DESC
+			)INTO @sql
+		FROM v_kessan_account_period_list;
+
+		SET @sqlTotal = @sql;
+
+		SET @sql = CONCAT(
+			'CREATE OR REPLACE VIEW v_engg_plus_current_period_list AS (
+				SELECT emp_id, ROUND(SUM(amount)/',UNIT,') cp_total, ', @sql, '
+				FROM v_engg_plus_list
+				GROUP BY emp_id
+			);'
+		);
+
+		PREPARE stmt FROM @sql;
+		EXECUTE stmt;
+
+		SET @sqlTotal = CONCAT(
+			'CREATE OR REPLACE VIEW v_engg_plus_current_period_list_total AS (
+				SELECT NULL emp_id, ROUND(SUM(amount)/',UNIT,') cp_total, ', @sqlTotal, '
+				FROM v_engg_plus_list
+			);'
+		);
+
+		PREPARE stmt FROM @sqlTotal;
+		EXECUTE stmt;
+	END IF;
+END;
+-- END
+-- $$
