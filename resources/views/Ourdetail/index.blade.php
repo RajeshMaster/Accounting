@@ -47,17 +47,11 @@
 <article id="setting" class="DEC_flex_wrapper " data-category="setting setting_sub_2">
 
 	{{ Form::open(array('name'=>'frmourdetailindex', 'id'=>'frmourdetailindex', 'url' => 'Ourdetail/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),'files'=>true,'method' => 'POST')) }}
-
 		{{ Form::hidden('mainmenu', $request->mainmenu , array('id' => 'mainmenu')) }}
-
 		{{ Form::hidden('editflg', '', array('id' => 'editflg')) }}
-
 		{{ Form::hidden('id', '', array('id' => 'id')) }}
-
 		{{ Form::hidden('balid', '', array('id' => 'balid')) }}
-
 		{{ Form::hidden('editid', '' , array('id' => 'editid')) }}
-
 	<!-- Start Heading -->
 
 	<div class="row hline">

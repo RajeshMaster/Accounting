@@ -322,6 +322,7 @@
 				@endif
 			<!-- //Master Sub -->
 			@endif
+			
 			@if (isset($request->mainmenu) && ($request->mainmenu == "Customer" || $request->mainmenu == "Employee" || $request->mainmenu == "MeetingDetails"))
 			<!-- Customer Sub -->
 				@if(Session::get('userclassification') == 4)
@@ -351,7 +352,7 @@
 					<a href="{{ url('Ourdetail/index?mainmenu=Ourdetail&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_ourdetails') }}</a>
 				</div>
 			<!-- // Setting Sub -->
-			<?php }?>
+			<?php } ?>
 			</div>
 		</div>
 	<!-- end_sub_tab -->
