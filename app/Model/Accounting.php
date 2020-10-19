@@ -14,7 +14,7 @@ class Accounting extends Model {
 						->SELECT(DB::RAW("CONCAT(mstbank.Bank_NickName,'-',mstbank.AccNo) AS BANKNAME"),DB::RAW("CONCAT(mstbank.BankName,'-',mstbank.AccNo) AS ID"),'mstbank.id')
 						// ->leftJoin('mstbanks', 'mstbanks.id', '=', 'mstbank.BankName')
 						->orderBy('mstbank.id','ASC')
-						->lists('BANKNAME','ID');
+						->lists('BANKNAME','id');
 						// ->toSql();
 		return $query;
 	}
@@ -40,7 +40,7 @@ class Accounting extends Model {
 				'transcationType' => $request->transtype,
 				'bankIdFrom' => $request->bank,
 				'bankIdTo' => $request->transfer,
-				'amount' => $request->amount,
+				'amount' => preg_replace("/,/", "",$request->amount),
 				'fee' => $request->fee,
 				'content' => $request->content,
 				'remarks' => $request->remarks,
@@ -59,5 +59,19 @@ class Accounting extends Model {
 						->lists('Subject','id');
 		return $query;
 		
+	}
+	public static function fetchcashRegister() {
+
+		$db = DB::connection('mysql');
+		$query = $db->table('acc_cashRegister')
+						->SELECT('acc_cashRegister.*','mstbank.AccNo','mstbank.AccNo','mstbank.FirstName','mstbank.LastName','mstbank.BankName','mstbank.Bank_NickName')
+						->leftJoin('mstbank', 'mstbank.id', '=', 'acc_cashRegister.bankIdFrom')
+						->where('transcationType','!=',9)
+						->orderBy('bankIdFrom','ASC')
+						->orderBy('id','DESC')
+						->get();
+						// ->toSql();
+		return $query;
+
 	}
 }

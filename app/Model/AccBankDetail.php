@@ -64,7 +64,7 @@ class AccBankDetail extends Model {
 			'transcationType' => 9,
 			'bankIdFrom' => $request->bankid,
 			'bankIdTo' => $request->transfer,
-			'amount' => $request->txt_salary,
+			'amount' => preg_replace("/,/", "",$request->txt_salary),
 			'createdBy' => $name,
 			'UpdatedBy' => $name,
 			]);

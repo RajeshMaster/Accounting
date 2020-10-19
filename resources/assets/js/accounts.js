@@ -309,7 +309,7 @@ function fnGetbankDetails() {
 		data: {"bankacc": bank},
 		success: function(resp) {
 			for (i = 0; i < resp.length; i++) {
-				$('#transfer').append( '<option value="'+resp[i]["ID"]+'">'+resp[i]["BANKNAME"]+'</option>' );
+				$('#transfer').append( '<option value="'+resp[i]["id"]+'">'+resp[i]["BANKNAME"]+'</option>' );
 				// $('select[name="inchargeDetails"]').val(value);
 			}
 		},

@@ -34,8 +34,10 @@ class AccountingController extends Controller {
 	*
 	*/
 	public function index(Request $request) {
+		$cashDetails = Accounting::fetchcashRegister();
 
-		return view('Accounting.index',['request' => $request]);
+		return view('Accounting.index',['request' => $request,
+										'cashDetails' => $cashDetails]);
 	}
 
 	/**

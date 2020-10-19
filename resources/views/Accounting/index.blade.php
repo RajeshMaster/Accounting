@@ -176,9 +176,50 @@
 					<th class="vam">{{ trans('messages.lbl_copy') }}</th>
 				</tr>
 			</thead>
-
 			<tbody>
-				
+				@php 
+					$i =0 ;
+					$bankName ="";
+					$lastBankName ="";
+				@endphp
+				@forelse($cashDetails as $key => $data)
+				<!-- @php $bankName = $data->Bank_NickName @endphp-->
+					@if($lastBankName != $data->Bank_NickName)
+
+					<tr>
+						<td colspan="10" > {{ $data->Bank_NickName }} </td>
+					</tr>
+					@endif
+					<tr>
+						<td>{{ $i+1 }}</td>
+						<td>{{ $data->date }}</td>
+						<td></td>
+						<td>{{ $data->content }}</td>
+						<td>
+							@if($data->transcationType == 1)
+								{{ $data->amount  }}
+							@endif
+						</td>
+						<td>
+							@if($data->transcationType == 2)
+								{{ $data->amount  }}
+							@endif
+						</td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+
+					@php 
+						$lastBankName = $data->Bank_NickName;
+						$i++ ;
+					@endphp 
+				@empty
+					<tr>
+						<td class="text-center" colspan="10" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
+					</tr>
+				@endforelse
 				
 			</tbody>
 		</table>

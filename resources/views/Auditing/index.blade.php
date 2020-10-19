@@ -247,7 +247,7 @@
 
 							<td class="" align="center" >
 
-											{{ $data->totalval }}
+								<!-- {{ $data->totalval }} -->
 			   					<?php  $totalval += preg_replace('/,/', '', $data->totalval); ?>
 			   					{{--*/ $getTaxquery = Helpers::fnGetTaxDetails($data->quot_date); /*--}}
 							<?php 
@@ -295,10 +295,10 @@
 			   						}
 			   						?>
 			   					@if(!empty($data->totalval))
-			   					<div class="ml5 mb2 smallBlue">
+			   					<!-- <div class="ml5 mb2 smallBlue">
 			   					<?php echo "<span style='background-color:#136E83;color:white;'>"; ?> {{trans('messages.lbl_tax')}}<?php echo"</span>&nbsp;" . $dispval1;$dispval1 = ''; ?>
 			   					</div>
-			   					@endif
+			   					@endif -->
 			   					<div class="ml5 mb2 smallBlue" <?php echo $grand_style; ?>>
 			   						{{ number_format($grandtotal) }}
 			   					</div>
