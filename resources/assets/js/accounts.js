@@ -325,7 +325,7 @@ function getdate(page) {
 	if (page == "Cash") {
 		$('#date').val(dates);
 	} else if (page == "Transfer") {
-		$('#autoDebitDate').val(dates);
+		$('#transferDate').val(dates);
 	} else if (page == "AutoDebit") {
 		$('#autoDebitDate').val(dates);
 	} else {
