@@ -517,3 +517,32 @@ Route::group(['prefix'=>'salarycalc','middleware' => 'auth'], function() {
     Route::any('dataReg', 'SalarycalcController@dataReg');
     Route::get('getlastmonthdet', 'SalarycalcController@getlastmonthdet');
 });
+
+//Staff -> Salary Calculation Plus
+Route::group(['prefix'=>'salarycalcplus','middleware' => 'auth'], function() {
+    Route::get('changelanguage', 'AjaxController@index');
+    Route::any('index', 'SalarycalcplusController@index');
+    Route::any('view', 'SalarycalcplusController@view');
+    Route::any('edit', 'SalarycalcplusController@edit');
+    Route::any('addedit', 'SalarycalcplusController@addedit');
+    Route::any('addeditprocess', 'SalarycalcplusController@addeditprocess');
+    Route::any('multieditprocess', 'SalarycalcplusController@multieditprocess');
+    Route::any('multiregister', 'SalarycalcplusController@multiregister');
+    Route::any('salarypopup', 'SalarycalcplusController@salarypopup');
+    Route::any('empselectprocess', 'SalarycalcplusController@empselectprocess');
+    Route::any('mailsendprocess', 'SalarycalcplusController@mailsendprocess');
+    Route::any('history', 'SalarycalcplusController@history');
+    Route::any('getdataExists', 'SalarycalcplusController@getdataExists');
+    Route::any('dataReg', 'SalarycalcplusController@dataReg');
+    Route::get('getsalamount', 'SalarycalcplusController@getajaxtotamt');
+    Route::get('getlastmonthdet', 'SalarycalcplusController@getlastmonthdet');
+    Route::any('salarydownloadprocess', 'SalarycalcplusController@salarydownloadprocess');
+    Route::any('transferdetailsdownload', 'SalarycalcplusController@transferdetailsdownload');
+    Route::any('salaryplusdownload', 'SalarycalcplusController@salaryplusdownload');
+    Route::any('salaryplusPayrollSingleDownload', 'SalarycalcplusController@salaryplusPayrollSingleDownload');
+    Route::any('gensenDownload', 'SalarycalcplusController@gensenDownload');
+    Route::any('getTransferedAmount', 'SalarycalcplusController@getTransferedAmount');
+    // Start Madasamy Code 22/05/20
+    Route::any('historyTotal', 'SalarycalcplusController@historyTotal');
+    // End Madasamy Code 22/05/20
+});

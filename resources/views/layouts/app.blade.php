@@ -363,13 +363,13 @@
 				</div>
 			@endif
 
-			@if(isset($request->mainmenu) && ($request->mainmenu == "Auditing" || $request->mainmenu == "salarycalc"))
+			@if(isset($request->mainmenu) && ($request->mainmenu == "Auditing" || $request->mainmenu == "salarycalcplus"))
 				<div id="auditing_sub_1">
 					<a href="{{ url('Auditing/index?mainmenu=Auditing&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_invoice') }}</a>
 				</div>
 
 				<div id="auditing_sub_2">
-					<a href="{{ url('salarycalc/index?mainmenu=salarycalc&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_salary_det') }}</a>
+					<a href="{{ url('salarycalcplus/index?mainmenu=salarycalcplus&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_salary_det') }}</a>
 				</div>
 			@endif
 

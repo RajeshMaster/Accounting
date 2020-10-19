@@ -207,13 +207,6 @@
 					</a>
 				</div>
 
-			<!-- 	<div class="alinkEng ml20 mt5">
-					<a class="pageload csrp btn-link" 
-					href="{{ url('Salaryplus/index?mainmenu=salaryplus&time='.date('Ymdhis')) }}" 
-					style="color:blue;font-size: 13px;">
-						{{ trans('messages.lbl_salaryplus') }}
-					</a>
-				</div> -->
 				<!-- Tax Details Created by kumaran.L 2018-03-27 -->
 				<div class="alinkEng ml20 mt5">
 					<a class="pageload csrp btn-link" 
@@ -312,7 +305,7 @@
 					</a>
 				</div>
 				<div class="alinkEng ml20 mt5 tal">
-					<a class="pageload csrp btn-link" href="{{ url('salarycalc/index?mainmenu=salarycalc&time='.date('Ymdhis')) }}" style="color:blue;font-size: 13px;">
+				<a class="pageload csrp btn-link" href="{{ url('salarycalcplus/index?mainmenu=salarycalcplus&time='.date('Ymdhis')) }}" style="color:blue;font-size: 13px;">
 						{{ trans('messages.lbl_salary_det') }}
 					</a>
 				</div>
