@@ -146,7 +146,7 @@
 			@php Session::forget('success'); @endphp
 			<!-- Session msg -->
 		<div class="col-xs-6 ml10 pm0 pull-left mt10">
-			<a href="javascript:addedit('add','');" class="btn btn-success box100"><span class="fa fa-plus"></span> {{ trans('messages.lbl_register') }}</a>
+			<a href="javascript:addedit('index');" class="btn btn-success box100"><span class="fa fa-plus"></span> {{ trans('messages.lbl_register') }}</a>
 		</div>
 	</div>
 

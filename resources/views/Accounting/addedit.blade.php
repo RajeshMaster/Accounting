@@ -51,13 +51,16 @@
 			</h2>
 		</div>
 </div>
-<div class="col-xs-12 pt10">
+	<div class="col-xs-12 pt10">
 			<div class="col-xs-6" style="text-align: left;margin-left: -15px;">
-				<a href="#" class="btn btn-success box20per disabled"><span class="fa fa-plus"></span> {{ trans('messages.lbl_cash') }}</a>
+				<a href="#" class="btn btn-success box20per disabled">
+					<span class="fa fa-plus"></span> {{ trans('messages.lbl_cash') }}</a>
 
-				<a href="javascript:gototransferadd('{{ $request->mainmenu }}');" class="btn btn-success box25per"><span class="fa fa-plus"></span>{{ trans('messages.lbl_transfer') }}</a>
+				<a href="javascript:addedit('cashTransfer');" class="btn btn-success box25per">
+					<span class="fa fa-plus"></span>{{ trans('messages.lbl_transfer') }}</a>
 
-				<a href="javascript:gotoautodebitadd('{{ $request->mainmenu }}');" class="btn btn-success box25per"><span class="fa fa-plus"></span>{{ trans('messages.lbl_autodebit') }}</a>
+				<a href="javascript:addedit('cashAutoDebit');" class="btn btn-success box25per">
+					<span class="fa fa-plus"></span>{{ trans('messages.lbl_autodebit') }}</a>
 			</div>
 		</div>
 <div class="col-xs-12 pl5 pr5" ondragstart="return false;" ondrop="return false;">
