@@ -78,13 +78,16 @@ class AccountingController extends Controller {
 	* Created At 2020/10/19
 	*
 	*/
-	// public function addedit(Request $request) {
+	public function autoDebitReg(Request $request) {
 
-	// 	$bankDetail = Accounting::fetchbanknames();
+		$bankDetail = Accounting::fetchbanknames();
+		$mainExpDetail = Accounting::getMainExpName();
 
-	// 	return view('Accounting.addedit',['request' => $request,
-	// 										'bankDetail' => $bankDetail]);
-	// }
+		return view('Accounting.autoDebitReg',['request' => $request,
+												'bankDetail' => $bankDetail,
+												'mainExpDetail' => $mainExpDetail]);
+		
+	}
 
 
 	public function addeditprocess(Request $request) {

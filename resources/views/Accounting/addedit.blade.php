@@ -56,11 +56,14 @@
 				<a href="#" class="btn btn-success box20per disabled">
 					<span class="fa fa-plus"></span> {{ trans('messages.lbl_cash') }}</a>
 
-				<a href="javascript:addedit('cashTransfer');" class="btn btn-success box25per">
+				<a href="javascript:addedit('cashTransfer','{{ $request->mainmenu }}');" 
+					class="btn btn-success box25per">
 					<span class="fa fa-plus"></span>{{ trans('messages.lbl_transfer') }}</a>
 
-				<a href="javascript:addedit('cashAutoDebit');" class="btn btn-success box25per">
+				<a href="javascript:addedit('cashAutoDebit','{{ $request->mainmenu }}');"
+					class="btn btn-success box25per">
 					<span class="fa fa-plus"></span>{{ trans('messages.lbl_autodebit') }}</a>
+
 			</div>
 		</div>
 <div class="col-xs-12 pl5 pr5" ondragstart="return false;" ondrop="return false;">
@@ -223,14 +226,21 @@
 				<button type="submit" class="btn btn-success add box100 addeditprocess ml5">
 					<i class="fa fa-plus" aria-hidden="true"></i> {{ trans('messages.lbl_register') }}
 				</button>
-			
-				<a onclick="javascript:gotoindex('index','{{$request->mainmenu}}');" class="btn btn-danger box120 white"><i class="fa fa-times" aria-hidden="true"></i> {{trans('messages.lbl_cancel')}}
+				<a href = "javascript:gotoindexpage('Cash','{{$request->mainmenu}}');" 
+					class="btn btn-danger box120 white"><i class="fa fa-times" aria-hidden="true"></i> {{ trans('messages.lbl_cancel') }}
 				</a>
 			</div>
 		</div>
 	</fieldset>
 </div>
 {{ Form::close() }}
+{{ Form::open(array('name'=>'addeditcancel', 'id'=>'addeditcancel', 
+						'url' => 'Accounting/addeditprocess?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
+						'files'=>true,'method' => 'POST')) }}
+
+		{{ Form::hidden('mainmenu', $request->mainmenu , array('id' => 'mainmenu')) }}
+
+	{{ Form::close() }}
 
 </article>
 </div>

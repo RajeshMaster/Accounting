@@ -54,10 +54,10 @@
 
 		<div class="col-xs-12 pt10">
 			<div class="col-xs-6" style="text-align: left;margin-left: -15px;">
-				<a href="javascript:addedit('autoDebitCash');" 
+				<a href="javascript:addedit('autoDebitCash','{{ $request->mainmenu }}');" 
 					class="btn btn-success box20per"><span class="ml5 fa fa-plus"></span> 
 					{{ trans('messages.lbl_cash') }}</a>
-				<a href="javascript:addedit('autoDebitTransfer');" 
+				<a href="javascript:addedit('autoDebitTransfer','{{ $request->mainmenu }}');" 
 					class="btn btn-success box25per"><span class="ml5 fa fa-plus"></span>
 					{{ trans('messages.lbl_transfer') }}</a>
 				<a href="#" 
@@ -199,7 +199,8 @@
 						<i class="fa fa-plus" aria-hidden="true"></i> {{ trans('messages.lbl_register') }}
 					</button>
 				
-					<a onclick="javascript:gotoindex('index','{{$request->mainmenu}}');" class="btn btn-danger box120 white"><i class="fa fa-times" aria-hidden="true"></i> {{trans('messages.lbl_cancel')}}
+					<a href = "javascript:gotoindexpage('AutoDebit','{{ $request->mainmenu }}');" 
+						class="btn btn-danger box120 white"><i class="fa fa-times" aria-hidden="true"></i> {{trans('messages.lbl_cancel')}}
 					</a>
 				</div>
 			</div>
@@ -207,6 +208,14 @@
 		</fieldset>
 
 		</div>
+
+	{{ Form::close() }}
+
+	{{ Form::open(array('name'=>'AutoDebitRegcancel', 'id'=>'AutoDebitRegcancel', 
+						'url' => 'Accounting/AutoDebitRegprocess?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
+						'files'=>true,'method' => 'POST')) }}
+
+		{{ Form::hidden('mainmenu', $request->mainmenu , array('id' => 'mainmenu')) }}
 
 	{{ Form::close() }}
 
