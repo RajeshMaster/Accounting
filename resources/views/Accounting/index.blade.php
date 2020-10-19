@@ -215,8 +215,8 @@
 							<td class="text-center">
 								{{ ($TotEstquery->currentpage()-1) * $TotEstquery->perpage() + $i + 1 }}
 							</td>
-							<td class="tal pr10 vat pt5">
-								<div class="text-center">
+							<td class="tal pr10 vam pt5">
+								<div class="text-center vam">
 									<label class="pm0 vam" style="color:#136E83;">
 										{{ $data->user_id }}
 									</label>
@@ -402,7 +402,7 @@
 						</tr>
 					@endforelse
 					@if(count($TotEstquery) != 0)
-						<tr>
+						<tr style="background-color: #bfbbbb;">
 							<td colspan="6" align="left">
 								Total
 							</td>
