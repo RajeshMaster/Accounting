@@ -1190,11 +1190,14 @@ return [
 	'lbl_accounting' => 'Accounting',
 	'lbl_paidamt' => 'Paid Amount',
 
-	/* Additing  */
+	/* Auditing  */
 	'lbl_auditing' => 'Auditing',
 	'lbl_autodebit' => 'Auto Debit',
 	'lbl_income' => 'Income',
-	'lbl_fee' => 'fee',
+	'lbl_fee' => 'Fee',
+	'lbl_getsalary' => 'Get Salary Details',
+	'lbl_getloan' => 'Get Loan Details',
+	'lbl_notneed' => 'Not Needed',
 	
 	/* Salary Calc */
 	'lbl_amt_dif' => 'Amt Diff',

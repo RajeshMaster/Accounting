@@ -148,7 +148,8 @@
 				</label>
 
 				<label style="font-weight: normal;">
-					{{ Form::radio('transtype', '4', (isset($expcash_sql[0]->transaction_flg) && ($expcash_sql[0]->transaction_flg)=="3") ? $expcash_sql[0]->transaction_flg : '', array('id' =>'transtype3',
+					{{ Form::radio('transtype', '4', (isset($expcash_sql[0]->transaction_flg) && ($expcash_sql[0]->transaction_flg)=="3") ? $expcash_sql[0]->transaction_flg : '', 
+								array('id' =>'transtype3',
 																'name' => 'transtype',
 																$disableRadio,
 																'style' => 'margin-bottom:5px;',
@@ -165,7 +166,8 @@
 				<label>{{ trans('messages.lbl_content') }}<span class="fr ml2 red" style="visibility: hidden"> * </span></label>
 			</div>
 			<div class="col-xs-9">
-				{{ Form::text('content',(isset($expcash_sql[0]->content)) ? $expcash_sql[0]->content : '',array('id'=>'content', 
+				{{ Form::text('content',(isset($expcash_sql[0]->content)) ? $expcash_sql[0]->content : '',
+									array('id'=>'content', 
 															'name' => 'content',
 															'data-label' => trans('messages.lbl_content'),
 															'class'=>'box31per form-control pl5')) }}

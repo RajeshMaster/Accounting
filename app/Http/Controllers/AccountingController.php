@@ -66,19 +66,123 @@ class AccountingController extends Controller {
 	*
 	*/
 	public function bank_ajax(Request $request) {
+
 		$bankacc = $request->bankacc;
 		$getbankDtl = Accounting::fnGetbankName($bankacc);
 		$bankarray = json_encode($getbankDtl);
 		echo $bankarray;
 		exit();
+
 	}
 
+	/**
+	*
+	* Addedit Process for Cash
+	* @author Sarath
+	* @return object to particular view page
+	* Created At 2020/10/19
+	*
+	*/
 	public function addeditprocess(Request $request) {
 
-		$insertProcess = Accounting::fninsert($request);
-		print_r($insertProcess);exit;
+		$insertProcess = Accounting::insCashDtls($request);
+		if($insertProcess) {
+			Session::flash('success', 'Inserted Sucessfully!'); 
+			Session::flash('type', 'alert-success'); 
+		} else {
+			Session::flash('type', 'Inserted Unsucessfully!'); 
+			Session::flash('type', 'alert-danger'); 
+		}
+		return Redirect::to('Accounting/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 
-		print_r($request->all());exit;
+	}
+
+	/**
+	*
+	* Addedit Page for Transfer
+	* @author Sarath
+	* @return object to particular view page
+	* Created At 2020/10/19
+	*
+	*/
+	public function transferaddedit(Request $request) {
+
+		$bankDetail = Accounting::fetchbanknames();
+		$mainExpDetail = Accounting::getMainExpName();
+
+		return view('Accounting.transferaddedit',[ 'request' => $request,
+													'mainExpDetail' => $mainExpDetail,
+													'bankDetail' => $bankDetail
+												]);
+	}
+
+	/**
+	*
+	* Emp Name Popup Page for Transfer
+	* @author Sarath
+	* @return object to particular view page
+	* Created At 2020/10/19
+	*
+	*/
+	public function empnamepopup(Request $request) {
+
+		$empname = Accounting::fnGetEmpDetails($request);
+		$empnamenonstaff = Accounting::fnGetNonstaffEmpDetails($request);
+
+		return view('Invoice.empnamepopup',['request' => $request,
+											'empname' => $empname,
+											'empnamenonstaff' => $empnamenonstaff
+										]);
+	}
+
+	/**
+	*
+	* Addedit Process for Transfer
+	* @author Sarath
+	* @return object to particular view page
+	* Created At 2020/10/19
+	*
+	*/
+	public function tranferaddeditprocess(Request $request) {
+
+		$autoincId = Accounting::getautoincrement();
+		$Transferno = "Transfer_".$autoincId;
+		$fileName = "";
+		$fileid = "transferBill";
+		if($request->$fileid != "") {
+			$extension = Input::file($fileid)->getClientOriginalExtension();
+			$fileName = $Transferno.'.'.$extension;
+			$file = $request->$fileid;
+			$destinationPath = '../AccountingUpload/Accounting';
+			if(!is_dir($destinationPath)) {
+				mkdir($destinationPath, 0777,true);
+			}
+			$file->move($destinationPath,$fileName);
+		} else {
+			$fileName = ""; 
+		}
+		$insertProcess = Accounting::insTransferDtls($request,$fileName);
+		if($insertProcess) {
+			Session::flash('success', 'Inserted Sucessfully!'); 
+			Session::flash('type', 'alert-success'); 
+		} else {
+			Session::flash('type', 'Inserted Unsucessfully!'); 
+			Session::flash('type', 'alert-danger'); 
+		}
+		return Redirect::to('Accounting/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
+	}
+
+	/**
+	*
+	* Salary Details Popup Page for Transfer
+	* @author Sarath
+	* @return object to particular view page
+	* Created At 2020/10/19
+	*
+	*/
+	public function getsalarypopup(Request $request) {
+
+		return view('Accounting.salarydetailspopup',['request' => $request]);
 	}
 
 	/**
@@ -103,78 +207,53 @@ class AccountingController extends Controller {
 
 	/**
 	*
-	* Addedit Page for Transfer
+	* Addedit Process for Auto Debit
 	* @author Sarath
 	* @return object to particular view page
 	* Created At 2020/10/19
 	*
 	*/
-	public function transferaddedit(Request $request) {
+	public function AutoDebitRegprocess(Request $request) {
 
-		$bankDetail = Accounting::fetchbanknames();
-		$mainExpDetail = Accounting::getMainExpName();
-
-		return view('Accounting.transferaddedit',[ 'request' => $request,
-													'mainExpDetail' => $mainExpDetail,
-													'bankDetail' => $bankDetail
-												]);
-	}
-
-	/**
-	*
-	* Addedit Page for Transfer
-	* @author Sarath
-	* @return object to particular view page
-	* Created At 2020/10/19
-	*
-	*/
-	public function empnamepopup(Request $request) {
-
-		$empname = Accounting::fnGetEmpDetails($request);
-		$empnamenonstaff = Accounting::fnGetNonstaffEmpDetails($request);
-
-		return view('Invoice.empnamepopup',['request' => $request,
-											'empname' => $empname,
-											'empnamenonstaff' => $empnamenonstaff,
-										]);
-	}
-
-	/**
-	*
-	* Addedit Page for Transfer
-	* @author Sarath
-	* @return object to particular view page
-	* Created At 2020/10/19
-	*
-	*/
-	public function tranferaddeditprocess(Request $request) {
-
-		$Loanno = "Expenses_".date('YmdHis');
-		$fileid = "file1";
-			$filename="";
-			if($request->$fileid != "") {
-				$extension = Input::file($fileid)->getClientOriginalExtension();
-				$filename=$Loanno.'.'.$extension;
-				$file = $request->$fileid;
-				$destinationPath = '../InvoiceUpload/Expenses';
-				if(!is_dir($destinationPath)) {
-					mkdir($destinationPath, true);
-				}
-				chmod($destinationPath, 0777);
-				$file->move($destinationPath,$filename);
-				chmod($destinationPath."/".$filename, 0777);
-			} else {
-				$filename = $request->pdffiles; 
+		$autoincId = Accounting::getautoincrement();
+		$Transferno = "AutoDebit_".$autoincId;
+		$fileName = "";
+		$fileid = "autoDebitBill";
+		if($request->$fileid != "") {
+			$extension = Input::file($fileid)->getClientOriginalExtension();
+			$fileName = $Transferno.'.'.$extension;
+			$file = $request->$fileid;
+			$destinationPath = '../AccountingUpload/Accounting';
+			if(!is_dir($destinationPath)) {
+				mkdir($destinationPath, 0777,true);
 			}
-			$insert = Accounting::inserttransferdetails($request,$filename);
-			if($insert) {
-				Session::flash('success', 'Inserted Sucessfully!'); 
-				Session::flash('type', 'alert-success'); 
-			} else {
-				Session::flash('type', 'Inserted Unsucessfully!'); 
-				Session::flash('type', 'alert-danger'); 
-			}
+			$file->move($destinationPath,$fileName);
+		} else {
+			$fileName = ""; 
+		}
+		$insertProcess = Accounting::insAutoDebitDtls($request,$fileName);
+		if($insertProcess) {
+			Session::flash('success', 'Inserted Sucessfully!'); 
+			Session::flash('type', 'alert-success'); 
+		} else {
+			Session::flash('type', 'Inserted Unsucessfully!'); 
+			Session::flash('type', 'alert-danger'); 
+		}
 		return Redirect::to('Accounting/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 	}
+
+	/**
+	*
+	* Loan Details Popup Page for AutoDebit
+	* @author Sarath
+	* @return object to particular view page
+	* Created At 2020/10/19
+	*
+	*/
+	public function getloanpopup(Request $request) {
+
+		return view('Accounting.loandetailspopup',['request' => $request]);
+	}
+
 
 }

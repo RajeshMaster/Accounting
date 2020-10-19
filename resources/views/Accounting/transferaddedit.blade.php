@@ -110,9 +110,11 @@
 
 			<div class="col-xs-12 mt5">
 				<div class="col-xs-3 text-right clr_blue">
-					<label>{{ trans('messages.lbl_empName') }}<span class="fr ml2 red" style="visibility: hidden"> * </span></label>
+					<label>{{ trans('messages.lbl_empName') }}<span class="fr ml2 red" 
+						style="visibility: hidden"> * </span></label>
 				</div>
 				<div class="col-xs-9">
+					{{ Form::hidden('empid', '', array('id' => 'empid')) }}
 					{{ Form::text('txt_empname',null,
 							array('id'=>'txt_empname', 
 									'name' => 'txt_empname',
@@ -165,7 +167,7 @@
 									'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
 									'data-label' => trans('messages.lbl_amount'))) }}
 					<span class=" ml7 black" style=" font-weight: bold;font-size: 17px;"> / </span>
-					{{ Form::text('transferFee',(isset($expcash_sql[0]->charge_1)) ? number_format($expcash_sql[0]->fee) : 0,
+					{{ Form::text('transferFee',(isset($expcash_sql[0]->transferFee)) ? number_format($expcash_sql[0]->fee) : 0,
 								array('id'=>'transferFee',
 									'name' => 'transferFee',
 									'maxlength' => '14',
@@ -179,7 +181,7 @@
 									'data-label' => trans('messages.lbl_fee'))) }}
 				</div>
 			</div>
-		
+			
 			<div class="col-xs-12 mt5">
 				<div class="col-xs-3 text-right clr_blue">
 					<label>{{ trans('messages.lbl_bill') }}<span class="fr ml2 red"> &nbsp;&nbsp; </span></label>
@@ -200,7 +202,8 @@
 					<label>{{ trans('messages.lbl_remarks') }}<span class="fr ml2 red"> &nbsp;&nbsp; </span></label>
 				</div>
 				<div class="col-xs-9">
-					{{ Form::textarea('remarks',null,array('id'=>'transFerRemarks', 
+					{{ Form::textarea('transFerRemarks',null,
+									array('id'=>'transFerRemarks', 
 												'name' => 'transFerRemarks',
 												'class' => 'box45per',
 												'style'=>'text-align:left;padding-left:4px;',
@@ -214,10 +217,17 @@
 
 			<div class="form-group">
 				<div align="center" class="mt5">
+					<button type="button" class=" btn btn add box160" 
+						onclick="return Getsalarypopup();" 
+						style="margin-left: -10%!important;background-color: purple; color: #fff;">
+						{{ trans('messages.lbl_getsalary') }}
+					</button>&nbsp;&nbsp;&nbsp;
+
 					<button type="submit" class="btn btn-success add box100 ml5 tranferaddeditprocess">
 						<i class="fa fa-plus" aria-hidden="true"></i> 
 						{{ trans('messages.lbl_register') }}
-					</button>
+					</button>&nbsp;
+
 					<a href="javascript:gotoindexpage('Transfer','{{ $request->mainmenu }}');" 
 						class="btn btn-danger box120 white">
 						<i class="fa fa-times" aria-hidden="true"></i> {{trans('messages.lbl_cancel')}}
@@ -239,6 +249,14 @@
 	{{ Form::close() }}
 
 	<div id="empnamepopup" class="modal fade">
+		<div id="login-overlay">
+			<div class="modal-content">
+				<!-- Popup will be loaded here -->
+			</div>
+		</div>
+	</div>
+
+	<div id="getsalarypopup" class="modal fade">
 		<div id="login-overlay">
 			<div class="modal-content">
 				<!-- Popup will be loaded here -->

@@ -31,22 +31,32 @@ class Accounting extends Model {
 		return $query;
 	}
 
-	public static function fninsert($request) {
+	public static function getautoincrement() {
+
+		$statement = DB::select("show table status like 'acc_cashregister'");
+		return $statement[0]->Auto_increment;
+
+	}
+
+	public static function insCashDtls($request) {
+
 		$name = Session::get('FirstName').' '.Session::get('LastName');
+
 		$db = DB::connection('mysql');
-		$insert=$db->table('acc_cashRegister')->insert([
-				'emp_ID' => "",
-				'date' => $request->date,
-				'transcationType' => $request->transtype,
-				'bankIdFrom' => $request->bank,
-				'bankIdTo' => $request->transfer,
-				'amount' => preg_replace("/,/", "",$request->amount),
-				'fee' => $request->fee,
-				'content' => $request->content,
-				'remarks' => $request->remarks,
-				'createdBy' => $name,
-				'UpdatedBy' => $name,
-				]);
+
+		$insert = $db->table('acc_cashRegister')
+					->insert([
+							'emp_ID' => "",
+							'date' => $request->date,
+							'transcationType' => $request->transtype,
+							'bankIdFrom' => $request->bank,
+							'bankIdTo' => $request->transfer,
+							'amount' => preg_replace("/,/", "", $request->amount),
+							'fee' => preg_replace("/,/", "", $request->fee),
+							'content' => $request->content,
+							'remarks' => $request->remarks,
+							'createdBy' => $name,
+						]);
 		return $insert;
 	}
 
@@ -61,31 +71,49 @@ class Accounting extends Model {
 		
 	}
 
-	public static function inserttransferdetails($request,$filename) {
+	public static function insTransferDtls($request,$fileName) {
 
 		$name = Session::get('FirstName').' '.Session::get('LastName');
-		$amount = str_replace(",", "", $request->amount_1);
-		$charge = str_replace(",", "", $request->charge_1);
-		$bank = explode("-", $request->bank);
 
 		$db = DB::connection('mysql');
-		$insert = DB::table('acc_cashregister')
-			->insert([
-					'emp_ID' => $request->empid, 
-					'date' => $request->date,
-					'transcationType' => 3,
-					'bankIdFrom' => $bank[0],
-					'bankIdTo' => '',
-					'amount' => $amount,
-					'fee' => $charge,
-					'content' => $request->content,
-					'subjectId' => $request->mainsubject,
-					'remarks' => $request->Remarks,
-					'fileDtl' => $filename,
-					'createdBy' => $name,
-					'updatedBy' => $name,
-					'delFlg' => 0
-				]);
+
+		$insert = $db->table('acc_cashRegister')
+					->insert([
+							'emp_ID' => $request->empid, 
+							'date' => $request->transferDate,
+							'transcationType' => 1,
+							'bankIdFrom' => $request->transferBank,
+							'amount' => preg_replace("/,/", "", $request->transferAmount),
+							'fee' => preg_replace("/,/", "", $request->transferFee),
+							'content' => $request->transferContent,
+							'subjectId' => $request->transferMainExp,
+							'remarks' => $request->transFerRemarks,
+							'fileDtl' => $fileName,
+							'createdBy' => $name,
+						]);
+
+		return $insert;
+	}
+
+	public static function insAutoDebitDtls($request,$fileName) {
+
+		$name = Session::get('FirstName').' '.Session::get('LastName');
+
+		$db = DB::connection('mysql');
+
+		$insert = $db->table('acc_cashRegister')
+					->insert([
+							'date' => $request->autoDebitDate,
+							'transcationType' => 1,
+							'bankIdFrom' => $request->autoDebitBank,
+							'amount' => preg_replace("/,/", "", $request->autoDebitAmount),
+							'fee' => preg_replace("/,/", "", $request->autoDebitFee),
+							'content' => $request->autoDebitContent,
+							'subjectId' => $request->autoDebitMainExp,
+							'remarks' => $request->autoDebitRemarks,
+							'fileDtl' => $fileName,
+							'createdBy' => $name,
+						]);
 
 		return $insert;
 	}

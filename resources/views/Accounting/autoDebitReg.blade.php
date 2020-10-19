@@ -168,7 +168,8 @@
 		
 			<div class="col-xs-12 mt5">
 				<div class="col-xs-3 text-right clr_blue">
-					<label>{{ trans('messages.lbl_bill') }}<span class="fr ml2 red"> &nbsp;&nbsp; </span></label>
+					<label>{{ trans('messages.lbl_bill') }}
+						<span class="fr ml2 red"> &nbsp;&nbsp; </span></label>
 				</div>
 				<div class="col-xs-9">
 					{{ Form::file('autoDebitBill',array('class' => 'pull-left box350',
@@ -185,7 +186,9 @@
 					<label>{{ trans('messages.lbl_remarks') }}<span class="fr ml2 red" style="visibility: hidden;"> * </span></label>
 				</div>
 				<div class="col-xs-9">
-					{{ Form::textarea('remarks',(isset($expcash_sql[0]->remark_dtl)) ? $expcash_sql[0]->remark_dtl : '', array('name' => 'remarks',
+					{{ Form::textarea('autoDebitRemarks',(isset($expcash_sql[0]->remark_dtl)) ? $expcash_sql[0]->remark_dtl : '', 
+									array('name' => 'autoDebitRemarks',
+											'id'=>'autoDebitRemarks', 
 											'class' => 'box40per form-control',
 											'size' => '30x4')) }}
 				</div>
@@ -197,13 +200,20 @@
 
 			<div class="form-group">
 				<div align="center" class="mt5">
+					<button type="button" class=" btn btn add box160" 
+						onclick="return Getloanpopup();" 
+						style="margin-left: -10%!important;background-color: purple; color: #fff;">
+						{{ trans('messages.lbl_getloan') }}
+					</button>&nbsp;&nbsp;&nbsp;
+
 					<button type="submit" class="btn btn-success add box100 AutoDebitRegprocess ml5">
 						<i class="fa fa-plus" aria-hidden="true"></i> {{ trans('messages.lbl_register') }}
-					</button>
+					</button>&nbsp;
 				
 					<a href = "javascript:gotoindexpage('AutoDebit','{{ $request->mainmenu }}');" 
 						class="btn btn-danger box120 white"><i class="fa fa-times" aria-hidden="true"></i> {{trans('messages.lbl_cancel')}}
 					</a>
+
 				</div>
 			</div>
 
@@ -220,6 +230,14 @@
 		{{ Form::hidden('mainmenu', $request->mainmenu , array('id' => 'mainmenu')) }}
 
 	{{ Form::close() }}
+
+	<div id="getloanpopup" class="modal fade">
+		<div id="login-overlay">
+			<div class="modal-content">
+				<!-- Popup will be loaded here -->
+			</div>
+		</div>
+	</div>
 
 </article>
 </div>

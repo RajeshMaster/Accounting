@@ -74,6 +74,7 @@ $(document).ready(function() {
 				transferBank: {required: true},
 				transferAmount: {requiredWithZero: true},
 				transferFee: {requiredWithZero: true},
+				// transferBill : {extension: "jpg,jpeg,png,JPG,JPEG,PNG", filesize : (2  1024  1024)},
 			},
 			submitHandler: function(form) { // for demo
 				if($('#editflg').val() == "edit") {
@@ -125,6 +126,7 @@ $(document).ready(function() {
 				autoDebitMainExp: {required: true},
 				autoDebitAmount: {requiredWithZero: true},
 				autoDebitFee: {requiredWithZero: true},
+				// autoDebitBill : {extension: "jpg,jpeg,png,JPG,JPEG,PNG", filesize : (2  1024  1024)},
 			},
 			submitHandler: function(form) { // for demo
 				if($('#editflg').val() == "edit") {
@@ -400,3 +402,26 @@ function gotoindexpage(page,mainmenu) {
 		}
 	}
 }
+
+function Getsalarypopup() {
+	var mainmenu = $('#mainmenu').val();
+	popupopenclose(1);
+	$('#getsalarypopup').load('../Accounting/getsalarypopup?mainmenu='+mainmenu+'&time='+datetime);
+	$("#getsalarypopup").modal({
+		backdrop: 'static',
+		keyboard: false
+		});
+	$('#getsalarypopup').modal('show');
+}
+
+function Getloanpopup() {
+	var mainmenu = $('#mainmenu').val();
+	popupopenclose(1);
+	$('#getloanpopup').load('../Accounting/getloanpopup?mainmenu='+mainmenu+'&time='+datetime);
+	$("#getloanpopup").modal({
+		backdrop: 'static',
+		keyboard: false
+		});
+	$('#getloanpopup').modal('show');
+}
+
