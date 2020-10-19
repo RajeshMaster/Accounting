@@ -49,4 +49,15 @@ class Accounting extends Model {
 				]);
 		return $insert;
 	}
+
+	public static function getMainExpName() {
+
+		$db = DB::connection('mysql');
+		$query = $db->TABLE('dev_expensesetting')
+						->SELECT('id','Subject','Subject_jp')
+						->orderBy('id','ASC')
+						->lists('Subject','id');
+		return $query;
+		
+	}
 }

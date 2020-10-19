@@ -33,25 +33,25 @@ class AccountingController extends Controller {
 	* Created At 2020/10/19
 	*
 	*/
-	function index(Request $request) {
+	public function index(Request $request) {
 
-		return view('Accounting.index',[
-									'request' => $request]);
+		return view('Accounting.index',['request' => $request]);
 	}
 
 	/**
 	*
-	* view Addedit Page for Register
+	* Addedit Page for Cash
 	* @author Rajesh
 	* @return object to particular view page
 	* Created At 2020/10/19
 	*
 	*/
-	function addedit(Request $request) {
+	public function addedit(Request $request) {
+
 		$bankDetail = Accounting::fetchbanknames();
-		return view('Accounting.addedit',[
-									'request' => $request,
-									'bankDetail' => $bankDetail]);
+
+		return view('Accounting.addedit',['request' => $request,
+											'bankDetail' => $bankDetail]);
 	}
 
 	/**
@@ -70,10 +70,27 @@ class AccountingController extends Controller {
 		exit();
 	}
 
-	function addeditprocess(Request $request) {
+	/**
+	*
+	* Addedit Page for AutoDebit
+	* @author Sastha
+	* @return object to particular view page
+	* Created At 2020/10/19
+	*
+	*/
+	public function addedit(Request $request) {
+
+		$bankDetail = Accounting::fetchbanknames();
+
+		return view('Accounting.addedit',['request' => $request,
+											'bankDetail' => $bankDetail]);
+	}
+
+
+	public function addeditprocess(Request $request) {
 
 		$insertProcess = Accounting::fninsert($request);
-print_r($insertProcess);exit;
+		print_r($insertProcess);exit;
 
 		print_r($request->all());exit;
 	}

@@ -1,23 +1,7 @@
 $(document).ready(function() {
 
 	// initialize tooltipster on text input elements
-
 	// initialize validate plugin on the form
-
-	$('#swaptable tr').click(function(event) {
-
-		if (event.target.type !== 'radio') {
-
-			if (event.target.nodeName != "SPAN") {
-
-				$(':radio', this).trigger('click');
-
-			}
-
-		}
-
-	});
-
 	$('.addeditprocess').click(function () {
 		$("#frmaccountingaddedit").validate({
 			showErrors: function(errorMap, errorList) {
@@ -60,6 +44,108 @@ $(document).ready(function() {
 		$.validator.messages.minlength = function (param, input) {
 			var article = document.getElementById(input.id);
 			return "Please Enter valid 10 Number";
+		}
+	});
+
+	// initialize tooltipster on text input elements
+	// initialize validate plugin on the form
+	$('.tranferaddeditprocess').click(function () {
+		$("#frmtransferaddedit").validate({
+			showErrors: function(errorMap, errorList) {
+			// Clean up any tooltips for valid elements
+				$.each(this.validElements(), function (index, element) {
+						var $element = $(element);
+						$element.data("title", "") // Clear the title - there is no error associated anymore
+								.removeClass("error")
+								.tooltip("destroy");
+				});
+				// Create new tooltips for invalid elements
+				$.each(errorList, function (index, error) {
+						var $element = $(error.element);
+						$element.tooltip("destroy") // Destroy any pre-existing tooltip so we can repopulate with new tooltip content
+								.data("title", error.message)
+								.addClass("error")
+								.tooltip(); // Create a new tooltip based on the error messsage we just set in the title
+				});
+			},
+			rules: {
+				date: {required: true, date: true,minlength:10,correctformatdate: true},
+				mainsubject: {required: true},
+				bank: {required: true},
+				amount_1: {requiredWithZero: true},
+				charge_1: {requiredWithZero: true},
+			},
+			submitHandler: function(form) { // for demo
+				if($('#editflg').val() == "edit") {
+					var confirmprocess = confirm("Do You Want To Update?");
+				} else {
+					var confirmprocess = confirm("Do You Want To Register?");
+				}
+				if(confirmprocess) {
+					pageload();
+					return true;
+				} else {
+					return false;
+				}
+			}
+		});
+		$.validator.messages.required = function (param, input) {
+			var article = document.getElementById(input.id);
+			return article.dataset.label + err_fieldreq;
+		}
+		$.validator.messages.extension = function (param, input) {
+			return err_extension;
+		}
+	});
+
+	// initialize tooltipster on text input elements
+	// initialize validate plugin on the form
+	$('.AutoDebitRegprocess').click(function () {
+		$("#frmAutoDebitReg").validate({
+			showErrors: function(errorMap, errorList) {
+			// Clean up any tooltips for valid elements
+				$.each(this.validElements(), function (index, element) {
+						var $element = $(element);
+						$element.data("title", "") // Clear the title - there is no error associated anymore
+								.removeClass("error")
+								.tooltip("destroy");
+				});
+				// Create new tooltips for invalid elements
+				$.each(errorList, function (index, error) {
+						var $element = $(error.element);
+						$element.tooltip("destroy") // Destroy any pre-existing tooltip so we can repopulate with new tooltip content
+								.data("title", error.message)
+								.addClass("error")
+								.tooltip(); // Create a new tooltip based on the error messsage we just set in the title
+				});
+			},
+			rules: {
+				date: {required: true, date: true,minlength:10,correctformatdate: true},
+				bank: {required: true},
+				mainsubject: {required: true},
+				amount_1: {requiredWithZero: true},
+				charge_1: {requiredWithZero: true},
+			},
+			submitHandler: function(form) { // for demo
+				if($('#editflg').val() == "edit") {
+					var confirmprocess = confirm("Do You Want To Update?");
+				} else {
+					var confirmprocess = confirm("Do You Want To Register?");
+				}
+				if(confirmprocess) {
+					pageload();
+					return true;
+				} else {
+					return false;
+				}
+			}
+		});
+		$.validator.messages.required = function (param, input) {
+			var article = document.getElementById(input.id);
+			return article.dataset.label + err_fieldreq;
+		}
+		$.validator.messages.extension = function (param, input) {
+			return err_extension;
 		}
 	});
 
@@ -232,4 +318,78 @@ function fnGetbankDetails() {
 			// alert(data.status);
 		}
 	});
+}
+
+function getdate() {
+	$('#date').val(dates);
+}
+
+function popupenable() {
+	var mainmenu = $('#mainmenu').val();
+	popupopenclose(1);
+	$('#empnamepopup').load('../Accounting/empnamepopup?mainmenu='+mainmenu+'&time='+datetime);
+	$("#empnamepopup").modal({
+		backdrop: 'static',
+		keyboard: false
+		});
+	$('#empnamepopup').modal('show');
+}
+
+function fnaddempid(){
+	var table_id=$('#table_id').val();
+	var kananame = "empKanaNames"+table_id;
+	var empids = "emp_ID"+table_id;
+	var empid=$('#empid').val();
+	var empKanaName=$('#empKanaName').val();
+	$('#'+kananame).text(empKanaName);
+	$('#'+empids).val(empid);
+	$('#'+table_id).addClass("highlight1");
+	$('#crossid'+table_id).css('display','inline');
+	$('#divid'+table_id).css('display','inline');
+	$('#empnamepopup').modal('toggle');
+}
+
+function fngetDet(id,empid,empname,name) {
+	$("#"+empid).prop("checked", true);
+	if($.trim(name) == "" || $.trim(name) == null) {
+		name = empname;
+	}
+	// var name = empname.concat(" ").concat(name);
+	$('#txt_empname').val(name);
+	var table_id=$('#table_id').val();
+	var kananame = "empKanaNames"+table_id;
+	var empids = "emp_ID"+table_id;
+	$('#empid').val(empid);
+	$('#empKanaName').val(name);
+}
+
+function fndbclick(id,empid,empname,name) {
+	$("#"+empid).prop("checked", true);
+	//var name = empname.concat(" ").concat(name);
+	if($.trim(name) == "" || $.trim(name) == null) {
+		name = empname;
+	}
+	$('#txt_empname').val(name);
+	var table_id=$('#table_id').val();
+	var kananame = "empKanaNames"+table_id;
+	var empids = "emp_ID"+table_id;
+	var empid=$('#empid').val();
+	var empKanaName=$('#empKanaName').val();
+	$('#'+kananame).text(empKanaName);
+	$('#'+empids).val(empid);
+	$('#'+table_id).addClass("highlight1");
+	$('#crossid'+table_id).css('display','inline');
+	$('#divid'+table_id).css('display','inline');
+	$('#empnamepopup').modal('toggle');
+}
+
+function gotoindexpage(mainmenu) {
+	if (cancel_check == false) {
+		if (!confirm("Do You Want To Cancel the Page?")) {
+			return false;
+		}
+	}
+ 	pageload();
+	$('#transferaddeditcancel').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+	$("#transferaddeditcancel").submit();
 }
