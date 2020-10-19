@@ -305,7 +305,7 @@
 			</div>
 			@if(Auth::user()->userclassification == 4)
 			<div class="col-xs-3" style="padding-left: 53px;">
-				<div class="image_b div_inline mb15 mr90">{{ trans('messages.lbl_accounting') }}</div>
+				<div class="image_b div_inline mb15 mr90">{{ trans('messages.lbl_auditing') }}</div>
 				<div class="alinkEng ml20 mt5 tal">
 					<a class="pageload csrp btn-link" href="{{ url('Accounting/index?mainmenu=Accounting&time='.date('Ymdhis')) }}" style="color:blue;font-size: 13px;">
 						{{ trans('messages.lbl_invoice') }}

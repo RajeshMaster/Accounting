@@ -224,7 +224,7 @@
 </style>
 <div class="CMN_display_block" id="main_contents" style="width: 100%;">
 	<!-- article to select the main&sub menu -->
-	<article id="additing" class="DEC_flex_wrapper " data-category="additing additing_sub_2">
+	<article id="auditing" class="DEC_flex_wrapper " data-category="auditing auditing_sub_2">
 		{{ Form::open(array('name'=>'salarycalcindex',
 							'id'=>'salarycalcindex',
 							'url'=>'salarycalc/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
