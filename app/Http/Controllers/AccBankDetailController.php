@@ -3,7 +3,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Model\Bankdetail;
-use App\Model\AccBankdetail;
+use App\Model\AccBankDetail;
 use App\Http\Helpers;
 use DB;
 use Input;
@@ -52,16 +52,16 @@ class AccBankDetailController extends Controller {
 
 			$baseAmtInsChk = array();
 			$baseAmtVal = 0;
-			$baseAmtInsChk = AccBankdetail::baseAmtInsChk($value->bnkid);
+			$baseAmtInsChk = AccBankDetail::baseAmtInsChk($value->bnkid);
 			if (isset($baseAmtInsChk[0])) {
 				$bankdetailindex[$i]['baseAmtInsChk'] = 1;
 				$baseAmtVal = $baseAmtInsChk[0]->amount;
 			} else {
 				$bankdetailindex[$i]['baseAmtInsChk'] = 0;
 			}
-			$bankrectype1 = AccBankdetail::bankrectype1($value->bnkid);
-			$bankrectype2 = AccBankdetail::bankrectype2($value->bnkid);
-			$bankrectype3 = AccBankdetail::bankrectype3($value->bnkid);
+			$bankrectype1 = AccBankDetail::bankrectype1($value->bnkid);
+			$bankrectype2 = AccBankDetail::bankrectype2($value->bnkid);
+			$bankrectype3 = AccBankDetail::bankrectype3($value->bnkid);
 
 			$type1Total = 0; 
 			$type2Total = 0; 
@@ -85,19 +85,19 @@ class AccBankDetailController extends Controller {
 	/*echo "<pre>";
 		print_r($bankdetailindex);
 		echo "</pre>";*/
-		return view('AccBankdetail.index',[
+		return view('AccBankDetail.index',[
 								'bankdetailindex' => $bankdetailindex,
 								'index' => $index,
 								'request' => $request]);
 	}
 
 	function add(Request $request) {
-		return view('AccBankdetail.addedit',['request' => $request]);	
+		return view('AccBankDetail.addedit',['request' => $request]);	
 	}
 
 	function addeditprocess(Request $request) {
 			if($request->editflg == "1") {
-			$insert = AccBankdetail::insertRec($request);
+			$insert = AccBankDetail::insertRec($request);
 			if($insert) {
 				Session::flash('success', 'Inserted Sucessfully!'); 
 				Session::flash('type', 'alert-success'); 
@@ -115,7 +115,7 @@ class AccBankDetailController extends Controller {
 			Session::flash('bankname', $request->bankname); 
 			Session::flash('branchname', $request->branchname);  
 		} else {
-			$update = Bankdetail::updateRec($request);
+			$update = AccBankDetail::updateRec($request);
 			if($update) {
 				Session::flash('success', 'Updated Sucessfully!'); 
 				Session::flash('type', 'alert-success'); 
