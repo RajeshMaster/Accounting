@@ -478,6 +478,7 @@ Route::group(['prefix'=>'Tax','middleware' => 'auth'], function() {
 Route::group(['prefix'=>'Accounting','middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
     Route::any('index', 'AccountingController@index');
+    Route::any('addedit', 'AccountingController@addedit');
 });
 
 // Account Process

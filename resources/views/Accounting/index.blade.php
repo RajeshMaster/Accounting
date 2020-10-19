@@ -100,7 +100,7 @@
     display: block ;
 	}*/
 </style>
-{{ HTML::script('resources/assets/js/invoice.js') }}
+{{ HTML::script('resources/assets/js/accounts.js') }}
 {{ HTML::script('resources/assets/js/switch.js') }}
 {{ HTML::script('resources/assets/js/hoe.js') }}
 {{ HTML::style('resources/assets/css/extra.css') }}
@@ -111,9 +111,9 @@
 <div class="CMN_display_block" id="main_contents" style="width: 100%">
 <!-- article to select the main&sub menu -->
 <article id="accounting" class="DEC_flex_wrapper " data-category="accounting accounting_sub_1">
-	{{ Form::open(array('name'=>'frminvoiceindex', 
-						'id'=>'frminvoiceindex', 
-						'url' => 'Invoice/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
+	{{ Form::open(array('name'=>'frmaccountingindex', 
+						'id'=>'frmaccountingindex', 
+						'url' => 'Accounting/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
 						'files'=>true,
 						'method' => 'POST')) }}
 		{{ Form::hidden('filter', $request->filter, array('id' => 'filter')) }}
@@ -123,6 +123,8 @@
 		{{ Form::hidden('sortOptn',$request->invoicesort , array('id' => 'sortOptn')) }}
 	    {{ Form::hidden('sortOrder', $request->sortOrder , array('id' => 'sortOrder')) }}
 		{{ Form::hidden('searchmethod', $request->searchmethod, array('id' => 'searchmethod')) }}
+		{{ Form::hidden('edit_flg ', '', array('id' => 'edit_flg ')) }}
+
 
 <!-- Start Heading -->
 	<div class="row hline" >
@@ -131,9 +133,23 @@
 			<h2 class="pull-left pl5 mt15">{{ trans('messages.lbl_accounting') }}</h2>
 		</div>
 	</div>
-	
 
-	
+	<div class="col-xs-12 pm0 pull-left">
+		<!-- Session msg -->
+			@if(Session::has('success'))
+				<div align="center" class="alertboxalign" role="alert">
+					<p class="alert {{ Session::get('alert', Session::get('type') ) }}">
+		            	{{ Session::get('success') }}
+		          	</p>
+				</div>
+			@endif
+			@php Session::forget('success'); @endphp
+			<!-- Session msg -->
+		<div class="col-xs-6 ml10 pm0 pull-left mt10">
+			<a href="javascript:addedit('add','');" class="btn btn-success box100"><span class="fa fa-plus"></span> {{ trans('messages.lbl_register') }}</a>
+		</div>
+	</div>
+
 </article>
 </div>
 

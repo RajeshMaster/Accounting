@@ -34,4 +34,10 @@ class AccountingController extends Controller {
                                     'request' => $request]);
 	}
 
+    function addedit(Request $request) {
+
+        return view('Accounting.addedit',[
+                                    'request' => $request]);
+    }
+
 }
