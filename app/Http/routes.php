@@ -481,6 +481,7 @@ Route::group(['prefix'=>'Accounting','middleware' => 'auth'], function() {
     Route::any('addedit', 'AccountingController@addedit');
     Route::any('bank_ajax', 'AccountingController@bank_ajax');
     Route::any('addeditprocess', 'AccountingController@addeditprocess');
+    Route::any('autoDebitReg', 'AccountingController@autoDebitReg');
 });
 
 

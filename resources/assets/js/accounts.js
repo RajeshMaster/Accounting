@@ -156,29 +156,28 @@ function resetErrors() {
 	$('label.error').remove();
 }    
 
-function addedit(page) {
-	var mainmenu = $('#mainmenu').val();
+function addedit(page,mainmenu) {
 	if (page == "index") {
 	 	$('#frmaccountingindex').attr('action', 'addedit?mainmenu='+mainmenu+'&time='+datetime);
 		$("#frmaccountingindex").submit();
 	} else if (page == "cashTransfer") {
-		$('#frmaccountingaddedit').attr('action', 'transferaddedit?mainmenu='+mainmenu+'&time='+datetime);
-		$("#frmaccountingaddedit").submit();
+		$('#addeditcancel').attr('action', 'transferaddedit?mainmenu='+mainmenu+'&time='+datetime);
+		$("#addeditcancel").submit();
 	} else if (page == "cashAutoDebit") {
-		$('#frmaccountingaddedit').attr('action', 'autoDebitReg?mainmenu='+mainmenu+'&time='+datetime);
-		$("#frmaccountingaddedit").submit();
+		$('#addeditcancel').attr('action', 'autoDebitReg?mainmenu='+mainmenu+'&time='+datetime);
+		$("#addeditcancel").submit();
 	} else if (page == "transferCash") {
-		$('#frmtransferaddedit').attr('action', 'addedit?mainmenu='+mainmenu+'&time='+datetime);
-		$("#frmtransferaddedit").submit();
+		$('#transferaddeditcancel').attr('action', 'addedit?mainmenu='+mainmenu+'&time='+datetime);
+		$("#transferaddeditcancel").submit();
 	} else if (page == "transferAutoDebit") {
-		$('#frmtransferaddedit').attr('action', 'autoDebitReg?mainmenu='+mainmenu+'&time='+datetime);
-		$("#frmtransferaddedit").submit();
+		$('#transferaddeditcancel').attr('action', 'autoDebitReg?mainmenu='+mainmenu+'&time='+datetime);
+		$("#transferaddeditcancel").submit();
 	} else if (page == "autoDebitCash") {
-		$('#frmAutoDebitReg').attr('action', 'addedit?mainmenu='+mainmenu+'&time='+datetime);
-		$("#frmAutoDebitReg").submit();
+		$('#AutoDebitRegcancel').attr('action', 'addedit?mainmenu='+mainmenu+'&time='+datetime);
+		$("#AutoDebitRegcancel").submit();
 	} else if (page == "autoDebitTransfer") {
-		$('#frmAutoDebitReg').attr('action', 'transferaddedit?mainmenu='+mainmenu+'&time='+datetime);
-		$("#frmAutoDebitReg").submit();
+		$('#AutoDebitRegcancel').attr('action', 'transferaddedit?mainmenu='+mainmenu+'&time='+datetime);
+		$("#AutoDebitRegcancel").submit();
 	} else {
 		return false;
 	}
@@ -383,13 +382,21 @@ function fndbclick(id,empid,empname,name) {
 	$('#empnamepopup').modal('toggle');
 }
 
-function gotoindexpage(mainmenu) {
-	if (cancel_check == false) {
-		if (!confirm("Do You Want To Cancel the Page?")) {
+function gotoindexpage(page,mainmenu) {
+	if (!confirm("Do You Want To Cancel the Page?")) {
+		return false;
+	} else {
+		if (page == "Cash") {
+			$('#addeditcancel').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+			$("#addeditcancel").submit();
+		} else if (page == "Transfer") {
+			$('#transferaddeditcancel').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+			$("#transferaddeditcancel").submit();
+		} else if (page == "AutoDebit") {
+			$('#transferaddeditcancel').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+			$("#transferaddeditcancel").submit();
+		} else {
 			return false;
 		}
 	}
- 	pageload();
-	$('#transferaddeditcancel').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
-	$("#transferaddeditcancel").submit();
 }

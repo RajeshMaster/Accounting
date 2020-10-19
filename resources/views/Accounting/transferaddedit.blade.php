@@ -47,11 +47,13 @@
 		</div>
 		<div class="col-xs-12 pt10">
 			<div class="col-xs-6" style="text-align: left;margin-left: -15px;">
-				<a href="javascript:addedit('transferCash');" class="btn btn-success box20per">
+				<a href="javascript:addedit('transferCash','{{ $request->mainmenu }}');" 
+					class="btn btn-success box20per">
 					<span class="fa fa-plus"></span> {{ trans('messages.lbl_cash') }}</a>
 				<a href="#" class="btn btn-success box25per disabled">
 					<span class="fa fa-plus"></span> {{ trans('messages.lbl_transfer') }}</a>
-				<a href="javascript:addedit('transferAutoDebit');" class="btn btn-success box25per">
+				<a href="javascript:addedit('transferAutoDebit','{{ $request->mainmenu }}');" 
+					class="btn btn-success box25per">
 					<span class="fa fa-plus"></span> {{ trans('messages.lbl_autodebit') }}</a>
 			</div>
 		</div>
@@ -211,9 +213,12 @@
 			<div class="form-group">
 				<div align="center" class="mt5">
 					<button type="submit" class="btn btn-success add box100 ml5 tranferaddeditprocess">
-						<i class="fa fa-plus" aria-hidden="true"></i> {{ trans('messages.lbl_register') }}
+						<i class="fa fa-plus" aria-hidden="true"></i> 
+						{{ trans('messages.lbl_register') }}
 					</button>
-					<a onclick="javascript:gotoindexpage('{{ $request->mainmenu }}');" class="btn btn-danger box120 white"><i class="fa fa-times" aria-hidden="true"></i> {{trans('messages.lbl_cancel')}}
+					<a href="javascript:gotoindexpage('Transfer','{{ $request->mainmenu }}');" 
+						class="btn btn-danger box120 white">
+						<i class="fa fa-times" aria-hidden="true"></i> {{trans('messages.lbl_cancel')}}
 					</a>
 				</div>
 			</div>
@@ -232,7 +237,7 @@
 	{{ Form::close() }}
 
 	{{ Form::open(array('name'=>'transferaddeditcancel', 'id'=>'transferaddeditcancel', 
-						'url' => 'Transfer/addeditprocess?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
+						'url' => 'Accounting/tranferaddeditprocess?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
 						'files'=>true,'method' => 'POST')) }}
 
 		{{ Form::hidden('mainmenu', $request->mainmenu , array('id' => 'mainmenu')) }}
