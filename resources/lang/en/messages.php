@@ -1192,6 +1192,7 @@ return [
 
 	/* Additing  */
 	'lbl_additing' => 'Additing',
+	'lbl_autodebit' => 'Auto Debit',
 	
 	/* Salary Calc */
 	'lbl_amt_dif' => 'Amt Diff',

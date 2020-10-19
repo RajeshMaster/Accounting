@@ -41,7 +41,7 @@
 	  
 <div class="row hline pm0">
 		<div class="col-xs-12">
-			<img class="pull-left box35 mt10" src="{{ URL::asset('resources/assets/images/expenses.png') }}">
+			<img class="pull-left box35 mt10" src="{{ URL::asset('resources/assets/images/pettycash.jpg') }}">
 			<h2 class="pull-left pl5 mt10">
 				{{ trans('messages.lbl_cash') }}
 			</h2>
@@ -53,7 +53,15 @@
 			</h2>
 		</div>
 </div>
+<div class="col-xs-12 pt10">
+			<div class="col-xs-6" style="text-align: left;margin-left: -15px;">
+				<a href="#" class="btn btn-success box20per disabled"><span class="fa fa-plus"></span> {{ trans('messages.lbl_cash') }}</a>
 
+				<a href="javascript:gototransferadd('{{ $request->mainmenu }}');" class="btn btn-success box25per"><span class="fa fa-plus"></span>{{ trans('messages.lbl_transfer') }}</a>
+
+				<a href="javascript:gotoautodebitadd('{{ $request->mainmenu }}');" class="btn btn-success box25per"><span class="fa fa-plus"></span>{{ trans('messages.lbl_autodebit') }}</a>
+			</div>
+		</div>
 <div class="col-xs-12 pl5 pr5" ondragstart="return false;" ondrop="return false;">
 	<fieldset>
 	
@@ -69,12 +77,14 @@
 					<label class="mt10 ml2 fa fa-calendar fa-lg" for="date" aria-hidden="true"></label>
 			</div>
 		</div>
-			
+
 		<div class="col-xs-12 mt5">
 			<div class="col-xs-3 text-right clr_blue">
 				<label>{{ trans('messages.lbl_bank') }}<span class="fr ml2 red"> * </span></label>
 			</div>
 			<div class="col-xs-9">
+				
+
 			
 			</div>
 		</div>
@@ -90,7 +100,7 @@
 
 		<div class="col-xs-12 mt5">
 			<div class="col-xs-3 text-right clr_blue">
-				<label>{{ trans('messages.lbl_content') }}<span class="fr ml2 red"> * </span></label>
+				<label>{{ trans('messages.lbl_content') }}<span class="fr ml2 red" style="visibility: hidden"> * </span></label>
 			</div>
 			<div class="col-xs-9">
 				

@@ -129,7 +129,7 @@
 <!-- Start Heading -->
 	<div class="row hline" >
 		<div class="col-xs-12">
-			<img class="pull-left box35 mt10" src="{{ URL::asset('resources/assets/images/invoices-icon-3.png') }}">
+			<img class="pull-left box35 mt10" src="{{ URL::asset('resources/assets/images/pettycash.jpg') }}">
 			<h2 class="pull-left pl5 mt15">{{ trans('messages.lbl_accounting') }}</h2>
 		</div>
 	</div>
