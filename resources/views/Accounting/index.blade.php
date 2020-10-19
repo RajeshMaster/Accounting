@@ -171,9 +171,9 @@
 					<th class="vam">{{ trans('messages.lbl_debit') }}</th>
 					<th class="vam">{{ trans('messages.lbl_credit') }}</th>
 					<th class="vam">{{ trans('messages.lbl_balance') }}</th>
-					<th class="vam">{{ trans('messages.lbl_remarks') }</th>
-					<th class="vam">{{ trans('messages.lbl_file') }</th>
-					<th class="vam">{{ trans('messages.lbl_copy') }</th>
+					<th class="vam">{{ trans('messages.lbl_remarks') }}</th>
+					<th class="vam">{{ trans('messages.lbl_file') }}</th>
+					<th class="vam">{{ trans('messages.lbl_copy') }}</th>
 				</tr>
 			</thead>
 
