@@ -1191,8 +1191,9 @@ return [
 	'lbl_paidamt' => 'Paid Amount',
 
 	/* Additing  */
-	'lbl_additing' => 'Additing',
+	'lbl_additing' => 'Auditing',
 	'lbl_autodebit' => 'Auto Debit',
+	'lbl_income' => 'Income',
 	
 	/* Salary Calc */
 	'lbl_amt_dif' => 'Amt Diff',

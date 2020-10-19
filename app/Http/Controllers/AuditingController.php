@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Model\Estimation;
 use App\Model\Invoice;
-use App\Model\Additing;
+use App\Model\Auditing;
 use App\Model\Payment;
 use App\Http\Helpers;
 use DB;
@@ -26,7 +26,7 @@ use Carbon;
 use PHPExcel_Style_Conditional;
 use PHPExcel_Style_Color;
 
-class AdditingController extends Controller {
+class AuditingController extends Controller {
 
 	function index(Request $request) {
 		if(Session::get('selYear') !="") {
@@ -312,7 +312,7 @@ $year_month_day = $current_year . "-" . $account_close_mn . "-01";
             $date_month=$request->selYear."-".$request->selMonth;
         }
         //------
-        $TotEstquery = Additing::fnGetinvoiceTotalValue($request,$taxSearch,$date_month,$search_flg, $projecttype,$singlesearchtxt, $estimateno, $companyname, $startdate, $enddate,$fil);
+        $TotEstquery = Auditing::fnGetinvoiceTotalValue($request,$taxSearch,$date_month,$search_flg, $projecttype,$singlesearchtxt, $estimateno, $companyname, $startdate, $enddate,$fil);
         $get_view=array();
         $totalcount=count($TotEstquery);
             $x = 1;
@@ -405,7 +405,7 @@ $year_month_day = $current_year . "-" . $account_close_mn . "-01";
             }
 
 
-		 return view('Additing.index',[
+		 return view('Auditing.index',[
                                     'account_period' => $account_period,
                                     'year_month' => $year_month,
                                     'db_year_month' => $db_year_month,

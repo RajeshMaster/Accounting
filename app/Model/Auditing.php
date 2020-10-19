@@ -6,7 +6,7 @@ use Session;
 use Input;
 use Auth;
 use Carbon\Carbon;
-class Additing extends Model {
+class Auditing extends Model {
 
 	public static function fnGetinvoiceTotalValue($request,$taxSearch,$date_month,$search_flg, $projecttype,$singlesearchtxt, $estimateno, $companyname, $startdate, $enddate,$filter) {
 		if ($request->searchmethod == 1 || $request->searchmethod == 2 || $request->searchmethod == 3) {

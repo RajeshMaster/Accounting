@@ -1365,9 +1365,10 @@ return [
 	'lbl_paidamt' => 'Paid Amount',
 
 	/* Additing  */
-	'lbl_additing' => 'Additing',
+	'lbl_auditing' => 'Auditing',
 	'lbl_autodebit' => 'Auto Debit',
-	
+	'lbl_income' => '収入',
+
 
 	/* Salary Calc */
 	'lbl_amt_dif' => '金額差',

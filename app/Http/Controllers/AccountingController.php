@@ -3,10 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
-use App\Model\Estimation;
-use App\Model\Invoice;
 use App\Model\Accounting;
-use App\Model\Payment;
 use App\Http\Helpers;
 use DB;
 use Input;
@@ -35,9 +32,10 @@ class AccountingController extends Controller {
 	}
 
     function addedit(Request $request) {
-
+        $bankDetail = Accounting::fetchbanknames();
         return view('Accounting.addedit',[
-                                    'request' => $request]);
+                                    'request' => $request,
+                                    'bankDetail' => $bankDetail]);
     }
 
 }

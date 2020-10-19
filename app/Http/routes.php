@@ -474,17 +474,17 @@ Route::group(['prefix'=>'Tax','middleware' => 'auth'], function() {
     Route::any('empselectionprocess', 'TaxController@empselectionprocess');
 });
 
-// Account Process
+// Accounting Process
 Route::group(['prefix'=>'Accounting','middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
     Route::any('index', 'AccountingController@index');
     Route::any('addedit', 'AccountingController@addedit');
 });
 
-// Account Process
-Route::group(['prefix'=>'Additing','middleware' => 'auth'], function() {
+// Auditing Process
+Route::group(['prefix'=>'Auditing','middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
-    Route::any('index', 'AdditingController@index');
+    Route::any('index', 'AuditingController@index');
 });
 
 //Staff -> Salary Calculation

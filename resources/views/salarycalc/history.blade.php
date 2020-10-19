@@ -65,7 +65,7 @@
 </style>
 <div class="CMN_display_block" id="main_contents" style="width: 100%;">
 	<!-- article to select the main&sub menu -->
-	<article id="accounting" class="DEC_flex_wrapper " data-category="accounting accounting_sub_2">
+	<article id="auditing" class="DEC_flex_wrapper " data-category="auditing auditing_sub_2">
 		{{ Form::open(array('name'=>'salarycalchistory',
 							'id'=>'salarycalchistory',
 							'url'=>'salarycalc/history?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
