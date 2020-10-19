@@ -55,18 +55,19 @@
 		<div class="col-xs-12 pt10">
 			<div class="col-xs-6" style="text-align: left;margin-left: -15px;">
 				<a href="javascript:addedit('autoDebitCash','{{ $request->mainmenu }}');" 
-					class="btn btn-success box20per"><span class="ml5 fa fa-plus"></span> 
-					{{ trans('messages.lbl_cash') }}</a>
+					class="btn btn-success box20per"><span class="fa fa-plus"></span> 
+					<label class="ml5">{{ trans('messages.lbl_cash') }}</label></a>
 				<a href="javascript:addedit('autoDebitTransfer','{{ $request->mainmenu }}');" 
-					class="btn btn-success box25per"><span class="ml5 fa fa-plus"></span>
-					{{ trans('messages.lbl_transfer') }}</a>
+					class="btn btn-success box25per"><span class="fa fa-plus"></span>
+					<label class="ml5">{{ trans('messages.lbl_transfer') }}</label></a>
 				<a href="#" 
-					class="btn btn-success box25per disabled"><span class="ml5 fa fa-plus"></span>
-					{{ trans('messages.lbl_autodebit') }}</a>
+					class="btn btn-success box25per disabled"><span class="fa fa-plus"></span>
+					<label class="ml5">{{ trans('messages.lbl_autodebit') }}</label></a>
 			</div>
 		</div>
 
 		<div class="col-xs-12 pl5 pr5" ondragstart="return false;" ondrop="return false;">
+
 		<fieldset>
 	
 			<div class="col-xs-12 mt10">
@@ -74,15 +75,18 @@
 					<label>{{ trans('messages.lbl_Date') }}<span class="fr ml2 red"> * </span></label>
 				</div>
 				<div class="col-xs-9">
-					{{ Form::text('date',(isset($expcash_sql[0]->date)) ? $expcash_sql[0]->date : '',
-							array('id'=>'date', 
-								'name' => 'date',
+					{{ Form::text('autoDebitDate',(isset($expcash_sql[0]->date)) ? $expcash_sql[0]->date : '',
+							array('id'=>'autoDebitDate', 
+								'name' => 'autoDebitDate',
 								'data-label' => trans('messages.lbl_Date'),
 								'autocomplete' =>'off',
 								'class'=>'box11per form-control pl5 dob')) }}
-					<label class="mt10 ml2 fa fa-calendar fa-lg" for="date" aria-hidden="true"></label>
+					<label class="mt10 ml2 fa fa-calendar fa-lg" for="autoDebitDate" 
+						aria-hidden="true">
+					</label>
 					<a href="javascript:getdate();" class="anchorstyle">
-					<img title="Current Date" class="box15" src="{{ URL::asset('resources/assets/images/add_date.png') }}"></a>
+					<img title="Current Date" class="box15" 
+						src="{{ URL::asset('resources/assets/images/add_date.png') }}"></a>
 				</div>
 			</div>
 
@@ -91,9 +95,9 @@
 					<label>{{ trans('messages.lbl_bank') }}<span class="fr ml2 red"> * </span></label>
 				</div>
 				<div class="col-xs-9">
-					{{ Form::select('bank',[null=>'']+$bankDetail,(isset($expcash_sql[0]->bankname)) ?$expcash_sql[0]->bankname.'-'.$expcash_sql[0]->bankaccno : '',
-							array('name' =>'bank',
-										'id'=>'bank',
+					{{ Form::select('autoDebitBank',[null=>'']+$bankDetail,(isset($expcash_sql[0]->bankname)) ?$expcash_sql[0]->bankname.'-'.$expcash_sql[0]->bankaccno : '',
+							array('name' =>'autoDebitBank',
+										'id'=>'autoDebitBank',
 										'data-label' => trans('messages.lbl_bank'),
 										'class'=>'pl5 widthauto'))}}
 				</div>
@@ -104,9 +108,9 @@
 					<label>{{ trans('messages.lbl_mainsubject') }}<span class="fr ml2 red"> * </span></label>
 				</div>
 				<div class="col-xs-9">
-					{{ Form::select('mainsubject',[null=>'']+$mainExpDetail,(isset($expcash_sql[0]->mainsubject)) ?$expcash_sql[0]->mainsubject: '',
-							array('name' =>'mainsubject',
-										'id'=>'mainsubject',
+					{{ Form::select('autoDebitMainExp',[null=>'']+$mainExpDetail,(isset($expcash_sql[0]->autoDebitMainExp)) ?$expcash_sql[0]->autoDebitMainExp: '',
+							array('name' =>'autoDebitMainExp',
+										'id'=>'autoDebitMainExp',
 										'data-label' => trans('messages.lbl_mainsubject'),
 										'class'=>'pl5 widthauto'))}}
 				</div>
@@ -117,9 +121,9 @@
 					<label>{{ trans('messages.lbl_content') }}<span class="fr ml2 red" style="visibility: hidden"> * </span></label>
 				</div>
 				<div class="col-xs-9">
-					{{ Form::text('content',(isset($expcash_sql[0]->content)) ? $expcash_sql[0]->content : '',
-							array('id'=>'content', 
-									'name' => 'content',
+					{{ Form::text('autoDebitContent',(isset($expcash_sql[0]->autoDebitContent)) ? $expcash_sql[0]->autoDebitContent : '',
+							array('id'=>'autoDebitContent', 
+									'name' => 'autoDebitContent',
 									'data-label' => trans('messages.lbl_content'),
 									'class'=>'box31per form-control pl5')) }}
 				</div>
@@ -129,36 +133,36 @@
 				<div class="col-xs-3 text-right clr_blue">
 					<label>{{ trans('messages.lbl_amount') }}
 						<span class="black ml2">&#47;</span>
-						{{ trans('messages.lbl_charge') }}
+						{{ trans('messages.lbl_fee') }}
 						<span class="fr ml2 red"> * </span>
 					</label>
 				</div>
 				<div class="col-xs-9 CMN_display_block">
-						{{ Form::text('amount_1',(isset($expcash_sql[0]->amount)) ? number_format($expcash_sql[0]->amount) : 0,array(
-																'id'=>'amount_1',
-																'name' => 'amount_1',
-																'maxlength' => '14',
-																'style'=>'text-align:right;padding-right:4px;',
-																'class'=>'box15per ime_mode_disable',
-																'onblur' => 'return fnSetZero11(this.id);',
-																'onfocus' => 'return fnRemoveZero(this.id);',
-																'onclick' => 'return fnRemoveZero(this.id);',
-																'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
-																'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
-																'data-label' => trans('messages.lbl_amount'))) }}
-						<span class=" ml7 black" style=" font-weight: bold;font-size: 17px;"> / </span>
-						{{ Form::text('charge_1',(isset($expcash_sql[0]->charge_1)) ? number_format($expcash_sql[0]->charge_1) : 0,array(
-																'id'=>'charge_1',
-																'name' => 'charge_1',
-																'maxlength' => '14',
-																'style'=>'text-align:right;padding-right:4px;',
-																'class'=>'box12per ime_mode_disable ml10',
-																'onblur' => 'return fnSetZero11(this.id);',
-																'onfocus' => 'return fnRemoveZero(this.id);',
-																'onclick' => 'return fnRemoveZero(this.id);',
-																'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
-																'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
-																'data-label' => trans('messages.lbl_charge'))) }}
+					{{ Form::text('autoDebitAmount',(isset($expcash_sql[0]->amount)) ? number_format($expcash_sql[0]->amount) : 0,
+							array('id'=>'autoDebitAmount',
+									'name' => 'autoDebitAmount',
+									'maxlength' => '14',
+									'style'=>'text-align:right;padding-right:4px;',
+									'class'=>'box15per ime_mode_disable',
+									'onblur' => 'return fnSetZero11(this.id);',
+									'onfocus' => 'return fnRemoveZero(this.id);',
+									'onclick' => 'return fnRemoveZero(this.id);',
+									'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
+									'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
+									'data-label' => trans('messages.lbl_amount'))) }}
+					<span class=" ml7 black" style=" font-weight: bold;font-size: 17px;"> / </span>
+					{{ Form::text('autoDebitFee',(isset($expcash_sql[0]->autoDebitFee)) ? number_format($expcash_sql[0]->autoDebitFee) : 0,
+							array('id'=>'autoDebitFee',
+									'name' => 'transferFee',
+									'maxlength' => '14',
+									'style'=>'text-align:right;padding-right:4px;',
+									'class'=>'box12per ime_mode_disable ml10',
+									'onblur' => 'return fnSetZero11(this.id);',
+									'onfocus' => 'return fnRemoveZero(this.id);',
+									'onclick' => 'return fnRemoveZero(this.id);',
+									'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
+									'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
+									'data-label' => trans('messages.lbl_fee'))) }}
 				</div>
 			</div>
 		
@@ -167,12 +171,11 @@
 					<label>{{ trans('messages.lbl_bill') }}<span class="fr ml2 red"> &nbsp;&nbsp; </span></label>
 				</div>
 				<div class="col-xs-9">
-					{{ Form::file('file1',array(
-											'class' => 'pull-left box350',
-											'id' => 'file1',
-											'name' => 'file1',
-											'style' => 'height:23px;',
-											'data-label' => trans('messages.lbl_payup'))) }}
+					{{ Form::file('autoDebitBill',array('class' => 'pull-left box350',
+													'id' => 'autoDebitBill',
+													'name' => 'autoDebitBill',
+													'style' => 'height:23px;',
+													'data-label' => trans('messages.lbl_bill'))) }}
 					<span>&nbsp;(Ex: Image File Only)</span>
 				</div>
 			</div>
@@ -182,10 +185,9 @@
 					<label>{{ trans('messages.lbl_remarks') }}<span class="fr ml2 red" style="visibility: hidden;"> * </span></label>
 				</div>
 				<div class="col-xs-9">
-					{{ Form::textarea('remarks',(isset($expcash_sql[0]->remark_dtl)) ? $expcash_sql[0]->remark_dtl : '', 
-						array('name' => 'remarks',
-								'class' => 'box40per form-control',
-								'size' => '30x4')) }}
+					{{ Form::textarea('remarks',(isset($expcash_sql[0]->remark_dtl)) ? $expcash_sql[0]->remark_dtl : '', array('name' => 'remarks',
+											'class' => 'box40per form-control',
+											'size' => '30x4')) }}
 				</div>
 			</div>
 		

@@ -478,9 +478,15 @@ Route::group(['prefix'=>'Tax','middleware' => 'auth'], function() {
 Route::group(['prefix'=>'Accounting','middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
     Route::any('index', 'AccountingController@index');
+    // Cash // Rajesh
     Route::any('addedit', 'AccountingController@addedit');
     Route::any('bank_ajax', 'AccountingController@bank_ajax');
     Route::any('addeditprocess', 'AccountingController@addeditprocess');
+    // Transfer // Sarath
+    Route::any('transferaddedit', 'AccountingController@transferaddedit');
+    Route::any('empnamepopup', 'AccountingController@empnamepopup');
+    Route::any('tranferaddeditprocess', 'AccountingController@tranferaddeditprocess');
+    // Auto Debit // Sastha
     Route::any('autoDebitReg', 'AccountingController@autoDebitReg');
 });
 
@@ -499,7 +505,7 @@ Route::group(['prefix'=>'Auditing','middleware' => 'auth'], function() {
     Route::any('index', 'AuditingController@index');
 });
 
-//Staff -> Salary Calculation
+// Salary Calculation Process By Sastha
 Route::group(['prefix'=>'salarycalc','middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
     Route::any('index', 'SalarycalcController@index');
@@ -519,7 +525,7 @@ Route::group(['prefix'=>'salarycalc','middleware' => 'auth'], function() {
     Route::get('getlastmonthdet', 'SalarycalcController@getlastmonthdet');
 });
 
-//Staff -> Salary Calculation Plus
+// Salary Calculation Plus Process By Sastha
 Route::group(['prefix'=>'salarycalcplus','middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
     Route::any('index', 'SalarycalcplusController@index');

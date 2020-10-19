@@ -51,7 +51,8 @@ class AccountingController extends Controller {
 		$bankDetail = Accounting::fetchbanknames();
 
 		return view('Accounting.addedit',['request' => $request,
-											'bankDetail' => $bankDetail]);
+											'bankDetail' => $bankDetail
+										]);
 	}
 
 	/**
@@ -70,6 +71,14 @@ class AccountingController extends Controller {
 		exit();
 	}
 
+	public function addeditprocess(Request $request) {
+
+		$insertProcess = Accounting::fninsert($request);
+		print_r($insertProcess);exit;
+
+		print_r($request->all());exit;
+	}
+
 	/**
 	*
 	* Addedit Page for AutoDebit
@@ -85,17 +94,85 @@ class AccountingController extends Controller {
 
 		return view('Accounting.autoDebitReg',['request' => $request,
 												'bankDetail' => $bankDetail,
-												'mainExpDetail' => $mainExpDetail]);
+												'mainExpDetail' => $mainExpDetail
+											]);
 		
 	}
 
+	/**
+	*
+	* Addedit Page for Transfer
+	* @author Sarath
+	* @return object to particular view page
+	* Created At 2020/10/19
+	*
+	*/
+	public function transferaddedit(Request $request) {
 
-	public function addeditprocess(Request $request) {
+		$bankDetail = Accounting::fetchbanknames();
+		$mainExpDetail = Accounting::getMainExpName();
 
-		$insertProcess = Accounting::fninsert($request);
-		print_r($insertProcess);exit;
+		return view('Accounting.transferaddedit',[ 'request' => $request,
+													'mainExpDetail' => $mainExpDetail,
+													'bankDetail' => $bankDetail
+												]);
+	}
 
-		print_r($request->all());exit;
+	/**
+	*
+	* Addedit Page for Transfer
+	* @author Sarath
+	* @return object to particular view page
+	* Created At 2020/10/19
+	*
+	*/
+	public function empnamepopup(Request $request) {
+
+		$empname = Accounting::fnGetEmpDetails($request);
+		$empnamenonstaff = Accounting::fnGetNonstaffEmpDetails($request);
+
+		return view('Invoice.empnamepopup',['request' => $request,
+											'empname' => $empname,
+											'empnamenonstaff' => $empnamenonstaff,
+										]);
+	}
+
+	/**
+	*
+	* Addedit Page for Transfer
+	* @author Sarath
+	* @return object to particular view page
+	* Created At 2020/10/19
+	*
+	*/
+	public function tranferaddeditprocess(Request $request) {
+
+		$Loanno = "Expenses_".date('YmdHis');
+		$fileid = "file1";
+			$filename="";
+			if($request->$fileid != "") {
+				$extension = Input::file($fileid)->getClientOriginalExtension();
+				$filename=$Loanno.'.'.$extension;
+				$file = $request->$fileid;
+				$destinationPath = '../InvoiceUpload/Expenses';
+				if(!is_dir($destinationPath)) {
+					mkdir($destinationPath, true);
+				}
+				chmod($destinationPath, 0777);
+				$file->move($destinationPath,$filename);
+				chmod($destinationPath."/".$filename, 0777);
+			} else {
+				$filename = $request->pdffiles; 
+			}
+			$insert = Accounting::inserttransferdetails($request,$filename);
+			if($insert) {
+				Session::flash('success', 'Inserted Sucessfully!'); 
+				Session::flash('type', 'alert-success'); 
+			} else {
+				Session::flash('type', 'Inserted Unsucessfully!'); 
+				Session::flash('type', 'alert-danger'); 
+			}
+		return Redirect::to('Accounting/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 	}
 
 }

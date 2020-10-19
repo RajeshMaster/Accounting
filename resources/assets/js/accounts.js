@@ -69,11 +69,11 @@ $(document).ready(function() {
 				});
 			},
 			rules: {
-				date: {required: true, date: true,minlength:10,correctformatdate: true},
-				mainsubject: {required: true},
-				bank: {required: true},
-				amount_1: {requiredWithZero: true},
-				charge_1: {requiredWithZero: true},
+				transferDate: {required: true, date: true,minlength:10,correctformatdate: true},
+				transferMainExp: {required: true},
+				transferBank: {required: true},
+				transferAmount: {requiredWithZero: true},
+				transferFee: {requiredWithZero: true},
 			},
 			submitHandler: function(form) { // for demo
 				if($('#editflg').val() == "edit") {
@@ -120,11 +120,11 @@ $(document).ready(function() {
 				});
 			},
 			rules: {
-				date: {required: true, date: true,minlength:10,correctformatdate: true},
-				bank: {required: true},
-				mainsubject: {required: true},
-				amount_1: {requiredWithZero: true},
-				charge_1: {requiredWithZero: true},
+				autoDebitDate: {required: true, date: true,minlength:10,correctformatdate: true},
+				autoDebitBank: {required: true},
+				autoDebitMainExp: {required: true},
+				autoDebitAmount: {requiredWithZero: true},
+				autoDebitFee: {requiredWithZero: true},
 			},
 			submitHandler: function(form) { // for demo
 				if($('#editflg').val() == "edit") {
