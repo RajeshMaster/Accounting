@@ -35,7 +35,7 @@
 			{{ Form::hidden('bankids', $request->bankids , array('id' => 'bankids')) }}
 			{{ Form::hidden('branchids', $request->branchids , array('id' => 'branchids')) }}
 			{{ Form::hidden('balbankid', $request->balbankid , array('id' => 'balbankid')) }}
-			{{ Form::text('editflg', $request->editflg , array('id' => 'editflg')) }}
+			{{ Form::hidden('editflg', $request->editflg , array('id' => 'editflg')) }}
 			{{ Form::hidden('startdate', $request->startdate , array('id' => 'startdate')) }}
 			{{ Form::hidden('balance', $request->balance , array('id' => 'balance')) }}
 			{{ Form::hidden('date_month', $request->date_month  , array('id' => 'date_month')) }}
