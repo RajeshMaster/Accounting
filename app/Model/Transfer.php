@@ -1016,6 +1016,9 @@ class Transfer extends Model {
 		} else {
 			$sumitedInsert = "0";
 		}
+		if($request->empid == "") {
+			$request->empid = $request->empID;
+		}
 		$splitdate = explode("-", $request->txt_startdate);
 		$valueget = self:: getbktrbillno(10);
 		$bank = explode("-", $request->bankname);

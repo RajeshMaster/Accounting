@@ -1191,7 +1191,7 @@ return [
 	'lbl_paidamt' => 'Paid Amount',
 
 	/* Additing  */
-	'lbl_additing' => 'Auditing',
+	'lbl_auditing' => 'Auditing',
 	'lbl_autodebit' => 'Auto Debit',
 	'lbl_income' => 'Income',
 	
@@ -1200,5 +1200,11 @@ return [
 	'lbl_empwise' => 'Employeewise',
 	'lbl_mastwise' => 'Masterwise',
 	'lbl_train_daily' => 'Train Daily',
+	'lbl_totpay_amt' => 'Total payment',
+	'lbl_totded_amt' => 'Total Deduction',
+	'lbl_transferdetails' => 'Transfer Details',
+	'lbl_salledger' => 'Payroll',
+	'lbl_history' => 'History',
+	'lbl_gensen_download' => 'Gensen Download',
 
 ];

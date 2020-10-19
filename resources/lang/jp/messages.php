@@ -1375,4 +1375,11 @@ return [
 	'lbl_empwise' => '社員側',
 	'lbl_mastwise' => 'マスター側',
 	'lbl_train_daily' => 'Train Daily',
+	'lbl_totpay_amt' => '支給合計',
+	'lbl_totded_amt' => '控除合計',
+	'lbl_transferdetails' => '振込明細',
+	'lbl_salledger' => '給料台帳',
+	'lbl_history' => '履歴',
+	'lbl_gensen_download' => '原線 ダウンロード',
+	
 ];
