@@ -52,25 +52,19 @@ class AccBankDetail extends Model {
 						->where('transcationType','=',9)
 						->get();
 						// ->toSql();
-
 		return $query;
 	}
 
 	public static function insertRec($request) {
-		print_r($request->all());exit;
-
 		$name = Session::get('FirstName').' '.Session::get('LastName');
 		$db = DB::connection('mysql');
 		$insert= $db->table('acc_cashRegister')->insert([
 			'emp_ID' => "",
-			'date' => $request->date,
-			'transcationType' => $request->transtype,
-			'bankIdFrom' => $request->bank,
+			'date' => $request->startdate,
+			'transcationType' => 9,
+			'bankIdFrom' => $request->bankid,
 			'bankIdTo' => $request->transfer,
-			'amount' => $request->amount,
-			'fee' => $request->fee,
-			'content' => $request->content,
-			'remarks' => $request->remarks,
+			'amount' => $request->txt_salary,
 			'createdBy' => $name,
 			'UpdatedBy' => $name,
 			]);

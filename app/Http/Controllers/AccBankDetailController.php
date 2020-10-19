@@ -50,17 +50,18 @@ class AccBankDetailController extends Controller {
 			$bankdetailindex[$i]['bankId'] = $value->bnkid;
 			$bankdetailindex[$i]['brnchid'] = $value->brnchid;
 
-
-
-			$baseAmtInsChk = AccBankdetail::baseAmtInsChk($value->id);
-			if ($baseAmtInsChk != "") {
-				$bankdetailindex[$i]['baseAmtInsChk'] = 0;
-			} else {
+			$baseAmtInsChk = array();
+			$baseAmtVal = 0;
+			$baseAmtInsChk = AccBankdetail::baseAmtInsChk($value->bnkid);
+			if (isset($baseAmtInsChk[0])) {
 				$bankdetailindex[$i]['baseAmtInsChk'] = 1;
+				$baseAmtVal = $baseAmtInsChk[0]->amount;
+			} else {
+				$bankdetailindex[$i]['baseAmtInsChk'] = 0;
 			}
-			$bankrectype1 = AccBankdetail::bankrectype1($value->id);
-			$bankrectype2 = AccBankdetail::bankrectype2($value->id);
-			$bankrectype3 = AccBankdetail::bankrectype3($value->id);
+			$bankrectype1 = AccBankdetail::bankrectype1($value->bnkid);
+			$bankrectype2 = AccBankdetail::bankrectype2($value->bnkid);
+			$bankrectype3 = AccBankdetail::bankrectype3($value->bnkid);
 
 			$type1Total = 0; 
 			$type2Total = 0; 
@@ -77,10 +78,13 @@ class AccBankDetailController extends Controller {
 			for ($j=0; $j < count($bankrectype3) ; $j++) {
 				$type3Total += $bankrectype3[$j]->amount + $bankrectype3[$j]->fee;
 			}
-			$singlebanktotal =  $type2Total - ($type1Total +$type3Total);
+			$singlebanktotal =  $baseAmtVal + $type2Total - ($type1Total +$type3Total);
 			$bankdetailindex[$i]['balanceAmt'] = $singlebanktotal;
 			$i++;
 		}
+	/*echo "<pre>";
+		print_r($bankdetailindex);
+		echo "</pre>";*/
 		return view('AccBankdetail.index',[
 								'bankdetailindex' => $bankdetailindex,
 								'index' => $index,
@@ -92,7 +96,6 @@ class AccBankDetailController extends Controller {
 	}
 
 	function addeditprocess(Request $request) {
-		print_r($request->all());exit;
 			if($request->editflg == "1") {
 			$insert = AccBankdetail::insertRec($request);
 			if($insert) {
@@ -102,13 +105,13 @@ class AccBankDetailController extends Controller {
 				Session::flash('type', 'Inserted Unsucessfully!'); 
 				Session::flash('type', 'alert-danger'); 
 			}
-			Session::flash('id', $fetch[0]->id); 
+			Session::flash('id', $insert); 
 			Session::flash('bankids', $request->bankids); 
 			Session::flash('branchids', $request->branchids); 
 			Session::flash('accno', $request->accno); 
 			Session::flash('bankid', $request->bankid); 
-			Session::flash('startdate', $fetch[0]->startDate); 
-			Session::flash('balbankid', $fetch[0]->bankId); 
+			Session::flash('startdate', $request->startDate); 
+			Session::flash('balbankid', $request->bankId); 
 			Session::flash('bankname', $request->bankname); 
 			Session::flash('branchname', $request->branchname);  
 		} else {
@@ -130,9 +133,9 @@ class AccBankDetailController extends Controller {
 			Session::flash('balbankid', $request->balbankid); 
 			Session::flash('bankname', $request->bankname); 
 			Session::flash('branchname', $request->branchname); 
-
-			return Redirect::to('Bankdetails/Viewlist?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 		}
+		return Redirect::to('AccBankDetail/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
+
 	}
 
 }
