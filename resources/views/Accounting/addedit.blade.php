@@ -35,6 +35,7 @@
 						'files' => true,
 						'method' => 'POST')) }}
 		{{ Form::hidden('mainmenu',$request->mainmenu, array('id' => 'mainmenu')) }}
+		{{ Form::hidden('hidGetDate','0', array('id' => 'hidGetDate')) }}
 	  
 <div class="row hline pm0">
 		<div class="col-xs-12">
@@ -73,6 +74,9 @@
 															'autocomplete' =>'off',
 															'class'=>'box11per form-control pl5 dob')) }}
 					<label class="mt10 ml2 fa fa-calendar fa-lg" for="date" aria-hidden="true"></label>
+					&nbsp;&nbsp;{{ Form::checkbox('getDate','', '', ['id' => 'getDate',	
+																		'onchange' => 'currentDate()',
+																		]) }}</label>
 			</div>
 		</div>
 
@@ -85,6 +89,7 @@
 														$expcash_sql[0]->bankname.'-'.$expcash_sql[0]->bankaccno : '',						array('name' =>'bank',
 																	'id'=>'bank',
 																	'data-label' => trans('messages.lbl_bank'),
+																	'onchange'=>'fnGetbankDetails();',
 																	'class'=>'pl5 widthauto'))}}
 				{{ Form::select('transfer',[null=>'']+$bankDetail,'', array('name' =>'transfer',
 																	'id'=>'transfer',
@@ -111,6 +116,7 @@
 																'style' => 'margin-bottom:5px;',
 																'data-label' => trans('messages.lbl_transaction'),
 																'onchange' => 'debitAmount()',
+																'checked' => 'true',
 																'class' => '')) }}
 					&nbsp {{ trans('messages.lbl_debit') }} &nbsp
 				</label>
@@ -177,6 +183,20 @@
 														'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
 														'data-label' => trans('messages.lbl_amount'),
 														'class'=>'box15per form-control pl5 ime_mode_disable')) }}
+
+				<span> / </span>
+				{{ Form::text('fee',(isset($expcash_sql[0]->fee)) ? number_format($expcash_sql[0]->fee) : 0,array('id'=>'fee', 
+														'name' => 'fee',
+														'style'=>'text-align:right;',
+														'maxlength' => 10,
+														'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
+														'onchange'=>'return fnCancel_check();',
+														'onblur' => 'return fnSetZero11(this.id);',
+														'onfocus' => 'return fnRemoveZero(this.id);',
+														'onclick' => 'return fnRemoveZero(this.id);',
+														'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
+														'data-label' => trans('messages.lbl_fee'),
+														'class'=>'box7per form-control pl5 ime_mode_disable')) }}
 			</div>
 		</div>
 		
@@ -197,7 +217,7 @@
 	<fieldset style="background-color: #DDF1FA;">
 		<div class="form-group">
 			<div align="center" class="mt5">
-				<button type="button" class="btn btn-success add box100 addeditprocess ml5">
+				<button type="submit" class="btn btn-success add box100 addeditprocess ml5">
 					<i class="fa fa-plus" aria-hidden="true"></i> {{ trans('messages.lbl_register') }}
 				</button>
 			

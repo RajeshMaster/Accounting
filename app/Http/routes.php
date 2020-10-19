@@ -474,14 +474,25 @@ Route::group(['prefix'=>'Tax','middleware' => 'auth'], function() {
     Route::any('empselectionprocess', 'TaxController@empselectionprocess');
 });
 
-// Accounting Process
+// Accounting Process by Rajesh
 Route::group(['prefix'=>'Accounting','middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
     Route::any('index', 'AccountingController@index');
     Route::any('addedit', 'AccountingController@addedit');
+    Route::any('bank_ajax', 'AccountingController@bank_ajax');
+    Route::any('addeditprocess', 'AccountingController@addeditprocess');
 });
 
-// Auditing Process
+
+// AccBankDetail Process by Rajesh
+Route::group(['prefix'=>'AccBankDetail','middleware' => 'auth'], function() {
+    Route::get('changelanguage', 'AjaxController@index');
+    Route::any('index', 'AccBankDetailController@index');
+    Route::any('add', 'AccBankDetailController@add');
+    Route::any('addeditprocess', 'AccBankDetailController@addeditprocess');
+});
+
+// Auditing Process by Rajesh
 Route::group(['prefix'=>'Auditing','middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
     Route::any('index', 'AuditingController@index');

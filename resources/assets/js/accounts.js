@@ -19,7 +19,6 @@ $(document).ready(function() {
 	});
 
 	$('.addeditprocess').click(function () {
-		alert();
 		$("#frmaccountingaddedit").validate({
 			showErrors: function(errorMap, errorList) {
 			// Clean up any tooltips for valid elements
@@ -46,13 +45,17 @@ $(document).ready(function() {
 				amount: {requiredWithZero: true},
 			},
 			submitHandler: function(form) {
-				alert("sss");
+				if(confirm(err_confreg)) {
+					pageload();
+					return true;
+				} else {
+					return false
+				}
 			}
 		});
 		$.validator.messages.required = function (param, input) {
-			alert();
 			var article = document.getElementById(input.id);
-			return article.dataset.label + err_fieldreq;
+			return article.dataset.label + "Required";
 		}
 		$.validator.messages.minlength = function (param, input) {
 			var article = document.getElementById(input.id);
@@ -165,4 +168,45 @@ function fnRemoveZero(fname) {
 		getvalue.focus();
 		getvalue.select();
 	}
+}
+
+function currentDate(){
+
+	if ($('#hidGetDate').val() == 0) {
+		$('#hidGetDate').val('1');
+		var today = new Date();
+		var dd = String(today.getDate()).padStart(2, '0');
+		var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+		var yyyy = today.getFullYear();
+		today =  yyyy + '-' + mm + '-' + dd;
+		$('#date').val(today);
+
+	} else {
+		$('#date').val('');
+		$('#hidGetDate').val('0');
+	}
+}
+
+function fnGetbankDetails() {
+
+	$('#transfer').find('option').not(':first').remove();
+	$('#transfer').val("");
+	bank =  $('#bank').val().split("-");
+	var bank = bank[1];
+
+	$.ajax({
+		type: 'GET',
+		dataType: "JSON",
+		url: 'bank_ajax',
+		data: {"bankacc": bank},
+		success: function(resp) {
+			for (i = 0; i < resp.length; i++) {
+				$('#transfer').append( '<option value="'+resp[i]["ID"]+'">'+resp[i]["BANKNAME"]+'</option>' );
+				// $('select[name="inchargeDetails"]').val(value);
+			}
+		},
+		error: function(data) {
+			// alert(data.status);
+		}
+	});
 }

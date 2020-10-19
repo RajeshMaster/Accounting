@@ -1368,6 +1368,7 @@ return [
 	'lbl_auditing' => 'Auditing',
 	'lbl_autodebit' => 'Auto Debit',
 	'lbl_income' => '収入',
+	'lbl_fee' => '料金',
 
 
 	/* Salary Calc */

@@ -353,9 +353,13 @@
 			<!-- //Customer sub -->
 			@endif
 	
-			@if(isset($request->mainmenu) && ($request->mainmenu == "Accounting"))
+			@if(isset($request->mainmenu) && ($request->mainmenu == "Accounting") || ($request->mainmenu == "AccBankDetail"))
 				<div id="accounting_sub_1">
 					<a href="{{ url('Accounting/index?mainmenu=Accounting&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_accounting') }}</a>
+				</div>
+
+				<div id="accounting_sub_4">
+					<a href="{{ url('AccBankDetail/index?mainmenu=AccBankDetail&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_bankdetail') }}</a>
 				</div>
 			@endif
 

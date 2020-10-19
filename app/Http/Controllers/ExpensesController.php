@@ -1199,18 +1199,25 @@ class ExpensesController extends Controller {
 											'sql' => $sql]);
 	}
 	public static function cashaddeditprocess(Request $request) {
+
 		$carry = 0;
 		if($request->cashflg == 1 || $request->cashflg == 3) {
 			$seperatemonandyr=explode("-" , $request->date);
+
 			$getkessanki = Expenses::kessanki_ListView($request);
 			$expbillno = Expenses::expbillno_ListView($request,$getkessanki[0]);
+
 			$checkSubmitCount = Expenses::checkSubmited($seperatemonandyr);
+
 			if($request->mainmenu != "pettycash") {
 				if ($request->cashflg == 3) {
 					$update = Expenses::addupdcash($request);
 				}
 			}
+
 			$insert=Expenses::addcash($request,$carry,$checkSubmitCount,$expbillno);
+		print_r($request->all());exit;
+			
 			if($request->mainmenu == "pettycash") {
 				$disp = Expenses::checkcashpettyadd($seperatemonandyr);
 				if($disp > 0) {

@@ -25,17 +25,57 @@ use PHPExcel_Style_Color;
 
 class AccountingController extends Controller {
 
+	/**
+	*
+	* Get  Process
+	* @author Rajesh
+	* @return object to particular view page
+	* Created At 2020/10/19
+	*
+	*/
 	function index(Request $request) {
 
 		return view('Accounting.index',[
-                                    'request' => $request]);
+									'request' => $request]);
 	}
 
-    function addedit(Request $request) {
-        $bankDetail = Accounting::fetchbanknames();
-        return view('Accounting.addedit',[
-                                    'request' => $request,
-                                    'bankDetail' => $bankDetail]);
-    }
+	/**
+	*
+	* view Addedit Page for Register
+	* @author Rajesh
+	* @return object to particular view page
+	* Created At 2020/10/19
+	*
+	*/
+	function addedit(Request $request) {
+		$bankDetail = Accounting::fetchbanknames();
+		return view('Accounting.addedit',[
+									'request' => $request,
+									'bankDetail' => $bankDetail]);
+	}
+
+	/**
+	*
+	* Get banck Process
+	* @author Rajesh
+	* @return object to particular view page
+	* Created At 2020/10/19
+	*
+	*/
+	public function bank_ajax(Request $request) {
+		$bankacc = $request->bankacc;
+		$getbankDtl = Accounting::fnGetbankName($bankacc);
+		$bankarray = json_encode($getbankDtl);
+		echo $bankarray;
+		exit();
+	}
+
+	function addeditprocess(Request $request) {
+
+		$insertProcess = Accounting::fninsert($request);
+print_r($insertProcess);exit;
+
+		print_r($request->all());exit;
+	}
 
 }
