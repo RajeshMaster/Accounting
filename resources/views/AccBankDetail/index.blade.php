@@ -52,7 +52,6 @@
 	</div>
 
 	<div class="pt43 minh300 pl15 pr15" style="padding:3px 3px 20px">
-
 		<table class="tablealternate CMN_tblfixed">
 			<colgroup>
 				<col width="4%">
@@ -122,9 +121,7 @@
 						<td class="text-center" colspan="6" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
 					</tr>
 				@endforelse
-
 			</tbody>
-
 		</table>
 
 	</div>
@@ -132,29 +129,21 @@
 	<div class="text-center pl13">
 
 		@if(!empty($index->total()))
-
 			<span class="pull-left mt24">
 				{{ $index->firstItem() }} ~ {{ $index->lastItem() }} / {{ $index->total() }}
 			</span>
-
 		@endif 
 
 		{{ $index->links() }}
-
 		<div class="CMN_display_block flr mr18">
-
 			{{ $index->linkspagelimit() }}
-
 		</div>
-
 	</div>
 
 	<!-- End Heading -->
 
 	{{ Form::close() }}
-
 	</article>
-
 	</div>
 
 @endsection

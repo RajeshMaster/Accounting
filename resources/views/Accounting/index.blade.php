@@ -150,6 +150,41 @@
 		</div>
 	</div>
 
+	<div class="pt43 minh300 pl15 pr15 mt10" style="padding:3px 3px 20px">
+		<table class="tablealternate CMN_tblfixed">
+			<colgroup>
+				<col width="4%">
+				<col>
+				<col width="12%">
+				<col width="12%">
+				<col width="8%">
+				<col width="16%">
+				<col width="12%">
+			</colgroup>
+
+			<thead class="CMN_tbltheadcolor">
+				<tr>
+					<th class="vam">{{ trans('messages.lbl_sno') }}</th>
+					<th class="vam">{{ trans('messages.lbl_Date') }}</th>
+					<th class="vam">{{ trans('messages.lbl_subject') }}</th>
+					<th class="vam">{{ trans('messages.lbl_content') }}</th>
+					<th class="vam">{{ trans('messages.lbl_debit') }}</th>
+					<th class="vam">{{ trans('messages.lbl_credit') }}</th>
+					<th class="vam">{{ trans('messages.lbl_balance') }}</th>
+					<th class="vam">{{ trans('messages.lbl_remarks') }</th>
+					<th class="vam">{{ trans('messages.lbl_file') }</th>
+					<th class="vam">{{ trans('messages.lbl_copy') }</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				
+				
+			</tbody>
+		</table>
+
+	</div>
+
 </article>
 </div>
 

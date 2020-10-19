@@ -1216,7 +1216,6 @@ class ExpensesController extends Controller {
 			}
 
 			$insert=Expenses::addcash($request,$carry,$checkSubmitCount,$expbillno);
-		print_r($request->all());exit;
 			
 			if($request->mainmenu == "pettycash") {
 				$disp = Expenses::checkcashpettyadd($seperatemonandyr);
