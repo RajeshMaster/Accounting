@@ -33,8 +33,13 @@ class Accounting extends Model {
 
 	public static function getautoincrement() {
 
-		$statement = DB::select("show table status like 'acc_cashregister'");
-		return $statement[0]->Auto_increment;
+		$statement = DB::select("show table status like 'acc_cashRegister'");
+		if (isset($statement[0]->Auto_increment)) {
+			$statement = $statement[0]->Auto_increment;
+		} else {
+			$statement = 1;
+		}
+		return $statement;
 
 	}
 

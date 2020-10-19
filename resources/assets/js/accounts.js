@@ -321,8 +321,17 @@ function fnGetbankDetails() {
 	});
 }
 
-function getdate() {
-	$('#date').val(dates);
+function getdate(page) {
+	if (page == "Cash") {
+		$('#date').val(dates);
+	} else if (page == "Transfer") {
+		$('#autoDebitDate').val(dates);
+	} else if (page == "AutoDebit") {
+		$('#autoDebitDate').val(dates);
+	} else {
+		$('#date').val(dates);
+	}
+	
 }
 
 function popupenable() {

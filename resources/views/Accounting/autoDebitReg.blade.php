@@ -84,7 +84,7 @@
 					<label class="mt10 ml2 fa fa-calendar fa-lg" for="autoDebitDate" 
 						aria-hidden="true">
 					</label>
-					<a href="javascript:getdate();" class="anchorstyle">
+					<a href="javascript:getdate('AutoDebit');" class="anchorstyle">
 					<img title="Current Date" class="box15" 
 						src="{{ URL::asset('resources/assets/images/add_date.png') }}"></a>
 				</div>

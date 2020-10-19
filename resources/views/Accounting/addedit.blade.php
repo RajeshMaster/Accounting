@@ -6,6 +6,7 @@
 @php use App\Http\Helpers; @endphp
 <script type="text/javascript">
 	var datetime = '<?php echo date('Ymdhis'); ?>';
+	var dates = '<?php echo date('Y-m-d'); ?>';
 	var accessDate = '<?php echo Auth::user()->accessDate; ?>';
 	var userclassification = '<?php echo Auth::user()->userclassification; ?>';
 	$(document).ready(function() {
@@ -80,9 +81,9 @@
 															'autocomplete' =>'off',
 															'class'=>'box11per form-control pl5 dob')) }}
 					<label class="mt10 ml2 fa fa-calendar fa-lg" for="date" aria-hidden="true"></label>
-					&nbsp;&nbsp;{{ Form::checkbox('getDate','', '', ['id' => 'getDate',	
-																		'onchange' => 'currentDate()',
-																		]) }}</label>
+					&nbsp;&nbsp;
+					<a href="javascript:getdate('Cash');" class="anchorstyle">
+						<img title="Current Date" class="box15" src="{{ URL::asset('resources/assets/images/add_date.png') }}"></a></label>
 			</div>
 		</div>
 
