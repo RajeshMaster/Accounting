@@ -1189,8 +1189,11 @@ return [
 	/* Accounting Invoice */
 	'lbl_accounting' => 'Accounting',
 	'lbl_paidamt' => 'Paid Amount',
-	/* Salary Calc */
 
+	/* Additing  */
+	'lbl_additing' => 'Additing',
+	
+	/* Salary Calc */
 	'lbl_amt_dif' => 'Amt Diff',
 	'lbl_empwise' => 'Employeewise',
 	'lbl_mastwise' => 'Masterwise',

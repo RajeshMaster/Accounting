@@ -134,6 +134,11 @@
 							{{ trans('messages.lbl_accounting') }}</a>
 						</li>
 
+						<li class="btn_additing jop_btn">
+							<a href="{{ url('Additing/index?mainmenu=Additing&time='.date('Ymdhis')) }}">
+							{{ trans('messages.lbl_additing') }}</a>
+						</li>
+
 						@if(Session::get('userclassification') == 4 || Session::get('userclassification') == 1)
 						<li class="btn_setting jop_btn">
 							<a href="{{ url('Setting/index?mainmenu=Setting&time='.date('Ymdhis')) }}">
@@ -348,15 +353,23 @@
 			<!-- //Customer sub -->
 			@endif
 	
-			@if(isset($request->mainmenu) && ($request->mainmenu == "Accounting" || $request->mainmenu == "salarycalc"))
+			@if(isset($request->mainmenu) && ($request->mainmenu == "Accounting"))
 				<div id="accounting_sub_1">
-					<a href="{{ url('Accounting/index?mainmenu=Accounting&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_invoice') }}</a>
+					<a href="{{ url('Accounting/index?mainmenu=Accounting&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_accounting') }}</a>
+				</div>
+			@endif
+
+			@if(isset($request->mainmenu) && ($request->mainmenu == "Additing" || $request->mainmenu == "salarycalc"))
+				<div id="additing_sub_1">
+					<a href="{{ url('Additing/index?mainmenu=Additing&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_invoice') }}</a>
 				</div>
 
-				<div id="accounting_sub_2">
+				<div id="additing_sub_2">
 					<a href="{{ url('salarycalc/index?mainmenu=salarycalc&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_salary_det') }}</a>
 				</div>
 			@endif
+
+
 			@if(isset($request->mainmenu) && ($request->mainmenu == "Setting" || $request->mainmenu == "Ourdetail"))
 			<!-- Setting Sub -->
 				<div id="setting_sub_1">

@@ -1361,12 +1361,13 @@ return [
     'lbl_alreadypaid' => 'Already Paid',
 
 	/* Accounting Invoice */
-
 	'lbl_accounting' => 'Accounting',
 	'lbl_paidamt' => 'Paid Amount',
 
-	/* Salary Calc */
+	/* Additing  */
+	'lbl_additing' => 'Additing',
 
+	/* Salary Calc */
 	'lbl_amt_dif' => '金額差',
 	'lbl_empwise' => '社員側',
 	'lbl_mastwise' => 'マスター側',

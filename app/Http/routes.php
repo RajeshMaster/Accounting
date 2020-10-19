@@ -480,6 +480,12 @@ Route::group(['prefix'=>'Accounting','middleware' => 'auth'], function() {
     Route::any('index', 'AccountingController@index');
 });
 
+// Account Process
+Route::group(['prefix'=>'Additing','middleware' => 'auth'], function() {
+    Route::get('changelanguage', 'AjaxController@index');
+    Route::any('index', 'AdditingController@index');
+});
+
 //Staff -> Salary Calculation
 Route::group(['prefix'=>'salarycalc','middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
