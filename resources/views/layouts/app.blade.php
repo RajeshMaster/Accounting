@@ -108,10 +108,6 @@
 							<a class="pageload" href="{{ url('Mailstatus/index?mainmenu=mail&time='.date('Ymdhis')) }}">
 							{{ trans('messages.lbl_mail') }}</a>
 						</li>
-						<li class="btn_master jop_btn">
-							<a href="{{ url('User/index?mainmenu=user&time='.date('Ymdhis')) }}">
-							{{ trans('messages.lbl_master') }}</a>
-						</li>
 						@if(Session::get('userclassification') == 4)
 						<li class="btn_customer jop_btn">
 							<a href="{{ url('EmpHistory/index?mainmenu=Employee&time='.date('Ymdhis')) }}">
@@ -319,21 +315,6 @@
 				</div>
 			<!-- //Mail Sub -->
 			@endif
-			@if (isset($request->mainmenu) && ($request->mainmenu == "user" || $request->mainmenu == "Bank_invoice")) 
-			<!-- Master Sub -->
-				<div id="master_sub_1">
-					<a class="pageload" href="{{ url('User/index?mainmenu=user&time='.date('Ymdhis')) }}" 
-						style="text-decoration:none;color:white;">
-					{{ trans('messages.lbl_user') }}</a>
-				</div>
-				@if(Session::get('userclassification') == 4)
-				<div id="master_sub_2">
-					<a href="{{ url('Bank/index?mainmenu=Bank_invoice&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">
-					{{ trans('messages.lbl_bank') }}</a>
-				</div>
-				@endif
-			<!-- //Master Sub -->
-			@endif
 			
 			@if (isset($request->mainmenu) && ($request->mainmenu == "Customer" || $request->mainmenu == "Employee" || $request->mainmenu == "MeetingDetails"))
 			<!-- Customer Sub -->
@@ -374,7 +355,7 @@
 			@endif
 
 
-			@if(isset($request->mainmenu) && ($request->mainmenu == "Setting" || $request->mainmenu == "Ourdetail"))
+			@if(isset($request->mainmenu) && ($request->mainmenu == "Setting" || $request->mainmenu == "Ourdetail" || $request->mainmenu == "user" || $request->mainmenu == "Bank_invoice"))
 			<!-- Setting Sub -->
 				<div id="setting_sub_1">
 					<a href="{{ url('Setting/index?mainmenu=Setting&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_setting') }}</a>
@@ -383,6 +364,17 @@
 				<div id="setting_sub_2">
 					<a href="{{ url('Ourdetail/index?mainmenu=Ourdetail&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_ourdetails') }}</a>
 				</div>
+				<div id="setting_sub_3">
+					<a class="pageload" href="{{ url('User/index?mainmenu=user&time='.date('Ymdhis')) }}" 
+						style="text-decoration:none;color:white;">
+					{{ trans('messages.lbl_user') }}</a>
+				</div>
+				@if(Session::get('userclassification') == 4)
+				<div id="setting_sub_4">
+					<a href="{{ url('Bank/index?mainmenu=Bank_invoice&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">
+					{{ trans('messages.lbl_bank') }}</a>
+				</div>
+				@endif
 			<!-- // Setting Sub -->
 			@endif
 			</div>

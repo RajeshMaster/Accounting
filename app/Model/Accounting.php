@@ -194,12 +194,13 @@ class Accounting extends Model {
 
 		$name = Session::get('FirstName').' '.Session::get('LastName');
 		$empId = "";
-		$empId = explode(";", $request->hidempid);
 		$bankacc = explode('-', $request->transferBank);
 
 		$db = DB::connection('mysql');
 
-		if ($empId != "") {
+		if ($request->hidempid != "") {
+			
+			$empId = explode(";", $request->hidempid);
 
 			foreach ($empId as $key => $value) {
 				$empArr = explode(",", $value);
@@ -248,13 +249,13 @@ class Accounting extends Model {
 
 		$name = Session::get('FirstName').' '.Session::get('LastName');
 		$loanId = "";
-		$loanId = explode(";", $request->hidloan);
 		$bankacc = explode('-', $request->autoDebitBank);
 
 		$db = DB::connection('mysql');
 
-		if ($loanId != "") {
+		if ($request->hidloan != "") {
 
+			$loanId = explode(";", $request->hidloan);
 			foreach ($loanId as $key => $value) {
 				$loanArr = explode(",", $value);
 				$insert = $db->table('acc_cashregister')
