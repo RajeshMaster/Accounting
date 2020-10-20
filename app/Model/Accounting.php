@@ -77,6 +77,7 @@ class Accounting extends Model {
 			$bankacc = explode('-', $request->transfer);
 			$transfer[0] = "";
 			$transfer[1] = "";
+			$request->fee = "";
 		}
 
 		$db = DB::connection('mysql');
@@ -194,7 +195,7 @@ class Accounting extends Model {
 						->leftJoin('mstbank', 'mstbank.BankName', '=', 'acc_cashregister.bankIdFrom')
 						->where('transcationType','!=',9)
 						->orderBy('bankIdFrom','ASC')
-						->orderBy('id','DESC')
+						->orderBy('acc_cashregister.date','ASC')
 						->get();
 						// ->toSql();
 		return $query;

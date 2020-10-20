@@ -193,7 +193,7 @@
 														'data-label' => trans('messages.lbl_amount'),
 														'class'=>'box15per form-control pl5 ime_mode_disable')) }}
 
-				<span> / </span>
+				<span class="feeclass"> / </span>
 				{{ Form::text('fee',(isset($expcash_sql[0]->fee)) ? number_format($expcash_sql[0]->fee) : 0,array('id'=>'fee', 
 														'name' => 'fee',
 														'style'=>'text-align:right;',
@@ -205,7 +205,7 @@
 														'onclick' => 'return fnRemoveZero(this.id);',
 														'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
 														'data-label' => trans('messages.lbl_fee'),
-														'class'=>'box7per form-control pl5 ime_mode_disable')) }}
+														'class'=>'box7per form-control pl5 ime_mode_disable feeclass')) }}
 			</div>
 		</div>
 		

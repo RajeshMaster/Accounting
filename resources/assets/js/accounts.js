@@ -187,6 +187,7 @@ function addedit(page,mainmenu) {
 
 // 
 function debitAmount() {
+	$(".feeclass").attr("style", "display:inline-block");
 	var amt = $('#amount').val();
 	if (amt == "-") {
 		amt = "";
@@ -210,6 +211,8 @@ function debitAmount() {
 
 // 
 function creditAmount() {
+	$(".feeclass").attr("style", "display:none");
+	$('#fee').val('');
 	var amt = $('#amount').val();
 	amt = Number(amt.trim().replace(/[, ]+/g, ""));
 	if (amt == "") {
@@ -228,6 +231,8 @@ function creditAmount() {
 }
 
 function banktransferselect() {
+	$(".feeclass").attr("style", "display:inline-block");
+	
 	var amt = $('#amount').val();
 	if (amt == "-") {
 		amt = "";
