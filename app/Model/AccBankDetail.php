@@ -75,7 +75,7 @@ class AccBankDetail extends Model {
 			'date' => $request->startdate,
 			'transcationType' => 9,
 			'bankIdFrom' => $request->bankid,
-			'branchIdFrom' => $request->branchids,
+			//'branchIdFrom' => $request->branchids,
 			'accountNumberFrom' => $request->accno,
 			'bankIdFrom' => $request->bankid,
 			'bankIdTo' => $request->transfer,

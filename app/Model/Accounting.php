@@ -61,27 +61,59 @@ class Accounting extends Model {
 							'fee' => preg_replace("/,/", "", $request->fee),
 							'content' => $request->content,
 							'remarks' => $request->remarks,
+							'pageFlg' => 1,
 							'createdBy' => $name,
 						]);
 		return $insert;
 	}
 
+	public static function updCashDtls($request) {
 
-	public static function insCashreduction($request ,$type) {
+		$name = Session::get('FirstName').' '.Session::get('LastName');
+		$bankacc = explode('-', $request->bank);
+		$update=DB::table('acc_cashregister')
+						->where('id', $request->editId)
+						->update(
+							array(
+								'emp_ID'	=> '', 
+								'date' => $request->date, 
+								'transcationType' => $request->transtype,
+								'bankIdFrom' => $bankacc[0],
+								'accountNumberFrom' => $bankacc[1],
+								'bankIdTo' => $request->transfer,
+								'amount' => preg_replace("/,/", "", $request->amount),
+								'fee' => preg_replace("/,/", "", $request->fee),
+								'content' => $request->content,
+								'remarks' => $request->remarks,
+								'pageFlg' => 1,
+								'transferId' => '',
+								'UpdatedBy' => $name
+							)
+						);
+		return $update;
+	}
+
+
+	public static function insCashreduction($request, $type, $maxID) {
 
 		$name = Session::get('FirstName').' '.Session::get('LastName');
 		if($type == 1){
 			$bankacc = explode('-', $request->bank);
 			$transfer = explode('-', $request->transfer);
+			$maxID = $maxID + 1 ;
 		} else {
 			$bankacc = explode('-', $request->transfer);
 			$transfer[0] = "";
 			$transfer[1] = "";
 			$request->fee = "";
+			if($request->edit_flg) {
+				$maxID = $maxID;
+			} else {
+				$maxID = $maxID + 1;
+			}
 		}
 
 		$db = DB::connection('mysql');
-
 		$insert = $db->table('acc_cashregister')
 					->insert([
 							'emp_ID' => "",
@@ -95,10 +127,57 @@ class Accounting extends Model {
 							'fee' => preg_replace("/,/", "", $request->fee),
 							'content' => $request->content,
 							'remarks' => $request->remarks,
+							'transferId' => $maxID,
+							'pageFlg' => 1,
 							'createdBy' => $name,
 						]);
-		return $insert;
+		$id = DB::getPdo()->lastInsertId();
+		return $id;
 	}
+
+	public static function updCashreduction($request, $type, $maxID) {
+		$name = Session::get('FirstName').' '.Session::get('LastName');
+		if($type == 1){
+			$bankacc = explode('-', $request->bank);
+			$transfer = explode('-', $request->transfer);
+			$maxID = $maxID;
+		} else {
+			$bankacc = explode('-', $request->transfer);
+			$transfer[0] = "";
+			$transfer[1] = "";
+			$request->fee = "";
+			$request->editId = $maxID;
+			$maxID = $maxID;
+		}
+		$update=DB::table('acc_cashregister')
+						->where('id', $request->editId)
+						->update(
+							array(
+								'emp_ID'	=> '', 
+								'date' => $request->date, 
+								'transcationType' => $type,
+								'bankIdFrom' => $bankacc[0],
+								'accountNumberFrom' => $bankacc[1],
+								'bankIdTo' => $transfer[0],
+								'accountNumberTo' => $transfer[1],
+								'amount' => preg_replace("/,/", "", $request->amount),
+								'fee' => preg_replace("/,/", "", $request->fee),
+								'content' => $request->content,
+								'remarks' => $request->remarks,
+								'pageFlg' => 1,
+								'transferId' => $maxID,
+								'UpdatedBy' => $name
+							)
+						);
+		return $update;
+	}
+
+	public static function DelCashDtls($request) {
+		$query = DB::table('acc_cashregister')
+  						->WHERE('id', '=', $request->oldTransferId)
+  						->DELETE();
+		return $query;
+  	}
 
 	public static function getMainExpName() {
 
@@ -132,6 +211,7 @@ class Accounting extends Model {
 							'remarks' => $request->transFerRemarks,
 							'fileDtl' => $fileName,
 							'createdBy' => $name,
+							'pageFlg' => 2,
 						]);
 
 		return $insert;
@@ -157,6 +237,7 @@ class Accounting extends Model {
 							'remarks' => $request->autoDebitRemarks,
 							'fileDtl' => $fileName,
 							'createdBy' => $name,
+							'pageFlg' => 3,
 						]);
 
 		return $insert;
@@ -242,6 +323,35 @@ class Accounting extends Model {
 						->where('id','=',$subId)
 						->get();
 						//->toSql();
+		return $query;
+	}
+
+	public static function fetchEditData($request) {
+		$db = DB::connection('mysql');
+		$query = $db->table('acc_cashregister')
+						->SELECT('acc_cashregister.*','bank.id As bankId','bank.AccNo','bank.FirstName','bank.LastName','bank.BankName','bank.Bank_NickName','dev_expensesetting.Subject','dev_expensesetting.Subject_jp')
+						->leftJoin('mstbank AS bank', function($join)
+							{
+								$join->on('acc_cashregister.bankIdFrom', '=', 'bank.BankName');
+								$join->on('acc_cashregister.accountNumberFrom', '=', 'bank.AccNo');
+							})
+						->leftJoin('dev_expensesetting', 'dev_expensesetting.id', '=', 'acc_cashregister.subjectId')
+						->where('transcationType','!=',9)
+						->where('acc_cashregister.id','=',$request->editId)
+						->orderBy('bankIdFrom','ASC')
+						->orderBy('acc_cashregister.date','ASC')
+						->get();
+
+						 // ->toSql();
+						// dd($query);
+		return $query;
+	}
+
+	public static function getMaxId() {
+		$db = DB::connection('mysql');
+		$query = $db->table('acc_cashregister')
+					->SELECT('id')
+					->max('id');
 		return $query;
 	}
 }

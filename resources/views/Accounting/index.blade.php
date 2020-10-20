@@ -123,7 +123,8 @@
 		{{ Form::hidden('sortOptn',$request->invoicesort , array('id' => 'sortOptn')) }}
 	    {{ Form::hidden('sortOrder', $request->sortOrder , array('id' => 'sortOrder')) }}
 		{{ Form::hidden('searchmethod', $request->searchmethod, array('id' => 'searchmethod')) }}
-		{{ Form::hidden('edit_flg ', '', array('id' => 'edit_flg ')) }}
+		{{ Form::hidden('edit_flg', '', array('id' => 'edit_flg')) }}
+		{{ Form::hidden('editId', '', array('id' => 'editId')) }}
 
 
 <!-- Start Heading -->
@@ -203,9 +204,7 @@
 					<tr>
 						<td>{{ $i+1 }}</td>
 						<td align="center">
-							<a href="javascript:editCashDtl('{{ $data['id'] }}');">
-								{{ $data['date'] }}
-							</a>
+							{{ $data['date'] }}
 						</td>
 						<td> {{ $data['subject'] }} </td>
 						<td>{{ $data['content'] }}</td>
@@ -231,7 +230,18 @@
 						</td>
 						<td>{{ $data['remarks']}}</td>
 						<td>{{ $data['fileDtl'] }}</td>
-						<td></td>
+							
+						<td>
+							@if($data['id'] != $data['transferId'])
+							<a href="javascript:editCashDtl('{{ $data['id'] }}','1','{{ $data['pageFlg'] }}');">
+								<img class="vam" src="{{ URL::asset('resources/assets/images/edit.png') }}" width="20" height="20">
+							</a>
+
+							<a href="javascript:copyCashDtl('{{ $data['id'] }}');">
+								<img class="vam" src="{{ URL::asset('resources/assets/images/copy.png') }}" width="20" height="20">
+							</a>
+							@endif
+						</td>
 					</tr>
 					
 					@php 

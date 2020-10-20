@@ -37,6 +37,9 @@
 						'method' => 'POST')) }}
 		{{ Form::hidden('mainmenu',$request->mainmenu, array('id' => 'mainmenu')) }}
 		{{ Form::hidden('hidGetDate','0', array('id' => 'hidGetDate')) }}
+		{{ Form::hidden('edit_flg', $request->edit_flg, array('id' => 'edit_flg')) }}
+		{{ Form::hidden('editId', $request->editId, array('id' => 'editId')) }}
+
 	  
 <div class="row hline pm0">
 		<div class="col-xs-12">
@@ -75,7 +78,7 @@
 				<label>{{ trans('messages.lbl_Date') }}<span class="fr ml2 red"> * </span></label>
 			</div>
 			<div class="col-xs-9">
-					{{ Form::text('date',(isset($expcash_sql[0]->date)) ? $expcash_sql[0]->date : '',array('id'=>'date', 
+					{{ Form::text('date',(isset($editData[0]->date)) ? $editData[0]->date : '',array('id'=>'date', 
 															'name' => 'date',
 															'data-label' => trans('messages.lbl_Date'),
 															'autocomplete' =>'off',
@@ -92,16 +95,25 @@
 				<label>{{ trans('messages.lbl_bank') }}<span class="fr ml2 red"> * </span></label>
 			</div>
 			<div class="col-xs-9">
-				{{ Form::select('bank',[null=>'']+$bankDetail,(isset($expcash_sql[0]->bankname)) ? 
-														$expcash_sql[0]->bankname.'-'.$expcash_sql[0]->bankaccno : '',						array('name' =>'bank',
+				{{ Form::select('bank',[null=>'']+$bankDetail,(isset($editData[0]->bankIdFrom)) ? 
+														$editData[0]->bankIdFrom.'-'.$editData[0]->accountNumberFrom : '',						array('name' =>'bank',
 																	'id'=>'bank',
 																	'data-label' => trans('messages.lbl_bank'),
 																	'onchange'=>'fnGetbankDetails();',
 																	'class'=>'pl5 widthauto'))}}
-				{{ Form::select('transfer',[null=>'']+$bankDetail,'', array('name' =>'transfer',
+				<?php $style = "style='display:none'";
+					if (isset($editData[0]) && $editData[0]->transferId != "" && $editData[0]->transcationType == 1) {
+						$style = "style=''";
+				}?>
+
+				
+
+
+				{{ Form::select('transfer',[null=>'']+$bankDetail,(isset($editData[0]->bankIdTo)) ? 
+														$editData[0]->bankIdTo.'-'.$editData[0]->accountNumberTo : '', array('name' =>'transfer',
 																	'id'=>'transfer',
 																	'data-label' =>  trans('messages.lbl_bank'),
-																	'style' => 'display:none;',
+																	$style,
 																	'class'=>'pl5 widthauto'))}}
 			</div>
 		</div>
@@ -113,10 +125,10 @@
 			<div class="col-xs-9">
 				<label style="font-weight: normal;">
 				<?php $disableRadio = "";
-					if ($request->cashflg == 2 && $expcash_sql[0]->transaction_flg == 3) {
-									// $disableRadio = "disabled='disabled'"; 
+					if (isset($editData[0]) && $editData[0]->transferId != "" && $editData[0]->transcationType == 1) {
+						$editData[0]->transcationType = 3; 
 				}?>
-					{{ Form::radio('transtype', '1', (isset($expcash_sql[0]->transaction_flg) && ($expcash_sql[0]->transaction_flg)=="1") ? $expcash_sql[0]->transaction_flg : '', array('id' =>'transtype',
+					{{ Form::radio('transtype', '1', (isset($editData[0]->transcationType) && ($editData[0]->transcationType)=="1") ? $editData[0]->transcationType : '', array('id' =>'transtype',
 																'name' => 'transtype',
 																$disableRadio,
 																'onkeypress'=>'return numberonly(event)',
@@ -128,7 +140,7 @@
 					&nbsp {{ trans('messages.lbl_debit') }} &nbsp
 				</label>
 				<label style="font-weight: normal;">
-					{{ Form::radio('transtype', '2', (isset($expcash_sql[0]->transaction_flg) && ($expcash_sql[0]->transaction_flg)=="2") ? $expcash_sql[0]->transaction_flg : '', array('id' =>'transtype1',
+					{{ Form::radio('transtype', '2', (isset($editData[0]->transcationType) && ($editData[0]->transcationType)=="2") ? $editData[0]->transcationType : '', array('id' =>'transtype1',
 																'name' => 'transtype',
 																$disableRadio,
 																'style' => 'margin-bottom:5px;',
@@ -138,7 +150,7 @@
 					&nbsp {{ trans('messages.lbl_credit') }} &nbsp
 				</label>
 				<label style="font-weight: normal;">
-					{{ Form::radio('transtype', '3', (isset($expcash_sql[0]->transaction_flg) && ($expcash_sql[0]->transaction_flg)=="3") ? $expcash_sql[0]->transaction_flg : '', array('id' =>'transtype2',
+					{{ Form::radio('transtype', '3', (isset($editData[0]->transcationType) && ($editData[0]->transcationType)=="3") ? $editData[0]->transcationType : '', array('id' =>'transtype2',
 																'name' => 'transtype',
 																$disableRadio,
 																'style' => 'margin-bottom:5px;',
@@ -149,7 +161,7 @@
 				</label>
 
 				<label style="font-weight: normal;">
-					{{ Form::radio('transtype', '4', (isset($expcash_sql[0]->transaction_flg) && ($expcash_sql[0]->transaction_flg)=="3") ? $expcash_sql[0]->transaction_flg : '', 
+					{{ Form::radio('transtype', '4', (isset($editData[0]->transcationType) && ($editData[0]->transcationType)=="4") ? $editData[0]->transcationType : '', 
 								array('id' =>'transtype3',
 																'name' => 'transtype',
 																$disableRadio,
@@ -159,6 +171,11 @@
 																'class' => '')) }}
 					&nbsp {{ trans('messages.lbl_income') }} &nbsp
 				</label>
+
+				@if(isset($editData[0]))
+					{{ Form::hidden('oldTransType', $editData[0]->transcationType, array('id' => 'oldTransType')) }}
+					{{ Form::hidden('oldTransferId', $editData[0]->transferId, array('id' => 'oldTransferId')) }}
+				@endif
 			</div>
 		</div>
 
@@ -167,7 +184,7 @@
 				<label>{{ trans('messages.lbl_content') }}<span class="fr ml2 red" style="visibility: hidden"> * </span></label>
 			</div>
 			<div class="col-xs-9">
-				{{ Form::text('content',(isset($expcash_sql[0]->content)) ? $expcash_sql[0]->content : '',
+				{{ Form::text('content',(isset($editData[0]->content)) ? $editData[0]->content : '',
 									array('id'=>'content', 
 															'name' => 'content',
 															'data-label' => trans('messages.lbl_content'),
@@ -180,7 +197,7 @@
 				<label>{{ trans('messages.lbl_amount') }}<span class="fr ml2 red"> * </span></label>
 			</div>
 			<div class="col-xs-9">
-				{{ Form::text('amount',(isset($expcash_sql[0]->amount)) ? number_format($expcash_sql[0]->amount) : 0,array('id'=>'amount', 
+				{{ Form::text('amount',(isset($editData[0]->amount)) ? number_format($editData[0]->amount) : 0,array('id'=>'amount', 
 														'name' => 'amount',
 														'style'=>'text-align:right;',
 														'maxlength' => 10,
@@ -194,7 +211,7 @@
 														'class'=>'box15per form-control pl5 ime_mode_disable')) }}
 
 				<span class="feeclass"> / </span>
-				{{ Form::text('fee',(isset($expcash_sql[0]->fee)) ? number_format($expcash_sql[0]->fee) : 0,array('id'=>'fee', 
+				{{ Form::text('fee',(isset($editData[0]->fee)) ? number_format($editData[0]->fee) : 0,array('id'=>'fee', 
 														'name' => 'fee',
 														'style'=>'text-align:right;',
 														'maxlength' => 10,
@@ -214,7 +231,7 @@
 				<label>{{ trans('messages.lbl_remarks') }}<span class="fr ml2 red" style="visibility: hidden;"> * </span></label>
 			</div>
 			<div class="col-xs-9">
-				{{ Form::textarea('remarks',(isset($expcash_sql[0]->remark_dtl)) ? $expcash_sql[0]->remark_dtl : '', 
+				{{ Form::textarea('remarks',(isset($editData[0]->remarks)) ? $editData[0]->remarks : '', 
 						array('name' => 'remarks',
 							  'class' => 'box40per form-control','size' => '30x4')) }}
 			</div>
@@ -226,9 +243,15 @@
 	<fieldset style="background-color: #DDF1FA;">
 		<div class="form-group">
 			<div align="center" class="mt5">
-				<button type="submit" class="btn btn-success add box100 addeditprocess ml5">
-					<i class="fa fa-plus" aria-hidden="true"></i> {{ trans('messages.lbl_register') }}
-				</button>
+				@if($request->edit_flg)
+					<button type="submit" class="btn btn-warning add box100 addeditprocess ml5" title="Edit">
+						<i class="fa fa-plus" aria-hidden="true"></i> {{ trans('messages.lbl_edit') }}
+					</button>
+				@else
+					<button type="submit" class="btn btn-success add box100 addeditprocess ml5">
+						<i class="fa fa-plus" aria-hidden="true"></i> {{ trans('messages.lbl_register') }}
+					</button>
+				@endif
 				<a href = "javascript:gotoindexpage('Cash','{{$request->mainmenu}}');" 
 					class="btn btn-danger box120 white"><i class="fa fa-times" aria-hidden="true"></i> {{ trans('messages.lbl_cancel') }}
 				</a>
