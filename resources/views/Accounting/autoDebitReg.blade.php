@@ -119,6 +119,29 @@
 
 			<div class="col-xs-12 mt5">
 				<div class="col-xs-3 text-right clr_blue">
+					<label>{{ trans('messages.lbl_loanname') }}
+						<span class="fr ml2 red" style="visibility: hidden"> * </span>
+					</label>
+				</div>
+				<div class="col-xs-9">
+					{{ Form::hidden('hidloan', '', array('id' => 'hidloan')) }}
+					{{ Form::hidden('hidcheckDeb', '', array('id' => 'hidcheckDeb')) }}
+					{{ Form::text('loanName',null,
+							array('id'=>'loanName', 
+									'name' => 'loanName',
+									'readonly',
+									'data-label' => trans('messages.lbl_loanname'),
+									'class'=>'box31per form-control pl5')) }}
+					<button type="button" id="clear" class="btn btn-danger box75 pt3 h30 ml5 mb3" 
+							style ="color:white;cursor: pointer;" 
+							onclick="return fndebitclear();">
+								{{ trans('messages.lbl_clear') }}
+					</button> 
+				</div>
+			</div>
+
+			<div class="col-xs-12 mt5">
+				<div class="col-xs-3 text-right clr_blue">
 					<label>{{ trans('messages.lbl_content') }}<span class="fr ml2 red" style="visibility: hidden"> * </span></label>
 				</div>
 				<div class="col-xs-9">
@@ -130,6 +153,8 @@
 				</div>
 			</div>
 
+			
+
 			<div class="col-xs-12 mt5">
 				<div class="col-xs-3 text-right clr_blue">
 					<label>{{ trans('messages.lbl_amount') }}
@@ -139,10 +164,9 @@
 					</label>
 				</div>
 				<div class="col-xs-9 CMN_display_block">
-					{{ Form::text('autoDebitAmount',(isset($expcash_sql[0]->amount)) ? number_format($expcash_sql[0]->amount) : 0,
+					{{ Form::text('autoDebitAmount',(isset($expcash_sql[0]->amount)) ? number_format($expcash_sql[0]->amount) : "",
 							array('id'=>'autoDebitAmount',
 									'name' => 'autoDebitAmount',
-									'maxlength' => '14',
 									'style'=>'text-align:right;padding-right:4px;',
 									'class'=>'box15per ime_mode_disable',
 									'onblur' => 'return fnSetZero11(this.id);',
@@ -152,10 +176,9 @@
 									'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
 									'data-label' => trans('messages.lbl_amount'))) }}
 					<span class=" ml7 black" style=" font-weight: bold;font-size: 17px;"> / </span>
-					{{ Form::text('autoDebitFee',(isset($expcash_sql[0]->autoDebitFee)) ? number_format($expcash_sql[0]->autoDebitFee) : 0,
+					{{ Form::text('autoDebitFee',(isset($expcash_sql[0]->autoDebitFee)) ? number_format($expcash_sql[0]->autoDebitFee) : "",
 							array('id'=>'autoDebitFee',
 									'name' => 'transferFee',
-									'maxlength' => '14',
 									'style'=>'text-align:right;padding-right:4px;',
 									'class'=>'box7per ime_mode_disable ml7',
 									'onblur' => 'return fnSetZero11(this.id);',
@@ -202,7 +225,7 @@
 
 			<div class="form-group">
 				<div align="center" class="mt5">
-					<button type="button" class=" btn btn add box160" 
+					<button type="button" id="loanbutton" class=" btn btn add box160" 
 						onclick="return Getloanpopup();" 
 						style="margin-left: -10%!important;background-color: purple; color: #fff;">
 						{{ trans('messages.lbl_getloan') }}

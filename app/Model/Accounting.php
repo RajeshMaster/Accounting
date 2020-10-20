@@ -193,26 +193,53 @@ class Accounting extends Model {
 	public static function insTransferDtls($request,$fileName) {
 
 		$name = Session::get('FirstName').' '.Session::get('LastName');
+		$empId = "";
+		$empId = explode(";", $request->hidempid);
 		$bankacc = explode('-', $request->transferBank);
 
 		$db = DB::connection('mysql');
 
-		$insert = $db->table('acc_cashregister')
-					->insert([
-							'emp_ID' => $request->empid, 
-							'date' => $request->transferDate,
-							'transcationType' => 1,
-							'bankIdFrom' => $bankacc['0'],
-							'accountNumberFrom' => $bankacc['1'],
-							'amount' => preg_replace("/,/", "", $request->transferAmount),
-							'fee' => preg_replace("/,/", "", $request->transferFee),
-							'content' => $request->transferContent,
-							'subjectId' => $request->transferMainExp,
-							'remarks' => $request->transFerRemarks,
-							'fileDtl' => $fileName,
-							'createdBy' => $name,
-							'pageFlg' => 2,
-						]);
+		if ($empId != "") {
+
+			foreach ($empId as $key => $value) {
+				$empArr = explode(",", $value);
+				$insert = $db->table('acc_cashregister')
+							->insert([
+									'emp_ID' => $empArr['1'], 
+									'date' => $request->transferDate,
+									'transcationType' => 1,
+									'bankIdFrom' => $bankacc['0'],
+									'accountNumberFrom' => $bankacc['1'],
+									'amount' => preg_replace("/,/", "", $empArr['2']),
+									'fee' => preg_replace("/,/", "", $empArr['3']),
+									'content' => $request->transferContent,
+									'subjectId' => $request->transferMainExp,
+									'remarks' => $request->transFerRemarks,
+									'fileDtl' => $fileName,
+									'createdBy' => $name,
+									'pageFlg' => 2,
+								]);
+			}
+
+		} else {
+
+				$insert = $db->table('acc_cashregister')
+							->insert([
+									'emp_ID' => $request->empid, 
+									'date' => $request->transferDate,
+									'transcationType' => 1,
+									'bankIdFrom' => $bankacc['0'],
+									'accountNumberFrom' => $bankacc['1'],
+									'amount' => preg_replace("/,/", "", $request->transferAmount),
+									'fee' => preg_replace("/,/", "", $request->transferFee),
+									'content' => $request->transferContent,
+									'subjectId' => $request->transferMainExp,
+									'remarks' => $request->transFerRemarks,
+									'fileDtl' => $fileName,
+									'createdBy' => $name,
+									'pageFlg' => 2,
+								]);
+		}
 
 		return $insert;
 	}
@@ -220,25 +247,53 @@ class Accounting extends Model {
 	public static function insAutoDebitDtls($request,$fileName) {
 
 		$name = Session::get('FirstName').' '.Session::get('LastName');
+		$loanId = "";
+		$loanId = explode(";", $request->hidloan);
 		$bankacc = explode('-', $request->autoDebitBank);
 
 		$db = DB::connection('mysql');
 
-		$insert = $db->table('acc_cashregister')
-					->insert([
-							'date' => $request->autoDebitDate,
-							'transcationType' => 1,
-							'bankIdFrom' => $bankacc['0'],
-							'accountNumberFrom' => $bankacc['1'],
-							'amount' => preg_replace("/,/", "", $request->autoDebitAmount),
-							'fee' => preg_replace("/,/", "", $request->autoDebitFee),
-							'content' => $request->autoDebitContent,
-							'subjectId' => $request->autoDebitMainExp,
-							'remarks' => $request->autoDebitRemarks,
-							'fileDtl' => $fileName,
-							'createdBy' => $name,
-							'pageFlg' => 3,
-						]);
+		if ($loanId != "") {
+
+			foreach ($loanId as $key => $value) {
+				$loanArr = explode(",", $value);
+				$insert = $db->table('acc_cashregister')
+							->insert([
+									'loan_ID' => $loanArr['1'], 
+									'loanName' => $loanArr['0'], 
+									'date' => $request->autoDebitDate,
+									'transcationType' => 1,
+									'bankIdFrom' => $bankacc['0'],
+									'accountNumberFrom' => $bankacc['1'],
+									'amount' => preg_replace("/,/", "", $loanArr['2']),
+									'fee' => preg_replace("/,/", "", $loanArr['3']),
+									'content' => $request->autoDebitContent,
+									'subjectId' => $request->autoDebitMainExp,
+									'remarks' => $request->autoDebitRemarks,
+									'fileDtl' => $fileName,
+									'createdBy' => $name,
+									'pageFlg' => 3,
+								]);
+			}
+
+		} else {
+
+			$insert = $db->table('acc_cashregister')
+						->insert([
+								'date' => $request->autoDebitDate,
+								'transcationType' => 1,
+								'bankIdFrom' => $bankacc['0'],
+								'accountNumberFrom' => $bankacc['1'],
+								'amount' => preg_replace("/,/", "", $request->autoDebitAmount),
+								'fee' => preg_replace("/,/", "", $request->autoDebitFee),
+								'content' => $request->autoDebitContent,
+								'subjectId' => $request->autoDebitMainExp,
+								'remarks' => $request->autoDebitRemarks,
+								'fileDtl' => $fileName,
+								'createdBy' => $name,
+								'pageFlg' => 3,
+							]);
+		}
 
 		return $insert;
 	}
@@ -321,12 +376,12 @@ class Accounting extends Model {
 	public static function getSalaryDtls($request) {
 
 		$db = DB::connection('mysql_Salary');
-		$MnthYear = explode("-", $request->transferDate);
+		$MnthYear = explode('-', date("Y-m", strtotime("-1 months", strtotime($request->transferDate))));
 		$query = $db->table('inv_salaryplus_main')
 					->SELECT('Emp_ID','Salary','Deduction','Travel','salamt')
 					->where('delFlg','=',0);
-		$query = $query->WHERE(DB::raw("SUBSTRING(salary.year_mon, 1, 4)"),'=', $MnthYear[0]);
-		$query = $query->WHERE(DB::raw("SUBSTRING(salary.year_mon, 6, 2)"),'=', $MnthYear[1])
+		$query = $query->WHERE(DB::raw("SUBSTRING(year_mon, 1, 4)"),'=', $MnthYear[0]);
+		$query = $query->WHERE(DB::raw("SUBSTRING(year_mon, 6, 2)"),'=', $MnthYear[1])
 						->orderBy('Emp_ID','ASC')
 						->get();
 		return $query;
@@ -368,17 +423,19 @@ class Accounting extends Model {
 						->orderBy('bankIdFrom','ASC')
 						->orderBy('acc_cashregister.date','ASC')
 						->get();
-
-						 // ->toSql();
+						// ->toSql();
 						// dd($query);
 		return $query;
 	}
 
-	public static function getMaxId() {
-		$db = DB::connection('mysql');
-		$query = $db->table('acc_cashregister')
-					->SELECT('id')
-					->max('id');
+	public static function fnGetEmpName($Emp_ID){
+
+		$db = DB::connection('mysql_MB');
+		$query = $db->table('emp_mstemployees')
+					->select('FirstName','LastName','KanaFirstName','KanaLastName')
+					->where('Emp_ID','=',$Emp_ID)
+					->get();
 		return $query;
 	}
+
 }

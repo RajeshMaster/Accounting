@@ -241,13 +241,19 @@ class AccountingController extends Controller {
 
 		$getSalaryDtls = array();
 		$SalaryDtls = array();
-		$salary_det = Accounting::getsalaryDetailsnodelflg('','1');
-		$salary_ded = Accounting::getsalaryDetailsnodelflg('','2');
+
+		$salary_det = Accounting::getsalaryDetailsnodelflg($request,1);
+		$salary_ded = Accounting::getsalaryDetailsnodelflg($request,2);
+		
 		if ($request->transferDate != "") {
 			$getSalaryDtls = Accounting::getSalaryDtls($request);
+
 			foreach ($getSalaryDtls as $key => $value) {
 
-				// For Salary Details
+				$SalaryEmpName = Accounting::fnGetEmpName($value->Emp_ID);
+				$SalaryDtls[$value->Emp_ID]['empName'] = $SalaryEmpName[0]->LastName;
+
+				// SalaryPlus Salary Details
 				$arr1 = array();
 				$arr2 = array();
 				$salArr = array();
@@ -273,64 +279,53 @@ class AccountingController extends Controller {
 						if ($key2 != '') {
 							if($key2 == isset($arr2[$key2])) {
 								$salary += $arr2[$key2];
-								$get_master_tot[$a][$key2] = $arr2[$key2];
-							} else {
-								$get_master_tot[$a][$key2] = 0;
-							}
-						}
+							} 
+						} 
 						$x++;
-						$salDetalilsTotal[$key2] = array_sum(array_column($get_master_tot,$value2));
 					}
 				}
 				$SalaryDtls[$value->Emp_ID]['Salary'] = $salary;
 
-				// Salary Deduction
+				// SalaryPlus Deduction Details
 				$arr3 = array();
 				$arr4 = array();
 				$dedArr = array();
 				$deduction = "";
-	    		if ($value->Deduction != "") {
+				if ($value->Deduction != "") {
 					$deductionVal = explode('##', mb_substr($value->Deduction, 0, -2));
-					foreach ($deductionVal as $key => $value_key) {
-						$dedFinal = explode('$', $value_key);
-						$arr3[$key] = $dedFinal[0];
+					foreach ($deductionVal as $dedKey => $dedVal) {
+						$dedFinal = explode('$', $dedVal);
+						$arr3[$dedKey] = $dedFinal[0];
 						$arr4[$dedFinal[0]] = $dedFinal[1];
 					}
-	    		}
-				foreach ($salary_ded as $key2 => $value2) {
-					$ded_arr[$value2->Salarayid] = $value2->Salarayid;
 				}
-	    		$dedresult_a = array_intersect($ded_arr,$arr3);
-	    		$dedresult_b = array_diff($ded_arr,$arr3);
-	    		$dedresult = array_merge($dedresult_a,$dedresult_b);
-	    		ksort($dedresult);
+				foreach ($salary_ded as $key3 => $value3) {
+					$ded_arr[$value3->Salarayid] = $value3->Salarayid;
+				}
+				$dedresult_a = array_intersect($ded_arr,$arr3);
+				$dedresult_b = array_diff($ded_arr,$arr3);
+				$dedresult = array_merge($dedresult_a,$dedresult_b);
+				ksort($dedresult);
 				if(count($salary_ded)!="") {
 					$y = 0;
-					foreach ($dedresult as $key2 => $value2) {
-						if ($key2 != '') {
-			    			if($key2 == isset($arr4[$key2])) {
-			    				$deduction += $arr4[$key2];
-			    				$get_master_tot1[$a][$key2] = $arr4[$key2];
-			    			}
-		    			}
-		    			$y++;
-		    			$dedDetalilsTotal[$key2] = array_sum(array_column($get_master_tot1,$value2));
-		    		}
+					foreach ($dedresult as $key4 => $value4) {
+						if ($key4 != '') {
+							if($key4 == isset($arr4[$key4])) {
+								$deduction += $arr4[$key4];
+							}
+						}
+						$y++;
+					}
 				}
-				$tot_deduct_amt += $deduction;
-			
-				
 				$SalaryDtls[$value->Emp_ID]['Deduction'] = $deduction;
-				$SalaryDtls[$value->Emp_ID]['Travel'] = $value->Travel;
-				$SalaryDtls[$value->Emp_ID]['salamt'] = $value->salamt;
+
+				$SalaryDtls[$value->Emp_ID]['Amount'] = $salary + $deduction + $value->Travel;
 			}
 		}
-		print_r($SalaryDtls);
-		echo "<br>";
-		exit();
 
 		return view('Accounting.salarydetailspopup',['request' => $request,
-														'getSalaryDtls' => $getSalaryDtls
+														'getSalaryDtls' => $getSalaryDtls,
+														'SalaryDtls' => $SalaryDtls
 													]);
 	}
 

@@ -149,6 +149,75 @@ $(document).ready(function() {
 		}
 	});
 
+	// For Loan Select Popup
+	$('.selectloan').click(function(){
+		var hidloan = $("#hidloan").val();
+		var confirmgroup = confirm("Do You Want To Select Loan?");
+		if(confirmgroup) {
+			$("#hidcheckDeb").val('1');
+			var getchecked = $("#hidcheckDeb").val();
+			$('input[type=checkbox]:not(:checked)').each(function(){
+				var res = $(this).val().split("$"); 
+				if (getchecked == 1) {
+					getchecked = 2;
+					$('#hidloan').val($('#hidloan').val() + res);
+					$('#loanName').val($('#loanName').val() + res[0]);
+					$('#autoDebitAmount').val($('#autoDebitAmount').val() + res[2]);
+					$('#autoDebitFee').val($('#autoDebitFee').val() + res[3]);
+				} else {
+					$('#hidloan').val($('#hidloan').val() + ";" + res);
+					$('#loanName').val($('#loanName').val() + ";" + res[0]);
+					$('#autoDebitAmount').val($('#autoDebitAmount').val() + ";" + res[2]);
+					$('#autoDebitFee').val($('#autoDebitFee').val() + ";" + res[3]);
+				}
+			});
+			$("#autoDebitContent").attr("disabled", "disabled");
+			$("#loanbutton").attr("disabled", "disabled");
+			$("body div").removeClass("modalOverlay");
+			$('#getloanpopup').empty();
+			$('#getloanpopup').modal('toggle');
+		} else {
+			return false;
+		}
+	});
+
+	// For Salary Select Popup
+	$('.selectsalary').click(function(){
+		$('#txt_empname').val("");
+		document.getElementById("empid").value = "";
+		var hidchkTrans = $("#hidchkTrans").val();
+		var confirmgroup = confirm("Do You Want To Select Salary?");
+		if(confirmgroup) {
+			$("#hidchkTrans").val('1');
+			var getchecked = $("#hidchkTrans").val();
+			$('input[type=checkbox]:not(:checked)').each(function(){
+				var res = $(this).val().split("$"); 
+				if (getchecked == 1) {
+					getchecked = 2;
+					$('#hidempid').val($('#hidempid').val() + res);
+					$('#txt_empname').val($('#txt_empname').val() + res[0]);
+					$('#transferAmount').val($('#transferAmount').val() + res[2]);
+					$('#transferFee').val($('#transferFee').val() + res[3]);
+				} else {
+					$('#hidempid').val($('#hidempid').val() + ";" + res);
+					$('#txt_empname').val($('#txt_empname').val() + ";" + res[0]);
+					$('#transferAmount').val($('#transferAmount').val() + ";" + res[2]);
+					$('#transferFee').val($('#transferFee').val() + ";" + res[3]);
+				}
+			});
+			$("#transferContent").attr("disabled", "disabled");
+			$("#salarybutton").attr("disabled", "disabled");
+			$("#browseEmp").attr("style", "display: none");
+			$("#clearEmp").attr("style", "display: none");
+			$("#clearSal").attr("style", "display: inline-block");
+			$("body div").removeClass("modalOverlay");
+			$('#getsalarypopup').empty();
+			$('#getsalarypopup').modal('toggle');
+		} else {
+			return false;
+		}
+	});
+
 });
 
 function resetErrors() {
@@ -473,9 +542,11 @@ function Getloanpopup() {
 
 function disabledemp(){
 	if ($('#transferContent').val() != "") {
-		$("#bnkpopup").attr("disabled", "disabled");
+		$("#browseEmp").attr("disabled", "disabled");
+		$("#clearEmp").attr("disabled", "disabled");
 	} else {
-		$("#bnkpopup").removeAttr("disabled");
+		$("#browseEmp").removeAttr("disabled");
+		$("#clearEmp").attr("disabled", "disabled");
 	}
 }
 
@@ -483,4 +554,27 @@ function fnclear(){
 	document.getElementById("txt_empname").value = "";
 	$("#transferContent").removeAttr("disabled");
 }
+
+function fndebitclear(){
+	document.getElementById("hidloan").value = "";
+	document.getElementById("loanName").value = "";
+	document.getElementById("autoDebitAmount").value = "";
+	document.getElementById("autoDebitFee").value = "";
+	$("#loanbutton").removeAttr("disabled");
+	$("#autoDebitContent").removeAttr("disabled");
+}
+
+function fntransclear(){
+	document.getElementById("hidempid").value = "";
+	document.getElementById("txt_empname").value = "";
+	document.getElementById("transferAmount").value = "";
+	document.getElementById("transferFee").value = "";
+	$("#salarybutton").removeAttr("disabled");
+	$("#transferContent").removeAttr("disabled");
+	$("#browseEmp").attr("style", "display: inline-block");
+	$("#clearEmp").attr("style", "display: inline-block");
+	$("#clearSal").attr("style", "display: none");
+}
+
+
 

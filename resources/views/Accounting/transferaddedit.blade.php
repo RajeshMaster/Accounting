@@ -115,6 +115,8 @@
 				</div>
 				<div class="col-xs-9">
 					{{ Form::hidden('empid', '', array('id' => 'empid')) }}
+					{{ Form::hidden('hidempid', '', array('id' => 'hidempid')) }}
+					{{ Form::hidden('hidchkTrans', '', array('id' => 'hidchkTrans')) }}
 					{{ Form::text('txt_empname',null,
 							array('id'=>'txt_empname', 
 									'name' => 'txt_empname',
@@ -122,15 +124,21 @@
 									'readonly','readonly',
 									'data-label' => trans('messages.lbl_empName'))) }}
 
-					<button type="button" id="bnkpopup" class="btn btn-success box75 pt3 h30 ml3 mb3" 
+					<button type="button" id="browseEmp" class="btn btn-success box75 pt3 h30 ml3 mb3" 
 							style ="color:white;background-color: green;cursor: pointer;" 
 							onclick="return popupenable();">
 								{{ trans('messages.lbl_Browse') }}
 					</button> 
 					
-					<button type="button" id="bnkpopup" class="btn btn-danger box75 pt3 h30 ml5 mb3" 
+					<button type="button" id="clearEmp" class="btn btn-danger box75 pt3 h30 ml5 mb3" 
 							style ="color:white;cursor: pointer;" 
 							onclick="return fnclear();">
+								{{ trans('messages.lbl_clear') }}
+					</button> 
+
+					<button type="button" id="clearSal" class="btn btn-danger box75 pt3 h30 ml5 mb3" 
+							style ="color:white;cursor: pointer;display: none;" 
+							onclick="return fntransclear();">
 								{{ trans('messages.lbl_clear') }}
 					</button> 
 				</div>
@@ -161,10 +169,9 @@
 					</label>
 				</div>
 				<div class="col-xs-9 CMN_display_block">
-					{{ Form::text('transferAmount',(isset($expcash_sql[0]->amount)) ? number_format($expcash_sql[0]->amount) : 0,
+					{{ Form::text('transferAmount',(isset($expcash_sql[0]->amount)) ? number_format($expcash_sql[0]->amount) : "",
 							array('id'=>'transferAmount',
 									'name' => 'transferAmount',
-									'maxlength' => '14',
 									'style'=>'text-align:right;padding-right:4px;',
 									'class'=>'box15per ime_mode_disable',
 									'onblur' => 'return fnSetZero11(this.id);',
@@ -174,10 +181,9 @@
 									'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
 									'data-label' => trans('messages.lbl_amount'))) }}
 					<span class=" ml7 black" style=" font-weight: bold;font-size: 17px;"> / </span>
-					{{ Form::text('transferFee',(isset($expcash_sql[0]->transferFee)) ? number_format($expcash_sql[0]->fee) : 0,
+					{{ Form::text('transferFee',(isset($expcash_sql[0]->transferFee)) ? number_format($expcash_sql[0]->fee) : "",
 								array('id'=>'transferFee',
 									'name' => 'transferFee',
-									'maxlength' => '14',
 									'style'=>'text-align:right;padding-right:4px;',
 									'class'=>'box7per ime_mode_disable ml7',
 									'onblur' => 'return fnSetZero11(this.id);',
@@ -225,7 +231,7 @@
 
 			<div class="form-group">
 				<div align="center" class="mt5">
-					<button type="button" class=" btn btn add box160" 
+					<button type="button" id="salarybutton" class=" btn btn add box160" 
 						onclick="return Getsalarypopup();" 
 						style="margin-left: -10%!important;background-color: purple; color: #fff;">
 						{{ trans('messages.lbl_getsalary') }}
