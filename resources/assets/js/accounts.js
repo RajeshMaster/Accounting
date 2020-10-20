@@ -426,13 +426,18 @@ function gotoindexpage(page,mainmenu) {
 
 function Getsalarypopup() {
 	var mainmenu = $('#mainmenu').val();
-	popupopenclose(1);
-	$('#getsalarypopup').load('../Accounting/getsalarypopup?mainmenu='+mainmenu+'&time='+datetime);
-	$("#getsalarypopup").modal({
-		backdrop: 'static',
-		keyboard: false
-		});
-	$('#getsalarypopup').modal('show');
+	var transferDate = $('#transferDate').val();
+	if (transferDate != "") {
+		popupopenclose(1);
+		$('#getsalarypopup').load('../Accounting/getsalarypopup?mainmenu='+mainmenu+'&time='+datetime+'&transferDate='+encodeURIComponent(transferDate));
+		$("#getsalarypopup").modal({
+			backdrop: 'static',
+			keyboard: false
+			});
+		$('#getsalarypopup').modal('show');
+	} else {
+		alert("Please select Date field");
+	}
 }
 
 function Getloanpopup() {

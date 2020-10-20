@@ -209,6 +209,7 @@ class Accounting extends Model {
 	}
 
 	public static function baseAmt($bankId ,$acc) {
+
 		$db = DB::connection('mysql');
 		$query = $db->table('acc_cashregister')
 						->SELECT('amount','fee','transcationType','date')
@@ -220,6 +221,7 @@ class Accounting extends Model {
 	}
 
 	public static function getLoanDtls($request) {
+
 		$db = DB::connection('mysql_Salary');
 		$MnthYear = explode("-", $request->autoDebitDate);
 		$query = $db->table('ams_loan_details as loan')
@@ -235,13 +237,38 @@ class Accounting extends Model {
 		return $query;
 	}
 
+	public static function getSalaryDtls($request) {
+
+		$db = DB::connection('mysql_Salary');
+		$MnthYear = explode("-", $request->transferDate);
+		$query = $db->table('inv_salaryplus_main')
+					->SELECT('Emp_ID','Salary','Deduction','Travel','salamt')
+					->where('delFlg','=',0);
+		$query = $query->WHERE(DB::raw("SUBSTRING(salary.year_mon, 1, 4)"),'=', $MnthYear[0]);
+		$query = $query->WHERE(DB::raw("SUBSTRING(salary.year_mon, 6, 2)"),'=', $MnthYear[1])
+						->orderBy('Emp_ID','ASC')
+						->get();
+		return $query;
+	}
+
 	public static function subjectMaster($subId) {
+
 		$db = DB::connection('mysql');
 		$query = $db->table('dev_expensesetting')
 						->SELECT('Subject','Subject_jp')
 						->where('id','=',$subId)
 						->get();
-						//->toSql();
+		return $query;
+	}
+
+	public static function getsalaryDetailsnodelflg($request,$flg) {
+		
+		$db = DB::connection('mysql_Salary');
+		$query = $db->table('mstsalaryplus')
+					->select('id','Name','nick_name','location','Salarayid')
+					->where('location','=',$flg)
+					->orderBy('Salarayid', 'ASC')
+					->get();
 		return $query;
 	}
 }

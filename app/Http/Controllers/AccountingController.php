@@ -209,9 +209,99 @@ class AccountingController extends Controller {
 	*/
 	public function getsalarypopup(Request $request) {
 
-		$getSalaryDtls = Accounting::getSalaryDtls($request);
+		$getSalaryDtls = array();
+		$SalaryDtls = array();
+		$salary_det = Accounting::getsalaryDetailsnodelflg('','1');
+		$salary_ded = Accounting::getsalaryDetailsnodelflg('','2');
+		if ($request->transferDate != "") {
+			$getSalaryDtls = Accounting::getSalaryDtls($request);
+			foreach ($getSalaryDtls as $key => $value) {
 
-		return view('Accounting.salarydetailspopup',['request' => $request]);
+				// For Salary Details
+				$arr1 = array();
+				$arr2 = array();
+				$salArr = array();
+				$salary = "";
+				if ($value->Salary != "") {
+					$salaryVal = explode('##', mb_substr($value->Salary, 0, -2));
+					foreach ($salaryVal as $salKey => $salVal) {
+						$salFinal = explode('$', $salVal);
+						$arr1[$key] = $salFinal[0];
+						$arr2[$salFinal[0]] = $salFinal[1];
+					}
+				}
+				foreach ($salary_det as $key1 => $det) {
+					$salArr[$det->Salarayid] = $det->Salarayid;
+				}
+				$salresult_a = array_intersect($salArr,$arr1);
+				$salresult_b = array_diff($salArr,$arr1);
+				$salresult = array_merge($salresult_a,$salresult_b);
+				ksort($salresult);
+				if(count($salary_det) != "" && is_array($salresult)) {
+					$x = 0;
+					foreach ($salresult as $key2 => $value2) {
+						if ($key2 != '') {
+							if($key2 == isset($arr2[$key2])) {
+								$salary += $arr2[$key2];
+								$get_master_tot[$a][$key2] = $arr2[$key2];
+							} else {
+								$get_master_tot[$a][$key2] = 0;
+							}
+						}
+						$x++;
+						$salDetalilsTotal[$key2] = array_sum(array_column($get_master_tot,$value2));
+					}
+				}
+				$SalaryDtls[$value->Emp_ID]['Salary'] = $salary;
+
+				// Salary Deduction
+				$arr3 = array();
+				$arr4 = array();
+				$dedArr = array();
+				$deduction = "";
+	    		if ($value->Deduction != "") {
+					$deductionVal = explode('##', mb_substr($value->Deduction, 0, -2));
+					foreach ($deductionVal as $key => $value_key) {
+						$dedFinal = explode('$', $value_key);
+						$arr3[$key] = $dedFinal[0];
+						$arr4[$dedFinal[0]] = $dedFinal[1];
+					}
+	    		}
+				foreach ($salary_ded as $key2 => $value2) {
+					$ded_arr[$value2->Salarayid] = $value2->Salarayid;
+				}
+	    		$dedresult_a = array_intersect($ded_arr,$arr3);
+	    		$dedresult_b = array_diff($ded_arr,$arr3);
+	    		$dedresult = array_merge($dedresult_a,$dedresult_b);
+	    		ksort($dedresult);
+				if(count($salary_ded)!="") {
+					$y = 0;
+					foreach ($dedresult as $key2 => $value2) {
+						if ($key2 != '') {
+			    			if($key2 == isset($arr4[$key2])) {
+			    				$deduction += $arr4[$key2];
+			    				$get_master_tot1[$a][$key2] = $arr4[$key2];
+			    			}
+		    			}
+		    			$y++;
+		    			$dedDetalilsTotal[$key2] = array_sum(array_column($get_master_tot1,$value2));
+		    		}
+				}
+				$tot_deduct_amt += $deduction;
+			
+				
+				$SalaryDtls[$value->Emp_ID]['Deduction'] = $deduction;
+				$SalaryDtls[$value->Emp_ID]['Travel'] = $value->Travel;
+				$SalaryDtls[$value->Emp_ID]['salamt'] = $value->salamt;
+			}
+		}
+		print_r($SalaryDtls);
+		echo "<br>";
+		exit();
+
+		return view('Accounting.salarydetailspopup',['request' => $request,
+														'getSalaryDtls' => $getSalaryDtls
+													]);
 	}
 
 	/**
