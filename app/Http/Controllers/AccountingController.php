@@ -48,10 +48,12 @@ class AccountingController extends Controller {
 			$cashDetails[$i]['remarks'] = $value->remarks;
 			$cashDetails[$i]['baseAmt'] = 0;
 			$cashDetails[$i]['bankId'] = $value->bankId;
+			$cashDetails[$i]['fileDtl'] = $value->fileDtl;
+			$cashDetails[$i]['transferId'] = $value->transferId;
+			$cashDetails[$i]['pageFlg'] = $value->pageFlg;
 			$baseAmt = Accounting::baseAmt($value->bankIdFrom,$value->accountNumberFrom);
 			$cashDetails[$i]['subId'] = $value->subjectId;
 			$cashDetails[$i]['subject'] = $value->Subject;
-			$cashDetails[$i]['fileDtl'] = $value->fileDtl;
 
 			if (isset($baseAmt[0]->amount)) {
 				$cashDetails[$i]['baseAmt'] = $baseAmt[0]->amount;
@@ -73,10 +75,15 @@ class AccountingController extends Controller {
 	*/
 	public function addedit(Request $request) {
 
+		$editData =array();
+		if($request->edit_flg) {
+			$editData = Accounting::fetchEditData($request);
+		}
 		$bankDetail = Accounting::fetchbanknames();
 
 		return view('Accounting.addedit',['request' => $request,
-											'bankDetail' => $bankDetail
+											'bankDetail' => $bankDetail,
+											'editData' => $editData
 										]);
 	}
 
@@ -107,13 +114,36 @@ class AccountingController extends Controller {
 	*
 	*/
 	public function addeditprocess(Request $request) {
-		if($request->transtype != 3){
-			$insertProcess = Accounting::insCashDtls($request);
+		$insertProcess = "";
+		$updateProcess = "";
+		if(!$request->edit_flg){
+			if($request->transtype != 3){
+				$insertProcess = Accounting::insCashDtls($request);
+			} else {
+				$maxID = Accounting::getautoincrement();
+				$insertProcess = Accounting::insCashreduction($request ,1, $maxID);
+				$insertProcess = Accounting::insCashreduction($request,2, $maxID);
+			}
 		} else {
-			$insertProcess = Accounting::insCashreduction($request ,1);
-			$insertProcess = Accounting::insCashreduction($request,2);
+			if($request->transtype != 3){
+				if($request->oldTransType == 3) {
+					$delTrans = Accounting::DelCashDtls($request);
+				}
+				$updateProcess = Accounting::updCashDtls($request);
+			} else {
+				if($request->oldTransferId != "" && $request->oldTransferId != 0) {
+					$maxID = $request->oldTransferId;
+					$updateProcess = Accounting::updCashreduction($request ,1, $maxID);
+					$updateProcess = Accounting::updCashreduction($request,2, $maxID);
+				} else {
+					$maxID = Accounting::getautoincrement();
+					$updateProcess = Accounting::updCashreduction($request ,1, $maxID);
+					$insertProcess = Accounting::insCashreduction($request,2, $maxID);
+				}
+			}
 		}
-		if($insertProcess) {
+		
+		if($insertProcess || $updateProcess) {
 			Session::flash('success', 'Inserted Sucessfully!'); 
 			Session::flash('type', 'alert-success'); 
 		} else {

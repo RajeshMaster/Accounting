@@ -157,6 +157,7 @@ function resetErrors() {
 }    
 
 function addedit(page,mainmenu) {
+	$('#edit_flg').val('');
 	if (page == "index") {
 	 	$('#frmaccountingindex').attr('action', 'addedit?mainmenu='+mainmenu+'&time='+datetime);
 		$("#frmaccountingindex").submit();
@@ -323,7 +324,21 @@ function fnGetbankDetails() {
 		}
 	});
 }
+function editCashDtl(id, editflg, pgFlg) {
+	$('#edit_flg').val(editflg);
+	$('#editId').val(id);
+	if(pgFlg == 2) {
+		$('#frmaccountingindex').attr('action', 'transferaddedit?mainmenu='+mainmenu+'&time='+datetime);
+		$("#frmaccountingindex").submit();
+	} else if(pgFlg == 3){
+		$('#frmaccountingindex').attr('action', 'autoDebitReg?mainmenu='+mainmenu+'&time='+datetime);
+		$("#frmaccountingindex").submit();
+	} else {
+		$('#frmaccountingindex').attr('action', 'addedit?mainmenu='+mainmenu+'&time='+datetime);
+		$("#frmaccountingindex").submit();
+	}
 
+}
 function getdate(page) {
 	if (page == "Cash") {
 		$('#date').val(dates);
