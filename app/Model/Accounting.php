@@ -191,7 +191,7 @@ class Accounting extends Model {
 
 		$db = DB::connection('mysql');
 		$query = $db->table('acc_cashregister')
-						->SELECT('acc_cashregister.*','bank.AccNo','bank.AccNo','bank.FirstName','bank.LastName','bank.BankName','bank.Bank_NickName','dev_expensesetting.Subject','dev_expensesetting.Subject_jp')
+						->SELECT('acc_cashregister.*','bank.id As bankId','bank.AccNo','bank.FirstName','bank.LastName','bank.BankName','bank.Bank_NickName','dev_expensesetting.Subject','dev_expensesetting.Subject_jp')
 						->leftJoin('mstbank AS bank', function($join)
 							{
 								$join->on('acc_cashregister.bankIdFrom', '=', 'bank.BankName');

@@ -38,6 +38,7 @@ class AccountingController extends Controller {
 		$cashDetails =array();
 		$i = 0;
 		foreach ($cashDetailsIndex as $key => $value) {
+			$cashDetails[$i]['id'] = $value->id;
 			$cashDetails[$i]['date'] = $value->date;
 			$cashDetails[$i]['content'] = $value->content;
 			$cashDetails[$i]['amount'] = $value->amount;
@@ -46,11 +47,12 @@ class AccountingController extends Controller {
 			$cashDetails[$i]['transcationType'] = $value->transcationType;
 			$cashDetails[$i]['remarks'] = $value->remarks;
 			$cashDetails[$i]['baseAmt'] = 0;
+			$cashDetails[$i]['bankId'] = $value->bankId;
 			$baseAmt = Accounting::baseAmt($value->bankIdFrom,$value->accountNumberFrom);
 			$cashDetails[$i]['subId'] = $value->subjectId;
 			$cashDetails[$i]['subject'] = $value->Subject;
 			$cashDetails[$i]['fileDtl'] = $value->fileDtl;
-			
+
 			if (isset($baseAmt[0]->amount)) {
 				$cashDetails[$i]['baseAmt'] = $baseAmt[0]->amount;
 			}

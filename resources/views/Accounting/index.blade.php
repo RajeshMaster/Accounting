@@ -202,7 +202,11 @@
 					@endif
 					<tr>
 						<td>{{ $i+1 }}</td>
-						<td align="center">{{ $data['date'] }}</td>
+						<td align="center">
+							<a href="javascript:editCashDtl('{{ $data['id'] }}');">
+								{{ $data['date'] }}
+							</a>
+						</td>
 						<td> {{ $data['subject'] }} </td>
 						<td>{{ $data['content'] }}</td>
 						<td align="right">
