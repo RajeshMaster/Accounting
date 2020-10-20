@@ -42,6 +42,7 @@ class AccBankDetailController extends Controller {
 		$index = AccBankDetail::bankindex($request)->paginate($request->plimit);
 
 		$i=0;
+		$totalBalance = 0;
 		foreach ($index as $key => $value) {
 			$bankdetailindex[$i]['banknm'] = $value->banknm;
 			$bankdetailindex[$i]['nickName'] = $value->NickName;
@@ -63,10 +64,10 @@ class AccBankDetailController extends Controller {
 			} else {
 				$bankdetailindex[$i]['baseAmtInsChk'] = 0;
 			}
-			$bankrectype1 = AccBankDetail::bankrectype1($value->bnkid, $value->AccNo);
-			$bankrectype2 = AccBankDetail::bankrectype2($value->bnkid, $value->AccNo);
-			$bankrectype3 = AccBankDetail::bankrectype3($value->bnkid, $value->AccNo);
-			$bankrectype4 = AccBankDetail::bankrectype4($value->bnkid, $value->AccNo);
+			$bankrectype1 = AccBankDetail::bankrectype($value->bnkid, $value->AccNo ,'1');
+			$bankrectype2 = AccBankDetail::bankrectype($value->bnkid, $value->AccNo ,'2');
+			$bankrectype3 = AccBankDetail::bankrectype($value->bnkid, $value->AccNo ,'3');
+			$bankrectype4 = AccBankDetail::bankrectype($value->bnkid, $value->AccNo ,'4');
 
 			$type1Total = 0; 
 			$type2Total = 0; 
@@ -96,6 +97,8 @@ class AccBankDetailController extends Controller {
 			// exit;
 			$singlebanktotal =  $baseAmtVal + ($type2Total + $type4Total) - ($type1Total +$type3Total);
 			$bankdetailindex[$i]['balanceAmt'] = $singlebanktotal;
+
+			$totalBalance += $singlebanktotal;
 			$i++;
 		}
 	/*echo "<pre>";
@@ -103,6 +106,7 @@ class AccBankDetailController extends Controller {
 		echo "</pre>";*/
 		return view('AccBankDetail.index',[
 								'bankdetailindex' => $bankdetailindex,
+								'totalBalance' => $totalBalance,
 								'index' => $index,
 								'request' => $request]);
 	}

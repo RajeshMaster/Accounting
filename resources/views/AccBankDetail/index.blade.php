@@ -47,7 +47,7 @@
 
 	<div class="col-xs-12 pt5">
 		<div class="col-xs-6 pull-right pt10" style="text-align: right;padding-right: 0px;">
-			<span class="clr_blue fwb"> {{ trans('messages.lbl_balanceamt') }} :</span> <span class="fwb">¥ </span>
+			<span class="clr_blue fwb"> {{ trans('messages.lbl_balanceamt') }} :</span> <span class="fwb">¥ {{ $totalBalance }}</span>
 		</div>
 	</div>
 

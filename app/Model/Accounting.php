@@ -113,6 +113,7 @@ class Accounting extends Model {
 	public static function insTransferDtls($request,$fileName) {
 
 		$name = Session::get('FirstName').' '.Session::get('LastName');
+		$bankacc = explode('-', $request->transferBank);
 
 		$db = DB::connection('mysql');
 
@@ -121,7 +122,8 @@ class Accounting extends Model {
 							'emp_ID' => $request->empid, 
 							'date' => $request->transferDate,
 							'transcationType' => 1,
-							'bankIdFrom' => $request->transferBank,
+							'bankIdFrom' => $bankacc['0'],
+							'accountNumberFrom' => $bankacc['1'],
 							'amount' => preg_replace("/,/", "", $request->transferAmount),
 							'fee' => preg_replace("/,/", "", $request->transferFee),
 							'content' => $request->transferContent,
@@ -137,6 +139,7 @@ class Accounting extends Model {
 	public static function insAutoDebitDtls($request,$fileName) {
 
 		$name = Session::get('FirstName').' '.Session::get('LastName');
+		$bankacc = explode('-', $request->autoDebitBank);
 
 		$db = DB::connection('mysql');
 
@@ -144,7 +147,8 @@ class Accounting extends Model {
 					->insert([
 							'date' => $request->autoDebitDate,
 							'transcationType' => 1,
-							'bankIdFrom' => $request->autoDebitBank,
+							'bankIdFrom' => $bankacc['0'],
+							'accountNumberFrom' => $bankacc['1'],
 							'amount' => preg_replace("/,/", "", $request->autoDebitAmount),
 							'fee' => preg_replace("/,/", "", $request->autoDebitFee),
 							'content' => $request->autoDebitContent,
@@ -187,7 +191,7 @@ class Accounting extends Model {
 		$db = DB::connection('mysql');
 		$query = $db->table('acc_cashRegister')
 						->SELECT('acc_cashRegister.*','mstbank.AccNo','mstbank.AccNo','mstbank.FirstName','mstbank.LastName','mstbank.BankName','mstbank.Bank_NickName')
-						->leftJoin('mstbank', 'mstbank.id', '=', 'acc_cashRegister.bankIdFrom')
+						->leftJoin('mstbank', 'mstbank.BankName', '=', 'acc_cashRegister.bankIdFrom')
 						->where('transcationType','!=',9)
 						->orderBy('bankIdFrom','ASC')
 						->orderBy('id','DESC')

@@ -28,13 +28,13 @@ class AccBankDetail extends Model {
 		return $query;
 	}
 
-	public static function bankrectype1($bankId ,$accNo) {
+	public static function bankrectype($bankId ,$accNo ,$type) {
 		$db = DB::connection('mysql');
 		$query = $db->table('acc_cashregister')
 						->SELECT('amount','fee','transcationType')
 						->where('bankIdFrom','=',$bankId)
 						->where('accountNumberFrom','=',$accNo)
-						->where('transcationType','=',1)
+						->where('transcationType','=',$type)
 						->get();
 						// ->toSql();
 
@@ -48,32 +48,6 @@ class AccBankDetail extends Model {
 						->where('bankIdFrom','=',$bankId)
 						->where('accountNumberFrom','=',$acc)
 						->where('transcationType','=',2)
-						->get();
-						// ->toSql();
-
-		return $query;
-	}
-
-	public static function bankrectype3($bankId,$acc) {
-		$db = DB::connection('mysql');
-		$query = $db->table('acc_cashregister')
-						->SELECT('amount','fee','transcationType')
-						->where('bankIdFrom','=',$bankId)
-						->where('accountNumberFrom','=',$acc)
-						->where('transcationType','=',3)
-						->get();
-						// ->toSql();
-
-		return $query;
-	}
-
-	public static function bankrectype4($bankId,$acc) {
-		$db = DB::connection('mysql');
-		$query = $db->table('acc_cashregister')
-						->SELECT('amount','fee','transcationType')
-						->where('bankIdFrom','=',$bankId)
-						->where('accountNumberFrom','=',$acc)
-						->where('transcationType','=',4)
 						->get();
 						// ->toSql();
 
