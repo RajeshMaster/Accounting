@@ -194,7 +194,7 @@
 							<td colspan="6" > {{ $data['Bank_NickName'] }} </td>
 							<td align="right">
 								@php $balanceAmt = $data['baseAmt'] @endphp
-								{{ $data['baseAmt'] }}
+								{{ number_format($data['baseAmt']) }}
 							</td>
 							<td colspan="3">
 							</td>
@@ -203,18 +203,18 @@
 					<tr>
 						<td>{{ $i+1 }}</td>
 						<td align="center">{{ $data['date'] }}</td>
-						<td></td>
+						<td> {{ $data['subject'] }} </td>
 						<td>{{ $data['content'] }}</td>
 						<td align="right">
 							@if($data['transcationType'] == 1)
 								@php $debitAmt = $data['amount'] + $data['fee']; @endphp
-								{{ $debitAmt }}
+								{{ number_format($debitAmt) }}
 							@endif
 						</td>
 						<td align="right">
 							@if($data['transcationType'] == 2 || $data['transcationType'] == 4)
 								@php $creditAmt = $data['amount'] + $data['fee']; @endphp
-								{{ $creditAmt }}
+								{{ number_format($creditAmt) }}
 							@endif
 						</td>
 						<td align="right"> 
@@ -223,10 +223,10 @@
 							@else
 								<?php $balanceAmt = $balanceAmt + $creditAmt ;?>
 							@endif
-							{{ $balanceAmt }}
+							{{ number_format($balanceAmt) }}
 						</td>
 						<td>{{ $data['remarks']}}</td>
-						<td></td>
+						<td>{{ $data['fileDtl'] }}</td>
 						<td></td>
 					</tr>
 					

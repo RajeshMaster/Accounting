@@ -47,7 +47,7 @@
 
 	<div class="col-xs-12 pt5">
 		<div class="col-xs-6 pull-right pt10" style="text-align: right;padding-right: 0px;">
-			<span class="clr_blue fwb"> {{ trans('messages.lbl_balanceamt') }} :</span> <span class="fwb">¥ {{ $totalBalance }}</span>
+			<span class="clr_blue fwb"> {{ trans('messages.lbl_balanceamt') }} :</span> <span class="fwb">¥ {{ number_format($totalBalance) }}</span>
 		</div>
 	</div>
 
@@ -104,8 +104,8 @@
 						{{ $data['startDate'] }}
 					</td>
 
-					<td>
-						{{ $data['balanceAmt'] }}
+					<td align="right">
+						{{ number_format($data['balanceAmt']) }}
 					</td>
 
 					<td>
