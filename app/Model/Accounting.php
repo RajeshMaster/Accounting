@@ -77,6 +77,7 @@ class Accounting extends Model {
 			$bankacc = explode('-', $request->transfer);
 			$transfer[0] = "";
 			$transfer[1] = "";
+			$request->fee = "";
 		}
 
 		$db = DB::connection('mysql');
@@ -190,12 +191,20 @@ class Accounting extends Model {
 
 		$db = DB::connection('mysql');
 		$query = $db->table('acc_cashregister')
-						->SELECT('acc_cashregister.*','mstbank.AccNo','mstbank.AccNo','mstbank.FirstName','mstbank.LastName','mstbank.BankName','mstbank.Bank_NickName')
-						->leftJoin('mstbank', 'mstbank.BankName', '=', 'acc_cashregister.bankIdFrom')
+						->SELECT('acc_cashregister.*','bank.AccNo','bank.AccNo','bank.FirstName','bank.LastName','bank.BankName','bank.Bank_NickName','dev_expensesetting.Subject','dev_expensesetting.Subject_jp')
+						->leftJoin('mstbank AS bank', function($join)
+							{
+								$join->on('acc_cashregister.bankIdFrom', '=', 'bank.BankName');
+								$join->on('acc_cashregister.accountNumberFrom', '=', 'bank.AccNo');
+							})
+						->leftJoin('dev_expensesetting', 'dev_expensesetting.id', '=', 'acc_cashregister.subjectId')
 						->where('transcationType','!=',9)
 						->orderBy('bankIdFrom','ASC')
-						->orderBy('id','DESC')
+						->orderBy('acc_cashregister.date','ASC')
 						->get();
+
+						 // ->toSql();
+						// dd($query);
 		return $query;
 	}
 
@@ -223,6 +232,16 @@ class Accounting extends Model {
 		$query = $query->WHERE(DB::raw("SUBSTRING(loanEMI.emiDate, 6, 2)"),'=', $MnthYear[1])
 						->orderBy('loanEMI.belongsTo','ASC')
 						->get();
+		return $query;
+	}
+
+	public static function subjectMaster($subId) {
+		$db = DB::connection('mysql');
+		$query = $db->table('dev_expensesetting')
+						->SELECT('Subject','Subject_jp')
+						->where('id','=',$subId)
+						->get();
+						//->toSql();
 		return $query;
 	}
 }

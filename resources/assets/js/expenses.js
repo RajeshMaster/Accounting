@@ -1069,6 +1069,7 @@ function banktransferselect() {
 	$("#transfer").attr("style", "display:inline-block");
 }
 function creditAmount() {
+
 	var amt = $('#amount').val();
 	amt = Number(amt.trim().replace(/[, ]+/g, ""));
 	if (amt == "") {

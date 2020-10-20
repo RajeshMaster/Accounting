@@ -154,12 +154,15 @@
 		<table class="tablealternate CMN_tblfixed">
 			<colgroup>
 				<col width="4%">
-				<col>
-				<col width="12%">
-				<col width="12%">
-				<col width="8%">
+				<col width="9%">
+				<col width="14%">
 				<col width="16%">
-				<col width="12%">
+				<col width="8%">
+				<col width="8%">
+				<col width="8%">
+				<col width="">
+				<col width="8%">
+				<col width="8%">
 			</colgroup>
 
 			<thead class="CMN_tbltheadcolor">
@@ -178,40 +181,55 @@
 			</thead>
 			<tbody>
 				@php 
-					$i =0 ;
-					$bankName ="";
-					$lastBankName ="";
+					$i = 0;
+					$balanceAmt = 0;
+					$debitAmt = 0;
+					$creditAmt = 0;
+					$lastBankName = "";
 				@endphp
 				@forelse($cashDetails as $key => $data)
 				<!-- @php $bankName = $data['Bank_NickName'] @endphp-->
 					@if($lastBankName != $data['Bank_NickName'])
-
-					<tr>
-						<td colspan="6" > {{ $data['Bank_NickName'] }} </td>
-						<td></td>
-					</tr>
+						<tr>
+							<td colspan="6" > {{ $data['Bank_NickName'] }} </td>
+							<td align="right">
+								@php $balanceAmt = $data['baseAmt'] @endphp
+								{{ number_format($data['baseAmt']) }}
+							</td>
+							<td colspan="3">
+							</td>
+						</tr>
 					@endif
 					<tr>
 						<td>{{ $i+1 }}</td>
-						<td>{{ $data['date'] }}</td>
-						<td></td>
+						<td align="center">{{ $data['date'] }}</td>
+						<td> {{ $data['subject'] }} </td>
 						<td>{{ $data['content'] }}</td>
-						<td>
+						<td align="right">
 							@if($data['transcationType'] == 1)
-								{{ $data['amount'] }}
+								@php $debitAmt = $data['amount'] + $data['fee']; @endphp
+								{{ number_format($debitAmt) }}
 							@endif
 						</td>
-						<td>
+						<td align="right">
 							@if($data['transcationType'] == 2 || $data['transcationType'] == 4)
-								{{ $data['amount']  }}
+								@php $creditAmt = $data['amount'] + $data['fee']; @endphp
+								{{ number_format($creditAmt) }}
 							@endif
 						</td>
-						<td></td>
-						<td></td>
-						<td></td>
+						<td align="right"> 
+							@if($data['transcationType'] == 1)
+								<?php $balanceAmt = $balanceAmt - $debitAmt ;?>
+							@else
+								<?php $balanceAmt = $balanceAmt + $creditAmt ;?>
+							@endif
+							{{ number_format($balanceAmt) }}
+						</td>
+						<td>{{ $data['remarks']}}</td>
+						<td>{{ $data['fileDtl'] }}</td>
 						<td></td>
 					</tr>
-
+					
 					@php 
 						$lastBankName = $data['Bank_NickName'];
 						$i++ ;

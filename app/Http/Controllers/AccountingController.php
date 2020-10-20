@@ -41,10 +41,16 @@ class AccountingController extends Controller {
 			$cashDetails[$i]['date'] = $value->date;
 			$cashDetails[$i]['content'] = $value->content;
 			$cashDetails[$i]['amount'] = $value->amount;
+			$cashDetails[$i]['fee'] = $value->fee;
 			$cashDetails[$i]['Bank_NickName'] = $value->Bank_NickName;
 			$cashDetails[$i]['transcationType'] = $value->transcationType;
+			$cashDetails[$i]['remarks'] = $value->remarks;
 			$cashDetails[$i]['baseAmt'] = 0;
 			$baseAmt = Accounting::baseAmt($value->bankIdFrom,$value->accountNumberFrom);
+			$cashDetails[$i]['subId'] = $value->subjectId;
+			$cashDetails[$i]['subject'] = $value->Subject;
+			$cashDetails[$i]['fileDtl'] = $value->fileDtl;
+			
 			if (isset($baseAmt[0]->amount)) {
 				$cashDetails[$i]['baseAmt'] = $baseAmt[0]->amount;
 			}
