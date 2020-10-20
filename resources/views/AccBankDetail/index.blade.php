@@ -67,6 +67,7 @@
 				<tr>
 					<th class="vam">{{ trans('messages.lbl_sno') }}</th>
 					<th class="vam">{{ trans('messages.lbl_bank_name') }}</th>
+					<th class="vam">{{ trans('messages.lbl_nickname') }}</th>
 					<th class="vam">{{ trans('messages.lbl_branch_name') }}</th>
 					<th class="vam">{{ trans('messages.lbl_account_no') }}</th>
 					<th class="vam">{{ trans('messages.lbl_Start_date') }}</th>
@@ -85,6 +86,10 @@
 
 					<td>
 						{{ $data['banknm'] }}
+					</td>
+
+					<td>
+						{{ $data['nickName'] }}
 					</td>
 
 					<td>

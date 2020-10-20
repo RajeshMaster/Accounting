@@ -8,11 +8,32 @@ use Auth;
 use Carbon\Carbon;
 class AccBankDetail extends Model {
 
-	public static function bankrectype1($bankId) {
+	public static function bankindex($request) {
 		$db = DB::connection('mysql');
-		$query = $db->table('acc_cashRegister')
+		$query= $db->table('mstbank AS bnk')
+						->SELECT('banDet.id','banname.id AS bnkid','brncname.id AS brnchid','bnk.id AS bankid','bnk.AccNo','banDet.startDate','banDet.balance','banDet.processFlg','banDet.bankId AS balbankid','banname.BankName AS banknm','brncname.BranchName AS brnchnm','bnk.Bank_NickName AS NickName')
+						->leftJoin('inv_allbank_details AS banDet', 'bnk.id', '=', 'banDet.bankId')
+						->leftJoin('mstbanks AS banname', 'banname.id', '=', 'bnk.BankName')
+						->leftJoin('mstbankbranch AS brncname', function($join)
+							{
+								$join->on('brncname.BankId', '=', 'bnk.BankName');
+								$join->on('brncname.id', '=', 'bnk.BranchName');
+							})
+						->where('bnk.delflg','=','0')
+						->orderBy('bnk.id','ASC');
+						// ->orderByRaw("CAST(banDet.balance as SIGNED INTEGER) DESC");
+						// ->toSql();
+						// dd($query);
+						// ->get();
+		return $query;
+	}
+
+	public static function bankrectype1($bankId ,$accNo) {
+		$db = DB::connection('mysql');
+		$query = $db->table('acc_cashregister')
 						->SELECT('amount','fee','transcationType')
 						->where('bankIdFrom','=',$bankId)
+						->where('accountNumberFrom','=',$accNo)
 						->where('transcationType','=',1)
 						->get();
 						// ->toSql();
@@ -20,11 +41,12 @@ class AccBankDetail extends Model {
 		return $query;
 	}
 
-	public static function bankrectype2($bankId) {
+	public static function bankrectype2($bankId,$acc) {
 		$db = DB::connection('mysql');
-		$query = $db->table('acc_cashRegister')
+		$query = $db->table('acc_cashregister')
 						->SELECT('amount','fee','transcationType')
 						->where('bankIdFrom','=',$bankId)
+						->where('accountNumberFrom','=',$acc)
 						->where('transcationType','=',2)
 						->get();
 						// ->toSql();
@@ -32,11 +54,12 @@ class AccBankDetail extends Model {
 		return $query;
 	}
 
-	public static function bankrectype3($bankId) {
+	public static function bankrectype3($bankId,$acc) {
 		$db = DB::connection('mysql');
-		$query = $db->table('acc_cashRegister')
+		$query = $db->table('acc_cashregister')
 						->SELECT('amount','fee','transcationType')
 						->where('bankIdFrom','=',$bankId)
+						->where('accountNumberFrom','=',$acc)
 						->where('transcationType','=',3)
 						->get();
 						// ->toSql();
@@ -44,24 +67,42 @@ class AccBankDetail extends Model {
 		return $query;
 	}
 
-	public static function baseAmtInsChk($bankId) {
+	public static function bankrectype4($bankId,$acc) {
 		$db = DB::connection('mysql');
-		$query = $db->table('acc_cashRegister')
+		$query = $db->table('acc_cashregister')
 						->SELECT('amount','fee','transcationType')
 						->where('bankIdFrom','=',$bankId)
-						->where('transcationType','=',9)
+						->where('accountNumberFrom','=',$acc)
+						->where('transcationType','=',4)
 						->get();
 						// ->toSql();
+
+		return $query;
+	}
+
+	public static function baseAmtInsChk($bankId ,$acc) {
+		$db = DB::connection('mysql');
+		$query = $db->table('acc_cashregister')
+						->SELECT('amount','fee','transcationType','date')
+						->where('bankIdFrom','=',$bankId)
+						->where('accountNumberFrom','=',$acc)
+						->where('transcationType','=',9)
+						->get();
+						//->toSql();
 		return $query;
 	}
 
 	public static function insertRec($request) {
+
 		$name = Session::get('FirstName').' '.Session::get('LastName');
 		$db = DB::connection('mysql');
-		$insert= $db->table('acc_cashRegister')->insert([
+		$insert= $db->table('acc_cashregister')->insert([
 			'emp_ID' => "",
 			'date' => $request->startdate,
 			'transcationType' => 9,
+			'bankIdFrom' => $request->bankid,
+			'branchIdFrom' => $request->branchids,
+			'accountNumberFrom' => $request->accno,
 			'bankIdFrom' => $request->bankid,
 			'bankIdTo' => $request->transfer,
 			'amount' => preg_replace("/,/", "",$request->txt_salary),

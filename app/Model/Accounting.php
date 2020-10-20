@@ -14,7 +14,7 @@ class Accounting extends Model {
 						->SELECT(DB::RAW("CONCAT(mstbank.Bank_NickName,'-',mstbank.AccNo) AS BANKNAME"),DB::RAW("CONCAT(mstbank.BankName,'-',mstbank.AccNo) AS ID"),'mstbank.id')
 						// ->leftJoin('mstbanks', 'mstbanks.id', '=', 'mstbank.BankName')
 						->orderBy('mstbank.id','ASC')
-						->lists('BANKNAME','id');
+						->lists('BANKNAME','ID');
 						// ->toSql();
 		return $query;
 	}
@@ -46,7 +46,7 @@ class Accounting extends Model {
 	public static function insCashDtls($request) {
 
 		$name = Session::get('FirstName').' '.Session::get('LastName');
-
+		$bankacc = explode('-', $request->bank);
 		$db = DB::connection('mysql');
 
 		$insert = $db->table('acc_cashRegister')
@@ -54,8 +54,42 @@ class Accounting extends Model {
 							'emp_ID' => "",
 							'date' => $request->date,
 							'transcationType' => $request->transtype,
-							'bankIdFrom' => $request->bank,
+							'bankIdFrom' => $bankacc[0],
+							'accountNumberFrom' => $bankacc[1],
 							'bankIdTo' => $request->transfer,
+							'amount' => preg_replace("/,/", "", $request->amount),
+							'fee' => preg_replace("/,/", "", $request->fee),
+							'content' => $request->content,
+							'remarks' => $request->remarks,
+							'createdBy' => $name,
+						]);
+		return $insert;
+	}
+
+
+	public static function insCashreduction($request ,$type) {
+
+		$name = Session::get('FirstName').' '.Session::get('LastName');
+		if($type == 1){
+			$bankacc = explode('-', $request->bank);
+			$transfer = explode('-', $request->transfer);
+		} else {
+			$bankacc = explode('-', $request->transfer);
+			$transfer[0] = "";
+			$transfer[1] = "";
+		}
+
+		$db = DB::connection('mysql');
+
+		$insert = $db->table('acc_cashRegister')
+					->insert([
+							'emp_ID' => "",
+							'date' => $request->date,
+							'transcationType' => $type,
+							'bankIdFrom' => $bankacc[0],
+							'accountNumberFrom' => $bankacc[1],
+							'bankIdTo' => $transfer[0],
+							'accountNumberTo' => $transfer[1],
 							'amount' => preg_replace("/,/", "", $request->amount),
 							'fee' => preg_replace("/,/", "", $request->fee),
 							'content' => $request->content,
@@ -160,6 +194,17 @@ class Accounting extends Model {
 						->get();
 						// ->toSql();
 		return $query;
+	}
 
+	public static function baseAmt($bankId ,$acc) {
+		$db = DB::connection('mysql');
+		$query = $db->table('acc_cashregister')
+						->SELECT('amount','fee','transcationType','date')
+						->where('bankIdFrom','=',$bankId)
+						->where('accountNumberFrom','=',$acc)
+						->where('transcationType','=',9)
+						->get();
+						//->toSql();
+		return $query;
 	}
 }

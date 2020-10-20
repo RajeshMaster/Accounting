@@ -34,10 +34,25 @@ class AccountingController extends Controller {
 	*
 	*/
 	public function index(Request $request) {
-		$cashDetails = Accounting::fetchcashRegister();
-
+		$cashDetailsIndex = Accounting::fetchcashRegister();
+		$cashDetails =array();
+		$i = 0;
+		foreach ($cashDetailsIndex as $key => $value) {
+			$cashDetails[$i]['date'] = $value->date;
+			$cashDetails[$i]['content'] = $value->content;
+			$cashDetails[$i]['amount'] = $value->amount;
+			$cashDetails[$i]['Bank_NickName'] = $value->Bank_NickName;
+			$cashDetails[$i]['transcationType'] = $value->transcationType;
+			$cashDetails[$i]['baseAmt'] = 0;
+			$baseAmt = Accounting::baseAmt($value->bankIdFrom,$value->accountNumberFrom);
+			if (isset($baseAmt[0]->amount)) {
+				$cashDetails[$i]['baseAmt'] = $baseAmt[0]->amount;
+			}
+			$i++;
+		}
 		return view('Accounting.index',['request' => $request,
-										'cashDetails' => $cashDetails]);
+										'cashDetails' => $cashDetails,
+										'cashDetailsIndex' => $cashDetailsIndex]);
 	}
 
 	/**
@@ -84,8 +99,12 @@ class AccountingController extends Controller {
 	*
 	*/
 	public function addeditprocess(Request $request) {
-
-		$insertProcess = Accounting::insCashDtls($request);
+		if($request->transtype != 3){
+			$insertProcess = Accounting::insCashDtls($request);
+		} else {
+			$insertProcess = Accounting::insCashreduction($request ,1);
+			$insertProcess = Accounting::insCashreduction($request,2);
+		}
 		if($insertProcess) {
 			Session::flash('success', 'Inserted Sucessfully!'); 
 			Session::flash('type', 'alert-success'); 

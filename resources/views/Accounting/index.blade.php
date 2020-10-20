@@ -183,26 +183,27 @@
 					$lastBankName ="";
 				@endphp
 				@forelse($cashDetails as $key => $data)
-				<!-- @php $bankName = $data->Bank_NickName @endphp-->
-					@if($lastBankName != $data->Bank_NickName)
+				<!-- @php $bankName = $data['Bank_NickName'] @endphp-->
+					@if($lastBankName != $data['Bank_NickName'])
 
 					<tr>
-						<td colspan="10" > {{ $data->Bank_NickName }} </td>
+						<td colspan="6" > {{ $data['Bank_NickName'] }} </td>
+						<td></td>
 					</tr>
 					@endif
 					<tr>
 						<td>{{ $i+1 }}</td>
-						<td>{{ $data->date }}</td>
+						<td>{{ $data['date'] }}</td>
 						<td></td>
-						<td>{{ $data->content }}</td>
+						<td>{{ $data['content'] }}</td>
 						<td>
-							@if($data->transcationType == 1)
-								{{ $data->amount  }}
+							@if($data['transcationType'] == 1)
+								{{ $data['amount'] }}
 							@endif
 						</td>
 						<td>
-							@if($data->transcationType == 2)
-								{{ $data->amount  }}
+							@if($data['transcationType'] == 2 || $data['transcationType'] == 4)
+								{{ $data['amount']  }}
 							@endif
 						</td>
 						<td></td>
@@ -212,7 +213,7 @@
 					</tr>
 
 					@php 
-						$lastBankName = $data->Bank_NickName;
+						$lastBankName = $data['Bank_NickName'];
 						$i++ ;
 					@endphp 
 				@empty

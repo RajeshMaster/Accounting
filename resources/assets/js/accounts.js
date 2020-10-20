@@ -214,14 +214,14 @@ function creditAmount() {
 	amt = Number(amt.trim().replace(/[, ]+/g, ""));
 	if (amt == "") {
 		$('#amount').focus();  
-		$('#amount').val('-');
+		$('#amount').val('');
 	} else {
 		$('#amount').focus(); 
 		if (amt>0) {
 			value1 = amt;
 			tot = value1.toLocaleString();
-			amount = "-"+tot;
-			document.getElementById("amount").value = amount;
+			// amount = "-"+tot;
+			document.getElementById("amount").value = '';
 		}
 	}
 	$("#transfer").attr("style", "display:none");
@@ -311,7 +311,7 @@ function fnGetbankDetails() {
 		data: {"bankacc": bank},
 		success: function(resp) {
 			for (i = 0; i < resp.length; i++) {
-				$('#transfer').append( '<option value="'+resp[i]["id"]+'">'+resp[i]["BANKNAME"]+'</option>' );
+				$('#transfer').append( '<option value="'+resp[i]["ID"]+'">'+resp[i]["BANKNAME"]+'</option>' );
 				// $('select[name="inchargeDetails"]').val(value);
 			}
 		},

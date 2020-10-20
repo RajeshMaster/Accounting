@@ -39,33 +39,39 @@ class AccBankDetailController extends Controller {
 		}
 		$bankdetailindex = array();
 		$j = 0;
-		$index = Bankdetail::bankindex($request)->paginate($request->plimit);
+		$index = AccBankDetail::bankindex($request)->paginate($request->plimit);
 
 		$i=0;
 		foreach ($index as $key => $value) {
 			$bankdetailindex[$i]['banknm'] = $value->banknm;
+			$bankdetailindex[$i]['nickName'] = $value->NickName;
 			$bankdetailindex[$i]['brnchnm'] = $value->brnchnm;
 			$bankdetailindex[$i]['AccNo'] = $value->AccNo;
-			$bankdetailindex[$i]['startDate'] = $value->startDate;
+
+
 			$bankdetailindex[$i]['bankId'] = $value->bnkid;
 			$bankdetailindex[$i]['brnchid'] = $value->brnchid;
 
 			$baseAmtInsChk = array();
 			$baseAmtVal = 0;
-			$baseAmtInsChk = AccBankDetail::baseAmtInsChk($value->bnkid);
+			$baseAmtInsChk = AccBankDetail::baseAmtInsChk($value->bnkid, $value->AccNo);
+			$bankdetailindex[$i]['startDate'] = "";
 			if (isset($baseAmtInsChk[0])) {
 				$bankdetailindex[$i]['baseAmtInsChk'] = 1;
 				$baseAmtVal = $baseAmtInsChk[0]->amount;
+				$bankdetailindex[$i]['startDate'] = $value->startDate;
 			} else {
 				$bankdetailindex[$i]['baseAmtInsChk'] = 0;
 			}
-			$bankrectype1 = AccBankDetail::bankrectype1($value->bnkid);
-			$bankrectype2 = AccBankDetail::bankrectype2($value->bnkid);
-			$bankrectype3 = AccBankDetail::bankrectype3($value->bnkid);
+			$bankrectype1 = AccBankDetail::bankrectype1($value->bnkid, $value->AccNo);
+			$bankrectype2 = AccBankDetail::bankrectype2($value->bnkid, $value->AccNo);
+			$bankrectype3 = AccBankDetail::bankrectype3($value->bnkid, $value->AccNo);
+			$bankrectype4 = AccBankDetail::bankrectype4($value->bnkid, $value->AccNo);
 
 			$type1Total = 0; 
 			$type2Total = 0; 
 			$type3Total = 0; 
+			$type4Total = 0; 
 			for ($j=0; $j < count($bankrectype1) ; $j++) {
 				$type1Total += $bankrectype1[$j]->amount + $bankrectype1[$j]->fee;
 			}
@@ -78,7 +84,17 @@ class AccBankDetailController extends Controller {
 			for ($j=0; $j < count($bankrectype3) ; $j++) {
 				$type3Total += $bankrectype3[$j]->amount + $bankrectype3[$j]->fee;
 			}
-			$singlebanktotal =  $baseAmtVal + $type2Total - ($type1Total +$type3Total);
+
+			for ($j=0; $j < count($bankrectype4) ; $j++) {
+				$type4Total += $bankrectype4[$j]->amount + $bankrectype4[$j]->fee;
+			}
+
+			// print_r($baseAmtVal);echo "<br/>";
+			// print_r($type2Total);echo "<br/>";
+			// print_r($type1Total);echo "<br/>";
+			// print_r($type3Total);echo "<br/>";
+			// exit;
+			$singlebanktotal =  $baseAmtVal + ($type2Total + $type4Total) - ($type1Total +$type3Total);
 			$bankdetailindex[$i]['balanceAmt'] = $singlebanktotal;
 			$i++;
 		}
