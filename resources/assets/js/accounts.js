@@ -73,8 +73,7 @@ $(document).ready(function() {
 				transferMainExp: {required: true},
 				transferBank: {required: true},
 				transferAmount: {requiredWithZero: true},
-				transferFee: {requiredWithZero: true},
-				// transferBill : {extension: "jpg,jpeg,png,JPG,JPEG,PNG", filesize : (2  1024  1024)},
+				transferBill : {extension: "jpg,jpeg,png,JPG,JPEG,PNG", filesize : (2 * 1024 * 1024)},
 			},
 			submitHandler: function(form) { // for demo
 				if($('#editflg').val() == "edit") {
@@ -125,8 +124,7 @@ $(document).ready(function() {
 				autoDebitBank: {required: true},
 				autoDebitMainExp: {required: true},
 				autoDebitAmount: {requiredWithZero: true},
-				autoDebitFee: {requiredWithZero: true},
-				// autoDebitBill : {extension: "jpg,jpeg,png,JPG,JPEG,PNG", filesize : (2  1024  1024)},
+				autoDebitBill : {extension: "jpg,jpeg,png,JPG,JPEG,PNG", filesize : (2 * 1024 * 1024)},
 			},
 			submitHandler: function(form) { // for demo
 				if($('#editflg').val() == "edit") {
@@ -346,16 +344,21 @@ function popupenable() {
 }
 
 function fnaddempid(){
-	var table_id=$('#table_id').val();
+	var table_id = $('#table_id').val();
 	var kananame = "empKanaNames"+table_id;
 	var empids = "emp_ID"+table_id;
-	var empid=$('#empid').val();
-	var empKanaName=$('#empKanaName').val();
+	var empid = $('#empid').val();
+	var empKanaName = $('#empKanaName').val();
 	$('#'+kananame).text(empKanaName);
 	$('#'+empids).val(empid);
 	$('#'+table_id).addClass("highlight1");
 	$('#crossid'+table_id).css('display','inline');
 	$('#divid'+table_id).css('display','inline');
+	if ($('#txt_empname').val() != "") {
+		$("#transferContent").attr("disabled", "disabled");
+	} else {
+		$("#transferContent").removeAttr("disabled");
+	}
 	$('#empnamepopup').modal('toggle');
 }
 
@@ -380,35 +383,39 @@ function fndbclick(id,empid,empname,name) {
 		name = empname;
 	}
 	$('#txt_empname').val(name);
-	var table_id=$('#table_id').val();
+	var table_id = $('#table_id').val();
 	var kananame = "empKanaNames"+table_id;
 	var empids = "emp_ID"+table_id;
-	var empid=$('#empid').val();
+	var empid = $('#empid').val();
 	var empKanaName=$('#empKanaName').val();
 	$('#'+kananame).text(empKanaName);
 	$('#'+empids).val(empid);
 	$('#'+table_id).addClass("highlight1");
 	$('#crossid'+table_id).css('display','inline');
 	$('#divid'+table_id).css('display','inline');
+	if ($('#txt_empname').val() != "") {
+		$("#transferContent").attr("disabled", "disabled");
+	} else {
+		$("#transferContent").removeAttr("disabled");
+	}
 	$('#empnamepopup').modal('toggle');
 }
 
 function gotoindexpage(page,mainmenu) {
-	if (!confirm("Do You Want To Cancel the Page?")) {
-		return false;
-	} else {
-		if (page == "Cash") {
-			$('#addeditcancel').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
-			$("#addeditcancel").submit();
-		} else if (page == "Transfer") {
-			$('#transferaddeditcancel').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
-			$("#transferaddeditcancel").submit();
-		} else if (page == "AutoDebit") {
-			$('#transferaddeditcancel').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
-			$("#transferaddeditcancel").submit();
-		} else {
+	if (cancel_check == false) {
+		if (!confirm("Do You Want To Cancel the Page?")) {
 			return false;
 		}
+	}
+	if (page == "Cash") {
+		$('#addeditcancel').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+		$("#addeditcancel").submit();
+	} else if (page == "Transfer") {
+		$('#transferaddeditcancel').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+		$("#transferaddeditcancel").submit();
+	} else {
+		$('#AutoDebitRegcancel').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+		$("#AutoDebitRegcancel").submit();
 	}
 }
 
@@ -425,12 +432,30 @@ function Getsalarypopup() {
 
 function Getloanpopup() {
 	var mainmenu = $('#mainmenu').val();
-	popupopenclose(1);
-	$('#getloanpopup').load('../Accounting/getloanpopup?mainmenu='+mainmenu+'&time='+datetime);
-	$("#getloanpopup").modal({
-		backdrop: 'static',
-		keyboard: false
-		});
-	$('#getloanpopup').modal('show');
+	var autoDebitDate = $('#autoDebitDate').val();
+	if (autoDebitDate != "") {
+		popupopenclose(1);
+		$('#getloanpopup').load('../Accounting/getloanpopup?mainmenu='+mainmenu+'&time='+datetime+'&autoDebitDate='+encodeURIComponent(autoDebitDate));
+		$("#getloanpopup").modal({
+			backdrop: 'static',
+			keyboard: false
+			});
+		$('#getloanpopup').modal('show');
+	} else {
+		alert("Please select Date field");
+	}
+}
+
+function disabledemp(){
+	if ($('#transferContent').val() != "") {
+		$("#bnkpopup").attr("disabled", "disabled");
+	} else {
+		$("#bnkpopup").removeAttr("disabled");
+	}
+}
+
+function fnclear(){
+	document.getElementById("txt_empname").value = "";
+	$("#transferContent").removeAttr("disabled");
 }
 

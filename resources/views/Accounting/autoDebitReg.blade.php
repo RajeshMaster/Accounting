@@ -3,6 +3,7 @@
 {{ HTML::script('resources/assets/js/accounts.js') }}
 {{ HTML::script('resources/assets/js/lib/bootstrap-datetimepicker.js') }}
 {{ HTML::style('resources/assets/css/lib/bootstrap-datetimepicker.min.css') }}
+{{ HTML::script('resources/assets/js/lib/additional-methods.min.js') }}
 @php use App\Http\Helpers; @endphp
 <script type="text/javascript">
 	var datetime = '<?php echo date('Ymdhis'); ?>';
@@ -156,7 +157,7 @@
 									'name' => 'transferFee',
 									'maxlength' => '14',
 									'style'=>'text-align:right;padding-right:4px;',
-									'class'=>'box12per ime_mode_disable ml10',
+									'class'=>'box7per ime_mode_disable ml7',
 									'onblur' => 'return fnSetZero11(this.id);',
 									'onfocus' => 'return fnRemoveZero(this.id);',
 									'onclick' => 'return fnRemoveZero(this.id);',
@@ -176,6 +177,7 @@
 													'id' => 'autoDebitBill',
 													'name' => 'autoDebitBill',
 													'style' => 'height:23px;',
+													'accept' => 'image/x-png,image/gif,image/jpeg',
 													'data-label' => trans('messages.lbl_bill'))) }}
 					<span>&nbsp;(Ex: Image File Only)</span>
 				</div>

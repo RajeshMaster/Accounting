@@ -196,7 +196,6 @@ class Accounting extends Model {
 						->orderBy('bankIdFrom','ASC')
 						->orderBy('id','DESC')
 						->get();
-						// ->toSql();
 		return $query;
 	}
 
@@ -208,7 +207,22 @@ class Accounting extends Model {
 						->where('accountNumberFrom','=',$acc)
 						->where('transcationType','=',9)
 						->get();
-						//->toSql();
+		return $query;
+	}
+
+	public static function getLoanDtls($request) {
+		$db = DB::connection('mysql_Salary');
+		$MnthYear = explode("-", $request->autoDebitDate);
+		$query = $db->table('ams_loan_details as loan')
+					->SELECT('loan.loanId','loan.loanName','loan.loanAmount','loanEMI.monthInterest')
+					->leftJoin('ams_loan_emidetails as loanEMI','loan.loanId','=','loanEMI.loanId')
+					->where('loan.userId','=',"AD0000")
+					->where('loan.activeFlg','=',0)
+					->where('loan.delFlg','=',0);
+		$query = $query->WHERE(DB::raw("SUBSTRING(loanEMI.emiDate, 1, 4)"),'=', $MnthYear[0]);
+		$query = $query->WHERE(DB::raw("SUBSTRING(loanEMI.emiDate, 6, 2)"),'=', $MnthYear[1])
+						->orderBy('loanEMI.belongsTo','ASC')
+						->get();
 		return $query;
 	}
 }

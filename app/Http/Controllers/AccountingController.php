@@ -201,6 +201,8 @@ class AccountingController extends Controller {
 	*/
 	public function getsalarypopup(Request $request) {
 
+		$getSalaryDtls = Accounting::getSalaryDtls($request);
+
 		return view('Accounting.salarydetailspopup',['request' => $request]);
 	}
 
@@ -271,7 +273,15 @@ class AccountingController extends Controller {
 	*/
 	public function getloanpopup(Request $request) {
 
-		return view('Accounting.loandetailspopup',['request' => $request]);
+		$getLoanDtls = array();
+		
+		if ($request->autoDebitDate != "") {
+			$getLoanDtls = Accounting::getLoanDtls($request);
+		}
+
+		return view('Accounting.loandetailspopup',['request' => $request,
+													'getLoanDtls' => $getLoanDtls
+													]);
 	}
 
 

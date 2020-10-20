@@ -122,10 +122,16 @@
 									'readonly','readonly',
 									'data-label' => trans('messages.lbl_empName'))) }}
 
-					<button type="button" id="bnkpopup" class="btn btn-success box75 pt3 h30" 
+					<button type="button" id="bnkpopup" class="btn btn-success box75 pt3 h30 ml3 mb3" 
 							style ="color:white;background-color: green;cursor: pointer;" 
 							onclick="return popupenable();">
 								{{ trans('messages.lbl_Browse') }}
+					</button> 
+					
+					<button type="button" id="bnkpopup" class="btn btn-danger box75 pt3 h30 ml5 mb3" 
+							style ="color:white;cursor: pointer;" 
+							onclick="return fnclear();">
+								{{ trans('messages.lbl_clear') }}
 					</button> 
 				</div>
 			</div>
@@ -140,6 +146,7 @@
 					{{ Form::text('transferContent',null,
 							array('id'=>'transferContent', 
 									'name' => 'transferContent',
+									'onkeyup'=>'disabledemp();',
 									'data-label' => trans('messages.lbl_content'),
 									'class'=>'box31per form-control pl5')) }}
 				</div>
@@ -172,7 +179,7 @@
 									'name' => 'transferFee',
 									'maxlength' => '14',
 									'style'=>'text-align:right;padding-right:4px;',
-									'class'=>'box12per ime_mode_disable ml10',
+									'class'=>'box7per ime_mode_disable ml7',
 									'onblur' => 'return fnSetZero11(this.id);',
 									'onfocus' => 'return fnRemoveZero(this.id);',
 									'onclick' => 'return fnRemoveZero(this.id);',
@@ -192,6 +199,7 @@
 											'id' => 'transferBill',
 											'name' => 'transferBill',
 											'style' => 'height:23px;',
+											'accept' => 'image/x-png,image/gif,image/jpeg',
 											'data-label' => trans('messages.lbl_bill'))) }}
 					<span>&nbsp;(Ex: Image File Only)</span>
 				</div>
