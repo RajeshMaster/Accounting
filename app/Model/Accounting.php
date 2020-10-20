@@ -33,7 +33,7 @@ class Accounting extends Model {
 
 	public static function getautoincrement() {
 
-		$statement = DB::select("show table status like 'acc_cashRegister'");
+		$statement = DB::select("show table status like 'acc_cashregister'");
 		if (isset($statement[0]->Auto_increment)) {
 			$statement = $statement[0]->Auto_increment;
 		} else {
@@ -49,7 +49,7 @@ class Accounting extends Model {
 		$bankacc = explode('-', $request->bank);
 		$db = DB::connection('mysql');
 
-		$insert = $db->table('acc_cashRegister')
+		$insert = $db->table('acc_cashregister')
 					->insert([
 							'emp_ID' => "",
 							'date' => $request->date,
@@ -81,7 +81,7 @@ class Accounting extends Model {
 
 		$db = DB::connection('mysql');
 
-		$insert = $db->table('acc_cashRegister')
+		$insert = $db->table('acc_cashregister')
 					->insert([
 							'emp_ID' => "",
 							'date' => $request->date,
@@ -117,7 +117,7 @@ class Accounting extends Model {
 
 		$db = DB::connection('mysql');
 
-		$insert = $db->table('acc_cashRegister')
+		$insert = $db->table('acc_cashregister')
 					->insert([
 							'emp_ID' => $request->empid, 
 							'date' => $request->transferDate,
@@ -143,7 +143,7 @@ class Accounting extends Model {
 
 		$db = DB::connection('mysql');
 
-		$insert = $db->table('acc_cashRegister')
+		$insert = $db->table('acc_cashregister')
 					->insert([
 							'date' => $request->autoDebitDate,
 							'transcationType' => 1,
@@ -189,9 +189,9 @@ class Accounting extends Model {
 	public static function fetchcashRegister() {
 
 		$db = DB::connection('mysql');
-		$query = $db->table('acc_cashRegister')
-						->SELECT('acc_cashRegister.*','mstbank.AccNo','mstbank.AccNo','mstbank.FirstName','mstbank.LastName','mstbank.BankName','mstbank.Bank_NickName')
-						->leftJoin('mstbank', 'mstbank.BankName', '=', 'acc_cashRegister.bankIdFrom')
+		$query = $db->table('acc_cashregister')
+						->SELECT('acc_cashregister.*','mstbank.AccNo','mstbank.AccNo','mstbank.FirstName','mstbank.LastName','mstbank.BankName','mstbank.Bank_NickName')
+						->leftJoin('mstbank', 'mstbank.BankName', '=', 'acc_cashregister.bankIdFrom')
 						->where('transcationType','!=',9)
 						->orderBy('bankIdFrom','ASC')
 						->orderBy('id','DESC')
