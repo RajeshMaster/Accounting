@@ -101,32 +101,78 @@ class AccBankDetail extends Model {
 		return $update;
 	}
 
-	public static function bankview($request) {
-		$fromDate = $request->fromDate;
-		$fromDate = date('Y-m-01', strtotime($fromDate));
-		// Last day of the month.
-		$toDate = date('Y-m-t', strtotime($fromDate));
+	public static function bankview($request,$startdate,$curDate,$from_date,$to_date,$cdm) {
+		
+		// $fromDate = $request->fromDate;
+		// $fromDate = date('Y-m-01', strtotime($fromDate));
+		// // Last day of the month.
+		// $toDate = date('Y-m-t', strtotime($fromDate));
+
+		$year = "";
+		$month = "";
+		if($cdm != ""){
+			$year = substr($cdm,0,4);
+			$month = substr($cdm,5,2);
+		}
 
 		$db = DB::connection('mysql');
-		$query = $db->table('acc_cashregister')
-						->SELECT('*','bank.id As bankId','bank.AccNo','bank.FirstName','bank.LastName','bank.Bank_NickName','bank.BranchName as branchId','branch.BranchName')
-						->leftJoin('mstbank AS bank', function($join)
-							{
-								$join->on('acc_cashregister.bankIdFrom', '=', 'bank.BankName');
-								$join->on('acc_cashregister.accountNumberFrom', '=', 'bank.AccNo');
+		$query = $db->table('acc_cashregister as cashreg')
+						->SELECT('cashreg.*','bank.id As bankId','bank.AccNo','bank.FirstName','bank.LastName','bank.Bank_NickName','bank.BranchName as branchId','branch.BranchName')
+						->leftJoin('mstbank AS bank', function($join) {
+								$join->on('cashreg.bankIdFrom', '=', 'bank.BankName');
+								$join->on('cashreg.accountNumberFrom', '=', 'bank.AccNo');
 							})
-						->leftJoin('mstbankbranch AS branch', function($join)
-							{
+						->leftJoin('mstbankbranch AS branch', function($join) {
 								$join->on('bank.BranchName', '=', 'branch.id');
 							})
-						->where('bankIdFrom','=',$request->bankid)
-						->where('accountNumberFrom','=',$request->accno)
-						->where('date','>=',$fromDate)
-						->where('date','<=',$toDate)
-						->where('transcationType','!=',9)
-						->orderBy('acc_cashregister.date','ASC')
-						->paginate($request->plimit);
-						//->toSql();
+						->where('cashreg.bankIdFrom','=',$request->bankid)
+						->where('cashreg.accountNumberFrom','=',$request->accno)
+						->where('cashreg.transcationType','!=',9);
+
+			if($from_date != ""){
+
+				$query = $query->where(function($joincont) use ($startdate,$curDate,$from_date) {
+								$joincont->WHERERAW("cashreg.date >= '$startdate'")
+										->WHERERAW("cashreg.date <= '$curDate'")
+										->WHERERAW("cashreg.date <= '$from_date'");
+								});
+
+			} else if($to_date != ""){
+
+				$query = $query->where(function($joincont) use ($startdate,$curDate,$to_date) {
+								$joincont->WHERERAW("cashreg.date >= '$startdate'")
+										->WHERERAW("cashreg.date <= '$curDate'")
+										->WHERERAW("cashreg.date >= '$to_date'");
+								});
+
+			} else if($cdm != "" && $month == ""){
+
+			 	$query = $query->where(function($joincont) use ($startdate,$curDate,$year) {
+								$joincont->WHERERAW("cashreg.date >= '$startdate'")
+										->WHERERAW("cashreg.date <= '$curDate'")
+										->WHERERAW("SUBSTRING(cashreg.date,1,4) = '$year'");
+								});
+
+			} else {
+
+				$query = $query->where(function($joincont) use ($startdate,$curDate) {
+								$joincont->WHERERAW("cashreg.date >= '$startdate'")
+										->WHERERAW("cashreg.date <= '$curDate'");
+								});
+
+			}
+
+			$query = $query->orderBy('cashreg.date','ASC')
+							->paginate($request->plimit);
+
+		return $query;
+	}
+
+	public static function fnGetAccountPeriodBK($request) {
+		$query=DB::table('dev_kessandetails')
+						->SELECT('*')
+						->where('delflg','=','0')
+						->get();
 		return $query;
 	}
 
