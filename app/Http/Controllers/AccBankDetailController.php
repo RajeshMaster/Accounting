@@ -31,7 +31,7 @@ class AccBankDetailController extends Controller {
 	* Created At 2020/10/19
 	*
 	*/
-	function index(Request $request) {
+	public function index(Request $request) {
 		// PAGINATION
 		if ($request->plimit=="") {
 			$request->plimit = 50;
@@ -41,7 +41,7 @@ class AccBankDetailController extends Controller {
 		$j = 0;
 		$index = AccBankDetail::bankindex($request)->paginate($request->plimit);
 
-		$i=0;
+		$i = 0;
 		$totalBalance = 0;
 		foreach ($index as $key => $value) {
 			$bankdetailindex[$i]['banknm'] = $value->banknm;
@@ -73,28 +73,23 @@ class AccBankDetailController extends Controller {
 			$type2Total = 0; 
 			$type3Total = 0; 
 			$type4Total = 0; 
-			for ($j=0; $j < count($bankrectype1) ; $j++) {
+
+			for ($j = 0; $j < count($bankrectype1) ; $j++) {
 				$type1Total += $bankrectype1[$j]->amount + $bankrectype1[$j]->fee;
 			}
 
-
-			for ($j=0; $j < count($bankrectype2) ; $j++) {
+			for ($j = 0; $j < count($bankrectype2) ; $j++) {
 				$type2Total += $bankrectype2[$j]->amount + $bankrectype2[$j]->fee;
 			}
 
-			for ($j=0; $j < count($bankrectype3) ; $j++) {
+			for ($j = 0; $j < count($bankrectype3) ; $j++) {
 				$type3Total += $bankrectype3[$j]->amount + $bankrectype3[$j]->fee;
 			}
 
-			for ($j=0; $j < count($bankrectype4) ; $j++) {
+			for ($j = 0; $j < count($bankrectype4) ; $j++) {
 				$type4Total += $bankrectype4[$j]->amount + $bankrectype4[$j]->fee;
 			}
 
-			// print_r($baseAmtVal);echo "<br/>";
-			// print_r($type2Total);echo "<br/>";
-			// print_r($type1Total);echo "<br/>";
-			// print_r($type3Total);echo "<br/>";
-			// exit;
 			$singlebanktotal =  $baseAmtVal + ($type2Total + $type4Total) - ($type1Total +$type3Total);
 			$bankdetailindex[$i]['balanceAmt'] = $singlebanktotal;
 
@@ -105,18 +100,19 @@ class AccBankDetailController extends Controller {
 		/*echo "<pre>";
 		print_r($bankdetailindex);
 		echo "</pre>";*/
-		return view('AccBankDetail.index',[
-								'bankdetailindex' => $bankdetailindex,
-								'totalBalance' => $totalBalance,
-								'index' => $index,
-								'request' => $request]);
+
+		return view('AccBankDetail.index',[ 'request' => $request,
+											'bankdetailindex' => $bankdetailindex,
+											'totalBalance' => $totalBalance,
+											'index' => $index
+										]);
 	}
 
-	function add(Request $request) {
+	public function add(Request $request) {
 		return view('AccBankDetail.addedit',['request' => $request]);	
 	}
 
-	function addeditprocess(Request $request) {
+	public function addeditprocess(Request $request) {
 			if($request->editFlg != "1") {
 			$insert = AccBankDetail::insertRec($request);
 			if($insert) {
@@ -159,8 +155,9 @@ class AccBankDetailController extends Controller {
 		return Redirect::to('AccBankDetail/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 	}
 
-	function Viewlist(Request $request){
-		if ($request->plimit=="") {
+	public function Viewlist(Request $request) {
+
+		if ($request->plimit == "") {
 			$request->plimit = 50;
 			$request->page = 1;
 		}
@@ -168,7 +165,19 @@ class AccBankDetailController extends Controller {
 		if (!isset($request->fromDate) || $request->fromDate == "") {
 			$request->fromDate = date("Y-m-d");
 		}
-		$singleBank = AccBankDetail::bankview($request);
+
+		// Year Bar Process Start
+		$from_date = "";
+		$to_date = "";
+		$g_accountperiod = Bankdetail::fnGetAccountPeriodBK($request);
+		$account_close_yr = $g_accountperiod[0]->Closingyear;
+		$account_close_mn = $g_accountperiod[0]->Closingmonth;
+		$account_period = intval($g_accountperiod[0]->Accountperiod);
+		$startdate = $request->startdate;
+		$curDate = date('Y-m-d');
+		// Year Bar Process End
+
+		$singleBank = AccBankDetail::bankview($request,$startdate,$curDate,$from_date,$to_date,"");
 		// print_r($request->all());exit;
 		$baseAmtInsChk = AccBankDetail::baseAmtInsChk($request->bankid, $request->accno);
 		$baseAmtVal = $baseAmtInsChk[0]->amount;
@@ -181,21 +190,130 @@ class AccBankDetailController extends Controller {
 		$type2Total = 0;
 		$type3Total = 0;
 		$type4Total = 0;
-		for ($j=0; $j < count($bankrectype1) ; $j++) {
+
+		for ($j = 0; $j < count($bankrectype1) ; $j++) {
 			$type1Total += $bankrectype1[$j]->amount + $bankrectype1[$j]->fee;
 		}
-		for ($j=0; $j < count($bankrectype2) ; $j++) {
+		for ($j = 0; $j < count($bankrectype2) ; $j++) {
 			$type2Total += $bankrectype2[$j]->amount + $bankrectype2[$j]->fee;
 		}
-		for ($j=0; $j < count($bankrectype3) ; $j++) {
+		for ($j = 0; $j < count($bankrectype3) ; $j++) {
 			$type3Total += $bankrectype3[$j]->amount + $bankrectype3[$j]->fee;
 		}
-		for ($j=0; $j < count($bankrectype4) ; $j++) {
+		for ($j = 0; $j < count($bankrectype4) ; $j++) {
 			$type4Total += $bankrectype4[$j]->amount + $bankrectype4[$j]->fee;
 		}
-		$singlebanktotal =  $baseAmtVal + ($type2Total + $type4Total) - ($type1Total +$type3Total);
+		$singlebanktotal =  $baseAmtVal + ($type2Total + $type4Total) - ($type1Total + $type3Total);
+
 		
-		$i=0;
+		// Year Bar Process Start
+		$dbrecord = array();
+		foreach ($singleBank as $key => $value) {
+			$dbrecord[] = $value->date;
+		}
+		$dbrecord = array_unique($dbrecord); 
+		$dbyears = array();
+		foreach ($dbrecord AS $dbrecordkey => $dbrecordvalue) {
+			$dbyear = substr($dbrecordvalue,0,4);
+			$dbyears[$dbyear] = $dbyear;
+		}
+		$db_year_month = array();
+		foreach ($dbrecord AS $dbrecordkey => $dbrecordvalue) {
+			$lastdbrecord = substr($dbrecordvalue,0,7);
+		}
+		if (empty($request->selYear) && !empty($lastdbrecord)) {
+			$date_month = $lastdbrecord;
+			$selMonth = substr($date_month,5,2);
+			$selYear = substr($date_month,0,4);
+		} else if(empty($request->selYear) && empty($lastdbrecord)){
+			$selMonth = date('m');
+			$selYear= date('Y');
+		} else if (empty($request->selMonth)) {
+			$date_month = $request->selYear;
+			$selYear = $request->selYear;
+		} else {
+			$date_month = $request->selYear . "-" . substr("0" . $request->selMonth , -2);
+			$selYear = $request->selYear;
+			$selMonth = $request->selMonth;
+		}
+
+		foreach ($dbrecord AS $dbrecordkey => $dbrecordvalue) {
+			if(empty($selMonth)) {
+				$dbrecords = substr($dbrecordvalue,0,4);
+			} else {
+				$dbrecords = substr($dbrecordvalue,0,7);
+			}
+			if($dbrecords < $date_month){
+				$previous_date = $dbrecords;
+			}
+			$split_val = explode("-", $dbrecordvalue);
+			$db_year_month[$split_val[0]][intval($split_val[1])] = intval($split_val[1]);
+		}
+
+		$splityear = explode('-', $request->previou_next_year);
+		if ($request->previou_next_year != "") {
+			if (intval($splityear[1]) > $account_close_mn) {
+				$last_year = intval($splityear[0]);
+				$current_year = intval($splityear[0]) + 1;
+			} else {
+				$last_year = intval($splityear[0]) - 1;
+				$current_year = intval($splityear[0]);
+			}
+		} else if ($selYear) {
+			if ($selMonth > $account_close_mn) {
+				$current_year = intval($selYear) + 1;
+				$last_year = intval($selYear);
+			} else {
+				$current_year = intval($selYear);
+				$last_year = intval($selYear) - 1;
+			}
+		} else {
+			if ($selMonth > $account_close_mn) {
+			    $current_year = $selYear + 1;
+				$last_year = $selYear;
+			} else {
+			    $current_year = $selYear;
+				$last_year = $selYear - 1;
+			}
+		}
+
+		$year_month1 = array();
+		if ($account_close_mn == 12) {
+			for ($i = 1; $i <= 12; $i++) {
+				$year_month1[$current_year][$i] = $i;
+			}
+		} else {
+			for ($i = ($account_close_mn + 1); $i <= 12; $i++) {
+				$year_month1[$last_year][$i] = $i;
+			}
+
+			for ($i = 1; $i <= $account_close_mn; $i++) {
+				$year_month1[$current_year][$i] = $i;
+			}
+		}
+
+		$year_month_day = $current_year . "-" . $account_close_mn . "-01";
+		$maxday = Common::fnGetMaximumDateofMonth($year_month_day);
+		$from_date = $last_year . "-" . substr("0" . $account_close_mn, -2). "-" . substr("0" . $maxday, -2);
+		$to_date = $current_year . "-" . substr("0" . ($account_close_mn + 1), -2) . "-01";
+		$bktr_query1 = AccBankDetail::bankview($request,$startdate,$curDate,$from_date,"","");
+		$dbprevious = array();
+		foreach ($bktr_query1 AS $key => $value) {
+			array_push($dbprevious, $value->date);
+		}
+		$bktr_query2 = AccBankDetail::bankview($request,$startdate,$curDate,"",$to_date,"");
+		$dbnext = array();
+		foreach ($bktr_query2 AS $key => $value) {
+			array_push($dbnext, $value->date);
+		}
+		$split_date = explode('-', $date_month);
+		$account_val = Common::getAccountPeriod($year_month1,$account_close_yr,$account_close_mn,$account_period);
+		$g_query = AccBankDetail::bankview($request,$startdate,$curDate,"","",$date_month);
+		$g_queryhdn = AccBankDetail::bankview($request,$startdate,$curDate,"","",$date_month);
+
+		// Year Bar Process End
+
+		$i = 0;
 		foreach ($singleBank as $key => $value) {
 			$bankdetail[$i]['banknm'] = $value->FirstName;
 			$bankdetail[$i]['nickName'] = $value->Bank_NickName;
@@ -213,11 +331,20 @@ class AccBankDetailController extends Controller {
 			$i++;
 		}
 
-		return view('AccBankDetail.Viewlist',[
-											'singleBank' => $singleBank,
-											'bankdetail' => $bankdetail,
-											'singlebanktotal' => $singlebanktotal,
-											'baseAmtInsChk' => $baseAmtInsChk,
-											'request' => $request]);
+		return view('AccBankDetail.Viewlist',[ 'request' => $request,
+												'singleBank' => $singleBank,
+												'bankdetail' => $bankdetail,
+												'singlebanktotal' => $singlebanktotal,
+												'baseAmtInsChk' => $baseAmtInsChk,
+												'account_period' => $account_period,
+												'year_month' => $year_month1,
+												'db_year_month' => $db_year_month,
+												'date_month' => $date_month,
+												'dbnext' => $dbnext,
+												'dbprevious' => $dbprevious,
+												'last_year' => $last_year,
+												'current_year' => $current_year,
+												'account_val' => $account_val
+											]);
 	}
 }

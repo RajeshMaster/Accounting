@@ -46,11 +46,13 @@
 			</h2>
 		</div>
 	</div>
+	
 	<div class="box100per pl15 pr15 mt10">
 		<div class="mt10 mb10">
-		
+			{{ Helpers::displayYear_MonthEst($account_period, $year_month, $db_year_month, $date_month, $dbnext, $dbprevious, $last_year, $current_year, $account_val) }}
 		</div>
 	</div>
+	
 	<div class="col-xs-12">
 		<!-- Session msg -->
 		@if(Session::has('success'))
