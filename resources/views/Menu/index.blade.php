@@ -255,16 +255,23 @@
 		<div class="col-xs-12 mt40" style="padding-left: 100px;">
 		@endif
 			<div class="col-xs-3">
-				<div class="image_b div_inline mb15 mr95 ml110">{{ trans('messages.lbl_master') }}</div>
+				<div class="image_b div_inline mb15 mr95 ml110">{{ trans('messages.lbl_customer') }}</div>
+				@if(Auth::user()->userclassification == 4)
 				<div class="alinkEng ml130 mt5 tal">
-					<a class="pageload csrp btn-link" href="{{ url('User/index?mainmenu=user&time='.date('Ymdhis')) }}" style="color:blue;font-size: 13px;">
-						{{ trans('messages.lbl_user') }}
+					<a class="pageload csrp btn-link csrp" href="{{ url('EmpHistory/index?mainmenu=Employee&time='.date('Ymdhis')) }}" style="color:blue;font-size: 13px;">
+						{{ trans('messages.lbl_emphistory') }}
+					</a>
+				</div>
+				@endif
+				<div class="alinkEng ml130 mt5 tal">
+					<a class="pageload csrp btn-link" href="{{ url('Customer/index?mainmenu=Customer&time='.date('Ymdhis')) }}" style="color:blue;font-size: 13px;">
+						{{ trans('messages.lbl_customer') }}
 					</a>
 				</div>
 				@if(Auth::user()->userclassification == 4)
 				<div class="alinkEng ml130 mt5 tal">
-					<a class="pageload csrp btn-link" href="{{ url('Bank/index?mainmenu=Bank_invoice&time='.date('Ymdhis')) }}" style="color:blue;font-size: 13px;">
-						{{ trans('messages.lbl_bank') }}
+					<a class="pageload csrp btn-link" href="{{ url('MeetingDetails/index?mainmenu=Customer&time='.date('Ymdhis')) }}" style="color:blue;font-size: 13px;">
+						{{ trans('messages.lbl_meetingdet') }}
 					</a>
 				</div>
 				@endif
@@ -275,26 +282,17 @@
 			<div class="col-xs-3" style="padding-left: 150px;">
 			@endif
 				<div class="image_b div_inline mb15 mr120">
-					{{ trans('messages.lbl_customer') }}</div>
-				@if(Auth::user()->userclassification == 4)
+					{{ trans('messages.lbl_accounting') }}</div>
 				<div class="alinkEng ml20 mt5 tal">
-					<a class="pageload csrp btn-link csrp" href="{{ url('EmpHistory/index?mainmenu=Employee&time='.date('Ymdhis')) }}" style="color:blue;font-size: 13px;">
-						{{ trans('messages.lbl_emphistory') }}
+					<a class="pageload csrp btn-link csrp" href="{{ url('Accounting/index?mainmenu=Accounting&time='.date('Ymdhis')) }}" style="color:blue;font-size: 13px;">
+						{{ trans('messages.lbl_accounting') }}
 					</a>
 				</div>
-				@endif
 				<div class="alinkEng ml20 mt5 tal">
-					<a class="pageload csrp btn-link" href="{{ url('Customer/index?mainmenu=Customer&time='.date('Ymdhis')) }}" style="color:blue;font-size: 13px;">
-						{{ trans('messages.lbl_customer') }}
+					<a class="pageload csrp btn-link" href="{{ url('AccBankDetail/index?mainmenu=AccBankDetail&time='.date('Ymdhis')) }}" style="color:blue;font-size: 13px;">
+						{{ trans('messages.lbl_bankdetail') }}
 					</a>
 				</div>
-				@if(Auth::user()->userclassification == 4)
-				<div class="alinkEng ml20 mt5 tal">
-					<a class="pageload csrp btn-link" href="{{ url('MeetingDetails/index?mainmenu=Customer&time='.date('Ymdhis')) }}" style="color:blue;font-size: 13px;">
-						{{ trans('messages.lbl_meetingdet') }}
-					</a>
-				</div>
-				@endif
 			</div>
 			@if(Auth::user()->userclassification == 4)
 			<div class="col-xs-3" style="padding-left: 53px;">
@@ -328,7 +326,20 @@
 							{{ trans('messages.lbl_ourdetails') }}
 						</a>
 					</div>
-					
+
+					<div class="alinkEng ml20 mt5">
+						<a class="pageload csrp btn-link" href="{{ url('User/index?mainmenu=user&time='.date('Ymdhis')) }}" style="color:blue;font-size: 13px;">
+						{{ trans('messages.lbl_user') }}
+					</a>
+					</div>
+
+					@if(Auth::user()->userclassification == 4)
+						<div class="alinkEng ml20 mt5">
+							<a class="pageload csrp btn-link" href="{{ url('Bank/index?mainmenu=Bank_invoice&time='.date('Ymdhis')) }}" style="color:blue;font-size: 13px;">
+							{{ trans('messages.lbl_bank') }}
+							</a>
+						</div>
+					@endif
 				<div class="alinkEng ml20 mt5">
 					{{ Form::hidden('langvalue', Session::get('setlanguageval'), array('id' => 'langvalue')) }}
 				@if (Session::get('setlanguageval') == 'en')
