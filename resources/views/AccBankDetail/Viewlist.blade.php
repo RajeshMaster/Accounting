@@ -35,7 +35,7 @@
 		{{ Form::hidden('bankname', $request->bankname , array('id' => 'bankname')) }}
 		{{ Form::hidden('branchname', $request->branchname , array('id' => 'branchname')) }}
 		{{ Form::hidden('bankid', $request->bankid , array('id' => 'bankid')) }}
-		
+
 
 	<!-- Start Heading -->
 	<div class="row hline pm0">
@@ -116,7 +116,7 @@
 					</td>
 					<td class="tax_data_name"></td>
 					<td class="tax_data_name tar"></td>
-					<td class="tax_data_name tar">{{ number_format($baseAmtInsChk['0']->amount) }}</td>
+					<td class="tax_data_name tar" align="right">{{ number_format($baseAmtInsChk['0']->amount) }}</td>
 					<td class="tax_data_name"></td>
 					<td class="tax_data_name"></td>
 				</tr>
@@ -130,21 +130,21 @@
 						<td>{{ ($singleBank->currentpage()-1) * $singleBank->perpage() + $i + 1 }}</td>
 						<td>{{ $data->date }}</td>
 						<td>{{ $data->content }}</td>
-						<td>
+						<td align="right">
 							@if($data->transcationType == 1)
 								@php $debitAmt = $data->amount + $data->fee; @endphp
 								{{ number_format($debitAmt) }}
 							@endif
 						</td>
 
-						<td>
+						<td align="right">
 							@if($data->transcationType == 2 || $data->transcationType == 4)
 								@php $creditAmt = $data->amount + $data->fee; @endphp
 								{{ number_format($creditAmt) }}
 							@endif
 						</td>
 
-						<td>
+						<td align="right">
 							@if($data->transcationType == 1)
 								<?php $balanceAmt = $balanceAmt - $debitAmt ;?>
 							@else

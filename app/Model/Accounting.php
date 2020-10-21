@@ -450,4 +450,51 @@ class Accounting extends Model {
 		return $query;
 	}
 
+	public static function fnGetAccountPeriodAcc() {
+		$accperiod=DB::table('dev_kessandetails')
+						->SELECT('*')
+						->WHERE('delflg', '=', 0)
+	                    ->get();
+	        return $accperiod;
+	}
+
+	public static function fnGetCashExpenseAllRecord() {
+		$sql = "SELECT SUBSTRING(date, 1, 7) AS date FROM acc_cashregister where transcationType != '9'  ORDER BY date ASC";
+		$cards = DB::select($sql);
+		return $cards;
+	}
+
+	public static function fnGetCashExpenseRecord($from_date, $to_date) {
+	
+		$tbl_name = "acc_cashregister";
+		$sql = "SELECT SUBSTRING(date, 1, 7) AS date 
+				FROM $tbl_name 
+				WHERE (date > '$from_date' AND date < '$to_date') 
+				AND transcationType != '9'
+				ORDER BY date ASC";
+		$cards = DB::select($sql);
+		return $cards;
+	}
+
+	public static function fnGetCashExpenseRecordPrevious($from_date) {
+
+		$tbl_name = "acc_cashregister";
+		$conditionAppend = "AND (transcationType != 9)";
+		
+		$sql = "SELECT SUBSTRING(date, 1, 7) AS date FROM $tbl_name 
+			WHERE (date <= '$from_date' $conditionAppend) ORDER BY date ASC";
+		$cards = DB::select($sql);
+		return $cards;
+	}
+
+	public static function fnGetCashExpenseRecordNext($to_date) {
+		$tbl_name = "acc_cashregister";
+		
+		$sql = "SELECT SUBSTRING(date, 1, 7) AS date FROM acc_cashregister 
+			WHERE (date >= '$to_date') AND transcationType != '9' ORDER BY date ASC";
+		$cards = DB::select($sql);
+		return $cards;
+	}
+
+
 }

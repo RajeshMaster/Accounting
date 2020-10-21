@@ -34,6 +34,189 @@ class AccountingController extends Controller {
 	*
 	*/
 	public function index(Request $request) {
+		if(Session::get('selYear') !="") {
+			$request->selYear =  Session::get('selYear');
+			$request->selMonth =  Session::get('selMonth');
+			// $request->date =  Session::get('date');
+			// $request->amount =  Session::get('amount');
+		}
+
+		$from_date = "";
+		$to_date = "";
+		$previous_date = "";
+		$date_month = "";
+		$temp = "";
+
+		$g_accountperiod = Accounting::fnGetAccountPeriodAcc();
+		$account_close_yr = $g_accountperiod[0]->Closingyear;
+		$account_close_mn = $g_accountperiod[0]->Closingmonth;
+		$account_period = intval($g_accountperiod[0]->Accountperiod);
+		$curDate= date('Y-m-d');
+		$db_year_month = array();
+
+		$expall_query = Accounting::fnGetCashExpenseAllRecord();
+		$dballrecord = array();
+		foreach ($expall_query as $key => $value) {
+			array_push($dballrecord, $value->date);
+			// $dballrecord[]=$value->date;
+		}
+		$dballrecord = array_unique($dballrecord);
+		$inc=0;
+		foreach ($dballrecord AS $dbrecordallkey => $dbrecordallvalue) {
+			$split_val = explode("-", $dbrecordallvalue);
+			$loc=$split_val[0];
+			if ($loc != $temp) {
+				$inc=0;
+			}
+			$db_year_monthall[$split_val[0]][$inc] = intval($split_val[1]);
+			$temp=$loc;
+			$inc++;
+		}
+		$y=0;
+		$m=0;
+
+		if (!empty($db_year_monthall)) {
+			foreach ($db_year_monthall AS $dballkey => $dbllvalue) {
+				foreach ($dbllvalue AS $dballsubkey => $dbllsubvalue) {
+					$yearMonthCon = $dballkey."-".str_pad($dbllsubvalue, 2, 0, STR_PAD_LEFT);
+					$db_year_monthfullarray[$y] = $yearMonthCon;
+					if ($y!=0) {
+						$yearMnarray[$m] = $yearMonthCon;
+						$m++;
+					}
+					$y++;
+				}
+			}
+		}
+
+		if (!isset($request->selMonth)) {
+			$date_month=date('Y-m');
+		} else {
+			$date_month = $request->selYear . "-" . substr("0" . $request->selMonth , -2);
+		}
+
+		//Setting page limit
+		if ($request->plimit=="") {
+			$request->plimit = 100;
+		}
+		if ($request->selMonth == "") {
+			$request->selMonth = date('m');
+		}
+		if ($request->selYear == "") {
+			$request->selYear = date('Y');
+		}
+
+		$last=date('Y-m', strtotime('last month'));
+		$last1=date($date_month , strtotime($last . " last month"));
+		$lastdate=explode("-",$last1);
+		$lastyear=$lastdate[0];
+		$lastmonth=$lastdate[1];
+
+
+		if (!empty($request->previou_next_year)) {
+			$splityear = explode("-",$request->previou_next_year);
+			if (isset($splityear)) {
+				if (intval($splityear[1]) > $account_close_mn) {
+					$last_year = intval($splityear[0]);
+					$current_year = intval($splityear[0]) + 1;
+				} else {
+					$last_year = intval($splityear[0]) - 1;
+					$current_year = intval($splityear[0]);
+				}
+			}
+		} else if (isset($request->selYear)) {
+			if ($request->selMonth > $account_close_mn) {
+				$current_year = intval($request->selYear) + 1;
+				$last_year = intval($request->selYear);
+			} else {
+				$current_year = intval($request->selYear);
+				$last_year = intval($request->selYear) - 1;
+			}
+		} else {
+			if (date('m') > $account_close_mn) {
+			    $current_year = date('Y')+1;
+				$last_year = date('Y');
+			} else {
+			    $current_year = date('Y');
+				$last_year = date('Y') - 1;
+			}
+		}
+
+		$current_month=date('m');
+		$year_month=array();
+		if ($account_close_mn == 12) {
+			for ($i = 1; $i <= 12; $i++) {
+				$year_month[$current_year][$i] = $i;
+			} 
+		} else {
+			for ($i = ($account_close_mn + 1); $i <= 12; $i++) {
+				$year_month[$last_year][$i] = $i;
+			}
+			for ($i = 1; $i <= $account_close_mn; $i++) {
+				$year_month[$current_year][$i] = $i;
+			}
+		}
+
+		$year_month_day=$current_year . "-" . $account_close_mn . "-01";
+		$maxday=Common::fnGetMaximumDateofMonth($year_month_day);
+		$from_date=$last_year . "-" . substr("0" . $account_close_mn, -2). "-" . substr("0" . $maxday, -2);
+		$to_date=$current_year . "-" . substr("0" . ($account_close_mn + 1), -2) . "-01";
+
+		$est_query=Accounting::fnGetCashExpenseRecord($from_date, $to_date);
+		$dbrecord = array();
+		foreach ($est_query as $key => $value) {
+			$dbrecord[]=$value->date;
+		}
+
+
+		$est_query1 = Accounting::fnGetCashExpenseRecordPrevious($from_date);
+		$dbprevious = array();
+		$dbpreviousYr = array();
+		$pre = 0;
+		foreach ($est_query1 as $key => $value) {
+			$dbpreviousYr[]=substr($value->date, 0, 4);
+			$dbprevious[]=$value->date;
+			$pre++;
+		}
+
+		$est_query2=Accounting::fnGetCashExpenseRecordNext($to_date);
+		$dbnext = array();
+		foreach ($est_query2 as $key => $value) {
+			$dbnext[]=$value->date;
+		}
+		$dbrecord = array_unique($dbrecord);
+		$account_val = Common::getAccountPeriod($year_month, $account_close_yr, $account_close_mn, $account_period);
+
+
+
+
+
+		foreach ($dbrecord AS $dbrecordkey => $dbrecordvalue) {
+			$split_val = explode("-",$dbrecordvalue);
+			$db_year_month[$split_val[0]][intval($split_val[1])] = intval($split_val[1]);
+		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		$cashDetailsIndex = Accounting::fetchcashRegister();
 		$cashDetails =array();
 		$i = 0;
@@ -62,8 +245,61 @@ class AccountingController extends Controller {
 		}
 		return view('Accounting.index',['request' => $request,
 										'cashDetails' => $cashDetails,
-										'cashDetailsIndex' => $cashDetailsIndex]);
+										'cashDetailsIndex' => $cashDetailsIndex,
+										'account_period' => $account_period,
+										'year_month' => $year_month,
+										'db_year_month' => $db_year_month,
+										'date_month' => $date_month,
+										'dbnext' => $dbnext,
+										'dbprevious' => $dbprevious,
+										'last_year' => $last_year,
+										'current_year' => $current_year,
+										'account_val' => $account_val,
+
+
+
+									]);
 	}
+
+	// public function index(Request $request) {
+	// 	if(Session::get('selYear') !="") {
+	// 		$request->selYear =  Session::get('selYear');
+	// 		$request->selMonth =  Session::get('selMonth');
+	// 		// $request->date =  Session::get('date');
+	// 		// $request->amount =  Session::get('amount');
+	// 	}
+
+
+	// 	$cashDetailsIndex = Accounting::fetchcashRegister();
+	// 	$cashDetails =array();
+	// 	$i = 0;
+	// 	foreach ($cashDetailsIndex as $key => $value) {
+	// 		$cashDetails[$i]['id'] = $value->id;
+	// 		$cashDetails[$i]['date'] = $value->date;
+	// 		$cashDetails[$i]['content'] = $value->content;
+	// 		$cashDetails[$i]['amount'] = $value->amount;
+	// 		$cashDetails[$i]['fee'] = $value->fee;
+	// 		$cashDetails[$i]['Bank_NickName'] = $value->Bank_NickName;
+	// 		$cashDetails[$i]['transcationType'] = $value->transcationType;
+	// 		$cashDetails[$i]['remarks'] = $value->remarks;
+	// 		$cashDetails[$i]['baseAmt'] = 0;
+	// 		$cashDetails[$i]['bankId'] = $value->bankId;
+	// 		$cashDetails[$i]['fileDtl'] = $value->fileDtl;
+	// 		$cashDetails[$i]['transferId'] = $value->transferId;
+	// 		$cashDetails[$i]['pageFlg'] = $value->pageFlg;
+	// 		$baseAmt = Accounting::baseAmt($value->bankIdFrom,$value->accountNumberFrom);
+	// 		$cashDetails[$i]['subId'] = $value->subjectId;
+	// 		$cashDetails[$i]['subject'] = $value->Subject;
+
+	// 		if (isset($baseAmt[0]->amount)) {
+	// 			$cashDetails[$i]['baseAmt'] = $baseAmt[0]->amount;
+	// 		}
+	// 		$i++;
+	// 	}
+	// 	return view('Accounting.index',['request' => $request,
+	// 									'cashDetails' => $cashDetails,
+	// 									'cashDetailsIndex' => $cashDetailsIndex]);
+	// }
 
 	/**
 	*

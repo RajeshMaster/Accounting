@@ -579,3 +579,28 @@ function fntransclear(){
 function fnGetLoanDtls(userId){
 	Getloanpopup(userId);
 }
+
+
+function getData(month, year, flg, prevcnt, nextcnt, account_period, lastyear, currentyear, account_val) {
+	// alert(month + "***" + flg + "****" + currentyear);
+	var yearmonth = year + "-" +  ("0" + month).substr(-2);
+	if ((prevcnt == 0) && (flg == 0) && (parseInt(month) < account_period) && (year == lastyear)) {
+		alert("No Previous Record.");
+		//return false;
+	} else if ((nextcnt == 0) && (flg == 0) && (parseInt(month) > account_period) && (year == currentyear)) {
+		alert("No Next Record.");
+	} else {
+		if (flg == 1) {
+			 $('#previou_next_year').val(year + "-" +  ("0" + month).substr(-2)); 
+		}
+		$('#pageclick').val('');
+		$('#page').val('');
+		$('#plimit').val('');
+		$('#selMonth').val(("0" + month).substr(-2));
+		$('#selYear').val(year);
+		$('#prevcnt').val(prevcnt);
+		$('#nextcnt').val(nextcnt);
+		$('#account_val').val(account_val);
+		$('#frmaccountingindex').submit();
+	}
+}
