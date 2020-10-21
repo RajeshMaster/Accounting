@@ -57,11 +57,11 @@ class AccBankDetail extends Model {
 	public static function baseAmtInsChk($bankId ,$acc) {
 		$db = DB::connection('mysql');
 		$query = $db->table('acc_cashregister')
-						->SELECT('amount','fee','transcationType','date')
+						->SELECT('amount','fee','transcationType','date','id')
 						->where('bankIdFrom','=',$bankId)
 						->where('accountNumberFrom','=',$acc)
 						->where('transcationType','=',9)
-						->orderBy('acc_cashregister.date','DESC')
+						// ->orderBy('acc_cashregister.date','DESC')
 						->get();
 						//->toSql();
 		return $query;
@@ -86,6 +86,19 @@ class AccBankDetail extends Model {
 			]);
 		$id = DB::getPdo()->lastInsertId();;
 		return $id;
+	}
+
+	public static function updateRec($request ,$id) {
+		// print_r($_REQUEST);exit();
+		$name = Session::get('FirstName').' '.Session::get('LastName');
+		$update=DB::table('acc_cashregister')
+						->where('id', $id)
+						->update([
+						'date' => $request->txt_startdate,
+						'amount' => preg_replace("/,/", "",$request->txt_salary),
+						'updatedBy' => $name,
+				]);
+		return $update;
 	}
 
 	public static function bankview($request) {

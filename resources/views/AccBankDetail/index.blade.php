@@ -32,7 +32,7 @@
 		{{ Form::hidden('bankids', '' , array('id' => 'bankids')) }}
 		{{ Form::hidden('branchids', '' , array('id' => 'branchids')) }}
 		{{ Form::hidden('balbankid', '' , array('id' => 'balbankid')) }}
-		{{ Form::hidden('editflg', '1' , array('id' => 'editflg')) }}
+		{{ Form::hidden('editflg', '' , array('id' => 'editflg')) }}
 		{{ Form::hidden('checkflg', '' , array('id' => 'checkflg')) }}
 	<!-- Start Heading -->
 

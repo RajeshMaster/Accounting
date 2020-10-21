@@ -113,12 +113,11 @@ class AccBankDetailController extends Controller {
 	}
 
 	function add(Request $request) {
-		print_r($request->all());exit;
 		return view('AccBankDetail.addedit',['request' => $request]);	
 	}
 
 	function addeditprocess(Request $request) {
-			if($request->editflg == "1") {
+			if($request->editFlg != "1") {
 			$insert = AccBankDetail::insertRec($request);
 			if($insert) {
 				Session::flash('success', 'Inserted Sucessfully!'); 
@@ -137,7 +136,8 @@ class AccBankDetailController extends Controller {
 			Session::flash('bankname', $request->bankname); 
 			Session::flash('branchname', $request->branchname);  
 		} else {
-			$update = AccBankDetail::updateRec($request);
+			$baseAmtId = AccBankDetail::baseAmtInsChk($request->bankid, $request->accno);
+			$update = AccBankDetail::updateRec($request,$baseAmtId[0]->id);
 			if($update) {
 				Session::flash('success', 'Updated Sucessfully!'); 
 				Session::flash('type', 'alert-success'); 
@@ -169,7 +169,7 @@ class AccBankDetailController extends Controller {
 			$request->fromDate = date("Y-m-d");
 		}
 		$singleBank = AccBankDetail::bankview($request);
-
+		// print_r($request->all());exit;
 		$baseAmtInsChk = AccBankDetail::baseAmtInsChk($request->bankid, $request->accno);
 		$baseAmtVal = $baseAmtInsChk[0]->amount;
 		$bankrectype1 = AccBankDetail::bankrectype($request->bankid, $request->accno ,'1');

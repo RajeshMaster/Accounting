@@ -31,13 +31,13 @@
 			{{ Form::hidden('bankname', $request->bankname , array('id' => 'bankname')) }}
 			{{ Form::hidden('branchname', $request->branchname , array('id' => 'branchname')) }}
 			{{ Form::hidden('accno', $request->accno , array('id' => 'accno')) }}
-			{{ Form::hidden('startdate', $request->startdate , array('id' => 'startdate')) }}
+			{{ Form::hidden('intialDate', $request->intialDate , array('id' => 'intialDate')) }}
 			{{ Form::hidden('bankids', $request->bankids , array('id' => 'bankids')) }}
 			{{ Form::hidden('branchids', $request->branchids , array('id' => 'branchids')) }}
 			{{ Form::hidden('balbankid', $request->balbankid , array('id' => 'balbankid')) }}
-			{{ Form::hidden('editflg', $request->editflg , array('id' => 'editflg')) }}
-			{{ Form::hidden('startdate', $request->startdate , array('id' => 'startdate')) }}
-			{{ Form::hidden('balance', $request->balance , array('id' => 'balance')) }}
+			{{ Form::hidden('editFlg', $request->editFlg , array('id' => 'editFlg')) }}
+			{{ Form::hidden('intialDate', $request->intialDate , array('id' => 'intialDate')) }}
+			{{ Form::hidden('intialValue', $request->intialValue , array('id' => 'intialValue')) }}
 			{{ Form::hidden('date_month', $request->date_month  , array('id' => 'date_month')) }}
 			{{ Form::hidden('checkflg', $request->checkflg , array('id' => 'checkflg')) }}
 
@@ -45,7 +45,7 @@
 		<div class="col-xs-12">
 			<img class="pull-left box35 mt10" src="{{ URL::asset('resources/assets/images/bank_1.png') }}">
 			<h2 class="pull-left pl5 mt10">
-					{{ trans('messages.lbl_balance_entry') }}<span class="">・</span>@if ($request->editflg=="2")<span style="color:red">{{ trans('messages.lbl_edit') }}</span>@else<span style="color:green">{{ trans('messages.lbl_register') }}</span>@endif
+					{{ trans('messages.lbl_balance_entry') }}<span class="">・</span>@if ($request->editFlg=="1")<span style="color:red">{{ trans('messages.lbl_edit') }}</span>@else<span style="color:green">{{ trans('messages.lbl_register') }}</span>@endif
 			</h2>
 		</div>
 	</div>
@@ -89,17 +89,15 @@
 				<label>{{ trans('messages.lbl_Start_date') }}<span class="fr ml2 red"> * </span></label>
 			</div>
 			<div class="col-xs-9">
-				@if($request->editflg=="2")
-					{{ Form::text('txt_startdate',$request->startdate,array(
+				@if($request->editFlg =='1')
+					{{ Form::text('txt_startdate',$request->intialDate,array(
 										'id'=>'txt_startdate',
 										'name' => 'txt_startdate',
 										'class'=>'box12per txt_startdate form-control ime_mode_disable',
 										'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
 										'data-label' => trans('messages.lbl_Start_date'),
 										'maxlength' => '10')) }}
-
 				@else
-
 					{{ Form::text('txt_startdate','',array(
 										'id'=>'txt_startdate',
 										'name' => 'txt_startdate',
@@ -121,8 +119,8 @@
 			</div>
 
 			<div class="col-xs-9 CMN_display_block">
-				@if($request->editflg=="2")
-					{{ Form::text('txt_salary',$request->balance,array(
+				@if($request->editFlg=="1")
+					{{ Form::text('txt_salary',$request->intialValue,array(
 										'id'=>'txt_salary',
 										'name' => 'txt_salary',
 										'maxlength' => '15',
@@ -151,7 +149,7 @@
 	<fieldset style="background-color: #DDF1FA;">
 		<div class="form-group">
 			<div align="center" class="mt5">
-				@if($request->editflg=="2")
+				@if($request->editFlg=="1")
 					<button type="submit" class="btn edit btn-warning box100 addeditprocess">
 						<i class="fa fa-edit" aria-hidden="true"></i> {{ trans('messages.lbl_update') }}
 					</button>
@@ -181,12 +179,12 @@
 			{{ Form::hidden('bankname', $request->bankname , array('id' => 'bankname')) }}
 			{{ Form::hidden('branchname', $request->branchname , array('id' => 'branchname')) }}
 			{{ Form::hidden('accno', $request->accno , array('id' => 'accno')) }}
-			{{ Form::hidden('startdate', $request->startdate , array('id' => 'startdate')) }}
+			{{ Form::hidden('intialDate', $request->intialDate , array('id' => 'intialDate')) }}
 			{{ Form::hidden('bankids', $request->bankids , array('id' => 'bankids')) }}
 			{{ Form::hidden('branchids', $request->branchids , array('id' => 'branchids')) }}
 			{{ Form::hidden('balbankid', $request->balbankid , array('id' => 'balbankid')) }}
-			{{ Form::hidden('editflg', $request->editflg , array('id' => 'editflg')) }}
-			{{ Form::hidden('startdate', $request->startdate , array('id' => 'startdate')) }}
+			{{ Form::hidden('editFlg', $request->editFlg , array('id' => 'editFlg')) }}
+			{{ Form::hidden('intialDate', $request->intialDate , array('id' => 'intialDate')) }}
 			{{ Form::hidden('balance', $request->balance , array('id' => 'balance')) }}
 			{{ Form::hidden('date_month', $request->date_month  , array('id' => 'date_month')) }}
 			{{ Form::hidden('checkflg', $request->checkflg , array('id' => 'checkflg')) }}

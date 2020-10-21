@@ -31,7 +31,11 @@
 		{{ Form::hidden('editFlg', '' , array('id' => 'editFlg')) }}
 		{{ Form::hidden('intialValue', '' , array('id' => 'intialValue')) }}
 		{{ Form::hidden('intialDate', '' , array('id' => 'intialDate')) }}
-
+		{{ Form::hidden('accno', $request->accno , array('id' => 'accno')) }}
+		{{ Form::hidden('bankname', $request->bankname , array('id' => 'bankname')) }}
+		{{ Form::hidden('branchname', $request->branchname , array('id' => 'branchname')) }}
+		{{ Form::hidden('bankid', $request->bankid , array('id' => 'bankid')) }}
+		
 
 	<!-- Start Heading -->
 	<div class="row hline pm0">

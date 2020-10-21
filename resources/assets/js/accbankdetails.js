@@ -26,10 +26,10 @@ $(document).ready(function() {
 			txt_salary: {required: true,money: true},
 		},
 			submitHandler: function(form) { // for demo
-				if($('#editflg').val() == "1") {
-					var confirmprocess = confirm("Do You Want To Register?");
-				} else {
+				if($('#editFlg').val() == "1") {
 					var confirmprocess = confirm("Do You Want To Update?");
+				} else {
+					var confirmprocess = confirm("Do You Want To Register?");
 				}
 				if(confirmprocess) {
 					pageload();
@@ -70,6 +70,7 @@ function gotoadd(bnkname,branchname,accno,startdate,bank_id,branchid) {
 	$('#startdate').val(startdate);
 	$('#bankids').val(bankid);
 	$('#branchids').val(branchid);
+	$('#editFlg').val('');
 	$('#Accbankdetailsindex').attr('action', 'add?mainmenu='+mainmenu+'&time='+datetime);
 	$("#Accbankdetailsindex").submit();
 }
@@ -84,8 +85,8 @@ function gotoeditpage(flg,balance,startdate) {
 function gosingletoindex(mainmenu) {
 	pageload();
 	$('#checkflg').val('');
-	$('#Accbankdetailsindex').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
-	$("#Accbankdetailsindex").submit();
+	$('#accbankdetailsview').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+	$("#accbankdetailsview").submit();
 }
 function gotoviewlist(bnkname,branchname,accno,startdate,bank_id,branchid) {
 	pageload();
