@@ -4,7 +4,7 @@
 {{ HTML::style('resources/assets/css/common.css') }}
 {{ HTML::style('resources/assets/css/widthbox.css') }}
 {{ HTML::script('resources/assets/css/bootstrap.min.css') }}
-{{ HTML::script('resources/assets/js/bankdetails.js') }}
+{{ HTML::script('resources/assets/js/accbankdetails.js') }}
 {{ HTML::style('resources/assets/css/sidebar-bootstrap.min.css') }}
 <script type="text/javascript">
 	var datetime = '<?php echo date('Ymdhis'); ?>';
@@ -22,13 +22,16 @@
 </style>
 <div class="CMN_display_block" id="main_contents">
 	<!-- article to select the main&sub menu -->
-	<article id="expenses" class="DEC_flex_wrapper " data-category="expenses expenses_sub_6">
-	{{ Form::open(array('name'=>'bankdetailsview', 'id'=>'bankdetailsview', 'url' => 'Bankdetails/Viewlist?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),'files'=>true,
+	<article id="accounting" class="DEC_flex_wrapper " data-category="accounting accounting_sub_4">
+	{{ Form::open(array('name'=>'accbankdetailsview', 'id'=>'accbankdetailsview', 'url' => 'AccBankDetails/Viewlist?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),'files'=>true,
 		  'method' => 'POST')) }}
 		{{ Form::hidden('mainmenu', $request->mainmenu , array('id' => 'mainmenu')) }}
 		{{ Form::hidden('plimit', $request->plimit , array('id' => 'plimit')) }}
 		{{ Form::hidden('page', $request->page , array('id' => 'page')) }}
-	
+		{{ Form::hidden('editFlg', '' , array('id' => 'editFlg')) }}
+		{{ Form::hidden('intialValue', '' , array('id' => 'intialValue')) }}
+		{{ Form::hidden('intialDate', '' , array('id' => 'intialDate')) }}
+
 
 	<!-- Start Heading -->
 	<div class="row hline pm0">
@@ -60,7 +63,7 @@
 				<span class="fa fa-arrow-left"></span>
 				{{ trans('messages.lbl_back') }}
 			</a>
-			<a href="javascript:gotoeditpage();" class="btn btn-warning box100">
+			<a href="javascript:gotoeditpage('1','{{ $baseAmtInsChk['0']->amount }}','{{ $baseAmtInsChk['0']->date }}');" class="btn btn-warning box100">
 				<span class="fa fa-pencil"></span>
 					{{ trans('messages.lbl_edit') }}
 			</a>

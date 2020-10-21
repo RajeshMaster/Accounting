@@ -73,13 +73,13 @@ function gotoadd(bnkname,branchname,accno,startdate,bank_id,branchid) {
 	$('#Accbankdetailsindex').attr('action', 'add?mainmenu='+mainmenu+'&time='+datetime);
 	$("#Accbankdetailsindex").submit();
 }
-function gotoeditpage(startdate,balance,mainmenu,flg) {
+function gotoeditpage(flg,balance,startdate) {
 	pageload();
-	$('#start_date').val(startdate);
-	$('#balance').val(balance);
-	$('#editflg').val(flg);
-	$('#Accbankdetailsindex').attr('action', 'edit?mainmenu='+mainmenu+'&time='+datetime);
-	$("#Accbankdetailsindex").submit();
+	$('#intialDate').val(startdate);
+	$('#intialValue').val(balance);
+	$('#editFlg').val(flg);
+	$('#accbankdetailsview').attr('action', 'add?mainmenu='+mainmenu+'&time='+datetime);
+	$("#accbankdetailsview").submit();
 }
 function gosingletoindex(mainmenu) {
 	pageload();

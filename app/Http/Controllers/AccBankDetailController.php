@@ -113,6 +113,7 @@ class AccBankDetailController extends Controller {
 	}
 
 	function add(Request $request) {
+		print_r($request->all());exit;
 		return view('AccBankDetail.addedit',['request' => $request]);	
 	}
 
@@ -219,5 +220,4 @@ class AccBankDetailController extends Controller {
 											'baseAmtInsChk' => $baseAmtInsChk,
 											'request' => $request]);
 	}
-
 }
