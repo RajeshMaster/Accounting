@@ -86,8 +86,8 @@
 					<th class="vam">{{ trans('messages.lbl_sno') }}</th>
 					<th class="vam">{{ trans('messages.lbl_Date') }}</th>
 					<th class="vam">{{ trans('messages.lbl_content') }}</th>
-					<th class="vam">{{ trans('messages.lbl_credit') }}</th>
 					<th class="vam">{{ trans('messages.lbl_debit') }}</th>
+					<th class="vam">{{ trans('messages.lbl_credit') }}</th>
 					<th class="vam">{{ trans('messages.lbl_balance') }}</th>
 					<th class="vam" colspan="2">{{ trans('messages.lbl_remarks') }}</th>
 				</tr>
@@ -113,7 +113,11 @@
 					<td class="tax_data_name"></td>
 					<td class="tax_data_name"></td>
 				</tr>
-				@php $i =0 @endphp
+				@php 
+					$i =0;
+					$balanceAmt =$baseAmtInsChk['0']->amount;
+					$creditAmt = 0;
+				@endphp
 				@forelse($singleBank as $key => $data)
 					<tr>
 						<td>{{ ($singleBank->currentpage()-1) * $singleBank->perpage() + $i + 1 }}</td>
@@ -133,6 +137,16 @@
 							@endif
 						</td>
 
+						<td>
+							@if($data->transcationType == 1)
+								<?php $balanceAmt = $balanceAmt - $debitAmt ;?>
+							@else
+								<?php $balanceAmt = $balanceAmt + $creditAmt ;?>
+							@endif
+							{{ number_format($balanceAmt) }}
+						</td>
+						<td></td>
+						<td></td>
 					</tr>
 					@php $i++ @endphp
 				@empty
@@ -140,6 +154,22 @@
 						<td class="text-center" colspan="6" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
 					</tr>
 				@endforelse
+
+				@if($i > 0)
+					<tr style = "background-color:#acf5e2;" class="tax_data_name">
+						<td class="tax_data_name"></td>
+						<td class="tax_data_name tac">
+						</td>
+						<td class="tax_data_name">
+							{{ trans('messages.lbl_car_fwd') }}
+						</td>
+						<td class="tax_data_name"></td>
+						<td class="tax_data_name tar"></td>
+						<td class="tax_data_name tar">{{ number_format($balanceAmt) }}</td>
+						<td class="tax_data_name"></td>
+						<td class="tax_data_name"></td>
+					</tr>
+				@endif
 			</thead>
 			<tbody>
 			</tbody>

@@ -266,17 +266,17 @@
 					</tr>
 				@endif
 					<tr style = "background-color:#acf5e2;" class="tax_data_name">
-								<td class="tax_data_name"></td>
-								<td class="tax_data_name tac"></td>
-								<td class="tax_data_name">
-									{{ trans('messages.lbl_car_fwd') }}
-								</td>
-								<td class="tax_data_name"></td>
-								<td class="tax_data_name tar"></td>
-								<td class="tax_data_name tar"><?php echo number_format($balances); ?></td>
-								<td class="tax_data_name"></td>
-								<td class="tax_data_name"></td>
-							</tr>
+						<td class="tax_data_name"></td>
+						<td class="tax_data_name tac"></td>
+						<td class="tax_data_name">
+							{{ trans('messages.lbl_car_fwd') }}
+						</td>
+						<td class="tax_data_name"></td>
+						<td class="tax_data_name tar"></td>
+						<td class="tax_data_name tar"><?php echo number_format($balances); ?></td>
+						<td class="tax_data_name"></td>
+						<td class="tax_data_name"></td>
+					</tr>
 			@else
 			<tr>
 				<td class="text-center colred" colspan="8">
