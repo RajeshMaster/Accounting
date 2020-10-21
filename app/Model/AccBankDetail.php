@@ -11,7 +11,7 @@ class AccBankDetail extends Model {
 	public static function bankindex($request) {
 		$db = DB::connection('mysql');
 		$query= $db->table('mstbank AS bnk')
-						->SELECT('banDet.id','banname.id AS bnkid','brncname.id AS brnchid','bnk.id AS bankid','bnk.AccNo','banDet.startDate','banDet.balance','banDet.processFlg','banDet.bankId AS balbankid','banname.BankName AS banknm','brncname.BranchName AS brnchnm','bnk.Bank_NickName AS NickName')
+						->SELECT('banDet.id','banname.id AS bnkid','brncname.id AS brnchid','bnk.id AS bankid','bnk.AccNo','banDet.balance','banDet.processFlg','banDet.bankId AS balbankid','banname.BankName AS banknm','brncname.BranchName AS brnchnm','bnk.Bank_NickName AS NickName')
 						->leftJoin('inv_allbank_details AS banDet', 'bnk.id', '=', 'banDet.bankId')
 						->leftJoin('mstbanks AS banname', 'banname.id', '=', 'bnk.BankName')
 						->leftJoin('mstbankbranch AS brncname', function($join)
@@ -54,7 +54,7 @@ class AccBankDetail extends Model {
 		return $query;
 	}
 
-	public static function baseAmtInsChk($bankId ,$acc) {
+	public static function baseAmtInsChk($bankId,$acc) {
 		$db = DB::connection('mysql');
 		$query = $db->table('acc_cashregister')
 						->SELECT('amount','fee','transcationType','date','id')
@@ -102,7 +102,7 @@ class AccBankDetail extends Model {
 	}
 
 	public static function bankview($request,$startdate,$curDate,$from_date,$to_date,$cdm) {
-		
+
 		// $fromDate = $request->fromDate;
 		// $fromDate = date('Y-m-01', strtotime($fromDate));
 		// // Last day of the month.
@@ -145,6 +145,15 @@ class AccBankDetail extends Model {
 										->WHERERAW("cashreg.date >= '$to_date'");
 								});
 
+			} else if($cdm != "" && $month != ""){
+
+				$query = $query->where(function($joincont) use ($startdate,$curDate,$year,$month) {
+								$joincont->WHERERAW("cashreg.date >= '$startdate'")
+										->WHERERAW("cashreg.date <= '$curDate'")
+										->WHERERAW("SUBSTRING(cashreg.date,1,4)='$year'")
+										->WHERERAW("SUBSTRING(cashreg.date,6,2)='$month'");
+								});
+
 			} else if($cdm != "" && $month == ""){
 
 			 	$query = $query->where(function($joincont) use ($startdate,$curDate,$year) {
@@ -173,6 +182,25 @@ class AccBankDetail extends Model {
 						->SELECT('*')
 						->where('delflg','=','0')
 						->get();
+		return $query;
+	}
+
+	public static function AccBalance($request,$startDate,$prevDate) {
+		$startDate = substr($startDate, 0,7);
+		$db = DB::connection('mysql');
+			$query = $db->table('acc_cashregister')
+						->SELECT('transcationType','amount')
+						->where('bankIdFrom','=',$request->bankid)
+						->where('accountNumberFrom','=',$request->accno)
+						->where('transcationType','!=',9)
+						->where('delFlg','=','0');
+		
+			$query = $query->WHERERAW("SUBSTRING(date,1,7) >= '$startDate'");
+		if ($prevDate != "") {
+			$query = $query->WHERERAW("SUBSTRING(date,1,7) <= '$prevDate'");
+		}			
+			$query = $query->get();
+
 		return $query;
 	}
 

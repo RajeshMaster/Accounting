@@ -55,12 +55,23 @@ class AccBankDetailController extends Controller {
 
 			$baseAmtInsChk = array();
 			$baseAmtVal = 0;
-			$baseAmtInsChk = AccBankDetail::baseAmtInsChk($value->bnkid, $value->AccNo);
+			$baseAmtInsChk = AccBankDetail::baseAmtInsChk($value->bnkid,$value->AccNo);
 			$bankdetailindex[$i]['startDate'] = "";
 			if (isset($baseAmtInsChk[0])) {
 				$bankdetailindex[$i]['baseAmtInsChk'] = 1;
 				$baseAmtVal = $baseAmtInsChk[0]->amount;
-				$bankdetailindex[$i]['startDate'] = $value->startDate;
+				$request->bankid = $value->bnkid;
+				$request->accno = $value->AccNo;
+				$balanceAmt = AccBankDetail::AccBalance($request,$baseAmtInsChk[0]->date,"");
+
+				foreach ($balanceAmt AS $balKey => $balVal) {
+					if ($balVal->transcationType == 2 || $balVal->transcationType == 4) {
+						$baseAmtVal += $balVal->amount;
+					} else {
+						$baseAmtVal -= $balVal->amount;
+					}
+				} 
+				$bankdetailindex[$i]['startDate'] = $baseAmtInsChk[0]->date;
 			} else {
 				$bankdetailindex[$i]['baseAmtInsChk'] = 0;
 			}
@@ -89,11 +100,10 @@ class AccBankDetailController extends Controller {
 			for ($j = 0; $j < count($bankrectype4) ; $j++) {
 				$type4Total += $bankrectype4[$j]->amount + $bankrectype4[$j]->fee;
 			}
-
 			$singlebanktotal =  $baseAmtVal + ($type2Total + $type4Total) - ($type1Total +$type3Total);
-			$bankdetailindex[$i]['balanceAmt'] = $singlebanktotal;
+			$bankdetailindex[$i]['balanceAmt'] = $baseAmtVal;
 
-			$totalBalance += $singlebanktotal;
+			$totalBalance += $baseAmtVal;
 			$i++;
 		}
 
@@ -109,10 +119,12 @@ class AccBankDetailController extends Controller {
 	}
 
 	public function add(Request $request) {
+
 		return view('AccBankDetail.addedit',['request' => $request]);	
 	}
 
 	public function addeditprocess(Request $request) {
+
 			if($request->editFlg != "1") {
 			$insert = AccBankDetail::insertRec($request);
 			if($insert) {
@@ -132,7 +144,7 @@ class AccBankDetailController extends Controller {
 			Session::flash('bankname', $request->bankname); 
 			Session::flash('branchname', $request->branchname);  
 		} else {
-			$baseAmtId = AccBankDetail::baseAmtInsChk($request->bankid, $request->accno);
+			$baseAmtId = AccBankDetail::baseAmtInsChk($request->bankid,$request->accno);
 			$update = AccBankDetail::updateRec($request,$baseAmtId[0]->id);
 			if($update) {
 				Session::flash('success', 'Updated Sucessfully!'); 
@@ -161,20 +173,33 @@ class AccBankDetailController extends Controller {
 			$request->plimit = 50;
 			$request->page = 1;
 		}
-		$bankdetail = array();
-		if (!isset($request->fromDate) || $request->fromDate == "") {
-			$request->fromDate = date("Y-m-d");
+		if (!isset($request->bankid)) {
+			return Redirect::to('AccBankDetail/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 		}
+		$bankdetail = array();
+		// if (!isset($request->fromDate) || $request->fromDate == "") {
+		// 	$request->fromDate = date("Y-m-d");
+		// }
 
 		// Year Bar Process Start
+
 		$from_date = "";
 		$to_date = "";
+		$baln = 0;
+		$balance = array();
+		$previous_date = "";
+		$date_month = "";
+		$total = 0;
+		$get_bankdet = array();
+		$get_mnsub = array();
+		$bal = array();
 		$g_accountperiod = Bankdetail::fnGetAccountPeriodBK($request);
 		$account_close_yr = $g_accountperiod[0]->Closingyear;
 		$account_close_mn = $g_accountperiod[0]->Closingmonth;
 		$account_period = intval($g_accountperiod[0]->Accountperiod);
 		$startdate = $request->startdate;
 		$curDate = date('Y-m-d');
+
 		// Year Bar Process End
 
 		$singleBank = AccBankDetail::bankview($request,$startdate,$curDate,$from_date,$to_date,"");
@@ -306,15 +331,43 @@ class AccBankDetailController extends Controller {
 		foreach ($bktr_query2 AS $key => $value) {
 			array_push($dbnext, $value->date);
 		}
-		$split_date = explode('-', $date_month);
 		$account_val = Common::getAccountPeriod($year_month1,$account_close_yr,$account_close_mn,$account_period);
+
 		$g_query = AccBankDetail::bankview($request,$startdate,$curDate,"","",$date_month);
-		$g_queryhdn = AccBankDetail::bankview($request,$startdate,$curDate,"","",$date_month);
+
+		$balance = $baseAmtInsChk[0]->amount;
+		$balanceAmt = AccBankDetail::AccBalance($request,$startdate,"");
+		foreach ($balanceAmt AS $balKey => $balVal) {
+			if ($balVal->transcationType == 2 || $balVal->transcationType == 4) {
+				$balance += $balVal->amount;
+			} else {
+				$balance -= $balVal->amount;
+			}
+		} 
+
+		$curBal = $baseAmtInsChk[0]->amount;
+		if ($previous_date == "") {
+			$curBal = $baseAmtInsChk[0]->amount;
+		} else {
+			$prYrMn = date("Y-m", strtotime("-1 months", strtotime($date_month)));
+			$prevBalanceAmt = AccBankDetail::AccBalance($request,$startdate,$prYrMn);
+			foreach ($prevBalanceAmt AS $prevBalKey => $prevBalVal) {
+				if ($prevBalVal->transcationType == 2 || $prevBalVal->transcationType == 4) {
+					$curBal += $prevBalVal->amount;
+				} else {
+					$curBal -= $prevBalVal->amount;
+				}
+			} 
+		}
+
+		$sql_cnt = 0;
+		$sql_cnt = count($g_query);
 
 		// Year Bar Process End
 
 		$i = 0;
-		foreach ($singleBank as $key => $value) {
+		
+		foreach ($g_query as $key => $value) {
 			$bankdetail[$i]['banknm'] = $value->FirstName;
 			$bankdetail[$i]['nickName'] = $value->Bank_NickName;
 			$bankdetail[$i]['brnchnm'] = $value->BranchName;
@@ -328,6 +381,7 @@ class AccBankDetailController extends Controller {
 			$bankdetail[$i]['amount'] = $value->amount;
 			$bankdetail[$i]['fee'] = $value->fee;
 			$bankdetail[$i]['baseAmtVal'] = $baseAmtVal;
+			
 			$i++;
 		}
 
@@ -336,6 +390,11 @@ class AccBankDetailController extends Controller {
 												'bankdetail' => $bankdetail,
 												'singlebanktotal' => $singlebanktotal,
 												'baseAmtInsChk' => $baseAmtInsChk,
+												'balance' => $balance,
+												'curBal' => $curBal,
+												'baseAmtVal' => $baseAmtVal,
+												'previous_date' => $previous_date,
+												'g_query' => $g_query,
 												'account_period' => $account_period,
 												'year_month' => $year_month1,
 												'db_year_month' => $db_year_month,

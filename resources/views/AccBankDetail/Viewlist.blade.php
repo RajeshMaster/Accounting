@@ -23,7 +23,7 @@
 <div class="CMN_display_block" id="main_contents">
 	<!-- article to select the main&sub menu -->
 	<article id="accounting" class="DEC_flex_wrapper " data-category="accounting accounting_sub_4">
-	{{ Form::open(array('name'=>'accbankdetailsview', 'id'=>'accbankdetailsview', 'url' => 'AccBankDetails/Viewlist?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),'files'=>true,
+	{{ Form::open(array('name'=>'accbankdetailsview', 'id'=>'accbankdetailsview', 'url' => 'AccBankDetail/Viewlist?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),'files'=>true,
 		  'method' => 'POST')) }}
 		{{ Form::hidden('mainmenu', $request->mainmenu , array('id' => 'mainmenu')) }}
 		{{ Form::hidden('plimit', $request->plimit , array('id' => 'plimit')) }}
@@ -35,6 +35,14 @@
 		{{ Form::hidden('bankname', $request->bankname , array('id' => 'bankname')) }}
 		{{ Form::hidden('branchname', $request->branchname , array('id' => 'branchname')) }}
 		{{ Form::hidden('bankid', $request->bankid , array('id' => 'bankid')) }}
+		<!-- Year Bar Start -->
+		{{ Form::hidden('selMonth', $request->selMonth, array('id' => 'selMonth')) }}
+		{{ Form::hidden('selYear', $request->selYear, array('id' => 'selYear')) }}
+		{{ Form::hidden('prevcnt', $request->prevcnt, array('id' => 'prevcnt')) }}
+		{{ Form::hidden('nextcnt', $request->nextcnt, array('id' => 'nextcnt')) }}
+		{{ Form::hidden('account_val', $account_val, array('id' => 'account_val')) }}
+		{{ Form::hidden('startdate', $request->startdate, array('id' => 'startdate')) }}
+		<!-- Year Bar End -->
 
 
 	<!-- Start Heading -->
@@ -75,7 +83,8 @@
 			</a>
 		</div>
 		<div class="col-xs-3 pull-right pt15" style="text-align: right;padding-right: 0px;">
-			<span class="clr_blue fwb"> {{ trans('messages.lbl_balanceamt') }} :</span> <span class="fwb">¥ {{ number_format($singlebanktotal) }}</span>
+			<span class="clr_blue fwb"> {{ trans('messages.lbl_balanceamt') }} :</span> <span class="fwb">
+				¥ {{ number_format($balance) }}</span>
 		</div>
 	</div>
 	<div class="pt43 minh350 pl15 pr15">
@@ -107,27 +116,29 @@
 				<tr style = "background-color:#acf5e2;" class="tax_data_name">
 					<td class="tax_data_name"></td>
 					<td class="tax_data_name tac">
-						{{ $baseAmtInsChk['0']->date }}
+						@if($previous_date == "")
+							{{ $baseAmtInsChk['0']->date }}
+						@endif
 					</td>
 					<td class="tax_data_name">
-						<!-- 	@if($singleBank != "")
+						@if($previous_date != "")
 							{{ trans('messages.lbl_brght_fwd') }}
-						@else -->
+						@else
 							{{ trans('messages.lbl_ini_bal') }}
-						<!-- @endif -->
+						@endif
 					</td>
 					<td class="tax_data_name"></td>
 					<td class="tax_data_name tar"></td>
-					<td class="tax_data_name tar" align="right">{{ number_format($baseAmtInsChk['0']->amount) }}</td>
+					<td class="tax_data_name tar" align="right">{{ number_format($curBal) }}</td>
 					<td class="tax_data_name"></td>
 					<td class="tax_data_name"></td>
 				</tr>
 				@php 
 					$i =0;
-					$balanceAmt =$baseAmtInsChk['0']->amount;
+					$balanceAmt = $curBal;
 					$creditAmt = 0;
 				@endphp
-				@forelse($singleBank as $key => $data)
+				@forelse($g_query as $key => $data)
 					<tr>
 						<td>{{ ($singleBank->currentpage()-1) * $singleBank->perpage() + $i + 1 }}</td>
 						<td>{{ $data->date }}</td>
@@ -160,7 +171,7 @@
 					@php $i++ @endphp
 				@empty
 					<tr>
-						<td class="text-center" colspan="6" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
+						<td class="text-center" colspan="7" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
 					</tr>
 				@endforelse
 
