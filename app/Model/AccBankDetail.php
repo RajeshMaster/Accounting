@@ -73,7 +73,7 @@ class AccBankDetail extends Model {
 		$db = DB::connection('mysql');
 		$insert= $db->table('acc_cashregister')->insert([
 			'emp_ID' => "",
-			'date' => $request->startdate,
+			'date' => $request->txt_startdate,
 			'transcationType' => 9,
 			'bankIdFrom' => $request->bankid,
 			//'branchIdFrom' => $request->branchids,

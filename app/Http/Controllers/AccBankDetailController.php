@@ -208,6 +208,7 @@ class AccBankDetailController extends Controller {
 			$bankdetail[$i]['transcationType'] = $value->transcationType;
 			$bankdetail[$i]['amount'] = $value->amount;
 			$bankdetail[$i]['fee'] = $value->fee;
+			$bankdetail[$i]['baseAmtVal'] = $baseAmtVal;
 			$i++;
 		}
 
@@ -215,6 +216,7 @@ class AccBankDetailController extends Controller {
 											'singleBank' => $singleBank,
 											'bankdetail' => $bankdetail,
 											'singlebanktotal' => $singlebanktotal,
+											'baseAmtInsChk' => $baseAmtInsChk,
 											'request' => $request]);
 	}
 

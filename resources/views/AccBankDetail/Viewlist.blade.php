@@ -66,7 +66,7 @@
 			</a>
 		</div>
 		<div class="col-xs-3 pull-right pt15" style="text-align: right;padding-right: 0px;">
-			<span class="clr_blue fwb"> {{ trans('messages.lbl_balanceamt') }} :</span> <span class="fwb">¥ </span>
+			<span class="clr_blue fwb"> {{ trans('messages.lbl_balanceamt') }} :</span> <span class="fwb">¥ {{ number_format($singlebanktotal) }}</span>
 		</div>
 	</div>
 	<div class="pt43 minh350 pl15 pr15">
@@ -98,14 +98,18 @@
 				<tr style = "background-color:#acf5e2;" class="tax_data_name">
 					<td class="tax_data_name"></td>
 					<td class="tax_data_name tac">
-					
+						{{ $baseAmtInsChk['0']->date }}
 					</td>
 					<td class="tax_data_name">
-						
+						<!-- 	@if($singleBank != "")
+							{{ trans('messages.lbl_brght_fwd') }}
+						@else -->
+							{{ trans('messages.lbl_ini_bal') }}
+						<!-- @endif -->
 					</td>
 					<td class="tax_data_name"></td>
 					<td class="tax_data_name tar"></td>
-					<td class="tax_data_name tar"></td>
+					<td class="tax_data_name tar">{{ number_format($baseAmtInsChk['0']->amount) }}</td>
 					<td class="tax_data_name"></td>
 					<td class="tax_data_name"></td>
 				</tr>
@@ -121,14 +125,14 @@
 								{{ number_format($debitAmt) }}
 							@endif
 						</td>
-						
+
 						<td>
 							@if($data->transcationType == 2 || $data->transcationType == 4)
 								@php $creditAmt = $data->amount + $data->fee; @endphp
 								{{ number_format($creditAmt) }}
 							@endif
 						</td>
-						
+
 					</tr>
 					@php $i++ @endphp
 				@empty
