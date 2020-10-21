@@ -125,7 +125,7 @@
 		{{ Form::hidden('searchmethod', $request->searchmethod, array('id' => 'searchmethod')) }}
 		{{ Form::hidden('edit_flg', '', array('id' => 'edit_flg')) }}
 		{{ Form::hidden('editId', '', array('id' => 'editId')) }}
-		
+
 		{{ Form::hidden('selMonth', $request->selMonth, array('id' => 'selMonth')) }}
 		{{ Form::hidden('selYear', $request->selYear, array('id' => 'selYear')) }}
 		{{ Form::hidden('prevcnt', $request->prevcnt, array('id' => 'prevcnt')) }}
@@ -140,13 +140,13 @@
 		</div>
 	</div>
 
-	<div class="box100per pr10 pl10 ">
+	<div class=" pr10 pl10 ">
 		<div class="mt10 mb10">
 			{{ Helpers::displayYear_MonthEst($account_period, $year_month, $db_year_month, $date_month, $dbnext, $dbprevious, $last_year, $current_year, $account_val) }}
 		</div>
 	</div>
 
-	<div class="col-xs-12 pm0 pull-left">
+	<div class="col-xs-12 pull-left">
 		<!-- Session msg -->
 			@if(Session::has('success'))
 				<div align="center" class="alertboxalign" role="alert">
@@ -157,7 +157,7 @@
 			@endif
 			@php Session::forget('success'); @endphp
 			<!-- Session msg -->
-		<div class="col-xs-6 ml10 pm0 pull-left mt10">
+		<div class="col-xs-6  pm0 pull-left mt10">
 			<a href="javascript:addedit('index','{{ $request->mainmenu }}');" class="btn btn-success box100"><span class="fa fa-plus"></span> {{ trans('messages.lbl_register') }}</a>
 		</div>
 	</div>
@@ -171,7 +171,7 @@
 				<col width="16%">
 				<col width="8%">
 				<col width="8%">
-				<col width="8%">
+				<!-- <col width="8%"> -->
 				<col width="">
 				<col width="8%">
 				<col width="8%">
@@ -185,7 +185,7 @@
 					<th class="vam">{{ trans('messages.lbl_content') }}</th>
 					<th class="vam">{{ trans('messages.lbl_debit') }}</th>
 					<th class="vam">{{ trans('messages.lbl_credit') }}</th>
-					<th class="vam">{{ trans('messages.lbl_balance') }}</th>
+					<!-- <th class="vam">{{ trans('messages.lbl_balance') }}</th> -->
 					<th class="vam">{{ trans('messages.lbl_remarks') }}</th>
 					<th class="vam">{{ trans('messages.lbl_file') }}</th>
 					<th class="vam">{{ trans('messages.lbl_copy') }}</th>
@@ -198,18 +198,23 @@
 					$debitAmt = 0;
 					$creditAmt = 0;
 					$lastBankName = "";
+					$preBankName = "";
 				@endphp
 				@forelse($cashDetails as $key => $data)
-				<!-- @php $bankName = $data['Bank_NickName'] @endphp-->
-					@if($lastBankName != $data['Bank_NickName'])
+					@if($preBankName != $data['Bank_NickName'] && $preBankName !="")
 						<tr>
-							<td colspan="6" > {{ $data['Bank_NickName'] }} </td>
-							<td align="right">
-								@php $balanceAmt = $data['baseAmt'] @endphp
-								{{ number_format($data['baseAmt']) }}
+							<td colspan="6" >
+								{{ trans('messages.lbl_total') }}
 							</td>
 							<td colspan="3">
+								{{ $balanceAmt }}
+								@php $balanceAmt = 0; @endphp
 							</td>
+						</tr>
+					@endif
+					@if($lastBankName != $data['Bank_NickName'])
+						<tr>
+							<td colspan="9" > {{ $data['Bank_NickName'] }} </td>
 						</tr>
 					@endif
 					<tr>
@@ -231,14 +236,7 @@
 								{{ number_format($creditAmt) }}
 							@endif
 						</td>
-						<td align="right"> 
-							@if($data['transcationType'] == 1)
-								<?php $balanceAmt = $balanceAmt - $debitAmt ;?>
-							@else
-								<?php $balanceAmt = $balanceAmt + $creditAmt ;?>
-							@endif
-							{{ number_format($balanceAmt) }}
-						</td>
+							
 						<td>{{ $data['remarks']}}</td>
 						<td>{{ $data['fileDtl'] }}</td>
 							
@@ -254,9 +252,14 @@
 							@endif
 						</td>
 					</tr>
-					
-					@php 
+					@if($data['transcationType'] == 1)
+						<?php $balanceAmt = $balanceAmt - $debitAmt ;?>
+					@else
+						<?php $balanceAmt = $balanceAmt + $creditAmt ;?>
+					@endif
+					@php
 						$lastBankName = $data['Bank_NickName'];
+						$preBankName = $data['Bank_NickName'];
 						$i++ ;
 					@endphp 
 				@empty
@@ -264,6 +267,13 @@
 						<td class="text-center" colspan="10" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
 					</tr>
 				@endforelse
+
+				@if(count($cashDetails) > 0)
+					<tr>
+						<td colspan="6">{{ trans('messages.lbl_total') }}</td>
+						<td colspan="3">{{ $balanceAmt }}</td>
+					</tr>
+				@endif
 				
 			</tbody>
 		</table>

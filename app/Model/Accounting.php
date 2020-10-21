@@ -324,7 +324,7 @@ class Accounting extends Model {
 		return $query;
 	}
 	
-	public static function fetchcashRegister() {
+	public static function fetchcashRegister($from_date, $to_date) {
 
 		$db = DB::connection('mysql');
 		$query = $db->table('acc_cashregister')
@@ -336,6 +336,8 @@ class Accounting extends Model {
 							})
 						->leftJoin('dev_expensesetting', 'dev_expensesetting.id', '=', 'acc_cashregister.subjectId')
 						->where('transcationType','!=',9)
+						->where('date','>=',$from_date)
+						->where('date','<=',$to_date)
 						->orderBy('bankIdFrom','ASC')
 						->orderBy('acc_cashregister.date','ASC')
 						->get();

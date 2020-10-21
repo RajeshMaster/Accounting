@@ -187,37 +187,13 @@ class AccountingController extends Controller {
 		$dbrecord = array_unique($dbrecord);
 		$account_val = Common::getAccountPeriod($year_month, $account_close_yr, $account_close_mn, $account_period);
 
-
-
-
-
 		foreach ($dbrecord AS $dbrecordkey => $dbrecordvalue) {
 			$split_val = explode("-",$dbrecordvalue);
 			$db_year_month[$split_val[0]][intval($split_val[1])] = intval($split_val[1]);
 		}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		$cashDetailsIndex = Accounting::fetchcashRegister();
+		$cashDetailsIndex = Accounting::fetchcashRegister($from_date, $to_date);
 		$cashDetails =array();
 		$i = 0;
 		foreach ($cashDetailsIndex as $key => $value) {
