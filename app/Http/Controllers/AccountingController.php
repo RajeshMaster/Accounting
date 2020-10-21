@@ -192,8 +192,10 @@ class AccountingController extends Controller {
 			$db_year_month[$split_val[0]][intval($split_val[1])] = intval($split_val[1]);
 		}
 
-
-		$cashDetailsIndex = Accounting::fetchcashRegister($from_date, $to_date);
+		$start = $request->selYear .'-'.$request->selMonth.'-01';
+		$end = $request->selYear .'-'.$request->selMonth.'-'.Common::fnGetMaximumDateofMonth($start);
+	
+		$cashDetailsIndex = Accounting::fetchcashRegister($start, $end);
 		$cashDetails =array();
 		$i = 0;
 		foreach ($cashDetailsIndex as $key => $value) {
