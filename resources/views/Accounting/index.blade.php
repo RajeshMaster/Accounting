@@ -125,13 +125,24 @@
 		{{ Form::hidden('searchmethod', $request->searchmethod, array('id' => 'searchmethod')) }}
 		{{ Form::hidden('edit_flg', '', array('id' => 'edit_flg')) }}
 		{{ Form::hidden('editId', '', array('id' => 'editId')) }}
-
+		
+		{{ Form::hidden('selMonth', $request->selMonth, array('id' => 'selMonth')) }}
+		{{ Form::hidden('selYear', $request->selYear, array('id' => 'selYear')) }}
+		{{ Form::hidden('prevcnt', $request->prevcnt, array('id' => 'prevcnt')) }}
+		{{ Form::hidden('nextcnt', $request->nextcnt, array('id' => 'nextcnt')) }}
+		{{ Form::hidden('account_val', $account_val, array('id' => 'account_val')) }}
 
 <!-- Start Heading -->
 	<div class="row hline" >
 		<div class="col-xs-12">
 			<img class="pull-left box35 mt10" src="{{ URL::asset('resources/assets/images/pettycash.jpg') }}">
 			<h2 class="pull-left pl5 mt15">{{ trans('messages.lbl_accounting') }}</h2>
+		</div>
+	</div>
+
+	<div class="box100per pr10 pl10 ">
+		<div class="mt10 mb10">
+			{{ Helpers::displayYear_MonthEst($account_period, $year_month, $db_year_month, $date_month, $dbnext, $dbprevious, $last_year, $current_year, $account_val) }}
 		</div>
 	</div>
 
