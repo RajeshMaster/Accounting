@@ -141,12 +141,12 @@
 	</div>
 
 	<div class=" pr10 pl10 ">
-		<div class="mt10 mb10">
+		<div class="mt10 ">
 			{{ Helpers::displayYear_MonthEst($account_period, $year_month, $db_year_month, $date_month, $dbnext, $dbprevious, $last_year, $current_year, $account_val) }}
 		</div>
 	</div>
 
-	<div class="col-xs-12 pull-left">
+	<div class="col-xs-12 pull-left pl10 pr10">
 		<!-- Session msg -->
 			@if(Session::has('success'))
 				<div align="center" class="alertboxalign" role="alert">
@@ -162,8 +162,8 @@
 		</div>
 	</div>
 
-	<div class="pt43 minh300 pl15 pr15 mt10" style="padding:3px 3px 20px">
-		<table class="tablealternate CMN_tblfixed">
+	<div class="pt43 minh300 pl10 pr10 " style="padding:3px 3px 20px">
+		<table class="tablealternate CMN_tblfixed mt10">
 			<colgroup>
 				<col width="4%">
 				<col width="9%">
@@ -202,7 +202,7 @@
 				@endphp
 				@forelse($cashDetails as $key => $data)
 					@if($preBankName != $data['Bank_NickName'] && $preBankName !="")
-						<tr>
+						<tr style="background-color: #f1a2a2">
 							<td colspan="6" >
 								{{ trans('messages.lbl_total') }}
 							</td>
@@ -213,11 +213,11 @@
 						</tr>
 					@endif
 					@if($lastBankName != $data['Bank_NickName'])
-						<tr>
+						<tr style="background-color: lightgrey">
 							<td colspan="9" > {{ $data['Bank_NickName'] }} </td>
 						</tr>
 					@endif
-					<tr>
+					<tr style="background-color: #FCE1F0">
 						<td>{{ $i+1 }}</td>
 						<td align="center">
 							{{ $data['date'] }}
@@ -269,7 +269,7 @@
 				@endforelse
 
 				@if(count($cashDetails) > 0)
-					<tr>
+					<tr style="background-color: #f1a2a2">
 						<td colspan="6">{{ trans('messages.lbl_total') }}</td>
 						<td colspan="3">{{ $balanceAmt }}</td>
 					</tr>
