@@ -152,8 +152,12 @@ $(document).ready(function() {
 	// For Loan Select Popup
 	$('.selectloan').click(function(){
 		var hidloan = $("#hidloan").val();
+		document.getElementById("autoDebitContent").value = "";
 		var confirmgroup = confirm("Do You Want To Select Loan?");
 		if(confirmgroup) {
+			$("#enableamt").attr("style", "display: block");
+			$("#enablefee").attr("style", "display: block");
+			$("#hidamtfee").attr("style", "display: none");
 			$("#hidcheckDeb").val('1');
 			var getchecked = $("#hidcheckDeb").val();
 			$('input[type=checkbox]:not(:checked)').each(function(){
@@ -162,13 +166,13 @@ $(document).ready(function() {
 					getchecked = 2;
 					$('#hidloan').val($('#hidloan').val() + res);
 					$('#loanName').val($('#loanName').val() + res[0]);
-					$('#autoDebitAmount').val($('#autoDebitAmount').val() + res[2]);
-					$('#autoDebitFee').val($('#autoDebitFee').val() + res[3]);
+					document.getElementById('autoDebitAmountloan').innerHTML = $('#autoDebitAmountloan').val() + res[2];
+					document.getElementById('autoDebitFeeloan').innerHTML = $('#autoDebitFeeloan').val() + res[3];
 				} else {
 					$('#hidloan').val($('#hidloan').val() + ";" + res);
 					$('#loanName').val($('#loanName').val() + ";" + res[0]);
-					$('#autoDebitAmount').val($('#autoDebitAmount').val() + ";" + res[2]);
-					$('#autoDebitFee').val($('#autoDebitFee').val() + ";" + res[3]);
+					document.getElementById('autoDebitAmountloan').innerHTML = document.getElementById('autoDebitAmountloan').innerHTML + ";" + res[2];
+					document.getElementById('autoDebitFeeloan').innerHTML = document.getElementById('autoDebitFeeloan').innerHTML + ";" + res[3];
 				}
 			});
 			$("#autoDebitContent").attr("disabled", "disabled");
@@ -185,6 +189,10 @@ $(document).ready(function() {
 	$('.selectsalary').click(function(){
 		$('#txt_empname').val("");
 		document.getElementById("empid").value = "";
+		document.getElementById("transferContent").value = "";
+		$("#enableamt").attr("style", "display: block");
+		$("#enablefee").attr("style", "display: block");
+		$("#hidamtfee").attr("style", "display: none");
 		var hidchkTrans = $("#hidchkTrans").val();
 		var confirmgroup = confirm("Do You Want To Select Salary?");
 		if(confirmgroup) {
@@ -196,13 +204,13 @@ $(document).ready(function() {
 					getchecked = 2;
 					$('#hidempid').val($('#hidempid').val() + res);
 					$('#txt_empname').val($('#txt_empname').val() + res[0]);
-					$('#transferAmount').val($('#transferAmount').val() + res[2]);
-					$('#transferFee').val($('#transferFee').val() + res[3]);
+					document.getElementById('transferAmountsalary').innerHTML = $('#transferAmountsalary').val() + res[2];
+					document.getElementById('transferFeesalary').innerHTML = $('#transferFeesalary').val() + res[3];
 				} else {
 					$('#hidempid').val($('#hidempid').val() + ";" + res);
 					$('#txt_empname').val($('#txt_empname').val() + ";" + res[0]);
-					$('#transferAmount').val($('#transferAmount').val() + ";" + res[2]);
-					$('#transferFee').val($('#transferFee').val() + ";" + res[3]);
+					document.getElementById('transferAmountsalary').innerHTML = document.getElementById('transferAmountsalary').innerHTML + ";" + res[2];
+					document.getElementById('transferFeesalary').innerHTML = document.getElementById('transferFeesalary').innerHTML + ";" + res[3];
 				}
 			});
 			$("#transferContent").attr("disabled", "disabled");
@@ -397,7 +405,7 @@ function editCashDtl(id, editflg, pgFlg) {
 	$('#edit_flg').val(editflg);
 	$('#editId').val(id);
 	if(pgFlg == 2) {
-		$('#frmaccountingindex').attr('action', 'transferaddedit?mainmenu='+mainmenu+'&time='+datetime);
+		$('#frmaccountingindex').attr('action', 'transferedit?mainmenu='+mainmenu+'&time='+datetime);
 		$("#frmaccountingindex").submit();
 	} else if(pgFlg == 3){
 		$('#frmaccountingindex').attr('action', 'autoDebitReg?mainmenu='+mainmenu+'&time='+datetime);
@@ -546,7 +554,7 @@ function disabledemp(){
 		$("#clearEmp").attr("disabled", "disabled");
 	} else {
 		$("#browseEmp").removeAttr("disabled");
-		$("#clearEmp").attr("disabled", "disabled");
+		$("#clearEmp").removeAttr("disabled");
 	}
 }
 
@@ -558,10 +566,13 @@ function fnclear(){
 function fndebitclear(){
 	document.getElementById("hidloan").value = "";
 	document.getElementById("loanName").value = "";
-	document.getElementById("autoDebitAmount").value = "";
-	document.getElementById("autoDebitFee").value = "";
+	document.getElementById("autoDebitAmountloan").value = "";
+	document.getElementById("autoDebitFeeloan").value = "";
 	$("#loanbutton").removeAttr("disabled");
 	$("#autoDebitContent").removeAttr("disabled");
+	$("#enableamt").attr("style", "display: none");
+	$("#enablefee").attr("style", "display: none");
+	$("#hidamtfee").attr("style", "display: block");
 }
 
 function fntransclear(){
@@ -574,12 +585,14 @@ function fntransclear(){
 	$("#browseEmp").attr("style", "display: inline-block");
 	$("#clearEmp").attr("style", "display: inline-block");
 	$("#clearSal").attr("style", "display: none");
+	$("#enableamt").attr("style", "display: none");
+	$("#enablefee").attr("style", "display: none");
+	$("#hidamtfee").attr("style", "display: block");
 }
 
 function fnGetLoanDtls(userId){
 	Getloanpopup(userId);
 }
-
 
 function getData(month, year, flg, prevcnt, nextcnt, account_period, lastyear, currentyear, account_val) {
 	// alert(month + "***" + flg + "****" + currentyear);

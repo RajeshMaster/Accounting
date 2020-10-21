@@ -245,8 +245,7 @@
 							<a href="javascript:editCashDtl('{{ $data['id'] }}','1','{{ $data['pageFlg'] }}');">
 								<img class="vam" src="{{ URL::asset('resources/assets/images/edit.png') }}" width="20" height="20">
 							</a>
-
-							<a href="javascript:copyCashDtl('{{ $data['id'] }}');">
+							<a href="javascript:editCashDtl('{{ $data['id'] }}','2','{{ $data['pageFlg'] }}');">
 								<img class="vam" src="{{ URL::asset('resources/assets/images/copy.png') }}" width="20" height="20">
 							</a>
 							@endif

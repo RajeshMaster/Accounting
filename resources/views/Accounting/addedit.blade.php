@@ -16,6 +16,7 @@
 		} else {
 			setDatePicker("dob");
 		}
+		$("#cashbutton").attr("disabled", "disabled");
 	});
 </script>
 <style type="text/css">
@@ -30,7 +31,7 @@
 <!-- article to select the main&sub menu -->
 
 <article id="accounting" class="DEC_flex_wrapper " data-category="accounting accounting_sub_1">
-{{ Form::open(array('name'=>'frmaccountingaddedit', 
+	{{ Form::open(array('name'=>'frmaccountingaddedit', 
 						'id'=>'frmaccountingaddedit', 
 						'url' => 'Accounting/addeditprocess?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
 						'files' => true,
@@ -41,36 +42,34 @@
 		{{ Form::hidden('editId', $request->editId, array('id' => 'editId')) }}
 
 	  
-<div class="row hline pm0">
-		<div class="col-xs-12">
-			<img class="pull-left box35 mt10" src="{{ URL::asset('resources/assets/images/pettycash.jpg') }}">
-			<h2 class="pull-left pl5 mt10">
-				{{ trans('messages.lbl_cash') }}
-			</h2>
-			<h2 class="pull-left mt10">・</h2>
-			<h2 class="pull-left mt10">
-				<span class="green">
-					{{ trans('messages.lbl_register') }}
-				</span>
-			</h2>
-		</div>
-</div>
-	<div class="col-xs-12 pt10">
-			<div class="col-xs-6" style="text-align: left;margin-left: -15px;">
-				<a href="#" class="btn btn-success box20per disabled">
-					<span class="fa fa-plus"></span> {{ trans('messages.lbl_cash') }}</a>
-
-				<a href="javascript:addedit('cashTransfer','{{ $request->mainmenu }}');" 
-					class="btn btn-success box25per">
-					<span class="fa fa-plus"></span>{{ trans('messages.lbl_transfer') }}</a>
-
-				<a href="javascript:addedit('cashAutoDebit','{{ $request->mainmenu }}');"
-					class="btn btn-success box25per">
-					<span class="fa fa-plus"></span>{{ trans('messages.lbl_autodebit') }}</a>
-
+		<div class="row hline pm0">
+			<div class="col-xs-12">
+				<img class="pull-left box35 mt10" src="{{ URL::asset('resources/assets/images/pettycash.jpg') }}">
+				<h2 class="pull-left pl5 mt10">
+					{{ trans('messages.lbl_cash') }}
+				</h2>
+				<h2 class="pull-left mt10">・</h2>
+				<h2 class="pull-left mt10">
+					<span class="green">
+						{{ trans('messages.lbl_register') }}
+					</span>
+				</h2>
 			</div>
 		</div>
-<div class="col-xs-12 pl5 pr5" ondragstart="return false;" ondrop="return false;">
+		<div class="col-xs-12 pt10">
+			<div class="col-xs-6" style="text-align: left;margin-left: -15px;">
+				<button type="button" id="cashbutton" class="btn btn-success box25per pt9 pb8">
+					<span class="fa fa-plus"></span>&nbsp;{{ trans('messages.lbl_cash') }}
+				</button> 
+				<button type="button" onclick="javascript:addedit('cashTransfer','{{ $request->mainmenu }}');" class="btn btn-success box25per pt9 pb8">
+					<span class="fa fa-plus"></span>&nbsp;{{ trans('messages.lbl_transfer') }}
+				</button> 
+				<button type="button" onclick="javascript:addedit('cashAutoDebit','{{ $request->mainmenu }}');"  class="btn btn-success box25per pt9 pb8">
+					<span class="fa fa-plus"></span>&nbsp;{{ trans('messages.lbl_autodebit') }}
+				</button> 
+			</div>
+		</div>
+	<div class="col-xs-12 pl5 pr5" ondragstart="return false;" ondrop="return false;">
 	<fieldset>
 	
 		<div class="col-xs-12 mt10">

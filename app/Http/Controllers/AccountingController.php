@@ -416,29 +416,66 @@ class AccountingController extends Controller {
 	*/
 	public function tranferaddeditprocess(Request $request) {
 
-		$autoincId = Accounting::getautoincrement();
-		$Transferno = "Transfer_".$autoincId;
-		$fileName = "";
-		$fileid = "transferBill";
-		if($request->$fileid != "") {
-			$extension = Input::file($fileid)->getClientOriginalExtension();
-			$fileName = $Transferno.'.'.$extension;
-			$file = $request->$fileid;
-			$destinationPath = '../AccountingUpload/Accounting';
-			if(!is_dir($destinationPath)) {
-				mkdir($destinationPath, 0777,true);
+		if(!$request->edit_flg || $request->edit_flg == "2"){
+
+			$autoincId = Accounting::getautoincrement();
+			$Transferno = "Transfer_".$autoincId;
+			$fileName = "";
+			$fileid = "transferBill";
+
+			if($request->$fileid != "") {
+				$extension = Input::file($fileid)->getClientOriginalExtension();
+				$fileName = $Transferno.'.'.$extension;
+				$file = $request->$fileid;
+				$destinationPath = '../AccountingUpload/Accounting';
+				if(!is_dir($destinationPath)) {
+					mkdir($destinationPath, 0777,true);
+				}
+				$file->move($destinationPath,$fileName);
+			} else {
+				$fileName = $request->pdffiles;
 			}
-			$file->move($destinationPath,$fileName);
+
+			$insertProcess = Accounting::insTransferDtls($request,$fileName);
+			
+			if($insertProcess) {
+				Session::flash('success', 'Inserted Sucessfully!'); 
+				Session::flash('type', 'alert-success'); 
+			} else {
+				Session::flash('type', 'Inserted Unsucessfully!'); 
+				Session::flash('type', 'alert-danger'); 
+			}
+
 		} else {
-			$fileName = ""; 
-		}
-		$insertProcess = Accounting::insTransferDtls($request,$fileName);
-		if($insertProcess) {
-			Session::flash('success', 'Inserted Sucessfully!'); 
-			Session::flash('type', 'alert-success'); 
-		} else {
-			Session::flash('type', 'Inserted Unsucessfully!'); 
-			Session::flash('type', 'alert-danger'); 
+
+			$autoincId = Accounting::getautoincrement();
+			$Transferno = "Transfer_".$autoincId;
+			$fileName = "";
+			$fileid = "transferBill";
+
+			if($request->$fileid != "") {
+				$extension = Input::file($fileid)->getClientOriginalExtension();
+				$fileName = $Transferno.'.'.$extension;
+				$file = $request->$fileid;
+				$destinationPath = '../AccountingUpload/Accounting';
+				if(!is_dir($destinationPath)) {
+					mkdir($destinationPath, 0777,true);
+				}
+				$file->move($destinationPath,$fileName);
+			} else {
+				$fileName = $request->pdffiles;
+			}
+
+			$updateProcess = Accounting::updateTransferDtls($request,$fileName);
+
+			if($updateProcess) {
+				Session::flash('success', 'Updated Sucessfully!'); 
+				Session::flash('type', 'alert-success'); 
+			} else {
+				Session::flash('type', 'Updated Unsucessfully!'); 
+				Session::flash('type', 'alert-danger'); 
+			}
+
 		}
 		return Redirect::to('Accounting/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 	}
@@ -622,5 +659,31 @@ class AccountingController extends Controller {
 													]);
 	}
 
+	/**
+	*
+	* Edit Page for Transfer
+	* @author Sarath
+	* @return object to particular view page
+	* Created At 2020/10/21
+	*
+	*/
+	public function transferedit(Request $request) {
+
+		if(!$request->edit_flg){ 
+			return Redirect::to('Accounting/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
+		}
+		$transferEdit = array();
+		$transferEdit = Accounting::tranferEditData($request);
+		if ($request->edit_flg == 2) {
+			$transferEdit[0]->date = "";
+		}
+		$bankDetail = Accounting::fetchbanknames();
+		$mainExpDetail = Accounting::getMainExpName();
+		return view('Accounting.transferaddedit',[ 'request' => $request,
+													'mainExpDetail' => $mainExpDetail,
+													'bankDetail' => $bankDetail,
+													'transferEdit' => $transferEdit
+												]);
+	}
 
 }

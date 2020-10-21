@@ -17,6 +17,7 @@
 		} else {
 			setDatePicker("dob");
 		}
+		$("#autodebitbutton").attr("disabled", "disabled");
 	});
 </script>
 <style type="text/css">
@@ -55,15 +56,15 @@
 
 		<div class="col-xs-12 pt10">
 			<div class="col-xs-6" style="text-align: left;margin-left: -15px;">
-				<a href="javascript:addedit('autoDebitCash','{{ $request->mainmenu }}');" 
-					class="btn btn-success box20per"><span class="fa fa-plus"></span> 
-					<label class="ml5">{{ trans('messages.lbl_cash') }}</label></a>
-				<a href="javascript:addedit('autoDebitTransfer','{{ $request->mainmenu }}');" 
-					class="btn btn-success box25per"><span class="fa fa-plus"></span>
-					<label class="ml5">{{ trans('messages.lbl_transfer') }}</label></a>
-				<a href="#" 
-					class="btn btn-success box25per disabled"><span class="fa fa-plus"></span>
-					<label class="ml5">{{ trans('messages.lbl_autodebit') }}</label></a>
+				<button type="button" onclick="javascript:addedit('autoDebitCash','{{ $request->mainmenu }}');" class="btn btn-success box25per pt9 pb8">
+					<span class="fa fa-plus"></span>&nbsp;{{ trans('messages.lbl_cash') }}
+				</button> 
+				<button type="button" onclick="javascript:addedit('autoDebitTransfer','{{ $request->mainmenu }}');" class="btn btn-success box25per pt9 pb8">
+					<span class="fa fa-plus"></span>&nbsp;{{ trans('messages.lbl_transfer') }}
+				</button> 
+				<button type="button" id="autodebitbutton"  class="btn btn-success box25per pt9 pb8">
+					<span class="fa fa-plus"></span>&nbsp;{{ trans('messages.lbl_autodebit') }}
+				</button> 
 			</div>
 		</div>
 

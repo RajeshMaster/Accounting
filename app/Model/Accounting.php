@@ -198,6 +198,13 @@ class Accounting extends Model {
 
 		$db = DB::connection('mysql');
 
+		if($request->empid == "") {
+			$request->empid = $request->empID;
+		}
+		if($request->txt_empname == "") {
+			$request->empid = "";
+		}
+
 		if ($request->hidempid != "") {
 			
 			$empId = explode(";", $request->hidempid);
@@ -243,6 +250,65 @@ class Accounting extends Model {
 		}
 
 		return $insert;
+	}
+
+	public static function tranferEditData($request) {
+
+		$db = DB::connection('mysql');
+		$query = $db->table('acc_cashregister')
+						->SELECT('acc_cashregister.*','bank.id As bankId','bank.AccNo','bank.FirstName','bank.LastName','bank.BankName','bank.Bank_NickName','dev_expensesetting.Subject','dev_expensesetting.Subject_jp',DB::RAW("CONCAT(emp_mstemployees.FirstName,' ', emp_mstemployees.LastName) AS Empname"))
+						->leftJoin('mstbank AS bank', function($join)
+							{
+								$join->on('acc_cashregister.bankIdFrom', '=', 'bank.BankName');
+								$join->on('acc_cashregister.accountNumberFrom', '=', 'bank.AccNo');
+							})
+						->leftJoin('dev_expensesetting', 'dev_expensesetting.id', '=', 'acc_cashregister.subjectId')
+						->leftJoin('emp_mstemployees', 'emp_mstemployees.Emp_ID', '=', 'acc_cashregister.Emp_ID')
+						->where('acc_cashregister.id','=',$request->editId)
+						->orderBy('bankIdFrom','ASC')
+						->orderBy('acc_cashregister.date','ASC')
+						->get();
+						// ->toSql();
+						// dd($query);
+		return $query;
+
+	}
+
+	public static function updateTransferDtls($request,$fileName) {
+
+		if($request->empid == "") {
+			$request->empid = $request->empID;
+		}
+
+		if($request->txt_empname == "") {
+			$request->empid = "";
+		}
+
+		$name = Session::get('FirstName').' '.Session::get('LastName');
+		$bankacc = explode('-', $request->transferBank);
+
+		$update = DB::table('acc_cashregister')
+						->where('id', $request->editId)
+						->update(
+							array(
+								'emp_ID'	=> $request->empid, 
+								'date' => $request->transferDate, 
+								'subjectId' => $request->transferMainExp,
+								'bankIdFrom' => $bankacc[0],
+								'accountNumberFrom' => $bankacc[1],
+								'bankIdTo' => $request->transfer,
+								'amount' => preg_replace("/,/", "", $request->transferAmount),
+								'fee' => preg_replace("/,/", "", $request->transferFee),
+								'content' => $request->transferContent,
+								'remarks' => $request->transFerRemarks,
+								'fileDtl' => $fileName,
+								'pageFlg' => 2,
+								'transferId' => '',
+								'UpdatedBy' => $name
+							)
+						);
+		return $update;
+
 	}
 
 	public static function insAutoDebitDtls($request,$fileName) {

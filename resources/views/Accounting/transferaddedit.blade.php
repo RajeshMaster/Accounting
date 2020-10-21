@@ -4,6 +4,8 @@
 {{ HTML::script('resources/assets/js/lib/bootstrap-datetimepicker.js') }}
 {{ HTML::style('resources/assets/css/lib/bootstrap-datetimepicker.min.css') }}
 {{ HTML::script('resources/assets/js/lib/additional-methods.min.js') }}
+{{ HTML::script('resources/assets/js/lib/lightbox.js') }}
+{{ HTML::style('resources/assets/css/lib/lightbox.css') }}
 
 <script type="text/javascript">
 	var datetime = '<?php echo date('Ymdhis'); ?>';
@@ -11,6 +13,19 @@
 	var accessDate = '<?php echo Auth::user()->accessDate; ?>';
 	var userclassification = '<?php echo Auth::user()->userclassification; ?>';
 	$(document).ready(function() {
+		$("#transferbutton").attr("disabled", "disabled");
+		if ($('#transferContent').val() != "") {
+			$("#browseEmp").attr("disabled", "disabled");
+			$("#clearEmp").attr("disabled", "disabled");
+		} else {
+			$("#browseEmp").removeAttr("disabled");
+			$("#clearEmp").removeAttr("disabled");
+		}
+		if ($('#txt_empname').val() != "") {
+			$("#transferContent").attr("disabled", "disabled");
+		} else {
+			$("#transferContent").removeAttr("disabled");
+		}
 		if (userclassification == 1) {
 			accessDate = setNextDay(accessDate);
 			setDatePickerAfterAccessDate("dob", accessDate);
@@ -33,29 +48,37 @@
 			'url' => 'Accounting/tranferaddeditprocess?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
 			'files'=>true,'method' => 'POST')) }}
 
-			{{ Form::hidden('editflg', $request->editflg, array('id' => 'editflg')) }}
-			{{ Form::hidden('mainmenu', $request->mainmenu , array('id' => 'mainmenu')) }}
+		{{ Form::hidden('edit_flg', $request->edit_flg, array('id' => 'edit_flg')) }}
+		{{ Form::hidden('mainmenu', $request->mainmenu , array('id' => 'mainmenu')) }}
+		{{ Form::hidden('editId', $request->editId, array('id' => 'editId')) }}
 
 		<div class="row hline pm0">
 			<div class="col-xs-12">
 				<img class="pull-left box35 mt10" src="{{ URL::asset('resources/assets/images/expenses_icon.png') }}">
 				<h2 class="pull-left pl5 mt10">
-						{{ trans('messages.lbl_transfer') }}<span class="">・</span><span style="color:green"> 
-						{{ trans('messages.lbl_register') }}</span>
+					{{ trans('messages.lbl_transfer') }}
+					<span class="">・</span>
+					@if($request->edit_flg == 1)
+						<span style="color:red"> {{ trans('messages.lbl_edit') }}</span>
+					@elseif($request->edit_flg == 2)
+						<span style="color:blue"> {{ trans('messages.lbl_copy') }}</span>
+					@else
+						<span style="color:green">　{{ trans('messages.lbl_register') }}</span>
+					@endif
 				</h2>
 			</div>
 		</div>
 		<div class="col-xs-12 pt10">
 			<div class="col-xs-6" style="text-align: left;margin-left: -15px;">
-				<a href="javascript:addedit('transferCash','{{ $request->mainmenu }}');" 
-					class="btn btn-success box20per"><span class="fa fa-plus"></span> 
-					<label class="ml5">{{ trans('messages.lbl_cash') }}</label></a>
-				<a href="#" class="btn btn-success box25per disabled">
-					<span class="fa fa-plus"></span>
-					<label class="ml5">{{ trans('messages.lbl_transfer') }}</label></a>
-				<a href="javascript:addedit('transferAutoDebit','{{ $request->mainmenu }}');" 
-					class="btn btn-success box25per"><span class="fa fa-plus"></span>
-					<label class="ml5">{{ trans('messages.lbl_autodebit') }}</label></a>
+				<button type="button" onclick="javascript:addedit('transferCash','{{ $request->mainmenu }}');" class="btn btn-success box25per pt9 pb8">
+					<span class="fa fa-plus"></span>&nbsp;{{ trans('messages.lbl_cash') }}
+				</button> 
+				<button type="button" id="transferbutton" class="btn btn-success box25per pt9 pb8">
+					<span class="fa fa-plus"></span>&nbsp;{{ trans('messages.lbl_transfer') }}
+				</button> 
+				<button type="button" onclick="javascript:addedit('transferAutoDebit','{{ $request->mainmenu }}');" class="btn btn-success box25per pt9 pb8">
+					<span class="fa fa-plus"></span>&nbsp;{{ trans('messages.lbl_autodebit') }}
+				</button> 
 			</div>
 		</div>
 		<div class="col-xs-12 pl5 pr5">
@@ -66,7 +89,7 @@
 					<label>{{ trans('messages.lbl_Date') }}<span class="fr ml2 red"> * </span></label>
 				</div>
 				<div class="col-xs-9">
-						{{ Form::text('transferDate',null,
+						{{ Form::text('transferDate',(isset($transferEdit[0]->date)) ? $transferEdit[0]->date : '',
 								array('id'=>'transferDate',
 									'name' => 'transferDate',
 									'autocomplete' => 'off',
@@ -85,7 +108,7 @@
 					<label>{{ trans('messages.lbl_bank_name') }}<span class="fr ml2 red"> * </span></label>
 				</div>
 				<div class="col-xs-9">
-					{{ Form::select('transferBank',[null=>'']+$bankDetail,(isset($expcash_sql[0]->bankname)) ? $expcash_sql[0]->bankname.'-'.$expcash_sql[0]->bankaccno : '',
+					{{ Form::select('transferBank',[null=>'']+$bankDetail,　(isset($transferEdit[0]->bankIdFrom)) ?　$transferEdit[0]->bankIdFrom.'-'.$transferEdit[0]->accountNumberFrom : '',
 								array('name' =>'transferBank',
 										'id'=>'transferBank',
 										'data-label' => trans('messages.lbl_bank'),
@@ -98,7 +121,7 @@
 					<label>{{ trans('messages.lbl_mainsubject') }}<span class="fr ml2 red"> * </span></label>
 				</div>
 				<div class="col-xs-9">
-					{{ Form::select('transferMainExp',[null=>''] + $mainExpDetail,'',
+					{{ Form::select('transferMainExp',[null=>''] + $mainExpDetail,(isset($transferEdit[0]->subjectId)) ? $transferEdit[0]->subjectId : '',
 							array('id'=>'transferMainExp',
 									'name' => 'transferMainExp',
 									'class'=>'widthauto ime_mode_active',
@@ -115,29 +138,28 @@
 				</div>
 				<div class="col-xs-9">
 					{{ Form::hidden('empid', '', array('id' => 'empid')) }}
+					{{ Form::hidden('empID',(isset($transferEdit[0]->emp_ID)) ? $transferEdit[0]->emp_ID : '',array('id'=>'empID')) }}
 					{{ Form::hidden('hidempid', '', array('id' => 'hidempid')) }}
 					{{ Form::hidden('hidchkTrans', '', array('id' => 'hidchkTrans')) }}
-					{{ Form::text('txt_empname',null,
+					{{ Form::text('txt_empname',(isset($transferEdit[0]->Empname)) ? $transferEdit[0]->Empname : '',
 							array('id'=>'txt_empname', 
 									'name' => 'txt_empname',
-									'class'=>'form-control box25per',
-									'readonly','readonly',
+									'class'=>'form-control box37per disabled',
+									'readonly',
 									'data-label' => trans('messages.lbl_empName'))) }}
 
 					<button type="button" id="browseEmp" class="btn btn-success box75 pt3 h30 ml3 mb3" 
-							style ="color:white;background-color: green;cursor: pointer;" 
-							onclick="return popupenable();">
+							onclick　=　"return popupenable();">
 								{{ trans('messages.lbl_Browse') }}
 					</button> 
 					
 					<button type="button" id="clearEmp" class="btn btn-danger box75 pt3 h30 ml5 mb3" 
-							style ="color:white;cursor: pointer;" 
 							onclick="return fnclear();">
 								{{ trans('messages.lbl_clear') }}
 					</button> 
 
 					<button type="button" id="clearSal" class="btn btn-danger box75 pt3 h30 ml5 mb3" 
-							style ="color:white;cursor: pointer;display: none;" 
+							style =　"color:white;cursor: pointer;display: none;" 
 							onclick="return fntransclear();">
 								{{ trans('messages.lbl_clear') }}
 					</button> 
@@ -151,7 +173,7 @@
 					</label>
 				</div>
 				<div class="col-xs-9">
-					{{ Form::text('transferContent',null,
+					{{ Form::text('transferContent',(isset($transferEdit[0]->content)) ? $transferEdit[0]->content : '',
 							array('id'=>'transferContent', 
 									'name' => 'transferContent',
 									'onkeyup'=>'disabledemp();',
@@ -169,7 +191,7 @@
 					</label>
 				</div>
 				<div class="col-xs-9 CMN_display_block">
-					{{ Form::text('transferAmount',(isset($expcash_sql[0]->amount)) ? number_format($expcash_sql[0]->amount) : "",
+					{{ Form::text('transferAmount',(isset($expcash_sql[0]->amount)) ? number_format($expcash_sql[0]->amount) : 0,
 							array('id'=>'transferAmount',
 									'name' => 'transferAmount',
 									'style'=>'text-align:right;padding-right:4px;',
@@ -181,7 +203,7 @@
 									'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
 									'data-label' => trans('messages.lbl_amount'))) }}
 					<span class=" ml7 black" style=" font-weight: bold;font-size: 17px;"> / </span>
-					{{ Form::text('transferFee',(isset($expcash_sql[0]->transferFee)) ? number_format($expcash_sql[0]->fee) : "",
+					{{ Form::text('transferFee',(isset($expcash_sql[0]->transferFee)) ? number_format($expcash_sql[0]->fee) : 0,
 								array('id'=>'transferFee',
 									'name' => 'transferFee',
 									'style'=>'text-align:right;padding-right:4px;',
@@ -192,6 +214,38 @@
 									'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
 									'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
 									'data-label' => trans('messages.lbl_fee'))) }}
+				</div>
+			</div>
+
+			<div class="col-xs-12 mt5"  id="enableamt" style="display: none;">
+				<div class="col-xs-3 text-right clr_blue">
+					<label>{{ trans('messages.lbl_amount') }}<span class="fr ml2 red" style="visibility: hidden"> * </span>
+					</label>
+				</div>
+				<div class="col-xs-9 CMN_display_block">
+					{{ Form::label('',null,
+							array('id'=>'transferAmountsalary',
+									'name' => 'transferAmountsalary',
+									'style'=>'text-align:left;',
+									'class'=>'box15per',
+									
+									)) }}
+				</div>
+			</div>
+
+			<div class="col-xs-12 mt5"  id="enablefee" style="display: none;">
+				<div class="col-xs-3 text-right clr_blue">
+					<label>{{ trans('messages.lbl_fee') }}
+						<span class="fr ml2 red" style="visibility: hidden"> * </span>
+					</label>
+				</div>
+				<div class="col-xs-9 CMN_display_block">
+					{{ Form::label('',null,
+							array('id'=>'transferFeesalary',
+									'name' => 'transferFeesalary',
+									'style'=>'text-align:left;',
+									'class'=>'box15per',
+									)) }}
 				</div>
 			</div>
 			
@@ -208,6 +262,18 @@
 											'accept' => 'image/x-png,image/gif,image/jpeg',
 											'data-label' => trans('messages.lbl_bill'))) }}
 					<span>&nbsp;(Ex: Image File Only)</span>
+					@if(isset($transferEdit)&& $request->edit_flg)
+					<?php
+						$file_url = '../AccountingUpload/Accounting/' . $transferEdit[0]->fileDtl;
+					 ?>
+					@if(isset($transferEdit[0]->fileDtl) && file_exists($file_url))
+						<a style="text-decoration:none" href="{{ URL::asset('../../../../AccountingUpload/Accounting').'/'.$transferEdit[0]->fileDtl }}" data-lightbox="visa-img">
+						<img width="20" height="20" name="empimg" id="empimg" 
+						class="ml5 box20 viewPic3by2" src="{{ URL::asset('../../../../AccountingUpload/Accounting').'/'.$transferEdit[0]->fileDtl }}"></a>
+						{{ Form::hidden('pdffiles', $transferEdit[0]->fileDtl , array('id' => 'pdffiles')) }}
+					@else
+					@endif
+				@endif
 				</div>
 			</div>
 
@@ -216,7 +282,7 @@
 					<label>{{ trans('messages.lbl_remarks') }}<span class="fr ml2 red"> &nbsp;&nbsp; </span></label>
 				</div>
 				<div class="col-xs-9">
-					{{ Form::textarea('transFerRemarks',null,
+					{{ Form::textarea('transFerRemarks',(isset($transferEdit[0]->remarks)) ? $transferEdit[0]->remarks : '',
 									array('id'=>'transFerRemarks', 
 												'name' => 'transFerRemarks',
 												'class' => 'box45per',
@@ -231,17 +297,24 @@
 
 			<div class="form-group">
 				<div align="center" class="mt5">
-					<button type="button" id="salarybutton" class=" btn btn add box160" 
-						onclick="return Getsalarypopup();" 
-						style="margin-left: -10%!important;background-color: purple; color: #fff;">
-						{{ trans('messages.lbl_getsalary') }}
-					</button>&nbsp;&nbsp;&nbsp;
-
-					<button type="submit" class="btn btn-success add box100 ml5 tranferaddeditprocess">
-						<i class="fa fa-plus" aria-hidden="true"></i> 
-						{{ trans('messages.lbl_register') }}
-					</button>&nbsp;
-
+					@if($request->edit_flg != 1)
+						<button type="button" id="salarybutton" class=" btn btn add box160" 
+							onclick="return Getsalarypopup();" 
+							style="margin-left: -10%!important;background-color: purple; color: #fff;">
+							{{ trans('messages.lbl_getsalary') }}
+						</button>&nbsp;&nbsp;&nbsp;
+					@endif
+					@if($request->edit_flg == 1)
+						<button type="submit" class="btn btn-warning add box100 ml5 tranferaddeditprocess">
+							<i class="fa fa-edit" aria-hidden="true"></i> 
+							{{ trans('messages.lbl_edit') }}
+						</button>&nbsp;
+					@else
+						<button type="submit" class="btn btn-success add box100 ml5 tranferaddeditprocess">
+							<i class="fa fa-plus" aria-hidden="true"></i> 
+							{{ trans('messages.lbl_register') }}
+						</button>&nbsp;
+					@endif
 					<a href="javascript:gotoindexpage('Transfer','{{ $request->mainmenu }}');" 
 						class="btn btn-danger box120 white">
 						<i class="fa fa-times" aria-hidden="true"></i> {{trans('messages.lbl_cancel')}}

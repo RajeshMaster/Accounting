@@ -487,6 +487,7 @@ Route::group(['prefix'=>'Accounting','middleware' => 'auth'], function() {
     Route::any('empnamepopup', 'AccountingController@empnamepopup');
     Route::any('tranferaddeditprocess', 'AccountingController@tranferaddeditprocess');
     Route::any('getsalarypopup', 'AccountingController@getsalarypopup');
+    Route::any('transferedit', 'AccountingController@transferedit');
     // Auto Debit // Sastha
     Route::any('autoDebitReg', 'AccountingController@autoDebitReg');
     Route::any('AutoDebitRegprocess', 'AccountingController@AutoDebitRegprocess');
