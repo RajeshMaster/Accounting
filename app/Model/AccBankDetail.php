@@ -61,6 +61,7 @@ class AccBankDetail extends Model {
 						->where('bankIdFrom','=',$bankId)
 						->where('accountNumberFrom','=',$acc)
 						->where('transcationType','=',9)
+						->orderBy('acc_cashregister.date','DESC')
 						->get();
 						//->toSql();
 		return $query;
@@ -85,6 +86,35 @@ class AccBankDetail extends Model {
 			]);
 		$id = DB::getPdo()->lastInsertId();;
 		return $id;
+	}
+
+	public static function bankview($request) {
+		$fromDate = $request->fromDate;
+		$fromDate = date('Y-m-01', strtotime($fromDate));
+		// Last day of the month.
+		$toDate = date('Y-m-t', strtotime($fromDate));
+
+		$db = DB::connection('mysql');
+		$query = $db->table('acc_cashregister')
+						->SELECT('*','bank.id As bankId','bank.AccNo','bank.FirstName','bank.LastName','bank.Bank_NickName','bank.BranchName as branchId','branch.BranchName')
+						->leftJoin('mstbank AS bank', function($join)
+							{
+								$join->on('acc_cashregister.bankIdFrom', '=', 'bank.BankName');
+								$join->on('acc_cashregister.accountNumberFrom', '=', 'bank.AccNo');
+							})
+						->leftJoin('mstbankbranch AS branch', function($join)
+							{
+								$join->on('bank.BranchName', '=', 'branch.id');
+							})
+						->where('bankIdFrom','=',$request->bankid)
+						->where('accountNumberFrom','=',$request->accno)
+						->where('date','>=',$fromDate)
+						->where('date','<=',$toDate)
+						->where('transcationType','!=',9)
+						->orderBy('acc_cashregister.date','ASC')
+						->paginate($request->plimit);
+						//->toSql();
+		return $query;
 	}
 
 }

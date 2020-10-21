@@ -114,9 +114,9 @@
 								{{ trans('messages.lbl_balance_entry') }}
 							</a>
 						@else
-
+							<a href="javascript:gotoviewlist('{{ $data['banknm'] }}','{{ $data['brnchnm'] }}','{{ $data['AccNo'] }}','{{ $data['startDate'] }}','{{ $data['bankId'] }}','{{ $data['brnchid'] }}')" class="anchorstyle">
 								{{ trans('messages.lbl_Details') }}
-
+							</a>
 						@endif
 					</td>
 				</tr>

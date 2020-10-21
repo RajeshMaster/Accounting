@@ -78,29 +78,26 @@ function gotoeditpage(startdate,balance,mainmenu,flg) {
 	$('#start_date').val(startdate);
 	$('#balance').val(balance);
 	$('#editflg').val(flg);
-	$('#bankdetailsview').attr('action', 'edit?mainmenu='+mainmenu+'&time='+datetime);
-	$("#bankdetailsview").submit();
+	$('#Accbankdetailsindex').attr('action', 'edit?mainmenu='+mainmenu+'&time='+datetime);
+	$("#Accbankdetailsindex").submit();
 }
 function gosingletoindex(mainmenu) {
 	pageload();
 	$('#checkflg').val('');
-	$('#bankdetailsview').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
-	$("#bankdetailsview").submit();
+	$('#Accbankdetailsindex').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+	$("#Accbankdetailsindex").submit();
 }
-function gotoviewlist(bnkname,branchname,accno,startdate,bank_id,bankid,branchid,balbankid,id,mainmenu,checkflg) {
+function gotoviewlist(bnkname,branchname,accno,startdate,bank_id,branchid) {
 	pageload();
 	$('#bankid').val(bank_id);
 	$('#bankname').val(bnkname);
 	$('#branchname').val(branchname);
 	$('#accno').val(accno);
-	$('#id').val(id);
 	$('#startdate').val(startdate);
 	$('#bankids').val(bankid);
 	$('#branchids').val(branchid);
-	$('#checkflg').val(checkflg);
-	$('#balbankid').val(balbankid);
-	$('#bankdetailsindex').attr('action', 'Viewlist?mainmenu='+mainmenu+'&time='+datetime);
-	$("#bankdetailsindex").submit();
+	$('#Accbankdetailsindex').attr('action', 'Viewlist?mainmenu='+mainmenu+'&time='+datetime);
+	$("#Accbankdetailsindex").submit();
 }
 function fnchk(pay,idcheck) {
 	$('#idcheck').val(idcheck);
@@ -108,8 +105,8 @@ function fnchk(pay,idcheck) {
 	var confirmprocess = confirm("Are You Confirm to mark as Checked?");
 	if(confirmprocess) {
 		pageload();
-		$('#bankdetailsview').attr('action', 'checked?mainmenu='+mainmenu+'&time='+datetime);
-		$("#bankdetailsview").submit();
+		$('#Accbankdetailsindex').attr('action', 'checked?mainmenu='+mainmenu+'&time='+datetime);
+		$("#Accbankdetailsindex").submit();
 	} else {
 		return false;
 	}
@@ -138,3 +135,4 @@ function filterview(sendfilter) {
 	$('#bankdetailsview').attr('action', 'Viewlist?mainmenu='+mainmenu+'&time='+datetime);
 	$("#bankdetailsview").submit();
 }
+

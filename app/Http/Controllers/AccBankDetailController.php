@@ -101,7 +101,8 @@ class AccBankDetailController extends Controller {
 			$totalBalance += $singlebanktotal;
 			$i++;
 		}
-	/*echo "<pre>";
+
+		/*echo "<pre>";
 		print_r($bankdetailindex);
 		echo "</pre>";*/
 		return view('AccBankDetail.index',[
@@ -155,7 +156,66 @@ class AccBankDetailController extends Controller {
 			Session::flash('branchname', $request->branchname); 
 		}
 		return Redirect::to('AccBankDetail/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
+	}
 
+	function Viewlist(Request $request){
+		if ($request->plimit=="") {
+			$request->plimit = 50;
+			$request->page = 1;
+		}
+		$bankdetail = array();
+		if (!isset($request->fromDate) || $request->fromDate == "") {
+			$request->fromDate = date("Y-m-d");
+		}
+		$singleBank = AccBankDetail::bankview($request);
+
+		$baseAmtInsChk = AccBankDetail::baseAmtInsChk($request->bankid, $request->accno);
+		$baseAmtVal = $baseAmtInsChk[0]->amount;
+		$bankrectype1 = AccBankDetail::bankrectype($request->bankid, $request->accno ,'1');
+		$bankrectype2 = AccBankDetail::bankrectype($request->bankid, $request->accno ,'2');
+		$bankrectype3 = AccBankDetail::bankrectype($request->bankid, $request->accno ,'3');
+		$bankrectype4 = AccBankDetail::bankrectype($request->bankid, $request->accno ,'4');
+
+		$type1Total = 0;
+		$type2Total = 0;
+		$type3Total = 0;
+		$type4Total = 0;
+		for ($j=0; $j < count($bankrectype1) ; $j++) {
+			$type1Total += $bankrectype1[$j]->amount + $bankrectype1[$j]->fee;
+		}
+		for ($j=0; $j < count($bankrectype2) ; $j++) {
+			$type2Total += $bankrectype2[$j]->amount + $bankrectype2[$j]->fee;
+		}
+		for ($j=0; $j < count($bankrectype3) ; $j++) {
+			$type3Total += $bankrectype3[$j]->amount + $bankrectype3[$j]->fee;
+		}
+		for ($j=0; $j < count($bankrectype4) ; $j++) {
+			$type4Total += $bankrectype4[$j]->amount + $bankrectype4[$j]->fee;
+		}
+		$singlebanktotal =  $baseAmtVal + ($type2Total + $type4Total) - ($type1Total +$type3Total);
+		
+		$i=0;
+		foreach ($singleBank as $key => $value) {
+			$bankdetail[$i]['banknm'] = $value->FirstName;
+			$bankdetail[$i]['nickName'] = $value->Bank_NickName;
+			$bankdetail[$i]['brnchnm'] = $value->BranchName;
+			$bankdetail[$i]['AccNo'] = $value->AccNo;
+			$bankdetail[$i]['bankId'] = $value->bankId;
+			$bankdetail[$i]['brnchid'] = $value->branchId;
+			$bankdetail[$i]['content'] = $value->content;
+			$bankdetail[$i]['remarks'] = $value->remarks;
+			$bankdetail[$i]['date'] = $value->date;
+			$bankdetail[$i]['transcationType'] = $value->transcationType;
+			$bankdetail[$i]['amount'] = $value->amount;
+			$bankdetail[$i]['fee'] = $value->fee;
+			$i++;
+		}
+
+		return view('AccBankDetail.Viewlist',[
+											'singleBank' => $singleBank,
+											'bankdetail' => $bankdetail,
+											'singlebanktotal' => $singlebanktotal,
+											'request' => $request]);
 	}
 
 }

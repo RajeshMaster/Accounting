@@ -500,6 +500,7 @@ Route::group(['prefix'=>'AccBankDetail','middleware' => 'auth'], function() {
     Route::any('index', 'AccBankDetailController@index');
     Route::any('add', 'AccBankDetailController@add');
     Route::any('addeditprocess', 'AccBankDetailController@addeditprocess');
+    Route::any('Viewlist', 'AccBankDetailController@Viewlist');
 });
 
 // Auditing Process by Rajesh
