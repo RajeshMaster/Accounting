@@ -175,6 +175,17 @@
 			</tbody>
 		</table>
 
+		<div align="right" class="mt10 mr1per">
+			<!-- 	<a href="javascript:fnchk();" class="btn btn-success box100">
+					Checked
+				</a> -->
+				<a style="padding:3px 4px;" title="Get Previous Salary" disabled = "disabled" class="btn btn-disabled disabled box100">
+					<span class=""></span>
+						Checked
+				</a>
+		</div>
+
+
 	</div>
 	<div class="text-center pl14">
 		@if(!empty($singleBank->total()))
