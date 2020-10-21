@@ -226,7 +226,7 @@
 			<div class="form-group">
 				<div align="center" class="mt5">
 					<button type="button" id="loanbutton" class=" btn btn add box160" 
-						onclick="return Getloanpopup();" 
+						onclick="return Getloanpopup('');" 
 						style="margin-left: -10%!important;background-color: purple; color: #fff;">
 						{{ trans('messages.lbl_getloan') }}
 					</button>&nbsp;&nbsp;&nbsp;

@@ -364,9 +364,11 @@ class Accounting extends Model {
 		$query = $db->table('ams_loan_details as loan')
 					->SELECT('loan.loanId','loan.loanName','loan.loanAmount','loanEMI.monthInterest')
 					->leftJoin('ams_loan_emidetails as loanEMI','loan.loanId','=','loanEMI.loanId')
-					->where('loan.userId','=',"AD0000")
 					->where('loan.activeFlg','=',0)
 					->where('loan.delFlg','=',0);
+		if ($request->userId != "") {
+			$query = $query->where('loan.userId','=', $request->userId);
+		}
 		$query = $query->WHERE(DB::raw("SUBSTRING(loanEMI.emiDate, 1, 4)"),'=', $MnthYear[0]);
 		$query = $query->WHERE(DB::raw("SUBSTRING(loanEMI.emiDate, 6, 2)"),'=', $MnthYear[1])
 						->orderBy('loanEMI.belongsTo','ASC')
@@ -436,6 +438,15 @@ class Accounting extends Model {
 					->select('FirstName','LastName','KanaFirstName','KanaLastName')
 					->where('Emp_ID','=',$Emp_ID)
 					->get();
+		return $query;
+	}
+
+	public static function getUserDtls(){
+
+		$db = DB::connection('mysql_Salary');
+		$query = $db->table('ams_users')
+					->select('userId','firstName','lastName')
+					->lists('lastName','userId');
 		return $query;
 	}
 

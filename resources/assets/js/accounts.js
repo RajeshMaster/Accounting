@@ -524,12 +524,12 @@ function Getsalarypopup() {
 	}
 }
 
-function Getloanpopup() {
+function Getloanpopup(userId) {
 	var mainmenu = $('#mainmenu').val();
 	var autoDebitDate = $('#autoDebitDate').val();
 	if (autoDebitDate != "") {
 		popupopenclose(1);
-		$('#getloanpopup').load('../Accounting/getloanpopup?mainmenu='+mainmenu+'&time='+datetime+'&autoDebitDate='+encodeURIComponent(autoDebitDate));
+		$('#getloanpopup').load('../Accounting/getloanpopup?mainmenu='+mainmenu+'&time='+datetime+'&autoDebitDate='+encodeURIComponent(autoDebitDate)+'&userId='+userId);
 		$("#getloanpopup").modal({
 			backdrop: 'static',
 			keyboard: false
@@ -576,5 +576,6 @@ function fntransclear(){
 	$("#clearSal").attr("style", "display: none");
 }
 
-
-
+function fnGetLoanDtls(userId){
+	Getloanpopup(userId);
+}
