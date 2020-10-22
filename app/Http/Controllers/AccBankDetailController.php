@@ -70,6 +70,7 @@ class AccBankDetailController extends Controller {
 					} else {
 						$baseAmtVal -= $balVal->amount;
 					}
+					$baseAmtVal -= $balVal->fee;
 				} 
 				$bankdetailindex[$i]['startDate'] = $baseAmtInsChk[0]->date;
 			} else {
@@ -343,6 +344,7 @@ class AccBankDetailController extends Controller {
 			} else {
 				$balance -= $balVal->amount;
 			}
+			$balance -= $balVal->fee;
 		} 
 
 		$curBal = $baseAmtInsChk[0]->amount;
@@ -357,6 +359,7 @@ class AccBankDetailController extends Controller {
 				} else {
 					$curBal -= $prevBalVal->amount;
 				}
+				$curBal -= $prevBalVal->fee;
 			} 
 		}
 
