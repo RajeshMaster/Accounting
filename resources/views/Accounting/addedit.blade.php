@@ -245,7 +245,7 @@
 			<div align="center" class="mt5">
 				@if($request->edit_flg)
 					<button type="submit" class="btn btn-warning add box100 addeditprocess ml5" title="Edit">
-						<i class="fa fa-plus" aria-hidden="true"></i> {{ trans('messages.lbl_edit') }}
+						<i class="fa fa-plus" aria-hidden="true"></i> {{ trans('messages.lbl_update') }}
 					</button>
 				@else
 					<button type="submit" class="btn btn-success add box100 addeditprocess ml5">

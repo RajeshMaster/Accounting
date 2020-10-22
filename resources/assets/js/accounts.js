@@ -76,10 +76,10 @@ $(document).ready(function() {
 				transferBill : {extension: "jpg,jpeg,png,JPG,JPEG,PNG", filesize : (2 * 1024 * 1024)},
 			},
 			submitHandler: function(form) { // for demo
-				if($('#editflg').val() == "edit") {
-					var confirmprocess = confirm("Do You Want To Update?");
-				} else {
+				if($('#edit_flg').val() == "" || $('#edit_flg').val() == 2) {
 					var confirmprocess = confirm("Do You Want To Register?");
+				} else {
+					var confirmprocess = confirm("Do You Want To Update?");
 				}
 				if(confirmprocess) {
 					pageload();

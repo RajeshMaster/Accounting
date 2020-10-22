@@ -39,6 +39,9 @@
 	.ime_mode_disable {
 		ime-mode:disabled;
 	}
+	.disabled{
+		cursor:not-allowed !important;
+	}
 </style>
 
 <div class="CMN_display_block" id="main_contents">
@@ -55,17 +58,15 @@
 		<div class="row hline pm0">
 			<div class="col-xs-12">
 				<img class="pull-left box35 mt10" src="{{ URL::asset('resources/assets/images/expenses_icon.png') }}">
-				<h2 class="pull-left pl5 mt10">
-					{{ trans('messages.lbl_transfer') }}
-					<span class="">・</span>
-					@if($request->edit_flg == 1)
-						<span style="color:red"> {{ trans('messages.lbl_edit') }}</span>
-					@elseif($request->edit_flg == 2)
-						<span style="color:blue"> {{ trans('messages.lbl_copy') }}</span>
-					@else
-						<span style="color:green">　{{ trans('messages.lbl_register') }}</span>
-					@endif
-				</h2>
+				<h2 class="pull-left pl5 mt10">{{ trans('messages.lbl_transfer') }}</h2>
+				<h2 class="pull-left mt10">・</h2>
+				@if($request->edit_flg == 1)
+					<h2 class="pull-left mt10 red">{{ trans('messages.lbl_edit') }}</h2>
+				@elseif($request->edit_flg == 2)
+					<h2 class="pull-left mt10 blue">{{ trans('messages.lbl_copy') }}</h2>
+				@else
+					<h2 class="pull-left mt10 green">{{ trans('messages.lbl_register') }}</h2>
+				@endif
 			</div>
 		</div>
 		<div class="col-xs-12 pt10">
@@ -108,20 +109,11 @@
 					<label>{{ trans('messages.lbl_bank_name') }}<span class="fr ml2 red"> * </span></label>
 				</div>
 				<div class="col-xs-9">
-					@if(isset($transferEdit[0]->bankIdFrom))
-						{{ Form::select('transferBank',[null=>'']+$bankDetail,(isset($transferEdit[0]->bankIdFrom)) ? 
-														$transferEdit[0]->bankIdFrom.'-'.$transferEdit[0]->accountNumberFrom : '',						array('name' =>'transferBank',
-																	'id'=>'transferBank',
-																	'data-label' => trans('messages.lbl_bank'),
-																	'class'=>'pl5 widthauto'))}}
-
-					@else
-						{{ Form::select('transferBank',[null=>'']+$bankDetail,'',
+					{{ Form::select('transferBank',[null=>'']+$bankDetail,(isset($transferEdit[0]->bankIdFrom)) ? $transferEdit[0]->bankIdFrom.'-'.$transferEdit[0]->accountNumberFrom : '',
 								array('name' =>'transferBank',
 										'id'=>'transferBank',
 										'data-label' => trans('messages.lbl_bank'),
 										'class'=>'pl5 widthauto'))}}
-					@endif
 				</div>
 			</div>
 
@@ -154,11 +146,11 @@
 							array('id'=>'txt_empname', 
 									'name' => 'txt_empname',
 									'class'=>'form-control box37per disabled',
-									'readonly',
+									'readonly' => 'true',
 									'data-label' => trans('messages.lbl_empName'))) }}
 
 					<button type="button" id="browseEmp" class="btn btn-success box75 pt3 h30 ml3 mb3" 
-							onclick　=　"return popupenable();">
+							onclick="return popupenable();">
 								{{ trans('messages.lbl_Browse') }}
 					</button> 
 					
@@ -168,10 +160,11 @@
 					</button> 
 
 					<button type="button" id="clearSal" class="btn btn-danger box75 pt3 h30 ml5 mb3" 
-							style =　"color:white;cursor: pointer;display: none;" 
+							style ="color:white;cursor: pointer;display: none;" 
 							onclick="return fntransclear();">
 								{{ trans('messages.lbl_clear') }}
 					</button> 
+
 				</div>
 			</div>
 
@@ -186,13 +179,12 @@
 							array('id'=>'transferContent', 
 									'name' => 'transferContent',
 									'onkeyup'=>'disabledemp();',
-									'autocomplete' =>'off',
 									'data-label' => trans('messages.lbl_content'),
 									'class'=>'box31per form-control pl5')) }}
 				</div>
 			</div>
 
-			<div class="col-xs-12 mt5">
+			<div class="col-xs-12 mt5" id="hidamtfee">
 				<div class="col-xs-3 text-right clr_blue">
 					<label>{{ trans('messages.lbl_amount') }}
 						<span class="black ml2">&#47;</span>
@@ -201,12 +193,11 @@
 					</label>
 				</div>
 				<div class="col-xs-9 CMN_display_block">
-					{{ Form::text('transferAmount',(isset($expcash_sql[0]->amount)) ? number_format($expcash_sql[0]->amount) : 0,
+					{{ Form::text('transferAmount',(isset($transferEdit[0]->amount)) ? number_format($transferEdit[0]->amount) : 0,
 							array('id'=>'transferAmount',
 									'name' => 'transferAmount',
 									'style'=>'text-align:right;padding-right:4px;',
 									'class'=>'box15per ime_mode_disable',
-									'autocomplete' =>'off',
 									'onblur' => 'return fnSetZero11(this.id);',
 									'onfocus' => 'return fnRemoveZero(this.id);',
 									'onclick' => 'return fnRemoveZero(this.id);',
@@ -214,11 +205,10 @@
 									'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
 									'data-label' => trans('messages.lbl_amount'))) }}
 					<span class=" ml7 black" style=" font-weight: bold;font-size: 17px;"> / </span>
-					{{ Form::text('transferFee',(isset($expcash_sql[0]->transferFee)) ? number_format($expcash_sql[0]->fee) : 0,
+					{{ Form::text('transferFee',(isset($transferEdit[0]->fee)) ? number_format($transferEdit[0]->fee) : 0,
 								array('id'=>'transferFee',
 									'name' => 'transferFee',
 									'style'=>'text-align:right;padding-right:4px;',
-									'autocomplete' =>'off',
 									'class'=>'box7per ime_mode_disable ml7',
 									'onblur' => 'return fnSetZero11(this.id);',
 									'onfocus' => 'return fnRemoveZero(this.id);',
@@ -240,7 +230,7 @@
 									'name' => 'transferAmountsalary',
 									'style'=>'text-align:left;',
 									'class'=>'box15per',
-									'autocomplete' =>'off',
+									
 									)) }}
 				</div>
 			</div>
@@ -300,7 +290,6 @@
 												'class' => 'box45per',
 												'style'=>'text-align:left;padding-left:4px;',
 												'size' => '60x5',
-												'autocomplete' =>'off',
 												'data-label' => trans('messages.lbl_remarks'))) }}
 				</div>
 			</div>
@@ -320,7 +309,7 @@
 					@if($request->edit_flg == 1)
 						<button type="submit" class="btn btn-warning add box100 ml5 tranferaddeditprocess">
 							<i class="fa fa-edit" aria-hidden="true"></i> 
-							{{ trans('messages.lbl_edit') }}
+							{{ trans('messages.lbl_update') }}
 						</button>&nbsp;
 					@else
 						<button type="submit" class="btn btn-success add box100 ml5 tranferaddeditprocess">

@@ -27,6 +27,9 @@
 	.ime_mode_disable {
 		ime-mode:disabled;
 	}
+	.disabled{
+		cursor:not-allowed !important;
+	}
 </style>
 <div class="CMN_display_block" id="main_contents">
 <!-- article to select the main&sub menu -->
@@ -130,7 +133,7 @@
 					{{ Form::text('loanName',null,
 							array('id'=>'loanName', 
 									'name' => 'loanName',
-									'readonly',
+									'readonly' => 'true',
 									'data-label' => trans('messages.lbl_loanname'),
 									'class'=>'box31per form-control pl5')) }}
 					<button type="button" id="clear" class="btn btn-danger box75 pt3 h30 ml5 mb3" 
@@ -157,7 +160,7 @@
 
 			
 
-			<div class="col-xs-12 mt5">
+			<div class="col-xs-12 mt5" id="hidamtfee">
 				<div class="col-xs-3 text-right clr_blue">
 					<label>{{ trans('messages.lbl_amount') }}
 						<span class="black ml2">&#47;</span>
@@ -193,7 +196,37 @@
 									'data-label' => trans('messages.lbl_fee'))) }}
 				</div>
 			</div>
-		
+
+			<div class="col-xs-12 mt5"  id="enableamt" style="display: none;">
+				<div class="col-xs-3 text-right clr_blue">
+					<label>{{ trans('messages.lbl_amount') }}<span class="fr ml2 red" style="visibility: hidden"> * </span>
+					</label>
+				</div>
+				<div class="col-xs-9 CMN_display_block">
+					{{ Form::label('',null,
+							array('id'=>'autoDebitAmountloan',
+									'name' => 'autoDebitAmountloan',
+									'style'=>'text-align:left;',
+									'class'=>'box15per',
+									
+									)) }}
+				</div>
+			</div>
+			<div class="col-xs-12 mt5"  id="enablefee" style="display: none;">
+				<div class="col-xs-3 text-right clr_blue">
+					<label>{{ trans('messages.lbl_fee') }}<span class="fr ml2 red" style="visibility: hidden"> * </span>
+					</label>
+				</div>
+				<div class="col-xs-9 CMN_display_block">
+					{{ Form::label('',null,
+							array('id'=>'autoDebitFeeloan',
+									'name' => 'autoDebitFeeloan',
+									'style'=>'text-align:left;',
+									'class'=>'box15per',
+									)) }}
+				</div>
+			</div>
+
 			<div class="col-xs-12 mt5">
 				<div class="col-xs-3 text-right clr_blue">
 					<label>{{ trans('messages.lbl_bill') }}
