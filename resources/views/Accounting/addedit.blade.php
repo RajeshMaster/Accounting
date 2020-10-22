@@ -179,7 +179,7 @@
 
 		<div class="col-xs-12 mt5">
 			<div class="col-xs-3 text-right clr_blue">
-				<label>{{ trans('messages.lbl_content') }}<span class="fr ml2 red" style="visibility: hidden"> * </span></label>
+				<label>{{ trans('messages.lbl_content') }}<span class="fr ml2 red"> * </span></label>
 			</div>
 			<div class="col-xs-9">
 				{{ Form::text('content',(isset($editData[0]->content)) ? $editData[0]->content : '',

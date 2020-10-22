@@ -66,7 +66,7 @@
 							{{ $loan->loanName}}
 						</td>
 						<td align="right">
-							{{ Form::text('loanAmt'.$j,(isset($loan->loanAmount)) ? number_format($loan->loanAmount * 10000) : "",
+							{{ Form::text('loanAmt'.$j,(isset($loan->loanAmount)) ? number_format($loan->loanAmount * 10000) : 0,
 							array('id'=>'loanAmt'.$j,
 									'name' => 'loanAmt'.$j,
 									'style'=>'text-align:right;padding-right:4px;',
@@ -82,7 +82,7 @@
 							<!-- {{ $loan->loanAmount * 10000 }} -->
 						</td>
 						<td align="right">
-							{{ Form::text('loanFee'.$j,(isset($loan->monthInterest)) ? number_format($loan->monthInterest) : "",
+							{{ Form::text('loanFee'.$j,(isset($loan->monthInterest)) ? number_format($loan->monthInterest) : 0,
 							array('id'=>'loanFee'.$j,
 									'name' => 'loanFee'.$j,
 									'style'=>'text-align:right;padding-right:4px;',

@@ -33,6 +33,14 @@ $(document).ready(function(){
     jQuery.validator.addMethod("numberwithcomma", function(value, element, param) {
         return value.match(new RegExp("." + param + "$"));
     }, "Please enter a valid number");
+    // For Any one required Validation
+    jQuery.validator.addMethod("Anyonerequired",function(value,element,params) {
+      if (value == "" && $(params).val() == "") {
+        return false;
+      } else {
+        return true;
+      }
+    },'Please Select value');
     // For Number With Comma Validation
     jQuery.validator.addMethod(
     "money",

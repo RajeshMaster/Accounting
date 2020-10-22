@@ -134,8 +134,9 @@
 
 			<div class="col-xs-12 mt5">
 				<div class="col-xs-3 text-right clr_blue">
-					<label>{{ trans('messages.lbl_empName') }}<span class="fr ml2 red" 
-						style="visibility: hidden"> * </span></label>
+					<label>{{ trans('messages.lbl_empName') }}
+						<span class="fr ml2 red" id="emprequired"> * </span>
+					</label>
 				</div>
 				<div class="col-xs-9">
 					{{ Form::hidden('empid', '', array('id' => 'empid')) }}
@@ -172,7 +173,7 @@
 			<div class="col-xs-12 mt5">
 				<div class="col-xs-3 text-right clr_blue">
 					<label>{{ trans('messages.lbl_content') }}
-						<span class="fr ml2 red" style="visibility: hidden"> * </span>
+						<span class="fr ml2 red" id = "contentrequired"> * </span>
 					</label>
 				</div>
 				<div class="col-xs-9">

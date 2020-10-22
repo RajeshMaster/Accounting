@@ -26,6 +26,7 @@ $(document).ready(function() {
 				bank: {required: true},
 				transfer: {required: true},
 				transtype: {required: true},
+				content: {required: true},
 				amount: {requiredWithZero: true},
 			},
 			submitHandler: function(form) {
@@ -78,6 +79,8 @@ $(document).ready(function() {
 				transferMainExp: {required: true},
 				transferBank: {required: true},
 				transferAmount: {requiredWithZero: true},
+				txt_empname: {Anyonerequired: "#transferContent"},
+				transferContent: {Anyonerequired: "#txt_empname"},
 				transferBill : {extension: "jpg,jpeg,png,JPG,JPEG,PNG", filesize : (2 * 1024 * 1024)},
 			},
 			submitHandler: function(form) { // for demo
@@ -129,6 +132,8 @@ $(document).ready(function() {
 				autoDebitBank: {required: true},
 				autoDebitMainExp: {required: true},
 				autoDebitAmount: {requiredWithZero: true},
+				loanName: {Anyonerequired: "#autoDebitContent"},
+				autoDebitContent: {Anyonerequired: "#loanName"},
 				autoDebitBill : {extension: "jpg,jpeg,png,JPG,JPEG,PNG", filesize : (2 * 1024 * 1024)},
 			},
 			submitHandler: function(form) { // for demo
@@ -208,6 +213,7 @@ $(document).ready(function() {
 			$("#hidamtfee").attr("style", "display: none");
 			$("#autoDebitContent").attr("disabled", "disabled");
 			$("#loanbutton").attr("disabled", "disabled");
+			$("#debitrequired").css("visibility", "hidden");
 			$("body div").removeClass("modalOverlay");
 			$('#getloanpopup').empty();
 			$('#getloanpopup').modal('toggle');
@@ -269,6 +275,7 @@ $(document).ready(function() {
 			$("#enablefee").attr("style", "display: block");
 			$("#hidamtfee").attr("style", "display: none");
 			$("#transferContent").attr("disabled", "disabled");
+			$("#contentrequired").css("visibility", "hidden");
 			$("#salarybutton").attr("disabled", "disabled");
 			$("#browseEmp").attr("style", "display: none");
 			$("#clearEmp").attr("style", "display: none");
@@ -508,8 +515,10 @@ function fnaddempid(){
 	$('#divid'+table_id).css('display','inline');
 	if ($('#txt_empname').val() != "") {
 		$("#transferContent").attr("disabled", "disabled");
+		$("#contentrequired").css("visibility", "hidden");
 	} else {
 		$("#transferContent").removeAttr("disabled");
+		$("#contentrequired").css("visibility", "visible");
 	}
 	$('#empnamepopup').modal('toggle');
 }
@@ -547,8 +556,10 @@ function fndbclick(id,empid,empname,name) {
 	$('#divid'+table_id).css('display','inline');
 	if ($('#txt_empname').val() != "") {
 		$("#transferContent").attr("disabled", "disabled");
+		$("#contentrequired").css("visibility", "hidden");
 	} else {
 		$("#transferContent").removeAttr("disabled");
+		$("#contentrequired").css("visibility", "visible");
 	}
 	$('#empnamepopup').modal('toggle');
 }
@@ -607,15 +618,18 @@ function disabledemp(){
 	if ($('#transferContent').val() != "") {
 		$("#browseEmp").attr("disabled", "disabled");
 		$("#clearEmp").attr("disabled", "disabled");
+		$("#emprequired").css("visibility", "hidden");
 	} else {
 		$("#browseEmp").removeAttr("disabled");
 		$("#clearEmp").removeAttr("disabled");
+		$("#emprequired").css("visibility", "visible");
 	}
 }
 
 function fnclear(){
 	document.getElementById("txt_empname").value = "";
 	$("#transferContent").removeAttr("disabled");
+	$("#contentrequired").css("visibility", "visible");
 }
 
 function fndebitclear(){
@@ -626,6 +640,7 @@ function fndebitclear(){
 	document.getElementById("autoDebitAmountloan").value = "";
 	document.getElementById("autoDebitFeeloan").value = "";
 	$("#loanbutton").removeAttr("disabled");
+	$("#debitrequired").css("visibility", "visible");
 	$("#autoDebitContent").removeAttr("disabled");
 	$("#enableamt").attr("style", "display: none");
 	$("#enablefee").attr("style", "display: none");
@@ -646,6 +661,17 @@ function fntransclear(){
 	$("#enableamt").attr("style", "display: none");
 	$("#enablefee").attr("style", "display: none");
 	$("#hidamtfee").attr("style", "display: block");
+	$("#contentrequired").css("visibility", "visible");
+}
+
+function disabledloan(){
+	if ($('#autoDebitContent').val() != "") {
+		$("#clearloan").attr("disabled", "disabled");
+		$("#loanrequired").css("visibility", "hidden");
+	} else {
+		$("#clearloan").removeAttr("disabled");
+		$("#loanrequired").css("visibility", "visible");
+	}
 }
 
 function fnGetLoanDtls(userId){

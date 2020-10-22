@@ -56,7 +56,7 @@
 							{{ $SalaryDtls[$salary->Emp_ID]['empName'] }}
 						</td>
 						<td align="right">
-							{{ Form::text('salAmt'.$j,(isset($SalaryDtls[$salary->Emp_ID]['Amount'])) ? number_format($SalaryDtls[$salary->Emp_ID]['Amount']) : "",
+							{{ Form::text('salAmt'.$j,(isset($SalaryDtls[$salary->Emp_ID]['Amount'])) ? number_format($SalaryDtls[$salary->Emp_ID]['Amount']) : 0,
 							array('id'=>'salAmt'.$j,
 									'name' => 'salAmt'.$j,
 									'style'=>'text-align:right;padding-right:4px;',
@@ -72,7 +72,7 @@
 							<!-- {{ $SalaryDtls[$salary->Emp_ID]['Amount'] }} -->
 						</td>
 						<td align="right">
-							{{ Form::text('salFee'.$j , "",
+							{{ Form::text('salFee'.$j , 0,
 							array('id'=>'salFee'.$j,
 									'name' => 'salFee'.$j,
 									'style'=>'text-align:right;padding-right:4px;',

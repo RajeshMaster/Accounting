@@ -135,7 +135,7 @@
 			<div class="col-xs-12 mt5">
 				<div class="col-xs-3 text-right clr_blue">
 					<label>{{ trans('messages.lbl_loanname') }}
-						<span class="fr ml2 red" style="visibility: hidden"> * </span>
+						<span class="fr ml2 red" id = "loanrequired"> * </span>
 					</label>
 				</div>
 				<div class="col-xs-9">
@@ -148,10 +148,10 @@
 									'name' => 'loanName',
 									'readonly' => 'true',
 									'data-label' => trans('messages.lbl_loanname'),
-									'class'=>'box31per form-control pl5')) }}
+									'class'=>'box31per form-control pl5 disabled')) }}
 					@if($request->edit_flg != 1)
-						<button type="button" id="clear" class="btn btn-danger box75 pt3 h30 ml5 mb3" 
-								style ="color:white;cursor: pointer;" 
+						<button type="button" id="clearloan" 
+								class="btn btn-danger box75 pt3 h30 ml5 mb3" 
 								onclick="return fndebitclear();">
 									{{ trans('messages.lbl_clear') }}
 						</button> 
@@ -161,13 +161,15 @@
 
 			<div class="col-xs-12 mt5">
 				<div class="col-xs-3 text-right clr_blue">
-					<label>{{ trans('messages.lbl_content') }}<span class="fr ml2 red" style="visibility: hidden"> * </span></label>
+					<label>{{ trans('messages.lbl_content') }}
+						<span class="fr ml2 red" id = "debitrequired"> * </span></label>
 				</div>
 				<div class="col-xs-9">
 					{{ Form::text('autoDebitContent',(isset($autodebitEdit[0]->content)) ? $autodebitEdit[0]->content : '',
 							array('id'=>'autoDebitContent', 
 									'name' => 'autoDebitContent',
 									'autocomplete' =>'off',
+									'onkeyup'=>'disabledloan();',
 									'data-label' => trans('messages.lbl_content'),
 									'class'=>'box31per form-control pl5')) }}
 				</div>
