@@ -325,7 +325,7 @@ class Accounting extends Model {
 				$loanArr = explode(":", $value);
 				$insert = $db->table('acc_cashregister')
 							->insert([
-									'emp_ID' => $request->assetsUser, 
+									'emp_ID' => $request->hidempId, 
 									'loan_ID' => $loanArr['1'], 
 									'loanName' => $loanArr['0'], 
 									'date' => $request->autoDebitDate,

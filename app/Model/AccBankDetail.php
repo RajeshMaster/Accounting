@@ -101,7 +101,7 @@ class AccBankDetail extends Model {
 		return $update;
 	}
 
-	public static function bankview($request,$startdate,$curDate,$from_date,$to_date,$cdm) {
+	public static function bankview($request,$startdate,$curDate,$from_date,$to_date,$cdm,$flg) {
 
 		$year = "";
 		$month = "";
@@ -166,9 +166,14 @@ class AccBankDetail extends Model {
 
 			}
 
-			$query = $query->orderBy('cashreg.date','ASC')
-							->paginate($request->plimit);
-
+			$query = $query->orderBy('cashreg.date','ASC');
+			
+			if ($flg == 1) {
+				$query = $query->get();
+			} else {
+				$query = $query->paginate($request->plimit);
+			}
+							
 		return $query;
 	}
 

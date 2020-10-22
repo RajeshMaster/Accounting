@@ -200,6 +200,7 @@ $(document).ready(function() {
 					document.getElementById('autoDebitAmountloan').innerHTML = document.getElementById('autoDebitAmountloan').innerHTML + ";" + $('#'+"loanAmt"+res[4]).val();
 					document.getElementById('autoDebitFeeloan').innerHTML = document.getElementById('autoDebitFeeloan').innerHTML + ";" + $('#'+"loanFee"+res[4]).val();
 				}
+				$('#hidempId').val($('#assetsUser').val());
 			});
 			
 			$("#enableamt").attr("style", "display: block");
@@ -620,6 +621,7 @@ function fnclear(){
 function fndebitclear(){
 	document.getElementById("hidloan").value = "";
 	document.getElementById("hidloanId").value = "";
+	document.getElementById("hidempId").value = "";
 	document.getElementById("loanName").value = "";
 	document.getElementById("autoDebitAmountloan").value = "";
 	document.getElementById("autoDebitFeeloan").value = "";

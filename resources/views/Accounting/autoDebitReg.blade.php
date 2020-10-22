@@ -142,6 +142,7 @@
 					{{ Form::hidden('hidloan', '', array('id' => 'hidloan')) }}
 					{{ Form::hidden('hidcheckDeb', '', array('id' => 'hidcheckDeb')) }}
 					{{ Form::hidden('hidloanId', '', array('id' => 'hidloanId')) }}
+					{{ Form::hidden('hidempId', '', array('id' => 'hidempId')) }}
 					{{ Form::text('loanName',(isset($autodebitEdit[0]->loanName)) ? $autodebitEdit[0]->loanName : '',
 							array('id'=>'loanName', 
 									'name' => 'loanName',

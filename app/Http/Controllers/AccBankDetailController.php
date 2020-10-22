@@ -204,11 +204,8 @@ class AccBankDetailController extends Controller {
 
 		// Year Bar Process End
 
-		$singleBank = AccBankDetail::bankviewfirst($request,$startdate,$curDate,$from_date,$to_date,"");
+		$singleBank = AccBankDetail::bankview($request,$startdate,$curDate,$from_date,$to_date,"",1);
 
-
-
-		// print_r($request->all());echo "<br/>";
 		$baseAmtInsChk = AccBankDetail::baseAmtInsChk($request->bankid, $request->accno);
 		$baseAmtVal = $baseAmtInsChk[0]->amount;
 		$bankrectype1 = AccBankDetail::bankrectype($request->bankid, $request->accno ,'1');
@@ -330,19 +327,19 @@ class AccBankDetailController extends Controller {
 		$maxday = Common::fnGetMaximumDateofMonth($year_month_day);
 		$from_date = $last_year . "-" . substr("0" . $account_close_mn, -2). "-" . substr("0" . $maxday, -2);
 		$to_date = $current_year . "-" . substr("0" . ($account_close_mn + 1), -2) . "-01";
-		$bktr_query1 = AccBankDetail::bankview($request,$startdate,$curDate,$from_date,"","");
+		$bktr_query1 = AccBankDetail::bankview($request,$startdate,$curDate,$from_date,"","",2);
 		$dbprevious = array();
 		foreach ($bktr_query1 AS $key => $value) {
 			array_push($dbprevious, $value->date);
 		}
-		$bktr_query2 = AccBankDetail::bankview($request,$startdate,$curDate,"",$to_date,"");
+		$bktr_query2 = AccBankDetail::bankview($request,$startdate,$curDate,"",$to_date,"",2);
 		$dbnext = array();
 		foreach ($bktr_query2 AS $key => $value) {
 			array_push($dbnext, $value->date);
 		}
 		$account_val = Common::getAccountPeriod($year_month1,$account_close_yr,$account_close_mn,$account_period);
 
-		$g_query = AccBankDetail::bankview($request,$startdate,$curDate,"","",$date_month);
+		$g_query = AccBankDetail::bankview($request,$startdate,$curDate,"","",$date_month,2);
 
 		$balance = $baseAmtInsChk[0]->amount;
 		$balanceAmt = AccBankDetail::AccBalance($request,$startdate,"");
