@@ -210,7 +210,7 @@ class Accounting extends Model {
 			$empId = explode(";", $request->hidempid);
 
 			foreach ($empId as $key => $value) {
-				$empArr = explode(",", $value);
+				$empArr = explode(":", $value);
 				$insert = $db->table('acc_cashregister')
 							->insert([
 									'emp_ID' => $empArr['1'], 
@@ -323,9 +323,10 @@ class Accounting extends Model {
 
 			$loanId = explode(";", $request->hidloan);
 			foreach ($loanId as $key => $value) {
-				$loanArr = explode(",", $value);
+				$loanArr = explode(":", $value);
 				$insert = $db->table('acc_cashregister')
 							->insert([
+									'emp_ID' => $request->assetsUser, 
 									'loan_ID' => $loanArr['1'], 
 									'loanName' => $loanArr['0'], 
 									'date' => $request->autoDebitDate,

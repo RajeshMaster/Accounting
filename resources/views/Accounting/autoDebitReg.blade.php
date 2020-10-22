@@ -141,6 +141,7 @@
 				<div class="col-xs-9">
 					{{ Form::hidden('hidloan', '', array('id' => 'hidloan')) }}
 					{{ Form::hidden('hidcheckDeb', '', array('id' => 'hidcheckDeb')) }}
+					{{ Form::hidden('hidloanId', '', array('id' => 'hidloanId')) }}
 					{{ Form::text('loanName',(isset($autodebitEdit[0]->loanName)) ? $autodebitEdit[0]->loanName : '',
 							array('id'=>'loanName', 
 									'name' => 'loanName',
