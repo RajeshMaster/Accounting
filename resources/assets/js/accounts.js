@@ -159,7 +159,11 @@ $(document).ready(function() {
 
 		var loanerr = 0;
 		document.getElementById("autoDebitContent").value = "";
-
+		var lengthOfUnchecked = $('input[type=checkbox]:not(:checked)').length;
+		if(lengthOfUnchecked == 0){
+			alert("Please select data");
+			return false;
+		}
 		$('input[type=checkbox]:not(:checked)').each(function(){
 			var res = $(this).val().split("$"); 
 			if ($('#'+"loanAmt"+res[4]).val() =="" || $('#'+"loanAmt"+res[4]).val() ==0) {
@@ -213,7 +217,11 @@ $(document).ready(function() {
 
 	// For Salary Select Popup
 	$('.selectsalary').click(function(){
-
+		var lengthOfUnchecked = $('input[type=checkbox]:not(:checked)').length;
+		if(lengthOfUnchecked == 0){
+			alert("Please select data");
+			return false;
+		}
 		var salerr = 0;
 		$('#txt_empname').val("");
 		document.getElementById("empid").value = "";
