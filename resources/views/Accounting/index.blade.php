@@ -7,6 +7,15 @@
 	$(document).ready(function() {
 		setDatePicker("from_date");
 		setDatePicker("to_date");
+		if(mainmenu == "AuditingAccounting"){
+			$(".divdisplay").css("display", "none");
+			$('.columnspan').attr('colspan','8');
+			$('.columnspan1').attr('colspan','2');
+  		}else{
+  			$(".divdisplay").css("");
+  			$('.columnspan').attr('colspan','9');
+  			$('.columnspan1').attr('colspan','3');
+  		}
 	});
 		function mulclick(divid){
 	    if($('#'+divid).css('display') == 'block'){
@@ -15,6 +24,7 @@
 	      document.getElementById(divid).style.display = 'block';
 	    }
   }
+
 </script>
 <style type="text/css">
 	.alertboxalign {
@@ -99,6 +109,7 @@
 	.collapse.in {
     display: block ;
 	}*/
+
 </style>
 {{ HTML::script('resources/assets/js/accounts.js') }}
 {{ HTML::script('resources/assets/js/switch.js') }}
@@ -110,7 +121,12 @@
 {{ HTML::style('resources/assets/css/lib/bootstrap-datetimepicker.min.css') }}
 <div class="CMN_display_block" id="main_contents" style="width: 100%">
 <!-- article to select the main&sub menu -->
+@if($request->mainmenu =="AuditingAccounting")
+<article id="auditing" class="DEC_flex_wrapper " data-category="auditing auditing_sub_3">
+@else
 <article id="accounting" class="DEC_flex_wrapper " data-category="accounting accounting_sub_1">
+@endif
+
 	{{ Form::open(array('name'=>'frmaccountingindex', 
 						'id'=>'frmaccountingindex', 
 						'url' => 'Accounting/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
@@ -157,7 +173,7 @@
 			@endif
 			@php Session::forget('success'); @endphp
 			<!-- Session msg -->
-		<div class="col-xs-6  pm0 pull-left mt10">
+		<div class="col-xs-6  pm0 pull-left mt10 divdisplay">
 			<a href="javascript:addedit('index','{{ $request->mainmenu }}');" class="btn btn-success box100"><span class="fa fa-plus"></span> {{ trans('messages.lbl_register') }}</a>
 		</div>
 	</div>
@@ -174,11 +190,11 @@
 				<!-- <col width="8%"> -->
 				<col width="">
 				<col width="8%">
-				<col width="8%">
+				<col width="8%" class="divdisplay">
 			</colgroup>
 
 			<thead class="CMN_tbltheadcolor">
-				<tr>
+				<tr id="data">
 					<th class="vam">{{ trans('messages.lbl_sno') }}</th>
 					<th class="vam">{{ trans('messages.lbl_Date') }}</th>
 					<th class="vam">{{ trans('messages.lbl_subject') }}</th>
@@ -188,7 +204,7 @@
 					<!-- <th class="vam">{{ trans('messages.lbl_balance') }}</th> -->
 					<th class="vam">{{ trans('messages.lbl_remarks') }}</th>
 					<th class="vam">{{ trans('messages.lbl_file') }}</th>
-					<th class="vam">{{ trans('messages.lbl_copy') }}</th>
+					<th class="vam divdisplay">{{ trans('messages.lbl_copy') }}</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -206,7 +222,7 @@
 							<td colspan="6" >
 								{{ trans('messages.lbl_total') }}
 							</td>
-							<td colspan="3">
+							<td colspan="3" class="columnspan1">
 								{{ $balanceAmt }}
 								@php $balanceAmt = 0; @endphp
 							</td>
@@ -214,7 +230,7 @@
 					@endif
 					@if($lastBankName != $data['Bank_NickName'])
 						<tr style="background-color: lightgrey">
-							<td colspan="9" > {{ $data['Bank_NickName'] }} </td>
+							<td colspan="9" class="columnspan"> {{ $data['Bank_NickName'] }} </td>
 						</tr>
 					@endif
 					<tr style="background-color: #FCE1F0">
@@ -240,7 +256,7 @@
 						<td>{{ $data['remarks']}}</td>
 						<td>{{ $data['fileDtl'] }}</td>
 							
-						<td>
+						<td class="divdisplay">
 							@if($data['id'] != $data['transferId'])
 							<a href="javascript:editCashDtl('{{ $data['id'] }}','1','{{ $data['pageFlg'] }}');">
 								<img class="vam" src="{{ URL::asset('resources/assets/images/edit.png') }}" width="20" height="20">
@@ -270,7 +286,7 @@
 				@if(count($cashDetails) > 0)
 					<tr style="background-color: #f1a2a2">
 						<td colspan="6">{{ trans('messages.lbl_total') }}</td>
-						<td colspan="3">{{ $balanceAmt }}</td>
+						<td colspan="3" class="columnspan1">{{ $balanceAmt }}</td>
 					</tr>
 				@endif
 				
