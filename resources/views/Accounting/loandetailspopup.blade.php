@@ -53,6 +53,7 @@
 			</thead>
 			<tbody>
 			 	@php $i = 1 @endphp
+			 	@php $j = 1 @endphp
 			 	@forelse($getLoanDtls as $key  => $loan)
 					<tr>
 						<td align="center">
@@ -65,17 +66,42 @@
 							{{ $loan->loanName}}
 						</td>
 						<td align="right">
-							{{ $loan->loanAmount * 10000 }}
+							{{ Form::text('loanAmt'.$j,(isset($loan->loanAmount)) ? number_format($loan->loanAmount * 10000) : "",
+							array('id'=>'loanAmt'.$j,
+									'name' => 'loanAmt'.$j,
+									'style'=>'text-align:right;padding-right:4px;',
+									'autocomplete' =>'off',
+									'class'=>'box96per ime_mode_disable ml7',
+									'onblur' => 'return fnSetZero11(this.id);',
+									'onfocus' => 'return fnRemoveZero(this.id);',
+									'onclick' => 'return fnRemoveZero(this.id);',
+									'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
+									'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
+									'data-label' => trans('messages.lbl_fee'))) }}
+									<br/>
+							<!-- {{ $loan->loanAmount * 10000 }} -->
 						</td>
 						<td align="right">
-							{{ $loan->monthInterest }}
+							{{ Form::text('loanFee'.$j,(isset($loan->monthInterest)) ? number_format($loan->monthInterest) : "",
+							array('id'=>'loanFee'.$j,
+									'name' => 'loanFee'.$j,
+									'style'=>'text-align:right;padding-right:4px;',
+									'autocomplete' =>'off',
+									'class'=>'box96per ime_mode_disable ml7',
+									'onblur' => 'return fnSetZero11(this.id);',
+									'onfocus' => 'return fnRemoveZero(this.id);',
+									'onclick' => 'return fnRemoveZero(this.id);',
+									'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
+									'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
+									'data-label' => trans('messages.lbl_fee'))) }}
 						</td>
 						<td align="center">
 							<input  type="checkbox" name="loan[]" id="loan[]" 
 								class="<?php echo $loan->loanId; ?>" 
-								value="<?php  echo $loan->loanName."$".$loan->loanId."$".($loan->loanAmount * 10000)."$".$loan->monthInterest; ?>">
+								value="<?php  echo $loan->loanName."$".$loan->loanId."$".($loan->loanAmount * 10000)."$".$loan->monthInterest."$".$j; ?>">
 						</td>
 					</tr>
+					@php $j++; @endphp
 				@empty
 					<tr>
 						<td class="text-center" colspan="6" style="color: red;">

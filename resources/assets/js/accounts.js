@@ -152,29 +152,50 @@ $(document).ready(function() {
 	// For Loan Select Popup
 	$('.selectloan').click(function(){
 		var hidloan = $("#hidloan").val();
+		var err = 0;
 		document.getElementById("autoDebitContent").value = "";
 		var confirmgroup = confirm("Do You Want To Select Loan?");
 		if(confirmgroup) {
-			$("#enableamt").attr("style", "display: block");
-			$("#enablefee").attr("style", "display: block");
-			$("#hidamtfee").attr("style", "display: none");
+		
 			$("#hidcheckDeb").val('1');
 			var getchecked = $("#hidcheckDeb").val();
+
 			$('input[type=checkbox]:not(:checked)').each(function(){
+
 				var res = $(this).val().split("$"); 
 				if (getchecked == 1) {
 					getchecked = 2;
+					if ($('#'+"loanAmt"+res[4]).val() =="" || $('#'+"loanAmt"+res[4]).val() ==0) {
+						$('#'+"loanAmt"+res[4]).attr("style", "background-color: #E88F8F");
+						err = 1;
+						return false;
+					} else {
+						$('#'+"loanAmt"+res[4]).attr("style", "background-color:none");
+					}
 					$('#hidloan').val($('#hidloan').val() + res);
 					$('#loanName').val($('#loanName').val() + res[0]);
-					document.getElementById('autoDebitAmountloan').innerHTML = $('#autoDebitAmountloan').val() + res[2];
-					document.getElementById('autoDebitFeeloan').innerHTML = $('#autoDebitFeeloan').val() + res[3];
+					document.getElementById('autoDebitAmountloan').innerHTML = $('#autoDebitAmountloan').val() + $('#'+"loanAmt"+res[4]).val();
+					document.getElementById('autoDebitFeeloan').innerHTML = $('#autoDebitFeeloan').val() + $('#'+"loanFee"+res[4]).val();
 				} else {
+					if ($('#'+"loanAmt"+res[4]).val() =="" || $('#'+"loanAmt"+res[4]).val() ==0) {
+						$('#'+"loanAmt"+res[4]).attr("style", "background-color: #E88F8F");
+						err = 1;
+						return false;
+					} else {
+						$('#'+"loanAmt"+res[4]).attr("style", "background-color: none");
+					}
 					$('#hidloan').val($('#hidloan').val() + ";" + res);
 					$('#loanName').val($('#loanName').val() + ";" + res[0]);
-					document.getElementById('autoDebitAmountloan').innerHTML = document.getElementById('autoDebitAmountloan').innerHTML + ";" + res[2];
-					document.getElementById('autoDebitFeeloan').innerHTML = document.getElementById('autoDebitFeeloan').innerHTML + ";" + res[3];
+					document.getElementById('autoDebitAmountloan').innerHTML = document.getElementById('autoDebitAmountloan').innerHTML + ";" + $('#'+"loanAmt"+res[4]).val();
+					document.getElementById('autoDebitFeeloan').innerHTML = document.getElementById('autoDebitFeeloan').innerHTML + ";" + $('#'+"loanFee"+res[4]).val();
 				}
 			});
+			if (err) {
+				return false;
+			}
+			$("#enableamt").attr("style", "display: block");
+			$("#enablefee").attr("style", "display: block");
+			$("#hidamtfee").attr("style", "display: none");
 			$("#autoDebitContent").attr("disabled", "disabled");
 			$("#loanbutton").attr("disabled", "disabled");
 			$("body div").removeClass("modalOverlay");
