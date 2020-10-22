@@ -108,11 +108,20 @@
 					<label>{{ trans('messages.lbl_bank_name') }}<span class="fr ml2 red"> * </span></label>
 				</div>
 				<div class="col-xs-9">
-					{{ Form::select('transferBank',[null=>'']+$bankDetail,　(isset($transferEdit[0]->bankIdFrom)) ?　$transferEdit[0]->bankIdFrom.'-'.$transferEdit[0]->accountNumberFrom : '',
+					@if(isset($transferEdit[0]->bankIdFrom))
+						{{ Form::select('transferBank',[null=>'']+$bankDetail,(isset($transferEdit[0]->bankIdFrom)) ? 
+														$transferEdit[0]->bankIdFrom.'-'.$transferEdit[0]->accountNumberFrom : '',						array('name' =>'transferBank',
+																	'id'=>'transferBank',
+																	'data-label' => trans('messages.lbl_bank'),
+																	'class'=>'pl5 widthauto'))}}
+
+					@else
+						{{ Form::select('transferBank',[null=>'']+$bankDetail,'',
 								array('name' =>'transferBank',
 										'id'=>'transferBank',
 										'data-label' => trans('messages.lbl_bank'),
 										'class'=>'pl5 widthauto'))}}
+					@endif
 				</div>
 			</div>
 
@@ -177,6 +186,7 @@
 							array('id'=>'transferContent', 
 									'name' => 'transferContent',
 									'onkeyup'=>'disabledemp();',
+									'autocomplete' =>'off',
 									'data-label' => trans('messages.lbl_content'),
 									'class'=>'box31per form-control pl5')) }}
 				</div>
@@ -196,6 +206,7 @@
 									'name' => 'transferAmount',
 									'style'=>'text-align:right;padding-right:4px;',
 									'class'=>'box15per ime_mode_disable',
+									'autocomplete' =>'off',
 									'onblur' => 'return fnSetZero11(this.id);',
 									'onfocus' => 'return fnRemoveZero(this.id);',
 									'onclick' => 'return fnRemoveZero(this.id);',
@@ -207,6 +218,7 @@
 								array('id'=>'transferFee',
 									'name' => 'transferFee',
 									'style'=>'text-align:right;padding-right:4px;',
+									'autocomplete' =>'off',
 									'class'=>'box7per ime_mode_disable ml7',
 									'onblur' => 'return fnSetZero11(this.id);',
 									'onfocus' => 'return fnRemoveZero(this.id);',
@@ -228,7 +240,7 @@
 									'name' => 'transferAmountsalary',
 									'style'=>'text-align:left;',
 									'class'=>'box15per',
-									
+									'autocomplete' =>'off',
 									)) }}
 				</div>
 			</div>
@@ -288,6 +300,7 @@
 												'class' => 'box45per',
 												'style'=>'text-align:left;padding-left:4px;',
 												'size' => '60x5',
+												'autocomplete' =>'off',
 												'data-label' => trans('messages.lbl_remarks'))) }}
 				</div>
 			</div>

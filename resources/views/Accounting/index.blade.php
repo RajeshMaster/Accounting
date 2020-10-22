@@ -15,6 +15,16 @@
 	      document.getElementById(divid).style.display = 'block';
 	    }
   }
+
+	function pageClick(pageval) {
+		$('#page').val(pageval);
+			$("#frmaccountingindex").submit();
+	}
+	function pageLimitClick(pagelimitval) {
+		$('#page').val('');
+		$('#plimit').val(pagelimitval);
+		$("#frmaccountingindex").submit();
+	}
 </script>
 <style type="text/css">
 	.alertboxalign {
@@ -126,12 +136,13 @@
 		{{ Form::hidden('edit_flg', '', array('id' => 'edit_flg')) }}
 		{{ Form::hidden('editId', '', array('id' => 'editId')) }}
 
+		<!-- Year Bar Start -->
 		{{ Form::hidden('selMonth', $request->selMonth, array('id' => 'selMonth')) }}
 		{{ Form::hidden('selYear', $request->selYear, array('id' => 'selYear')) }}
 		{{ Form::hidden('prevcnt', $request->prevcnt, array('id' => 'prevcnt')) }}
 		{{ Form::hidden('nextcnt', $request->nextcnt, array('id' => 'nextcnt')) }}
 		{{ Form::hidden('account_val', $account_val, array('id' => 'account_val')) }}
-
+		<!-- Year Bar End -->
 <!-- Start Heading -->
 	<div class="row hline" >
 		<div class="col-xs-12">
@@ -139,7 +150,6 @@
 			<h2 class="pull-left pl5 mt15">{{ trans('messages.lbl_accounting') }}</h2>
 		</div>
 	</div>
-
 	<div class=" pr10 pl10 ">
 		<div class="mt10 ">
 			{{ Helpers::displayYear_MonthEst($account_period, $year_month, $db_year_month, $date_month, $dbnext, $dbprevious, $last_year, $current_year, $account_val) }}
@@ -278,7 +288,17 @@
 		</table>
 
 	</div>
-
+	<div class="text-center pl14">
+		@if(!empty($cashDetailsIndex->total()))
+			<span class="pull-left mt24">
+				{{ $cashDetailsIndex->firstItem() }} ~ {{ $cashDetailsIndex->lastItem() }} / {{ $cashDetailsIndex->total() }}
+			</span>
+		@endif 
+		{{ $cashDetailsIndex->links() }}
+		<div class="CMN_display_block flr pr14">
+			{{ $cashDetailsIndex->linkspagelimit() }}
+		</div>
+	</div>
 </article>
 </div>
 

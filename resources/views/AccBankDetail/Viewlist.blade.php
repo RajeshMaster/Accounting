@@ -35,6 +35,7 @@
 		{{ Form::hidden('bankname', $request->bankname , array('id' => 'bankname')) }}
 		{{ Form::hidden('branchname', $request->branchname , array('id' => 'branchname')) }}
 		{{ Form::hidden('bankid', $request->bankid , array('id' => 'bankid')) }}
+
 		<!-- Year Bar Start -->
 		{{ Form::hidden('selMonth', $request->selMonth, array('id' => 'selMonth')) }}
 		{{ Form::hidden('selYear', $request->selYear, array('id' => 'selYear')) }}
@@ -50,7 +51,7 @@
 		<div class="col-xs-12">
 			<img class="pull-left box35 mt10" src="{{ URL::asset('resources/assets/images/bank_1.png') }}">
 			<h2 class="pull-left pl5 mt10">
-				aaa
+				{{ $request->bankname }}-{{ $request->branchname }}-{{ $request->accno }}
 			</h2>
 		</div>
 	</div>

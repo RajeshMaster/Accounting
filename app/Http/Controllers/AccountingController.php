@@ -180,6 +180,7 @@ class AccountingController extends Controller {
 		}
 
 		$est_query2=Accounting::fnGetCashExpenseRecordNext($to_date);
+
 		$dbnext = array();
 		foreach ($est_query2 as $key => $value) {
 			$dbnext[]=$value->date;
@@ -195,7 +196,7 @@ class AccountingController extends Controller {
 		$start = $request->selYear .'-'.$request->selMonth.'-01';
 		$end = $request->selYear .'-'.$request->selMonth.'-'.Common::fnGetMaximumDateofMonth($start);
 	
-		$cashDetailsIndex = Accounting::fetchcashRegister($start, $end);
+		$cashDetailsIndex = Accounting::fetchcashRegister($start, $end, $request);
 		$cashDetails =array();
 		$i = 0;
 		foreach ($cashDetailsIndex as $key => $value) {

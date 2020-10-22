@@ -149,6 +149,7 @@
 					{{ Form::text('autoDebitContent',(isset($expcash_sql[0]->autoDebitContent)) ? $expcash_sql[0]->autoDebitContent : '',
 							array('id'=>'autoDebitContent', 
 									'name' => 'autoDebitContent',
+									'autocomplete' =>'off',
 									'data-label' => trans('messages.lbl_content'),
 									'class'=>'box31per form-control pl5')) }}
 				</div>
@@ -169,6 +170,7 @@
 							array('id'=>'autoDebitAmount',
 									'name' => 'autoDebitAmount',
 									'style'=>'text-align:right;padding-right:4px;',
+									'autocomplete' =>'off',
 									'class'=>'box15per ime_mode_disable',
 									'onblur' => 'return fnSetZero11(this.id);',
 									'onfocus' => 'return fnRemoveZero(this.id);',
@@ -181,6 +183,7 @@
 							array('id'=>'autoDebitFee',
 									'name' => 'transferFee',
 									'style'=>'text-align:right;padding-right:4px;',
+									'autocomplete' =>'off',
 									'class'=>'box7per ime_mode_disable ml7',
 									'onblur' => 'return fnSetZero11(this.id);',
 									'onfocus' => 'return fnRemoveZero(this.id);',
@@ -215,6 +218,7 @@
 					{{ Form::textarea('autoDebitRemarks',(isset($expcash_sql[0]->remark_dtl)) ? $expcash_sql[0]->remark_dtl : '', 
 									array('name' => 'autoDebitRemarks',
 											'id'=>'autoDebitRemarks', 
+											'autocomplete' =>'off',
 											'class' => 'box40per form-control',
 											'size' => '30x4')) }}
 				</div>

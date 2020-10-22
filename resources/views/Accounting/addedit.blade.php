@@ -105,9 +105,6 @@
 						$style = "style=''";
 				}?>
 
-				
-
-
 				{{ Form::select('transfer',[null=>'']+$bankDetail,(isset($editData[0]->bankIdTo)) ? 
 														$editData[0]->bankIdTo.'-'.$editData[0]->accountNumberTo : '', array('name' =>'transfer',
 																	'id'=>'transfer',
@@ -186,6 +183,7 @@
 				{{ Form::text('content',(isset($editData[0]->content)) ? $editData[0]->content : '',
 									array('id'=>'content', 
 															'name' => 'content',
+															'autocomplete' =>'off',
 															'data-label' => trans('messages.lbl_content'),
 															'class'=>'box31per form-control pl5')) }}
 			</div>
@@ -200,6 +198,7 @@
 														'name' => 'amount',
 														'style'=>'text-align:right;',
 														'maxlength' => 10,
+														'autocomplete' =>'off',
 														'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
 														'onchange'=>'return fnCancel_check();',
 														'onblur' => 'return fnSetZero11(this.id);',
@@ -214,6 +213,7 @@
 														'name' => 'fee',
 														'style'=>'text-align:right;',
 														'maxlength' => 10,
+														'autocomplete' =>'off',
 														'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
 														'onchange'=>'return fnCancel_check();',
 														'onblur' => 'return fnSetZero11(this.id);',
@@ -232,6 +232,7 @@
 			<div class="col-xs-9">
 				{{ Form::textarea('remarks',(isset($editData[0]->remarks)) ? $editData[0]->remarks : '', 
 						array('name' => 'remarks',
+								'autocomplete' =>'off',
 							  'class' => 'box40per form-control','size' => '30x4')) }}
 			</div>
 		</div>

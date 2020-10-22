@@ -390,7 +390,7 @@ class Accounting extends Model {
 		return $query;
 	}
 	
-	public static function fetchcashRegister($from_date, $to_date) {
+	public static function fetchcashRegister($from_date, $to_date, $request) {
 
 		$db = DB::connection('mysql');
 		$query = $db->table('acc_cashregister')
@@ -406,7 +406,8 @@ class Accounting extends Model {
 						->where('date','<=',$to_date)
 						->orderBy('bankIdFrom','ASC')
 						->orderBy('acc_cashregister.date','ASC')
-						->get();
+						->paginate($request->plimit);
+
 
 						 // ->toSql();
 						// dd($query);

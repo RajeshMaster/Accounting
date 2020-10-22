@@ -103,11 +103,6 @@ class AccBankDetail extends Model {
 
 	public static function bankview($request,$startdate,$curDate,$from_date,$to_date,$cdm) {
 
-		// $fromDate = $request->fromDate;
-		// $fromDate = date('Y-m-01', strtotime($fromDate));
-		// // Last day of the month.
-		// $toDate = date('Y-m-t', strtotime($fromDate));
-
 		$year = "";
 		$month = "";
 		if($cdm != ""){
