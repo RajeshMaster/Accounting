@@ -93,6 +93,7 @@
 					{{ Form::text('txt_startdate',$request->intialDate,array(
 										'id'=>'txt_startdate',
 										'name' => 'txt_startdate',
+										'autocomplete' =>'off',
 										'class'=>'box12per txt_startdate form-control ime_mode_disable',
 										'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
 										'data-label' => trans('messages.lbl_Start_date'),
@@ -101,6 +102,7 @@
 					{{ Form::text('txt_startdate','',array(
 										'id'=>'txt_startdate',
 										'name' => 'txt_startdate',
+										'autocomplete' =>'off',
 										'class'=>'box12per txt_startdate form-control ime_mode_disable',
 										'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
 										'data-label' => trans('messages.lbl_Start_date'),

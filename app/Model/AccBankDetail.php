@@ -185,7 +185,7 @@ class AccBankDetail extends Model {
 		$curDate = date('Y-m-d');
 		$db = DB::connection('mysql');
 			$query = $db->table('acc_cashregister')
-						->SELECT('transcationType','amount')
+						->SELECT('transcationType','amount','fee')
 						->where('bankIdFrom','=',$request->bankid)
 						->where('accountNumberFrom','=',$request->accno)
 						->where('transcationType','!=',9)
