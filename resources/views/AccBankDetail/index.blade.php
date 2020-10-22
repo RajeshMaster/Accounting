@@ -8,7 +8,15 @@
 
 	var datetime = '<?php echo date('Ymdhis'); ?>';
 	var mainmenu = '<?php echo $request->mainmenu; ?>';
-
+	function pageClick(pageval) {
+		$('#page').val(pageval);
+			$("#Accbankdetailsindex").submit();
+	}
+	function pageLimitClick(pagelimitval) {
+		$('#page').val('');
+		$('#plimit').val(pagelimitval);
+		$("#Accbankdetailsindex").submit();
+	}
 </script>
 
 	<div class="CMN_display_block" id="main_contents">
@@ -17,7 +25,7 @@
 
 	<article id="accounting" class="DEC_flex_wrapper " data-category="accounting accounting_sub_4">
 
-	{{ Form::open(array('name'=>'Accbankdetailsindex', 'id'=>'Accbankdetailsindex', 'url' => 'AccBankDetails/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),'files'=>true,
+	{{ Form::open(array('name'=>'Accbankdetailsindex', 'id'=>'Accbankdetailsindex', 'url' => 'AccBankDetail/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),'files'=>true,
 
 		  'method' => 'POST')) }}
 		{{ Form::hidden('mainmenu', $request->mainmenu , array('id' => 'mainmenu')) }}

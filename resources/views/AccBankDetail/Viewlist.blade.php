@@ -9,6 +9,16 @@
 <script type="text/javascript">
 	var datetime = '<?php echo date('Ymdhis'); ?>';
 	var mainmenu = '<?php echo $request->mainmenu; ?>';
+
+	function pageClick(pageval) {
+		$('#page').val(pageval);
+			$("#accbankdetailsview").submit();
+	}
+	function pageLimitClick(pagelimitval) {
+		$('#page').val('');
+		$('#plimit').val(pagelimitval);
+		$("#accbankdetailsview").submit();
+	}
 </script>
 <style type="text/css">
 	.alertboxalign {
@@ -141,7 +151,7 @@
 				@endphp
 				@forelse($g_query as $key => $data)
 					<tr>
-						<td>{{ ($singleBank->currentpage()-1) * $singleBank->perpage() + $i + 1 }}</td>
+						<td>{{ ($g_query->currentpage()-1) * $g_query->perpage() + $i + 1 }}</td>
 						<td>{{ $data->date }}</td>
 						<td>{{ $data->content }}</td>
 						<td align="right">
@@ -201,23 +211,23 @@
 			<!-- 	<a href="javascript:fnchk();" class="btn btn-success box100">
 					Checked
 				</a> -->
-				<a style="padding:3px 4px;" title="Get Previous Salary" disabled = "disabled" class="btn btn-disabled disabled box100">
+				<!-- <a style="padding:3px 4px;" title="Get Previous Salary" disabled = "disabled" class="btn btn-disabled disabled box100">
 					<span class=""></span>
 						Checked
-				</a>
+				</a> -->
 		</div>
 
 
 	</div>
 	<div class="text-center pl14">
-		@if(!empty($singleBank->total()))
+		@if(!empty($g_query->total()))
 			<span class="pull-left mt24">
-				{{ $singleBank->firstItem() }} ~ {{ $singleBank->lastItem() }} / {{ $singleBank->total() }}
+				{{ $g_query->firstItem() }} ~ {{ $g_query->lastItem() }} / {{ $g_query->total() }}
 			</span>
 		@endif 
-		{{ $singleBank->links() }}
+		{{ $g_query->links() }}
 		<div class="CMN_display_block flr pr14">
-			{{ $singleBank->linkspagelimit() }}
+			{{ $g_query->linkspagelimit() }}
 		</div>
 	</div>
 	{{ Form::close() }}
