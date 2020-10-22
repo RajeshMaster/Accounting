@@ -428,6 +428,8 @@ class AccountingController extends Controller {
 		$transferEdit = Accounting::tranferEditData($request);
 		if ($request->edit_flg == 2) {
 			$transferEdit[0]->date = "";
+			$transferEdit[0]->fileDtl = "";
+			$transferEdit[0]->Empname = "";
 		}
 		$bankDetail = Accounting::fetchbanknames();
 		$mainExpDetail = Accounting::getMainExpName();
@@ -669,6 +671,7 @@ class AccountingController extends Controller {
 		if ($request->edit_flg == 2) {
 			$autodebitEdit[0]->date = "";
 			$autodebitEdit[0]->loanName = "";
+			$autodebitEdit[0]->fileDtl = "";
 		}
 		$bankDetail = Accounting::fetchbanknames();
 		$mainExpDetail = Accounting::getMainExpName();

@@ -254,7 +254,8 @@
 													'accept' => 'image/x-png,image/gif,image/jpeg',
 													'data-label' => trans('messages.lbl_bill'))) }}
 					<span>&nbsp;(Ex: Image File Only)</span>
-					@if(isset($autodebitEdit)&& $request->edit_flg)
+
+					@if(isset($autodebitEdit) && $request->edit_flg == 1)
 						<?php $file_url = '../AccountingUpload/Accounting/' . $autodebitEdit[0]->fileDtl; ?>
 						@if(isset($autodebitEdit[0]->fileDtl) && file_exists($file_url))
 							<!-- <a style="text-decoration:none" href="{{ URL::asset('../../../../AccountingUpload/Accounting').'/'.$autodebitEdit[0]->fileDtl }}" data-lightbox="visa-img"></a> -->
@@ -263,6 +264,7 @@
 							{{ Form::hidden('pdffiles', $autodebitEdit[0]->fileDtl , array('id' => 'pdffiles')) }}
 						@endif
 					@endif
+					
 				</div>
 			</div>
 		

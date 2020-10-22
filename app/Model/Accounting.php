@@ -303,7 +303,6 @@ class Accounting extends Model {
 								'remarks' => $request->transFerRemarks,
 								'fileDtl' => $fileName,
 								'pageFlg' => 2,
-								'transferId' => '',
 								'UpdatedBy' => $name
 							)
 						);
@@ -363,6 +362,32 @@ class Accounting extends Model {
 		}
 
 		return $insert;
+	}
+
+	public static function updateAutodebitDtls($request,$fileName) {
+
+		$name = Session::get('FirstName').' '.Session::get('LastName');
+		$bankacc = explode('-', $request->autoDebitBank);
+
+		$update = DB::table('acc_cashregister')
+						->where('id', $request->editId)
+						->update(
+							array(
+								'date' => $request->autoDebitDate, 
+								'subjectId' => $request->autoDebitMainExp,
+								'bankIdFrom' => $bankacc[0],
+								'accountNumberFrom' => $bankacc[1],
+								'amount' => preg_replace("/,/", "", $request->autoDebitAmount),
+								'fee' => preg_replace("/,/", "", $request->autoDebitFee),
+								'content' => $request->autoDebitContent,
+								'remarks' => $request->autoDebitRemarks,
+								'fileDtl' => $fileName,
+								'pageFlg' => 3,
+								'UpdatedBy' => $name
+							)
+						);
+		return $update;
+
 	}
 
 	public static function fnGetEmpDetails($request) {
@@ -528,7 +553,10 @@ class Accounting extends Model {
 	}
 
 	public static function fnGetCashExpenseAllRecord() {
-		$sql = "SELECT SUBSTRING(date, 1, 7) AS date FROM acc_cashregister where transcationType != '9'  ORDER BY date ASC";
+		
+		$sql = "SELECT SUBSTRING(date, 1, 7) AS date FROM acc_cashregister 
+				where transcationType != '9'  ORDER BY date ASC";
+
 		$cards = DB::select($sql);
 		return $cards;
 	}

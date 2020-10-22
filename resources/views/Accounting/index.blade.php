@@ -128,6 +128,8 @@
 {{ HTML::style('resources/assets/css/switch.css') }}
 {{ HTML::script('resources/assets/js/lib/bootstrap-datetimepicker.js') }}
 {{ HTML::style('resources/assets/css/lib/bootstrap-datetimepicker.min.css') }}
+{{ HTML::script('resources/assets/js/lib/lightbox.js') }}
+{{ HTML::style('resources/assets/css/lib/lightbox.css') }}
 <div class="CMN_display_block" id="main_contents" style="width: 100%">
 <!-- article to select the main&sub menu -->
 @if($request->mainmenu =="AuditingAccounting")
@@ -263,16 +265,21 @@
 						</td>
 							
 						<td>{{ $data['remarks']}}</td>
-						<td>{{ $data['fileDtl'] }}</td>
-							
+						<td>
+						@if($data['fileDtl'] != "")
+							<a style="text-decoration:none" href="{{ URL::asset('../../../../AccountingUpload/Accounting').'/'.$data['fileDtl'] }}" data-lightbox="visa-img">
+							<img width="20" height="20" name="empimg" id="empimg" 
+							class="ml28 box20 viewPic3by2" src="{{ URL::asset('../../../../AccountingUpload/Accounting').'/'.$data['fileDtl'] }}"></a>
+						@endif
+						</td>
 						<td class="divdisplay">
 							@if($data['id'] != $data['transferId'])
-							<a href="javascript:editCashDtl('{{ $data['id'] }}','1','{{ $data['pageFlg'] }}');">
-								<img class="vam" src="{{ URL::asset('resources/assets/images/edit.png') }}" width="20" height="20">
-							</a>
-							<a href="javascript:editCashDtl('{{ $data['id'] }}','2','{{ $data['pageFlg'] }}');">
-								<img class="vam" src="{{ URL::asset('resources/assets/images/copy.png') }}" width="20" height="20">
-							</a>
+								<a href="javascript:editCashDtl('{{ $data['id'] }}','1','{{ $data['pageFlg'] }}');">
+									<img class="vam ml12" src="{{ URL::asset('resources/assets/images/edit.png') }}" width="20" height="20">
+								</a>
+								<a href="javascript:editCashDtl('{{ $data['id'] }}','2','{{ $data['pageFlg'] }}');">
+									<img class="vam ml7" src="{{ URL::asset('resources/assets/images/copy.png') }}" width="20" height="20">
+								</a>
 							@endif
 						</td>
 					</tr>
