@@ -198,7 +198,7 @@
 					<span class=" ml7 black" style=" font-weight: bold;font-size: 17px;"> / </span>
 					{{ Form::text('autoDebitFee',(isset($autodebitEdit[0]->fee)) ? number_format($autodebitEdit[0]->fee) : 0,
 							array('id'=>'autoDebitFee',
-									'name' => 'transferFee',
+									'name' => 'autoDebitFee',
 									'style'=>'text-align:right;padding-right:4px;',
 									'autocomplete' =>'off',
 									'class'=>'box7per ime_mode_disable ml7',

@@ -200,11 +200,15 @@ class AccBankDetailController extends Controller {
 		$account_period = intval($g_accountperiod[0]->Accountperiod);
 		$startdate = $request->startdate;
 		$curDate = date('Y-m-d');
+		$balanceAmtonDownTr = 0;
 
 		// Year Bar Process End
 
-		$singleBank = AccBankDetail::bankview($request,$startdate,$curDate,$from_date,$to_date,"");
-		// print_r($request->all());exit;
+		$singleBank = AccBankDetail::bankviewfirst($request,$startdate,$curDate,$from_date,$to_date,"");
+
+
+
+		// print_r($request->all());echo "<br/>";
 		$baseAmtInsChk = AccBankDetail::baseAmtInsChk($request->bankid, $request->accno);
 		$baseAmtVal = $baseAmtInsChk[0]->amount;
 		$bankrectype1 = AccBankDetail::bankrectype($request->bankid, $request->accno ,'1');
@@ -262,6 +266,10 @@ class AccBankDetailController extends Controller {
 			$selYear = $request->selYear;
 			$selMonth = $request->selMonth;
 		}
+
+		// echo "<pre>";
+		// print_r($dbrecord);
+		// echo "</pre>";
 
 		foreach ($dbrecord AS $dbrecordkey => $dbrecordvalue) {
 			if(empty($selMonth)) {
@@ -388,6 +396,32 @@ class AccBankDetailController extends Controller {
 			$i++;
 		}
 
+		$balanceAmtonDownTr = $curBal;
+		// print_r($balanceAmtonDownTr);exit;
+
+
+		$date_monthday = $date_month.'-01';
+		$debitAmt =0;
+		$creditAmt =0;
+		
+		$endDateday = $date_month.'-'.Common::fnGetMaximumDateofMonth($date_month);
+
+		if ($date_month == date('Y-m')) {
+			$endDateday = date('Y-m-d');
+		}
+
+		for ($i=0; $i < count($singleBank) ; $i++) { 
+			if ($date_monthday <= $singleBank[$i]->date  && $endDateday >= $singleBank[$i]->date) {
+				// print_r($singleBank[$i]->date);echo "<br>";
+				if ($singleBank[$i]->transcationType == 2 || $singleBank[$i]->transcationType == 4) {
+					$balanceAmtonDownTr += $singleBank[$i]->amount;
+				} else {
+					$balanceAmtonDownTr -= $singleBank[$i]->amount;
+				}
+				$balanceAmtonDownTr -= $singleBank[$i]->fee;
+			}
+		}
+
 		return view('AccBankDetail.Viewlist',[ 'request' => $request,
 												'singleBank' => $singleBank,
 												'bankdetail' => $bankdetail,
@@ -406,7 +440,8 @@ class AccBankDetailController extends Controller {
 												'dbprevious' => $dbprevious,
 												'last_year' => $last_year,
 												'current_year' => $current_year,
-												'account_val' => $account_val
+												'account_val' => $account_val,
+												'balanceAmtonDownTr' => $balanceAmtonDownTr
 											]);
 	}
 }

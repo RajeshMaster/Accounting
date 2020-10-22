@@ -345,7 +345,6 @@ class Accounting extends Model {
 			}
 
 		} else {
-
 			$insert = $db->table('acc_cashregister')
 						->insert([
 								'date' => $request->autoDebitDate,

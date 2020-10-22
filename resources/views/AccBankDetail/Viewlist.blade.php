@@ -55,7 +55,6 @@
 		{{ Form::hidden('startdate', $request->startdate, array('id' => 'startdate')) }}
 		<!-- Year Bar End -->
 
-
 	<!-- Start Heading -->
 	<div class="row hline pm0">
 		<div class="col-xs-12">
@@ -182,7 +181,7 @@
 					@php $i++ @endphp
 				@empty
 					<tr>
-						<td class="text-center" colspan="7" style="color: red;">
+						<td class="text-center" colspan="8" style="color: red;">
 						{{ trans('messages.lbl_nodatafound') }}</td>
 					</tr>
 				@endforelse
@@ -197,7 +196,7 @@
 						</td>
 						<td class="tax_data_name"></td>
 						<td class="tax_data_name tar"></td>
-						<td class="tax_data_name tar">{{ number_format($balanceAmt) }}</td>
+						<td class="tax_data_name tar">{{ number_format($balanceAmtonDownTr) }}</td>
 						<td class="tax_data_name"></td>
 						<td class="tax_data_name"></td>
 					</tr>
