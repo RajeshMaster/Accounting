@@ -49,11 +49,13 @@
 					{{ trans('messages.lbl_cash') }}
 				</h2>
 				<h2 class="pull-left mt10">・</h2>
-				<h2 class="pull-left mt10">
-					<span class="green">
-						{{ trans('messages.lbl_register') }}
-					</span>
-				</h2>
+				@if($request->edit_flg == 1)
+					<h2 class="pull-left mt10 red">{{ trans('messages.lbl_edit') }}</h2>
+				@elseif($request->edit_flg == 2)
+					<h2 class="pull-left mt10 blue">{{ trans('messages.lbl_copy') }}</h2>
+				@else
+					<h2 class="pull-left mt10 green">{{ trans('messages.lbl_register') }}</h2>
+				@endif
 			</div>
 		</div>
 		<div class="col-xs-12 pt10">
@@ -243,9 +245,9 @@
 	<fieldset style="background-color: #DDF1FA;">
 		<div class="form-group">
 			<div align="center" class="mt5">
-				@if($request->edit_flg)
+				@if($request->edit_flg == 1)
 					<button type="submit" class="btn btn-warning add box100 addeditprocess ml5" title="Edit">
-						<i class="fa fa-plus" aria-hidden="true"></i> {{ trans('messages.lbl_update') }}
+						<i class="fa fa-edit" aria-hidden="true"></i> {{ trans('messages.lbl_update') }}
 					</button>
 				@else
 					<button type="submit" class="btn btn-success add box100 addeditprocess ml5">

@@ -43,6 +43,7 @@
 			</thead>
 			<tbody>
 			 	@php $i = 1 @endphp
+			 	@php $j = 1 @endphp
 			 	@forelse($getSalaryDtls as $key  => $salary)
 					<tr>
 						<td align="center">
@@ -55,16 +56,42 @@
 							{{ $SalaryDtls[$salary->Emp_ID]['empName'] }}
 						</td>
 						<td align="right">
-							{{ $SalaryDtls[$salary->Emp_ID]['Amount'] }}
+							{{ Form::text('salAmt'.$j,(isset($SalaryDtls[$salary->Emp_ID]['Amount'])) ? number_format($SalaryDtls[$salary->Emp_ID]['Amount']) : "",
+							array('id'=>'salAmt'.$j,
+									'name' => 'salAmt'.$j,
+									'style'=>'text-align:right;padding-right:4px;',
+									'autocomplete' =>'off',
+									'class'=>'box96per ime_mode_disable ml7',
+									'onblur' => 'return fnSetZero11(this.id);',
+									'onfocus' => 'return fnRemoveZero(this.id);',
+									'onclick' => 'return fnRemoveZero(this.id);',
+									'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
+									'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
+									'data-label' => trans('messages.lbl_amount'))) }}
+									<br/>
+							<!-- {{ $SalaryDtls[$salary->Emp_ID]['Amount'] }} -->
 						</td>
 						<td align="right">
+							{{ Form::text('salFee'.$j , "",
+							array('id'=>'salFee'.$j,
+									'name' => 'salFee'.$j,
+									'style'=>'text-align:right;padding-right:4px;',
+									'autocomplete' =>'off',
+									'class'=>'box96per ime_mode_disable ml7',
+									'onblur' => 'return fnSetZero11(this.id);',
+									'onfocus' => 'return fnRemoveZero(this.id);',
+									'onclick' => 'return fnRemoveZero(this.id);',
+									'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
+									'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
+									'data-label' => trans('messages.lbl_fee'))) }}
 						</td>
 						<td align="center">
 							<input  type="checkbox" name="salary[]" id="salary[]" 
 								class="<?php echo $salary->Emp_ID; ?>" 
-								value="<?php  echo $SalaryDtls[$salary->Emp_ID]['empName']."$".$salary->Emp_ID."$".$SalaryDtls[$salary->Emp_ID]['Amount']."$".""; ?>">
+								value="<?php  echo $SalaryDtls[$salary->Emp_ID]['empName']."$".$salary->Emp_ID."$".$SalaryDtls[$salary->Emp_ID]['Amount']."$".""."$".$j; ?>">
 						</td>
 					</tr>
+					@php $j++; @endphp
 				@empty
 					<tr>
 						<td class="text-center" colspan="6" style="color: red;">

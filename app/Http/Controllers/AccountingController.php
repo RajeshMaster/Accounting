@@ -290,12 +290,30 @@ class AccountingController extends Controller {
 	*/
 	public function addedit(Request $request) {
 
-		$editData =array();
-		if($request->edit_flg) {
-			$editData = Accounting::fetchEditData($request);
-		}
 		$bankDetail = Accounting::fetchbanknames();
 
+		return view('Accounting.addedit',['request' => $request,
+											'bankDetail' => $bankDetail
+										]);
+	}
+
+	/**
+	*
+	* Edit Page for Cash
+	* @author Rajesh
+	* @return object to particular view page
+	* Created At 2020/10/22
+	*
+	*/
+	public function cashedit(Request $request) {
+		if(!$request->edit_flg){ 
+			return Redirect::to('Accounting/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
+		}
+		$editData = Accounting::fetchEditData($request);
+		$bankDetail = Accounting::fetchbanknames();
+		if ($request->edit_flg == 2) {
+			$editData[0]->date = "";
+		}
 		return view('Accounting.addedit',['request' => $request,
 											'bankDetail' => $bankDetail,
 											'editData' => $editData
@@ -358,12 +376,15 @@ class AccountingController extends Controller {
 			}
 		}
 		
-		if($insertProcess || $updateProcess) {
+		if($insertProcess) {
 			Session::flash('success', 'Inserted Sucessfully!'); 
 			Session::flash('type', 'alert-success'); 
+		} else if($updateProcess) {
+			Session::flash('success', 'Updated Sucessfully!'); 
+			Session::flash('type', 'alert-success'); 
 		} else {
-			Session::flash('type', 'Inserted Unsucessfully!'); 
-			Session::flash('type', 'alert-danger'); 
+			Session::flash('success', 'Inserted UnSucessfully!'); 
+			Session::flash('type', 'alert-success'); 
 		}
 		return Redirect::to('Accounting/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 
@@ -388,23 +409,33 @@ class AccountingController extends Controller {
 												]);
 	}
 
+
+
 	/**
 	*
-	* Emp Name Popup Page for Transfer
+	* Edit Page for Transfer
 	* @author Sarath
 	* @return object to particular view page
-	* Created At 2020/10/19
+	* Created At 2020/10/21
 	*
 	*/
-	public function empnamepopup(Request $request) {
+	public function transferedit(Request $request) {
 
-		$empname = Accounting::fnGetEmpDetails($request);
-		$empnamenonstaff = Accounting::fnGetNonstaffEmpDetails($request);
-
-		return view('Invoice.empnamepopup',['request' => $request,
-											'empname' => $empname,
-											'empnamenonstaff' => $empnamenonstaff
-										]);
+		if(!$request->edit_flg){ 
+			return Redirect::to('Accounting/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
+		}
+		$transferEdit = array();
+		$transferEdit = Accounting::tranferEditData($request);
+		if ($request->edit_flg == 2) {
+			$transferEdit[0]->date = "";
+		}
+		$bankDetail = Accounting::fetchbanknames();
+		$mainExpDetail = Accounting::getMainExpName();
+		return view('Accounting.transferaddedit',[ 'request' => $request,
+													'mainExpDetail' => $mainExpDetail,
+													'bankDetail' => $bankDetail,
+													'transferEdit' => $transferEdit
+												]);
 	}
 
 	/**
@@ -479,6 +510,25 @@ class AccountingController extends Controller {
 
 		}
 		return Redirect::to('Accounting/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
+	}
+
+	/**
+	*
+	* Emp Name Popup Page for Transfer
+	* @author Sarath
+	* @return object to particular view page
+	* Created At 2020/10/19
+	*
+	*/
+	public function empnamepopup(Request $request) {
+
+		$empname = Accounting::fnGetEmpDetails($request);
+		$empnamenonstaff = Accounting::fnGetNonstaffEmpDetails($request);
+
+		return view('Invoice.empnamepopup',['request' => $request,
+											'empname' => $empname,
+											'empnamenonstaff' => $empnamenonstaff
+										]);
 	}
 
 	/**
@@ -603,37 +653,92 @@ class AccountingController extends Controller {
 
 	/**
 	*
-	* Addedit Process for Auto Debit
-	* @author Sarath
+	* Edit Page for Autodebit
+	* @author Sastha
 	* @return object to particular view page
-	* Created At 2020/10/19
+	* Created At 2020/10/22
+	*
+	*/
+	public function autoDebitedit(Request $request) {
+
+		if(!$request->edit_flg){ 
+			return Redirect::to('Accounting/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
+		}
+		$autodebitEdit = array();
+		$autodebitEdit = Accounting::fetchEditData($request);
+		if ($request->edit_flg == 2) {
+			$autodebitEdit[0]->date = "";
+			$autodebitEdit[0]->loanName = "";
+		}
+		$bankDetail = Accounting::fetchbanknames();
+		$mainExpDetail = Accounting::getMainExpName();
+		return view('Accounting.autoDebitReg',[ 'request' => $request,
+													'mainExpDetail' => $mainExpDetail,
+													'bankDetail' => $bankDetail,
+													'autodebitEdit' => $autodebitEdit
+												]);
+	}
+
+	/**
+	*
+	* Addedit Process for Auto Debit
+	* @author Sastha
+	* @return object to particular view page
+	* Created At 2020/10/22
 	*
 	*/
 	public function AutoDebitRegprocess(Request $request) {
-
-		$autoincId = Accounting::getautoincrement();
-		$Transferno = "AutoDebit_".$autoincId;
-		$fileName = "";
-		$fileid = "autoDebitBill";
-		if($request->$fileid != "") {
-			$extension = Input::file($fileid)->getClientOriginalExtension();
-			$fileName = $Transferno.'.'.$extension;
-			$file = $request->$fileid;
-			$destinationPath = '../AccountingUpload/Accounting';
-			if(!is_dir($destinationPath)) {
-				mkdir($destinationPath, 0777,true);
+		if(!$request->edit_flg || $request->edit_flg == "2"){
+			$autoincId = Accounting::getautoincrement();
+			$Transferno = "AutoDebit_".$autoincId;
+			$fileName = "";
+			$fileid = "autoDebitBill";
+			if($request->$fileid != "") {
+				$extension = Input::file($fileid)->getClientOriginalExtension();
+				$fileName = $Transferno.'.'.$extension;
+				$file = $request->$fileid;
+				$destinationPath = '../AccountingUpload/Accounting';
+				if(!is_dir($destinationPath)) {
+					mkdir($destinationPath, 0777,true);
+				}
+				$file->move($destinationPath,$fileName);
+			} else {
+				$fileName = $request->pdffiles;
 			}
-			$file->move($destinationPath,$fileName);
+			$insertProcess = Accounting::insAutoDebitDtls($request,$fileName);
+			if($insertProcess) {
+				Session::flash('success', 'Inserted Sucessfully!'); 
+				Session::flash('type', 'alert-success'); 
+			} else {
+				Session::flash('type', 'Inserted Unsucessfully!'); 
+				Session::flash('type', 'alert-danger'); 
+			}
 		} else {
-			$fileName = ""; 
-		}
-		$insertProcess = Accounting::insAutoDebitDtls($request,$fileName);
-		if($insertProcess) {
-			Session::flash('success', 'Inserted Sucessfully!'); 
-			Session::flash('type', 'alert-success'); 
-		} else {
-			Session::flash('type', 'Inserted Unsucessfully!'); 
-			Session::flash('type', 'alert-danger'); 
+			$autoincId = Accounting::getautoincrement();
+			$Transferno = "AutoDebit_".$autoincId;
+			$fileName = "";
+			$fileid = "autoDebitBill";
+			if($request->$fileid != "") {
+				$extension = Input::file($fileid)->getClientOriginalExtension();
+				$fileName = $Transferno.'.'.$extension;
+				$file = $request->$fileid;
+				$destinationPath = '../AccountingUpload/Accounting';
+				if(!is_dir($destinationPath)) {
+					mkdir($destinationPath, 0777,true);
+				}
+				$file->move($destinationPath,$fileName);
+			} else {
+				$fileName = $request->pdffiles;
+			}
+			$updateProcess = Accounting::updateAutodebitDtls($request,$fileName);
+
+			if($updateProcess) {
+				Session::flash('success', 'Updated Sucessfully!'); 
+				Session::flash('type', 'alert-success'); 
+			} else {
+				Session::flash('type', 'Updated Unsucessfully!'); 
+				Session::flash('type', 'alert-danger'); 
+			}
 		}
 		return Redirect::to('Accounting/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 	}
@@ -660,31 +765,6 @@ class AccountingController extends Controller {
 													]);
 	}
 
-	/**
-	*
-	* Edit Page for Transfer
-	* @author Sarath
-	* @return object to particular view page
-	* Created At 2020/10/21
-	*
-	*/
-	public function transferedit(Request $request) {
-
-		if(!$request->edit_flg){ 
-			return Redirect::to('Accounting/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
-		}
-		$transferEdit = array();
-		$transferEdit = Accounting::tranferEditData($request);
-		if ($request->edit_flg == 2) {
-			$transferEdit[0]->date = "";
-		}
-		$bankDetail = Accounting::fetchbanknames();
-		$mainExpDetail = Accounting::getMainExpName();
-		return view('Accounting.transferaddedit',[ 'request' => $request,
-													'mainExpDetail' => $mainExpDetail,
-													'bankDetail' => $bankDetail,
-													'transferEdit' => $transferEdit
-												]);
-	}
+	
 
 }

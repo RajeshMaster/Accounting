@@ -269,9 +269,9 @@
 						$file_url = '../AccountingUpload/Accounting/' . $transferEdit[0]->fileDtl;
 					 ?>
 					@if(isset($transferEdit[0]->fileDtl) && file_exists($file_url))
-						<a style="text-decoration:none" href="{{ URL::asset('../../../../AccountingUpload/Accounting').'/'.$transferEdit[0]->fileDtl }}" data-lightbox="visa-img">
+						<!-- <a style="text-decoration:none" href="{{ URL::asset('../../../../AccountingUpload/Accounting').'/'.$transferEdit[0]->fileDtl }}" data-lightbox="visa-img"></a> -->
 						<img width="20" height="20" name="empimg" id="empimg" 
-						class="ml5 box20 viewPic3by2" src="{{ URL::asset('../../../../AccountingUpload/Accounting').'/'.$transferEdit[0]->fileDtl }}"></a>
+						class="ml5 box20 viewPic3by2" src="{{ URL::asset('../../../../AccountingUpload/Accounting').'/'.$transferEdit[0]->fileDtl }}">
 						{{ Form::hidden('pdffiles', $transferEdit[0]->fileDtl , array('id' => 'pdffiles')) }}
 					@else
 					@endif

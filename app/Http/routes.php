@@ -479,19 +479,21 @@ Route::group(['prefix'=>'Accounting','middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
     Route::any('index', 'AccountingController@index');
     // Cash // Rajesh
-    Route::any('addedit', 'AccountingController@addedit');
     Route::any('bank_ajax', 'AccountingController@bank_ajax');
+    Route::any('addedit', 'AccountingController@addedit');
+    Route::any('cashedit', 'AccountingController@cashedit');
     Route::any('addeditprocess', 'AccountingController@addeditprocess');
     // Transfer // Sarath
-    Route::any('transferaddedit', 'AccountingController@transferaddedit');
     Route::any('empnamepopup', 'AccountingController@empnamepopup');
-    Route::any('tranferaddeditprocess', 'AccountingController@tranferaddeditprocess');
     Route::any('getsalarypopup', 'AccountingController@getsalarypopup');
+    Route::any('transferaddedit', 'AccountingController@transferaddedit');
     Route::any('transferedit', 'AccountingController@transferedit');
+    Route::any('tranferaddeditprocess', 'AccountingController@tranferaddeditprocess');
     // Auto Debit // Sastha
-    Route::any('autoDebitReg', 'AccountingController@autoDebitReg');
-    Route::any('AutoDebitRegprocess', 'AccountingController@AutoDebitRegprocess');
     Route::any('getloanpopup', 'AccountingController@getloanpopup');
+    Route::any('autoDebitReg', 'AccountingController@autoDebitReg');
+    Route::any('autoDebitedit', 'AccountingController@autoDebitedit');
+    Route::any('AutoDebitRegprocess', 'AccountingController@AutoDebitRegprocess');
 });
 
 
