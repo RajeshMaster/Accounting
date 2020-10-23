@@ -52,7 +52,7 @@ class Accounting extends Model {
 		$insert = $db->table('acc_cashregister')
 					->insert([
 							'emp_ID' => "",
-							'date' => $request->date,
+							'date' => $request->accDate,
 							'transcationType' => $request->transtype,
 							'bankIdFrom' => $bankacc[0],
 							'accountNumberFrom' => $bankacc[1],
@@ -76,7 +76,7 @@ class Accounting extends Model {
 						->update(
 							array(
 								'emp_ID'	=> '', 
-								'date' => $request->date, 
+								'date' => $request->accDate, 
 								'transcationType' => $request->transtype,
 								'bankIdFrom' => $bankacc[0],
 								'accountNumberFrom' => $bankacc[1],
@@ -117,7 +117,7 @@ class Accounting extends Model {
 		$insert = $db->table('acc_cashregister')
 					->insert([
 							'emp_ID' => "",
-							'date' => $request->date,
+							'date' => $request->accDate,
 							'transcationType' => $type,
 							'bankIdFrom' => $bankacc[0],
 							'accountNumberFrom' => $bankacc[1],
@@ -154,7 +154,7 @@ class Accounting extends Model {
 						->update(
 							array(
 								'emp_ID'	=> '', 
-								'date' => $request->date, 
+								'date' => $request->accDate, 
 								'transcationType' => $type,
 								'bankIdFrom' => $bankacc[0],
 								'accountNumberFrom' => $bankacc[1],
@@ -214,7 +214,7 @@ class Accounting extends Model {
 				$insert = $db->table('acc_cashregister')
 							->insert([
 									'emp_ID' => $empArr['1'], 
-									'date' => $request->transferDate,
+									'date' => $request->accDate,
 									'transcationType' => 1,
 									'bankIdFrom' => $bankacc['0'],
 									'accountNumberFrom' => $bankacc['1'],
@@ -234,7 +234,7 @@ class Accounting extends Model {
 				$insert = $db->table('acc_cashregister')
 							->insert([
 									'emp_ID' => $request->empid, 
-									'date' => $request->transferDate,
+									'date' => $request->accDate,
 									'transcationType' => 1,
 									'bankIdFrom' => $bankacc['0'],
 									'accountNumberFrom' => $bankacc['1'],
@@ -292,7 +292,7 @@ class Accounting extends Model {
 						->update(
 							array(
 								'emp_ID'	=> $request->empid, 
-								'date' => $request->transferDate, 
+								'date' => $request->accDate, 
 								'subjectId' => $request->transferMainExp,
 								'bankIdFrom' => $bankacc[0],
 								'accountNumberFrom' => $bankacc[1],
@@ -328,7 +328,7 @@ class Accounting extends Model {
 									'emp_ID' => $request->hidempId, 
 									'loan_ID' => $loanArr['1'], 
 									'loanName' => $loanArr['0'], 
-									'date' => $request->autoDebitDate,
+									'date' => $request->accDate,
 									'transcationType' => 1,
 									'bankIdFrom' => $bankacc['0'],
 									'accountNumberFrom' => $bankacc['1'],
@@ -346,7 +346,7 @@ class Accounting extends Model {
 		} else {
 			$insert = $db->table('acc_cashregister')
 						->insert([
-								'date' => $request->autoDebitDate,
+								'date' => $request->accDate,
 								'transcationType' => 1,
 								'bankIdFrom' => $bankacc['0'],
 								'accountNumberFrom' => $bankacc['1'],
@@ -373,7 +373,7 @@ class Accounting extends Model {
 						->where('id', $request->editId)
 						->update(
 							array(
-								'date' => $request->autoDebitDate, 
+								'date' => $request->accDate, 
 								'subjectId' => $request->autoDebitMainExp,
 								'bankIdFrom' => $bankacc[0],
 								'accountNumberFrom' => $bankacc[1],
@@ -451,7 +451,7 @@ class Accounting extends Model {
 		return $query;
 	}
 
-	public static function getLoanDtls($request) {
+	public static function getLoanDtls($request,$loanIdArr) {
 
 		$db = DB::connection('mysql_Salary');
 		$MnthYear = explode("-", $request->autoDebitDate);
@@ -460,7 +460,8 @@ class Accounting extends Model {
 					->leftJoin('ams_loan_emidetails as loanEMI','loan.loanId','=','loanEMI.loanId')
 					->leftJoin('ams_bankname_master as bank','loan.bank','=','bank.id')
 					->where('loan.activeFlg','=',0)
-					->where('loan.delFlg','=',0);
+					->where('loan.delFlg','=',0)
+					->whereNotIn('loan.loanId', $loanIdArr);
 		if ($request->userId != "") {
 			$query = $query->where('loan.userId','=', $request->userId);
 		}
@@ -595,11 +596,10 @@ class Accounting extends Model {
 		return $cards;
 	}
 
-	public static function getLoanBank($request,$loanId,$flg){
+	public static function getLoanBank($request,$loanId){
 
 		$db = DB::connection('mysql');
-		$date = substr($request->autoDebitDate, 0,7);
-			$query = $db->table('acc_cashregister as cashreg')
+		$query = $db->table('acc_cashregister as cashreg')
 					->SELECT(DB::RAW("CONCAT(bank.Bank_NickName,'-',bank.AccNo) AS BANKNAME"),
 						DB::RAW("CONCAT(bank.BankName,'-',bank.AccNo) AS ID"),DB::RAW("SUBSTRING(cashreg.date,1,7) AS Date"))
 					->leftJoin('mstbank AS bank', function($join) {
@@ -607,11 +607,8 @@ class Accounting extends Model {
 							$join->on('cashreg.accountNumberFrom', '=', 'bank.AccNo');
 						})
 					->where('cashreg.emp_ID','=', $request->userId)
-					->where('cashreg.loan_ID','=', $loanId);
-		if ($flg == 2) {
-			$query = $query->WHERERAW("SUBSTRING(cashreg.date,1,7) = '$date'");
-		}
-			$query = $query->get();
+					->where('cashreg.loan_ID','=', $loanId)
+					->get();
 
 		return $query;
 
@@ -624,6 +621,17 @@ class Accounting extends Model {
 						->WHERERAW("SUBSTRING(acc_cashregister.date,1,7) = '$date'")
 						->where('emp_ID','!=','')
 						->whereNotNull('emp_ID')
+						->get();
+		return $query;
+	}
+
+	public static function getLoanPaid($request) {
+		$date = substr($request->autoDebitDate, 0, 7);
+		$query = DB::table('acc_cashregister')
+						->select('date','loan_ID')
+						->WHERERAW("SUBSTRING(acc_cashregister.date,1,7) = '$date'")
+						->where('loan_ID','!=','')
+						->whereNotNull('loan_ID')
 						->get();
 		return $query;
 	}

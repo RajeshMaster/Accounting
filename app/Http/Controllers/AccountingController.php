@@ -770,18 +770,19 @@ class AccountingController extends Controller {
 		$getLoanDtls = array();
 		$getBankDtls = array();
 		$loanBankId = array();
+		$loanPaidArr = array();
 		$getUserDtls = Accounting::getUserDtls($request);
 		if ($request->autoDebitDate != "" && $request->userId != "") {
 			$getBankDtls = Accounting::fetchbanknames($request);
-			$getLoanDtls = Accounting::getLoanDtls($request);
+			$getLoanPaid = Accounting::getLoanPaid($request);
+			for ($i = 0; $i <count($getLoanPaid) ; $i++) { 
+				$loanPaidArr[$i] = $getLoanPaid[$i]->loan_ID;
+			}
+			$getLoanDtls = Accounting::getLoanDtls($request,$loanPaidArr);
 			foreach ($getLoanDtls as $loankey => $loanval) {
-				$loanBank = Accounting::getLoanBank($request,$loanval->loanId,1);
+				$loanBank = Accounting::getLoanBank($request,$loanval->loanId);
 				if (isset($loanBank[0]->ID)) {
 					$loanBankId[$loanval->loanId]['bankName'] = $loanBank[0]->BANKNAME;
-				}
-				$loanRec = Accounting::getLoanBank($request,$loanval->loanId,2);
-				if (isset($loanRec[0])) {
-					$loanBankId[$loanval->loanId]['loanRec'] = $loanRec[0]->Date;
 				}
 			}
 		}

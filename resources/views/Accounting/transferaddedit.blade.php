@@ -81,11 +81,36 @@
 					<span class="fa fa-plus"></span>&nbsp;{{ trans('messages.lbl_autodebit') }}
 				</button> 
 			</div>
+			<div class="col-xs-6 pull-right" style="text-align: right;">
+				{{ Form::text('accDate',(isset($transferEdit[0]->date)) ? $transferEdit[0]->date : '',
+							array('id'=>'accDate', 
+								'name' => 'accDate',
+								'data-label' => trans('messages.lbl_Date'),
+								'autocomplete' =>'off',
+								'class'=>' box20per form-control dob')) }}
+					<label class="mt10 ml2 fa fa-calendar fa-lg" for="accDate" aria-hidden="true">
+					</label>
+					<a href="javascript:getdate();" class="anchorstyle">
+						<img title="Current Date" class="box15" 
+							src="{{ URL::asset('resources/assets/images/add_date.png') }}"></a>
+				@if($request->edit_flg != 1)
+				<button type="button" id="salarybutton" style="background-color: blue; color: #fff;" 
+					onclick="return Getsalarypopup('');"  
+					class="btn box24per pt9 pb8 ml5">
+					{{ trans('messages.lbl_getsalary') }}
+				</button> 
+				<button type="button" id="loanbutton" style="background-color: purple; color: #fff;" 
+					onclick="return Getloanpopup('');"
+					class="btn box24per pt9 pb8 ml5">
+					{{ trans('messages.lbl_getloan') }}
+				</button> 
+				@endif
+			</div>
 		</div>
 		<div class="col-xs-12 pl5 pr5">
 		<fieldset>
 		
-			<div class="col-xs-12 mt15">
+			<!-- <div class="col-xs-12 mt15">
 				<div class="col-xs-3 text-right clr_blue">
 					<label>{{ trans('messages.lbl_Date') }}<span class="fr ml2 red"> * </span></label>
 				</div>
@@ -103,7 +128,7 @@
 						<a href="javascript:getdate('Transfer');" class="anchorstyle">
 							<img title="Current Date" class="box15" src="{{ URL::asset('resources/assets/images/add_date.png') }}"></a>
 				</div>
-			</div>
+			</div> -->
 			<div class="col-xs-12 mt5">
 				<div class="col-xs-3 text-right clr_blue">
 					<label>{{ trans('messages.lbl_bank_name') }}<span class="fr ml2 red"> * </span></label>
@@ -352,7 +377,15 @@
 			</div>
 		</div>
 	</div>
-		
+	
+	<div id="getloanpopup" class="modal fade">
+		<div id="login-overlay">
+			<div class="modal-content">
+				<!-- Popup will be loaded here -->
+			</div>
+		</div>
+	</div>
+
 </article>
 </div>
 @endsection

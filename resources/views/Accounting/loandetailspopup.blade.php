@@ -60,74 +60,72 @@
 			 		$break = 0;
 			 	@endphp
 			 	@forelse($getLoanDtls as $key  => $loan)
-				 	@if(isset($loanBankId[$loan->loanId]['loanRec']))
-				 	@else
-						<tr>
-							<td align="center">
-								{{ $i++ }}
-							</td>
-							<td align="center">
-								{{ $loan->loanId }}
-							</td>
-							<td>
-							@if(isset($loanBankId[$loan->loanId]['bankName']))
-								{{ Form::text('loanBank'.$j,$loanBankId[$loan->loanId]['bankName'],
-									array('id'=>'loanBank'.$j, 
-										'name' => 'loanBank'.$j,
-										'readonly' => 'true',
+				 	
+					<tr>
+						<td align="center">
+							{{ $i++ }}
+						</td>
+						<td align="center">
+							{{ $loan->loanId }}
+						</td>
+						<td>
+						@if(isset($loanBankId[$loan->loanId]['bankName']))
+							{{ Form::text('loanBank'.$j,$loanBankId[$loan->loanId]['bankName'],
+								array('id'=>'loanBank'.$j, 
+									'name' => 'loanBank'.$j,
+									'readonly' => 'true',
+									'data-label' => trans('messages.lbl_bank'),
+									'class'=>'pl5 box95per disabled')) }}
+						@else
+							{{ Form::select('loanBank'.$j,[null=>'']+$getBankDtls,'',
+								array('name' =>'loanBank'.$j,
+										'id'=>'loanBank'.$j,
 										'data-label' => trans('messages.lbl_bank'),
-										'class'=>'pl5 box95per disabled')) }}
-							@else
-								{{ Form::select('loanBank'.$j,[null=>'']+$getBankDtls,'',
-									array('name' =>'loanBank'.$j,
-											'id'=>'loanBank'.$j,
-											'data-label' => trans('messages.lbl_bank'),
-											'class'=>'pl5 box95per' ))}}
-								
-							@endif
-								<!-- {{ $loan->bankName}} -->
-							</td>
-							<td align="left">
-								{{ $loan->loanName}}
-							</td>
-							<td align="right">
-								{{ Form::text('loanAmt'.$j,(isset($loan->loanAmount)) ? number_format($loan->loanAmount * 10000) : 0,
-								array('id'=>'loanAmt'.$j,
-										'name' => 'loanAmt'.$j,
-										'style'=>'text-align:right;padding-right:4px;',
-										'autocomplete' =>'off',
-										'class'=>'box96per ime_mode_disable ml7',
-										'onblur' => 'return fnSetZero11(this.id);',
-										'onfocus' => 'return fnRemoveZero(this.id);',
-										'onclick' => 'return fnRemoveZero(this.id);',
-										'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
-										'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
-										'data-label' => trans('messages.lbl_fee'))) }}
-										<br/>
-								<!-- {{ $loan->loanAmount * 10000 }} -->
-							</td>
-							<td align="right">
-								{{ Form::text('loanFee'.$j,(isset($loan->monthInterest)) ? number_format($loan->monthInterest) : 0,
-								array('id'=>'loanFee'.$j,
-										'name' => 'loanFee'.$j,
-										'style'=>'text-align:right;padding-right:4px;',
-										'autocomplete' =>'off',
-										'class'=>'box96per ime_mode_disable ml7',
-										'onblur' => 'return fnSetZero11(this.id);',
-										'onfocus' => 'return fnRemoveZero(this.id);',
-										'onclick' => 'return fnRemoveZero(this.id);',
-										'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
-										'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
-										'data-label' => trans('messages.lbl_fee'))) }}
-							</td>
-							<td align="center">
-								<input  type="checkbox" name="loan[]" id="loan[]" 
-									class="<?php echo $loan->loanId; ?>" 
-									value="<?php  echo $loan->loanName."$".$loan->loanId."$".($loan->loanAmount * 10000)."$".$loan->monthInterest."$".$j; ?>">
-							</td>
-						</tr>
-						@php $j++; @endphp
-					@endif
+										'class'=>'pl5 box95per' ))}}
+							
+						@endif
+							<!-- {{ $loan->bankName}} -->
+						</td>
+						<td align="left">
+							{{ $loan->loanName}}
+						</td>
+						<td align="right">
+							{{ Form::text('loanAmt'.$j,(isset($loan->loanAmount)) ? number_format($loan->loanAmount * 10000) : 0,
+							array('id'=>'loanAmt'.$j,
+									'name' => 'loanAmt'.$j,
+									'style'=>'text-align:right;padding-right:4px;',
+									'autocomplete' =>'off',
+									'class'=>'box96per ime_mode_disable ml7',
+									'onblur' => 'return fnSetZero11(this.id);',
+									'onfocus' => 'return fnRemoveZero(this.id);',
+									'onclick' => 'return fnRemoveZero(this.id);',
+									'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
+									'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
+									'data-label' => trans('messages.lbl_fee'))) }}
+									<br/>
+							<!-- {{ $loan->loanAmount * 10000 }} -->
+						</td>
+						<td align="right">
+							{{ Form::text('loanFee'.$j,(isset($loan->monthInterest)) ? number_format($loan->monthInterest) : 0,
+							array('id'=>'loanFee'.$j,
+									'name' => 'loanFee'.$j,
+									'style'=>'text-align:right;padding-right:4px;',
+									'autocomplete' =>'off',
+									'class'=>'box96per ime_mode_disable ml7',
+									'onblur' => 'return fnSetZero11(this.id);',
+									'onfocus' => 'return fnRemoveZero(this.id);',
+									'onclick' => 'return fnRemoveZero(this.id);',
+									'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
+									'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
+									'data-label' => trans('messages.lbl_fee'))) }}
+						</td>
+						<td align="center">
+							<input  type="checkbox" name="loan[]" id="loan[]" 
+								class="<?php echo $loan->loanId; ?>" 
+								value="<?php  echo $loan->loanName."$".$loan->loanId."$".($loan->loanAmount * 10000)."$".$loan->monthInterest."$".$j; ?>">
+						</td>
+					</tr>
+					@php $j++; @endphp
 				@empty
 					<tr>
 						<td class="text-center" colspan="7" style="color: red;">
