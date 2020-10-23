@@ -659,7 +659,7 @@ class AccountingController extends Controller {
 	*
 	*/
 	public function AutoDebitRegprocess(Request $request) {
-		if(!$request->edit_flg || $request->edit_flg == "2"){
+		if(!isset($request->edit_flg) || $request->edit_flg == "2"){
 			$autoincId = Accounting::getautoincrement();
 			$Transferno = "AutoDebit_".$autoincId;
 			$fileName = "";
@@ -729,6 +729,7 @@ class AccountingController extends Controller {
 		$loanBankId = array();
 		$loanPaidArr = array();
 		$getUserDtls = Accounting::getUserDtls($request);
+		// print_r($request->all());exit();
 		if ($request->autoDebitDate != "" && $request->userId != "") {
 			$getBankDtls = Accounting::fetchbanknames($request);
 			$getLoanPaid = Accounting::getLoanPaid($request);
@@ -739,6 +740,7 @@ class AccountingController extends Controller {
 			foreach ($getLoanDtls as $loankey => $loanval) {
 				$loanBank = Accounting::getLoanBank($request,$loanval->loanId);
 				if (isset($loanBank[0]->ID)) {
+					$loanBankId[$loanval->loanId]['bankId'] = $loanBank[0]->ID;
 					$loanBankId[$loanval->loanId]['bankName'] = $loanBank[0]->BANKNAME;
 				}
 			}

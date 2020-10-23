@@ -332,7 +332,7 @@ class Accounting extends Model {
 
 		$name = Session::get('FirstName').' '.Session::get('LastName');
 		$loanId = "";
-		$bankacc = explode('-', $request->autoDebitBank);
+		
 
 		$db = DB::connection('mysql');
 
@@ -341,9 +341,10 @@ class Accounting extends Model {
 			$loanId = explode(";", $request->hidloan);
 			foreach ($loanId as $key => $value) {
 				$loanArr = explode(":", $value);
+				$bankacc = explode('-', $loanArr['4']);
 				$insert = $db->table('acc_cashregister')
 							->insert([
-									'emp_ID' => $request->hidempId, 
+									'emp_ID' => $request->assetsUser, 
 									'loan_ID' => $loanArr['1'], 
 									'loanName' => $loanArr['0'], 
 									'date' => $request->accDate,
@@ -352,16 +353,17 @@ class Accounting extends Model {
 									'accountNumberFrom' => $bankacc['1'],
 									'amount' => preg_replace("/,/", "", $loanArr['2']),
 									'fee' => preg_replace("/,/", "", $loanArr['3']),
-									'content' => $request->autoDebitContent,
-									'subjectId' => $request->autoDebitMainExp,
-									'remarks' => $request->autoDebitRemarks,
-									'fileDtl' => $fileName,
+									// 'content' => $request->autoDebitContent,
+									// 'subjectId' => $request->autoDebitMainExp,
+									// 'remarks' => $request->autoDebitRemarks,
+									// 'fileDtl' => $fileName,
 									'createdBy' => $name,
 									'pageFlg' => 3,
 								]);
 			}
 
 		} else {
+			$bankacc = explode('-', $request->autoDebitBank);
 			$insert = $db->table('acc_cashregister')
 						->insert([
 								'date' => $request->accDate,
