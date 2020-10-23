@@ -171,7 +171,14 @@ $(document).ready(function() {
 		}
 		$('input[type=checkbox]:not(:checked)').each(function(){
 			var res = $(this).val().split("$"); 
-			if ($('#'+"loanAmt"+res[4]).val() =="" || $('#'+"loanAmt"+res[4]).val() ==0) {
+			if ($('#'+"loanBank"+res[4]).val() == "") {
+				$('#'+"loanBank"+res[4]).attr("style", "background-color: #E88F8F");
+				loanerr = 1;
+				return false;
+			} else {
+				$('#'+"loanBank"+res[4]).attr("style", "background-color:none");
+			}
+			if ($('#'+"loanAmt"+res[4]).val() == "" || $('#'+"loanAmt"+res[4]).val() == 0) {
 				$('#'+"loanAmt"+res[4]).attr("style", "background-color: #E88F8F");
 				loanerr = 1;
 				return false;

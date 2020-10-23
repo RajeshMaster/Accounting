@@ -594,5 +594,26 @@ class Accounting extends Model {
 		return $cards;
 	}
 
+	public static function getLoanBank($request,$loanId,$flg){
+
+		$db = DB::connection('mysql');
+		$date = substr($request->autoDebitDate, 0,7);
+			$query = $db->table('acc_cashregister as cashreg')
+					->SELECT(DB::RAW("CONCAT(bank.Bank_NickName,'-',bank.AccNo) AS BANKNAME"),
+						DB::RAW("CONCAT(bank.BankName,'-',bank.AccNo) AS ID"),DB::RAW("SUBSTRING(cashreg.date,1,7) AS Date"))
+					->leftJoin('mstbank AS bank', function($join) {
+							$join->on('cashreg.bankIdFrom', '=', 'bank.BankName');
+							$join->on('cashreg.accountNumberFrom', '=', 'bank.AccNo');
+						})
+					->where('cashreg.emp_ID','=', $request->userId)
+					->where('cashreg.loan_ID','=', $loanId);
+		if ($flg == 2) {
+			$query = $query->WHERERAW("SUBSTRING(cashreg.date,1,7) = '$date'");
+		}
+			$query = $query->get();
+
+		return $query;
+
+	}
 
 }
