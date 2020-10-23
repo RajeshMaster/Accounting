@@ -471,12 +471,13 @@ class Accounting extends Model {
 		return $query;
 	}
 
-	public static function getSalaryDtls($request) {
+	public static function getSalaryDtls($request ,$empIdArr) {
 
 		$db = DB::connection('mysql_Salary');
 		$MnthYear = explode('-', date("Y-m", strtotime("-1 months", strtotime($request->transferDate))));
 		$query = $db->table('inv_salaryplus_main')
 					->SELECT('Emp_ID','Salary','Deduction','Travel','salamt')
+					->whereNotIn('Emp_ID', $empIdArr)
 					->where('delFlg','=',0);
 		$query = $query->WHERE(DB::raw("SUBSTRING(year_mon, 1, 4)"),'=', $MnthYear[0]);
 		$query = $query->WHERE(DB::raw("SUBSTRING(year_mon, 6, 2)"),'=', $MnthYear[1])
@@ -614,6 +615,17 @@ class Accounting extends Model {
 
 		return $query;
 
+	}
+
+	public static function getsalaryPaid($date) {
+		$date = substr($date, 0, 7);
+		$query = DB::table('acc_cashregister')
+						->select('date','emp_ID')
+						->WHERERAW("SUBSTRING(acc_cashregister.date,1,7) = '$date'")
+						->where('emp_ID','!=','')
+						->whereNotNull('emp_ID')
+						->get();
+		return $query;
 	}
 
 }
