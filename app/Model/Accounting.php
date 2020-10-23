@@ -448,7 +448,7 @@ class Accounting extends Model {
 						->where('date','>=',$from_date)
 						->where('date','<=',$to_date)
 						->orderBy('bankIdFrom','ASC')
-						->orderBy('acc_cashregister.date','ASC')
+						->orderBy('acc_cashregister.orderId','ASC')
 						->paginate($request->plimit);
 
 
@@ -539,7 +539,7 @@ class Accounting extends Model {
 						->where('transcationType','!=',9)
 						->where('acc_cashregister.id','=',$request->editId)
 						->orderBy('bankIdFrom','ASC')
-						->orderBy('acc_cashregister.date','ASC')
+						->orderBy('acc_cashregister.orderId','ASC')
 						->get();
 						// ->toSql();
 						// dd($query);
@@ -653,5 +653,52 @@ class Accounting extends Model {
 						->get();
 		return $query;
 	}
+
+
+
+	public static function fetchcashRegisterPopup($from_date, $to_date, $request) {
+		$db = DB::connection('mysql');
+		$query = $db->table('acc_cashregister')
+						->SELECT('acc_cashregister.*','bank.id As bankId','bank.AccNo','bank.FirstName','bank.LastName','bank.BankName','bank.Bank_NickName','dev_expensesetting.Subject','dev_expensesetting.Subject_jp')
+						->leftJoin('mstbank AS bank', function($join)
+							{
+								$join->on('acc_cashregister.bankIdFrom', '=', 'bank.BankName');
+								$join->on('acc_cashregister.accountNumberFrom', '=', 'bank.AccNo');
+							})
+						->leftJoin('dev_expensesetting', 'dev_expensesetting.id', '=', 'acc_cashregister.subjectId')
+						->where('transcationType','!=',9)
+						->where('date','>=',$from_date)
+						->where('date','<=',$to_date)
+						->where('bankIdFrom','=',$request->bankId)
+						->where('accountNumberFrom','=',$request->AccNo)
+						->orderBy('bankIdFrom','ASC')
+						->orderBy('acc_cashregister.orderId','ASC')
+						->get();
+
+
+						 // ->toSql();
+						// dd($query);
+		return $query;
+	}
+
+	/**  
+    *  For Commit Process 
+    *  @author Rajesh 
+    *  @param $request,$getTableFields
+    *  Created At 2020/09/21
+    **/
+    public static function fngetcommitProcess($request) {
+        $tablename = 'acc_cashregister';
+        $cmtfield = 'orderId';
+        $splitactualid = explode(",", $request->actualId);
+        $splitidnew = explode(",", $request->idnew);
+        $db = DB::connection('mysql');
+        for ($i = 0; $i < count($splitactualid); $i++) {
+            $update = $db->table($tablename)
+                        ->where('id', $splitidnew[$i])
+                        ->update([ $cmtfield => $splitactualid[$i] ]);
+        }
+        return true;
+    }
 
 }
