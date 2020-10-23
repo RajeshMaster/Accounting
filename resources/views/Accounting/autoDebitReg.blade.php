@@ -317,7 +317,7 @@
 			<div class="form-group">
 				<div align="center" class="mt5">
 				@if($request->edit_flg != 1)
-					<button type="button" id="loanbutton" class=" btn btn add box160" 
+					<button type="button" id="debitloanbutton" class=" btn btn add box160" 
 						onclick="return Getloanpopup('');" 
 						style="margin-left: -10%!important;background-color: purple; color: #fff;">
 						{{ trans('messages.lbl_getloan') }}

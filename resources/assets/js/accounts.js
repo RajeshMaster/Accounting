@@ -163,7 +163,7 @@ $(document).ready(function() {
 	$('.selectloan').click(function(){
 
 		var loanerr = 0;
-		document.getElementById("autoDebitContent").value = "";
+		// document.getElementById("autoDebitContent").value = "";
 		var lengthOfUnchecked = $('input[type=checkbox]:not(:checked)').length;
 		if(lengthOfUnchecked == 0){
 			alert("Please select data");
@@ -222,6 +222,7 @@ $(document).ready(function() {
 			// $("#hidamtfee").attr("style", "display: none");
 			// $("#autoDebitContent").attr("disabled", "disabled");
 			// $("#loanbutton").attr("disabled", "disabled");
+			// $("#debitloanbutton").attr("disabled", "disabled");
 			// $("#debitrequired").css("visibility", "hidden");
 			// $("body div").removeClass("modalOverlay");
 			// $('#getloanpopup').empty();
@@ -286,6 +287,7 @@ $(document).ready(function() {
 			$("#transferContent").attr("disabled", "disabled");
 			$("#contentrequired").css("visibility", "hidden");
 			$("#salarybutton").attr("disabled", "disabled");
+			$("#transsalarybutton").attr("disabled", "disabled");
 			$("#browseEmp").attr("style", "display: none");
 			$("#clearEmp").attr("style", "display: none");
 			$("#clearSal").attr("style", "display: inline-block");
@@ -653,6 +655,7 @@ function fndebitclear(){
 	document.getElementById("autoDebitAmountloan").value = "";
 	document.getElementById("autoDebitFeeloan").value = "";
 	$("#loanbutton").removeAttr("disabled");
+	$("#debitloanbutton").removeAttr("disabled");
 	$("#debitrequired").css("visibility", "visible");
 	$("#autoDebitContent").removeAttr("disabled");
 	$("#enableamt").attr("style", "display: none");
@@ -667,6 +670,7 @@ function fntransclear(){
 	document.getElementById("transferAmount").value = "";
 	document.getElementById("transferFee").value = "";
 	$("#salarybutton").removeAttr("disabled");
+	$("#transsalarybutton").removeAttr("disabled");
 	$("#transferContent").removeAttr("disabled");
 	$("#browseEmp").attr("style", "display: inline-block");
 	$("#clearEmp").attr("style", "display: inline-block");
