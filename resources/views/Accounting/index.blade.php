@@ -152,6 +152,8 @@
 		{{ Form::hidden('searchmethod', $request->searchmethod, array('id' => 'searchmethod')) }}
 		{{ Form::hidden('edit_flg', '', array('id' => 'edit_flg')) }}
 		{{ Form::hidden('editId', '', array('id' => 'editId')) }}
+		{{ Form::text('bankNo', '', array('id' => 'bankNo')) }}
+		{{ Form::text('accNo', '', array('id' => 'accNo')) }}
 
 		<!-- Year Bar Start -->
 		{{ Form::hidden('selMonth', $request->selMonth, array('id' => 'selMonth')) }}
@@ -241,7 +243,16 @@
 					@endif
 					@if($lastBankName != $data['Bank_NickName'])
 						<tr style="background-color: lightgrey">
-							<td colspan="9" class="columnspan"> {{ $data['Bank_NickName'] }} </td>
+							<td colspan="9" class="columnspan"> 
+								{{ $data['Bank_NickName'] }}     
+
+								<div style="text-align: right;display: inline-block;float: right">
+									<a href="javascript:changeOrderpopUp('{{ $data['bankId'] }}','1','{{ $data['accNo'] }}');">
+										{{ trans('messages.lbl_changeOrder') }}
+									</a>
+								</div>
+
+							</td>
 						</tr>
 					@endif
 					<tr style="background-color: #FCE1F0">

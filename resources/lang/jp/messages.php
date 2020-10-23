@@ -1385,5 +1385,6 @@ return [
 	'lbl_salledger' => '給料台帳',
 	'lbl_history' => '履歴',
 	'lbl_gensen_download' => '原線 ダウンロード',
-	
+	'lbl_changeOrder' => '順番変更',
+
 ];

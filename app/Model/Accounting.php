@@ -45,6 +45,14 @@ class Accounting extends Model {
 
 	public static function insCashDtls($request) {
 
+
+		$statement = DB::select("show table status like 'acc_cashregister'");
+		if (isset($statement[0]->Auto_increment)) {
+			$orderId = $statement[0]->Auto_increment;
+		} else {
+			$orderId = 1;
+		}
+
 		$name = Session::get('FirstName').' '.Session::get('LastName');
 		$bankacc = explode('-', $request->bank);
 		$db = DB::connection('mysql');
@@ -63,6 +71,7 @@ class Accounting extends Model {
 							'remarks' => $request->remarks,
 							'pageFlg' => 1,
 							'createdBy' => $name,
+							'orderId' => $orderId,
 						]);
 		return $insert;
 	}
@@ -113,6 +122,14 @@ class Accounting extends Model {
 			}
 		}
 
+		$statement = DB::select("show table status like 'acc_cashregister'");
+		if (isset($statement[0]->Auto_increment)) {
+			$orderId = $statement[0]->Auto_increment;
+		} else {
+			$orderId = 1;
+		}
+
+
 		$db = DB::connection('mysql');
 		$insert = $db->table('acc_cashregister')
 					->insert([
@@ -129,6 +146,7 @@ class Accounting extends Model {
 							'remarks' => $request->remarks,
 							'transferId' => $maxID,
 							'pageFlg' => 1,
+							'orderId' => $orderId,
 							'createdBy' => $name,
 						]);
 		$id = DB::getPdo()->lastInsertId();
