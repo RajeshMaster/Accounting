@@ -132,7 +132,8 @@ $(document).ready(function() {
 				autoDebitBank: {required: true},
 				autoDebitMainExp: {required: true},
 				autoDebitAmount: {requiredWithZero: true},
-				autoDebitContent: {required: true},
+				loanName: {Anyonerequired: "#autoDebitContent"},
+				autoDebitContent: {Anyonerequired: "#loanName"},
 				autoDebitBill : {extension: "jpg,jpeg,png,JPG,JPEG,PNG", filesize : (2 * 1024 * 1024)},
 			},
 			submitHandler: function(form) { // for demo
