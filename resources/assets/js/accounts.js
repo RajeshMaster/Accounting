@@ -22,7 +22,7 @@ $(document).ready(function() {
 				});
 			},
 			rules: {
-				date: {required: true, date: true,minlength:10,correctformatdate: true},
+				accDate: {required: true, date: true,minlength:10,correctformatdate: true},
 				bank: {required: true},
 				transfer: {required: true},
 				transtype: {required: true},
@@ -75,7 +75,7 @@ $(document).ready(function() {
 				});
 			},
 			rules: {
-				transferDate: {required: true, date: true,minlength:10,correctformatdate: true},
+				accDate: {required: true, date: true,minlength:10,correctformatdate: true},
 				transferMainExp: {required: true},
 				transferBank: {required: true},
 				transferAmount: {requiredWithZero: true},
@@ -128,7 +128,7 @@ $(document).ready(function() {
 				});
 			},
 			rules: {
-				autoDebitDate: {required: true, date: true,minlength:10,correctformatdate: true},
+				accDate: {required: true, date: true,minlength:10,correctformatdate: true},
 				autoDebitBank: {required: true},
 				autoDebitMainExp: {required: true},
 				autoDebitAmount: {requiredWithZero: true},
@@ -171,7 +171,14 @@ $(document).ready(function() {
 		}
 		$('input[type=checkbox]:not(:checked)').each(function(){
 			var res = $(this).val().split("$"); 
-			if ($('#'+"loanAmt"+res[4]).val() =="" || $('#'+"loanAmt"+res[4]).val() ==0) {
+			if ($('#'+"loanBank"+res[4]).val() == "") {
+				$('#'+"loanBank"+res[4]).attr("style", "background-color: #E88F8F");
+				loanerr = 1;
+				return false;
+			} else {
+				$('#'+"loanBank"+res[4]).attr("style", "background-color:none");
+			}
+			if ($('#'+"loanAmt"+res[4]).val() == "" || $('#'+"loanAmt"+res[4]).val() == 0) {
 				$('#'+"loanAmt"+res[4]).attr("style", "background-color: #E88F8F");
 				loanerr = 1;
 				return false;
@@ -478,7 +485,8 @@ function editCashDtl(id, editflg, pgFlg) {
 	}
 
 }
-function getdate(page) {
+
+/*function getdate(page) {
 	if (page == "Cash") {
 		$('#date').val(dates);
 	} else if (page == "Transfer") {
@@ -487,8 +495,11 @@ function getdate(page) {
 		$('#autoDebitDate').val(dates);
 	} else {
 		$('#date').val(dates);
-	}
-	
+	}	
+}*/
+
+function getdate() {
+	$('#accDate').val(dates);
 }
 
 function popupenable() {
@@ -584,7 +595,7 @@ function gotoindexpage(page,mainmenu) {
 
 function Getsalarypopup() {
 	var mainmenu = $('#mainmenu').val();
-	var transferDate = $('#transferDate').val();
+	var transferDate = $('#accDate').val();
 	if (transferDate != "") {
 		popupopenclose(1);
 		$('#getsalarypopup').load('../Accounting/getsalarypopup?mainmenu='+mainmenu+'&time='+datetime+'&transferDate='+encodeURIComponent(transferDate));
@@ -600,7 +611,7 @@ function Getsalarypopup() {
 
 function Getloanpopup(userId) {
 	var mainmenu = $('#mainmenu').val();
-	var autoDebitDate = $('#autoDebitDate').val();
+	var autoDebitDate = $('#accDate').val();
 	if (autoDebitDate != "") {
 		popupopenclose(1);
 		$('#getloanpopup').load('../Accounting/getloanpopup?mainmenu='+mainmenu+'&time='+datetime+'&autoDebitDate='+encodeURIComponent(autoDebitDate)+'&userId='+userId);

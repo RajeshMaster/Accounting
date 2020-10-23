@@ -725,13 +725,29 @@ class AccountingController extends Controller {
 	public function getloanpopup(Request $request) {
 
 		$getLoanDtls = array();
+		$getBankDtls = array();
+		$loanBankId = array();
+		$loanPaidArr = array();
 		$getUserDtls = Accounting::getUserDtls($request);
 		if ($request->autoDebitDate != "" && $request->userId != "") {
-			$getLoanDtls = Accounting::getLoanDtls($request);
+			$getBankDtls = Accounting::fetchbanknames($request);
+			$getLoanPaid = Accounting::getLoanPaid($request);
+			for ($i = 0; $i <count($getLoanPaid) ; $i++) { 
+				$loanPaidArr[$i] = $getLoanPaid[$i]->loan_ID;
+			}
+			$getLoanDtls = Accounting::getLoanDtls($request,$loanPaidArr);
+			foreach ($getLoanDtls as $loankey => $loanval) {
+				$loanBank = Accounting::getLoanBank($request,$loanval->loanId);
+				if (isset($loanBank[0]->ID)) {
+					$loanBankId[$loanval->loanId]['bankName'] = $loanBank[0]->BANKNAME;
+				}
+			}
 		}
 		return view('Accounting.loandetailspopup',['request' => $request,
 													'getUserDtls' => $getUserDtls,
-													'getLoanDtls' => $getLoanDtls
+													'getLoanDtls' => $getLoanDtls,
+													'getBankDtls' => $getBankDtls,
+													'loanBankId' => $loanBankId
 													]);
 	}
 

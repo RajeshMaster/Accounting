@@ -70,11 +70,36 @@
 					<span class="fa fa-plus"></span>&nbsp;{{ trans('messages.lbl_autodebit') }}
 				</button> 
 			</div>
+			<div class="col-xs-6 pull-right" style="text-align: right;">
+				{{ Form::text('accDate',(isset($editData[0]->date)) ? $editData[0]->date : '',
+							array('id'=>'accDate', 
+								'name' => 'accDate',
+								'data-label' => trans('messages.lbl_Date'),
+								'autocomplete' =>'off',
+								'class'=>' box18per form-control dob')) }}
+					<label class="mt10 ml2 fa fa-calendar fa-lg" for="accDate" aria-hidden="true">
+					</label>
+					<a href="javascript:getdate();" class="anchorstyle">
+						<img title="Current Date" class="box15" 
+							src="{{ URL::asset('resources/assets/images/add_date.png') }}"></a>
+				@if($request->edit_flg != 1)
+				<button type="button" id="salarybutton" style="background-color: blue; color: #fff;" 
+					onclick="return Getsalarypopup('');"  
+					class="btn box24per pt9 pb8 ml5">
+					{{ trans('messages.lbl_getsalary') }}
+				</button> 
+				<button type="button" id="loanbutton" style="background-color: purple; color: #fff;" 
+					onclick="return Getloanpopup('');"
+					class="btn box24per pt9 pb8 ml5">
+					{{ trans('messages.lbl_getloan') }}
+				</button> 
+				@endif
+			</div>
 		</div>
 	<div class="col-xs-12 pl5 pr5" ondragstart="return false;" ondrop="return false;">
 	<fieldset>
 	
-		<div class="col-xs-12 mt10">
+		<!-- <div class="col-xs-12 mt10">
 			<div class="col-xs-3 text-right clr_blue">
 				<label>{{ trans('messages.lbl_Date') }}<span class="fr ml2 red"> * </span></label>
 			</div>
@@ -89,7 +114,7 @@
 					<a href="javascript:getdate('Cash');" class="anchorstyle">
 						<img title="Current Date" class="box15" src="{{ URL::asset('resources/assets/images/add_date.png') }}"></a></label>
 			</div>
-		</div>
+		</div> -->
 
 		<div class="col-xs-12 mt5">
 			<div class="col-xs-3 text-right clr_blue">
@@ -268,7 +293,23 @@
 
 		{{ Form::hidden('mainmenu', $request->mainmenu , array('id' => 'mainmenu')) }}
 
-	{{ Form::close() }}
+{{ Form::close() }}
+
+<div id="getsalarypopup" class="modal fade">
+	<div id="login-overlay">
+		<div class="modal-content">
+			<!-- Popup will be loaded here -->
+		</div>
+	</div>
+</div>
+
+<div id="getloanpopup" class="modal fade">
+	<div id="login-overlay">
+		<div class="modal-content">
+			<!-- Popup will be loaded here -->
+		</div>
+	</div>
+</div>
 
 </article>
 </div>

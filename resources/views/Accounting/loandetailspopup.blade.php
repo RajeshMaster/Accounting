@@ -34,13 +34,13 @@
 	<div class="modal-body" style="height: 310px;overflow-y: scroll;width: 100%;">
 		 <table id="data" class="tablealternate box100per" style="height: 40px;">
 				<colgroup>
-				<col width="2%">
-				<col width="5%">
-				<col width="10%">
+				<col width="6%">
+				<col width="13%">
+				<col width="25%">
+				<col width="25%">
 				<col width="15%">
-				<col width="8%">
-				<col width="8%">
-				<col width="5%">
+				<col width="10%">
+				<col width="6%">
 			</colgroup>
 			<thead class="CMN_tbltheadcolor">
 				<tr class="tableheader fwb tac"> 
@@ -54,18 +54,37 @@
 				</tr>
 			</thead>
 			<tbody>
-			 	@php $i = 1 @endphp
-			 	@php $j = 1 @endphp
+			 	@php 
+			 		$i = 1; 
+			 		$j = 1;
+			 		$break = 0;
+			 	@endphp
 			 	@forelse($getLoanDtls as $key  => $loan)
+				 	
 					<tr>
 						<td align="center">
 							{{ $i++ }}
 						</td>
 						<td align="center">
-							{{ $loan->loanId}}
+							{{ $loan->loanId }}
 						</td>
 						<td>
-							{{ $loan->bankName}}
+						@if(isset($loanBankId[$loan->loanId]['bankName']))
+							{{ Form::text('loanBank'.$j,$loanBankId[$loan->loanId]['bankName'],
+								array('id'=>'loanBank'.$j, 
+									'name' => 'loanBank'.$j,
+									'readonly' => 'true',
+									'data-label' => trans('messages.lbl_bank'),
+									'class'=>'pl5 box95per disabled')) }}
+						@else
+							{{ Form::select('loanBank'.$j,[null=>'']+$getBankDtls,'',
+								array('name' =>'loanBank'.$j,
+										'id'=>'loanBank'.$j,
+										'data-label' => trans('messages.lbl_bank'),
+										'class'=>'pl5 box95per' ))}}
+							
+						@endif
+							<!-- {{ $loan->bankName}} -->
 						</td>
 						<td align="left">
 							{{ $loan->loanName}}
