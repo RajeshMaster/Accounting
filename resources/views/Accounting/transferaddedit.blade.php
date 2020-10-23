@@ -102,7 +102,7 @@
 								'readonly' => 'true',
 								'data-label' => trans('messages.lbl_Date'),
 								'autocomplete' =>'off',
-								'class'=>' box20per form-control dob disabled')) }}
+								'class'=>' box20per form-control disabled')) }}
 				@endif
 				@if($request->edit_flg != 1)
 				<button type="button" id="salarybutton" style="background-color: purple; color: #fff;" 
