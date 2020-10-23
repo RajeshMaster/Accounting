@@ -543,16 +543,28 @@ class AccountingController extends Controller {
 	*/
 	public function getsalarypopup(Request $request) {
 
+		$salPaid =array();
+		if (isset($request->transferDate) ) {
+			$salPaid = Accounting::getsalaryPaid($request->transferDate);
+		}
+
 		$getSalaryDtls = array();
 		$SalaryDtls = array();
-
+		$already = 0;
 		$salary_det = Accounting::getsalaryDetailsnodelflg($request,1);
 		$salary_ded = Accounting::getsalaryDetailsnodelflg($request,2);
-		
-		if ($request->transferDate != "") {
-			$getSalaryDtls = Accounting::getSalaryDtls($request);
+		$empIdArr = array();
+		for ($i=0; $i < count($salPaid) ; $i++) { 
+				$empIdArr[$i] = $salPaid[$i]->emp_ID;
+		}
 
+		if ($request->transferDate != "") {
+			$getSalaryDtls = Accounting::getSalaryDtls($request ,$empIdArr);
+
+			
 			foreach ($getSalaryDtls as $key => $value) {
+				
+			
 
 				$SalaryEmpName = Accounting::fnGetEmpName($value->Emp_ID);
 				$SalaryDtls[$value->Emp_ID]['empName'] = $SalaryEmpName[0]->LastName;
@@ -626,7 +638,6 @@ class AccountingController extends Controller {
 				$SalaryDtls[$value->Emp_ID]['Amount'] = $salary + $deduction + $value->Travel;
 			}
 		}
-
 		return view('Accounting.salarydetailspopup',['request' => $request,
 														'getSalaryDtls' => $getSalaryDtls,
 														'SalaryDtls' => $SalaryDtls
