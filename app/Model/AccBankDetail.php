@@ -166,7 +166,7 @@ class AccBankDetail extends Model {
 
 			}
 
-			$query = $query->orderBy('cashreg.date','ASC');
+			$query = $query->orderBy('cashreg.orderId','ASC');
 			
 			if ($flg == 1) {
 				$query = $query->get();

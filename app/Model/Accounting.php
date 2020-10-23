@@ -213,7 +213,6 @@ class Accounting extends Model {
 		$name = Session::get('FirstName').' '.Session::get('LastName');
 		$empId = "";
 		
-
 		$db = DB::connection('mysql');
 
 		if($request->empid == "") {
@@ -287,7 +286,7 @@ class Accounting extends Model {
 						->leftJoin('emp_mstemployees', 'emp_mstemployees.Emp_ID', '=', 'acc_cashregister.Emp_ID')
 						->where('acc_cashregister.id','=',$request->editId)
 						->orderBy('bankIdFrom','ASC')
-						->orderBy('acc_cashregister.date','ASC')
+						->orderBy('acc_cashregister.orderId','ASC')
 						->get();
 						// ->toSql();
 						// dd($query);
