@@ -714,3 +714,9 @@ function getData(month, year, flg, prevcnt, nextcnt, account_period, lastyear, c
 		$('#frmaccountingindex').submit();
 	}
 }
+
+function changeOrderpopUp(bankId,AccNo){
+	$('#bankNo').val(bankId);
+	$('#accNo').val(AccNo);
+	
+}

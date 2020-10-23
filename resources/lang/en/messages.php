@@ -1210,5 +1210,6 @@ return [
 	'lbl_salledger' => 'Payroll',
 	'lbl_history' => 'History',
 	'lbl_gensen_download' => 'Gensen Download',
+	'lbl_changeOrder' => 'Change Order',
 
 ];

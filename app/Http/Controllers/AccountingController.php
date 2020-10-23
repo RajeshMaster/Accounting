@@ -199,6 +199,7 @@ class AccountingController extends Controller {
 		$cashDetailsIndex = Accounting::fetchcashRegister($start, $end, $request);
 		$cashDetails =array();
 		$i = 0;
+		// print_r($cashDetailsIndex);exit;
 		foreach ($cashDetailsIndex as $key => $value) {
 			$cashDetails[$i]['id'] = $value->id;
 			$cashDetails[$i]['date'] = $value->date;
@@ -213,6 +214,7 @@ class AccountingController extends Controller {
 			$cashDetails[$i]['fileDtl'] = $value->fileDtl;
 			$cashDetails[$i]['transferId'] = $value->transferId;
 			$cashDetails[$i]['pageFlg'] = $value->pageFlg;
+			$cashDetails[$i]['accNo'] = $value->AccNo;
 			$baseAmt = Accounting::baseAmt($value->bankIdFrom,$value->accountNumberFrom);
 			$cashDetails[$i]['subId'] = $value->subjectId;
 			$cashDetails[$i]['subject'] = $value->Subject;
@@ -239,46 +241,6 @@ class AccountingController extends Controller {
 
 									]);
 	}
-
-	// public function index(Request $request) {
-	// 	if(Session::get('selYear') !="") {
-	// 		$request->selYear =  Session::get('selYear');
-	// 		$request->selMonth =  Session::get('selMonth');
-	// 		// $request->date =  Session::get('date');
-	// 		// $request->amount =  Session::get('amount');
-	// 	}
-
-
-	// 	$cashDetailsIndex = Accounting::fetchcashRegister();
-	// 	$cashDetails =array();
-	// 	$i = 0;
-	// 	foreach ($cashDetailsIndex as $key => $value) {
-	// 		$cashDetails[$i]['id'] = $value->id;
-	// 		$cashDetails[$i]['date'] = $value->date;
-	// 		$cashDetails[$i]['content'] = $value->content;
-	// 		$cashDetails[$i]['amount'] = $value->amount;
-	// 		$cashDetails[$i]['fee'] = $value->fee;
-	// 		$cashDetails[$i]['Bank_NickName'] = $value->Bank_NickName;
-	// 		$cashDetails[$i]['transcationType'] = $value->transcationType;
-	// 		$cashDetails[$i]['remarks'] = $value->remarks;
-	// 		$cashDetails[$i]['baseAmt'] = 0;
-	// 		$cashDetails[$i]['bankId'] = $value->bankId;
-	// 		$cashDetails[$i]['fileDtl'] = $value->fileDtl;
-	// 		$cashDetails[$i]['transferId'] = $value->transferId;
-	// 		$cashDetails[$i]['pageFlg'] = $value->pageFlg;
-	// 		$baseAmt = Accounting::baseAmt($value->bankIdFrom,$value->accountNumberFrom);
-	// 		$cashDetails[$i]['subId'] = $value->subjectId;
-	// 		$cashDetails[$i]['subject'] = $value->Subject;
-
-	// 		if (isset($baseAmt[0]->amount)) {
-	// 			$cashDetails[$i]['baseAmt'] = $baseAmt[0]->amount;
-	// 		}
-	// 		$i++;
-	// 	}
-	// 	return view('Accounting.index',['request' => $request,
-	// 									'cashDetails' => $cashDetails,
-	// 									'cashDetailsIndex' => $cashDetailsIndex]);
-	// }
 
 	/**
 	*
@@ -555,17 +517,12 @@ class AccountingController extends Controller {
 		$salary_ded = Accounting::getsalaryDetailsnodelflg($request,2);
 		$empIdArr = array();
 		for ($i=0; $i < count($salPaid) ; $i++) { 
-				$empIdArr[$i] = $salPaid[$i]->emp_ID;
+			$empIdArr[$i] = $salPaid[$i]->emp_ID;
 		}
 
 		if ($request->transferDate != "") {
 			$getSalaryDtls = Accounting::getSalaryDtls($request ,$empIdArr);
-
-			
 			foreach ($getSalaryDtls as $key => $value) {
-				
-			
-
 				$SalaryEmpName = Accounting::fnGetEmpName($value->Emp_ID);
 				$SalaryDtls[$value->Emp_ID]['empName'] = $SalaryEmpName[0]->LastName;
 
