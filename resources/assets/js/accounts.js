@@ -520,13 +520,19 @@ function getdate() {
 
 function popupenable() {
 	var mainmenu = $('#mainmenu').val();
-	popupopenclose(1);
-	$('#empnamepopup').load('../Accounting/empnamepopup?mainmenu='+mainmenu+'&time='+datetime);
-	$("#empnamepopup").modal({
-		backdrop: 'static',
-		keyboard: false
-		});
-	$('#empnamepopup').modal('show');
+	var transferDate = $('#accDate').val();
+	if (transferDate != "") {
+		popupopenclose(1);
+		$('#empnamepopup').load('../Accounting/empnamepopup?mainmenu='+mainmenu+'&time='+datetime+'&transferDate='+encodeURIComponent(transferDate));
+		$("#empnamepopup").modal({
+			backdrop: 'static',
+			keyboard: false
+			});
+		$('#empnamepopup').modal('show');
+	} else {
+		alert("Please select Date field");
+	}
+	
 }
 
 function fnaddempid(){

@@ -311,7 +311,7 @@ class AccountingController extends Controller {
 	public function addeditprocess(Request $request) {
 		$insertProcess = "";
 		$updateProcess = "";
-		if(!$request->edit_flg){
+		if(!$request->edit_flg || $request->edit_flg == "2"){
 			if($request->transtype != 3){
 				$insertProcess = Accounting::insCashDtls($request);
 			} else {
@@ -486,8 +486,17 @@ class AccountingController extends Controller {
 	*/
 	public function empnamepopup(Request $request) {
 
-		$empname = Accounting::fnGetEmpDetails($request);
-		$empnamenonstaff = Accounting::fnGetNonstaffEmpDetails($request);
+		$salPaid = array();
+		$empIdArr = array();
+		if ($request->transferDate != "") {
+			$salPaid = Accounting::getsalaryPaid($request->transferDate);
+			for ($i = 0; $i < count($salPaid) ; $i++) { 
+				$empIdArr[$i] = $salPaid[$i]->emp_ID;
+			}
+		}
+
+		$empname = Accounting::fnGetEmpDetails($request,$empIdArr);
+		$empnamenonstaff = Accounting::fnGetNonstaffEmpDetails($request,$empIdArr);
 
 		return view('Invoice.empnamepopup',['request' => $request,
 											'empname' => $empname,
@@ -662,7 +671,7 @@ class AccountingController extends Controller {
 	*
 	*/
 	public function AutoDebitRegprocess(Request $request) {
-		if(!isset($request->edit_flg) || $request->edit_flg == "2"){
+		if(!$request->edit_flg || $request->edit_flg == "2"){
 			$autoincId = Accounting::getautoincrement();
 			$Transferno = "AutoDebit_".$autoincId;
 			$fileName = "";

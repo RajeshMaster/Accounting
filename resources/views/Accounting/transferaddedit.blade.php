@@ -82,17 +82,28 @@
 				</button> 
 			</div>
 			<div class="col-xs-6 pull-right" style="text-align: right;">
+				@if($request->edit_flg != 1)
 				{{ Form::text('accDate',(isset($transferEdit[0]->date)) ? $transferEdit[0]->date : '',
 							array('id'=>'accDate', 
 								'name' => 'accDate',
 								'data-label' => trans('messages.lbl_Date'),
 								'autocomplete' =>'off',
 								'class'=>' box20per form-control dob')) }}
+					
 					<label class="mt10 ml2 fa fa-calendar fa-lg" for="accDate" aria-hidden="true">
 					</label>
 					<a href="javascript:getdate();" class="anchorstyle">
 						<img title="Current Date" class="box15" 
 							src="{{ URL::asset('resources/assets/images/add_date.png') }}"></a>
+				@else
+					{{ Form::text('accDate',(isset($transferEdit[0]->date)) ? $transferEdit[0]->date : '',
+							array('id'=>'accDate', 
+								'name' => 'accDate',
+								'readonly' => 'true',
+								'data-label' => trans('messages.lbl_Date'),
+								'autocomplete' =>'off',
+								'class'=>' box20per form-control dob disabled')) }}
+				@endif
 				@if($request->edit_flg != 1)
 				<button type="button" id="salarybutton" style="background-color: purple; color: #fff;" 
 					onclick="return Getsalarypopup('');"  
@@ -134,11 +145,21 @@
 					<label>{{ trans('messages.lbl_bank_name') }}<span class="fr ml2 red"> * </span></label>
 				</div>
 				<div class="col-xs-9">
-					{{ Form::select('transferBank',[null=>'']+$bankDetail,(isset($transferEdit[0]->bankIdFrom)) ? $transferEdit[0]->bankIdFrom.'-'.$transferEdit[0]->accountNumberFrom : '',
-								array('name' =>'transferBank',
-										'id'=>'transferBank',
+					@if(isset($transferEdit[0]->Empname))
+						{{ Form::text('transferBankName',$transferEdit[0]->Bank_NickName.'-'.$transferEdit[0]->AccNo,
+									array('id'=>'transferBankName', 
+										'name' => 'transferBankName',
+										'readonly' => 'true',
 										'data-label' => trans('messages.lbl_bank'),
-										'class'=>'pl5 widthauto'))}}
+										'class'=>'pl5 widthauto disabled')) }}
+						{{ Form::hidden('transferBank', $transferEdit[0]->bankIdFrom.'-'.$transferEdit[0]->accountNumberFrom , array('id' =>'transferBank','name' =>'transferBank')) }}
+					@else
+						{{ Form::select('transferBank',[null=>'']+$bankDetail,(isset($transferEdit[0]->bankIdFrom)) ? $transferEdit[0]->bankIdFrom.'-'.$transferEdit[0]->accountNumberFrom : '',
+								array('name' =>'transferBank',
+											'id'=>'transferBank',
+											'data-label' => trans('messages.lbl_bank'),
+											'class'=>'pl5 widthauto'))}}
+					@endif
 				</div>
 			</div>
 

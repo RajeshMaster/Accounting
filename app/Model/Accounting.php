@@ -349,7 +349,6 @@ class Accounting extends Model {
 	}
 
 	public static function insAutoDebitDtls($request,$fileName) {
-
 		$name = Session::get('FirstName').' '.Session::get('LastName');
 		$loanId = "";
 		
@@ -450,7 +449,7 @@ class Accounting extends Model {
 
 	}
 
-	public static function fnGetEmpDetails($request) {
+	public static function fnGetEmpDetails($request,$empIdArr) {
 
 		$query = DB::table('emp_mstemployees')
 						->select('Emp_ID','FirstName','LastName','nickname','KanaFirstName','KanaLastName',DB::RAW("CONCAT(FirstName,' ', LastName) AS Empname"),DB::RAW("CONCAT(KanaFirstName,'　', KanaLastName) AS Kananame"))
@@ -458,18 +457,20 @@ class Accounting extends Model {
 						->WHERE('resign_id', '=', 0)
 						->WHERE('Title', '=', 2)
 						->WHERE('Emp_ID', 'NOT LIKE', '%NST%')
+						->whereNotIn('Emp_ID', $empIdArr)
 						->orderBy('Emp_ID', 'ASC')
 						->get();
 		return $query;
 	}
 
-	public static function fnGetNonstaffEmpDetails($request) {
+	public static function fnGetNonstaffEmpDetails($request,$empIdArr) {
 
 		$query = DB::table('emp_mstemployees')
 						->select('Emp_ID','FirstName','LastName','nickname','KanaFirstName','KanaLastName',DB::RAW("CONCAT(FirstName,' ', LastName) AS Empname"),DB::RAW("CONCAT(KanaFirstName,'　', KanaLastName) AS Kananame"))
 						->WHERE('delFlg', '=', 0)
 						->WHERE('resign_id', '=', 0)
 						->WHERE('Emp_ID', 'LIKE', '%NST%')
+						->whereNotIn('Emp_ID', $empIdArr)
 						->orderBy('Emp_ID', 'ASC')
 						->get();
 		return $query;

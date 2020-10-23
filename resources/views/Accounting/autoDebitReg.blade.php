@@ -81,7 +81,8 @@
 				</button> 
 			</div>
 			<div class="col-xs-6 pull-right" style="text-align: right;">
-				{{ Form::text('accDate',(isset($autodebitEdit[0]->date)) ? $autodebitEdit[0]->date : '',
+				@if($request->edit_flg != 1)
+					{{ Form::text('accDate',(isset($autodebitEdit[0]->date)) ? $autodebitEdit[0]->date : '',
 							array('id'=>'accDate', 
 								'name' => 'accDate',
 								'data-label' => trans('messages.lbl_Date'),
@@ -92,6 +93,15 @@
 					<a href="javascript:getdate();" class="anchorstyle">
 						<img title="Current Date" class="box15" 
 							src="{{ URL::asset('resources/assets/images/add_date.png') }}"></a>
+				@else
+					{{ Form::text('accDate',(isset($autodebitEdit[0]->date)) ? $autodebitEdit[0]->date : '',
+							array('id'=>'accDate', 
+								'name' => 'accDate',
+								'readonly' => 'true',
+								'data-label' => trans('messages.lbl_Date'),
+								'autocomplete' =>'off',
+								'class'=>' box20per form-control dob disabled')) }}
+				@endif
 				@if($request->edit_flg != 1)
 				<button type="button" id="salarybutton" style="background-color: purple; color: #fff;" 
 					onclick="return Getsalarypopup('');"  
@@ -131,18 +141,30 @@
 				</div>
 			</div> -->
 
+			
 			<div class="col-xs-12 mt5">
 				<div class="col-xs-3 text-right clr_blue">
 					<label>{{ trans('messages.lbl_bank') }}<span class="fr ml2 red"> * </span></label>
 				</div>
 				<div class="col-xs-9">
-					{{ Form::select('autoDebitBank',[null=>'']+$bankDetail,(isset($autodebitEdit[0]->bankIdFrom)) ? $autodebitEdit[0]->bankIdFrom.'-'.$autodebitEdit[0]->accountNumberFrom : '',
-							array('name' =>'autoDebitBank',
-										'id'=>'autoDebitBank',
+					@if(isset($autodebitEdit[0]->loanName))
+						{{ Form::text('autoDebitBankName',$autodebitEdit[0]->Bank_NickName.'-'.$autodebitEdit[0]->AccNo,
+									array('id'=>'autoDebitBankName', 
+										'name' => 'autoDebitBankName',
+										'readonly' => 'true',
 										'data-label' => trans('messages.lbl_bank'),
-										'class'=>'pl5 widthauto'))}}
+										'class'=>'pl5 widthauto disabled')) }}
+						{{ Form::hidden('autoDebitBank', $autodebitEdit[0]->bankIdFrom.'-'.$autodebitEdit[0]->accountNumberFrom , array('id' =>'autoDebitBank','name' =>'autoDebitBank')) }}
+					@else
+						{{ Form::select('autoDebitBank',[null=>'']+$bankDetail,(isset($autodebitEdit[0]->bankIdFrom)) ? $autodebitEdit[0]->bankIdFrom.'-'.$autodebitEdit[0]->accountNumberFrom : '',
+								array('name' =>'autoDebitBank',
+											'id'=>'autoDebitBank',
+											'data-label' => trans('messages.lbl_bank'),
+											'class'=>'pl5 widthauto'))}}
+					@endif
 				</div>
 			</div>
+			
 
 			<div class="col-xs-12 mt5">
 				<div class="col-xs-3 text-right clr_blue">
