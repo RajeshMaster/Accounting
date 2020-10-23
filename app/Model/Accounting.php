@@ -227,6 +227,14 @@ class Accounting extends Model {
 			$empId = explode(";", $request->hidempid);
 
 			foreach ($empId as $key => $value) {
+
+				$statement = DB::select("show table status like 'acc_cashregister'");
+				if (isset($statement[0]->Auto_increment)) {
+					$orderId = $statement[0]->Auto_increment;
+				} else {
+					$orderId = 1;
+				}
+
 				$empArr = explode(":", $value);
 				$bankacc = explode('-', $request->salaryBank);
 				$insert = $db->table('acc_cashregister')
@@ -238,16 +246,25 @@ class Accounting extends Model {
 									'accountNumberFrom' => $bankacc['1'],
 									'amount' => preg_replace("/,/", "", $empArr['2']),
 									'fee' => preg_replace("/,/", "", $empArr['3']),
-									// 'content' => $request->transferContent,
+									'content' => "Salary",
 									// 'subjectId' => $request->transferMainExp,
 									// 'remarks' => $request->transFerRemarks,
 									// 'fileDtl' => $fileName,
+									'orderId' => $orderId,
 									'createdBy' => $name,
 									'pageFlg' => 2,
 								]);
 			}
 
 		} else {
+
+				$statement = DB::select("show table status like 'acc_cashregister'");
+
+				if (isset($statement[0]->Auto_increment)) {
+					$orderId = $statement[0]->Auto_increment;
+				} else {
+					$orderId = 1;
+				}
 
 				$bankacc = explode('-', $request->transferBank);
 
@@ -264,6 +281,7 @@ class Accounting extends Model {
 									'subjectId' => $request->transferMainExp,
 									'remarks' => $request->transFerRemarks,
 									'fileDtl' => $fileName,
+									'orderId' => $orderId,
 									'createdBy' => $name,
 									'pageFlg' => 2,
 								]);
@@ -342,6 +360,15 @@ class Accounting extends Model {
 
 			$loanId = explode(";", $request->hidloan);
 			foreach ($loanId as $key => $value) {
+
+				$statement = DB::select("show table status like 'acc_cashregister'");
+				
+				if (isset($statement[0]->Auto_increment)) {
+					$orderId = $statement[0]->Auto_increment;
+				} else {
+					$orderId = 1;
+				}
+
 				$loanArr = explode(":", $value);
 				$bankacc = explode('-', $loanArr['4']);
 				$insert = $db->table('acc_cashregister')
@@ -355,16 +382,26 @@ class Accounting extends Model {
 									'accountNumberFrom' => $bankacc['1'],
 									'amount' => preg_replace("/,/", "", $loanArr['2']),
 									'fee' => preg_replace("/,/", "", $loanArr['3']),
-									// 'content' => $request->autoDebitContent,
+									'content' => "Loan",
 									// 'subjectId' => $request->autoDebitMainExp,
 									// 'remarks' => $request->autoDebitRemarks,
 									// 'fileDtl' => $fileName,
+									'orderId' => $orderId,
 									'createdBy' => $name,
 									'pageFlg' => 3,
 								]);
 			}
 
 		} else {
+
+			$statement = DB::select("show table status like 'acc_cashregister'");
+				
+			if (isset($statement[0]->Auto_increment)) {
+				$orderId = $statement[0]->Auto_increment;
+			} else {
+				$orderId = 1;
+			}
+				
 			$bankacc = explode('-', $request->autoDebitBank);
 			$insert = $db->table('acc_cashregister')
 						->insert([
@@ -378,6 +415,7 @@ class Accounting extends Model {
 								'subjectId' => $request->autoDebitMainExp,
 								'remarks' => $request->autoDebitRemarks,
 								'fileDtl' => $fileName,
+								'orderId' => $orderId,
 								'createdBy' => $name,
 								'pageFlg' => 3,
 							]);
