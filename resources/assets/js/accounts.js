@@ -730,7 +730,199 @@ function getData(month, year, flg, prevcnt, nextcnt, account_period, lastyear, c
 }
 
 function changeOrderpopUp(bankId,AccNo){
+
+	$('#bankNo').val('');
+	$('#accNo').val('');
+
+
 	$('#bankNo').val(bankId);
 	$('#accNo').val(AccNo);
+	var mainmenu = $('#mainmenu').val();
+	var selMonth = $('#selMonth').val();
+	var selYear = $('#selYear').val();
+	popupopenclose(1);
+	$('#getregisterpopup').load('../Accounting/getcashDetails?mainmenu='+mainmenu+'&time='+datetime+'&selMonth='+selMonth+'&selYear='+selYear+'&bankId='+bankId+'&AccNo='+AccNo);
+	$("#getregisterpopup").modal({
+		backdrop: 'static',
+		keyboard: false
+		});
+	$('#getregisterpopup').modal('show');
+}
+
+// Single text popup radio button check
+	function fnrdocheck(textbox1,editid,totalcount,val) {
+		var rowCount = $('#swaptable1 tr').length;
+		$('#rdoid').val(editid);
+		// EDIT BUTTON ENABLE
+		if(rowCount == 1) {
+			
+			document.getElementById("dwnArrow").disabled = true;
+			$("#dwnArrow").css("color","#bbb5b5");
+			document.getElementById("upArrow").disabled = true;
+			$("#upArrow").css("color","#bbb5b5");
+		} else {
+		
+			document.getElementById("dwnArrow").disabled = false;
+			$("#dwnArrow").css("color","#5cb85c");
+			document.getElementById("upArrow").disabled = true;
+			$("#rdoedit"+editid).attr("checked", true);
+			updownArrowEnableDisable(val, totalcount);
+		}
+	}
+
+	function updownArrowEnableDisable(val, totalcount) {
+		if (val == 0) {
+			document.getElementById("upArrow").disabled = true;
+			$("#upArrow").css("color","#bbb5b5");
+			document.getElementById("dwnArrow").disabled = false;
+			// $("#dwnArrow").css("background-color","#5cb85c");
+		} else if (val == totalcount-1) {
+			document.getElementById("upArrow").disabled = false;
+			$("#upArrow").css("color","#5cb85c");
+			document.getElementById("dwnArrow").disabled = true;
+			$("#dwnArrow").css("color","#bbb5b5");
+		} else {
+			// enable_arrow();
+			document.getElementById("dwnArrow").disabled = false;
+			document.getElementById("upArrow").disabled = false;
+			$("#dwnArrow").css("color","#5cb85c");
+			$("#upArrow").css("color","#5cb85c");
+		}
+	}
+
+	//setting Down Arrow process
+function getdowndata(){
+	//GO TO COMMIT ENABLE
+	Commit_buttonenable();
+	// 
+	document.getElementById("upArrow").disabled = false;
+	$("#upArrow").css("color","#5cb85c");
+	var upid = document.getElementsByName("rdoedit");
+	var radioLength = upid.length;
+	for(var i = 0; i <radioLength; i++) {
+		if (upid[i].checked) {
+			selid =  i;         
+		}
+	};
+	if (selid+1 == radioLength-1) {
+		$("#commit_button").css("background-color","#5cb85c");
+		document.getElementById("upArrow").disabled = false;
+		$("#upArrow").css("color","#5cb85c");
+		document.getElementById("dwnArrow").disabled = true;
+		$("#dwnArrow").css("color","#bbb5b5");
+	} else {
+		document.getElementById("dwnArrow").disabled = false;
+		$("#commit_button").css("background-color","#5cb85c");
+		document.getElementById("upArrow").disabled = false;
+	}
+
+	if (selid < radioLength-1){
+		exchange(selid,selid+1,'swaptable1');
+		document.getElementsByName('hdnNewOrderid')[(selid+1)].value = document.getElementsByName('hdnNewOrderid')[selid].value;
+		document.getElementsByName('hdnNewOrderid')[selid].value = (document.getElementsByName('hdnNewOrderid')[(selid+1)].value) - 1;
+		document.getElementById('upArrow').disabled=false;
+		if (selid == radioLength-2){
+			// enable_disable_arrow('upArrow','dwnArrow');
+			document.getElementById('dwnArrow').disabled=true;
+		}
+	} else {   
+		return false;
+	}
+}
+
+// setting UpArrow Process
+function getupdata(){
+	Commit_buttonenable();
+	var upid = document.getElementsByName("rdoedit");
+	var radioLength = upid.length;
+	$("#commit_button").css("background-color","#5cb85c");
+	document.getElementById('dwnArrow').disabled=false;
+	$("#dwnArrow").css("color","#5cb85c");
+	for(var i = 0; i <radioLength; i++) {
+		if (upid[i].checked) {
+			selid =  i;
+		}
+	}
+	var checkid = selid+1;
+	if (selid > 0){
+		exchange(selid,selid-1,'swaptable1');
+		document.getElementsByName('hdnNewOrderid')[(selid-1)].value = document.getElementsByName('hdnNewOrderid')[selid].value;
+		document.getElementsByName('hdnNewOrderid')[selid].value = (document.getElementsByName('hdnNewOrderid')[(selid-1)].value)-(-1) ;
+		if (selid ==1){
+			document.getElementById('upArrow').disabled=true;
+			$("#upArrow").css("color","#bbb5b5");
+			$("#commit_button").css("background-color","#5cb85c");
+		}
+		if (selid != radioLength) {
+			document.getElementById('dwnArrow').disabled=false;
+			$("#dwnArrow").css("color","#5cb85c");
+		}
+	}else { 
+		return false;
+	}
+}
+
+function Commit_buttonenable() {
+	document.getElementById("commit_button").disabled = false;
+}
+
+function exchange(i, j,tableID){
+	var oTable = document.getElementById(tableID);
+	var trs = oTable.tBodies[0].getElementsByTagName("tr");
+	if (i >= 0 && j >= 0 && i < trs.length && j < trs.length)
+	{
+		if (i == j+1) {
+			oTable.tBodies[0].insertBefore(trs[i], trs[j]);         
+		} else if (j == i+1) {
+			oTable.tBodies[0].insertBefore(trs[j], trs[i]);
+		} else {
+			var tmpNode = oTable.tBodies[0].replaceChild(trs[i], trs[j]);
+			if (typeof(trs[i]) != "undefined") {
+				oTable.tBodies[0].insertBefore(tmpNode, trs[i]);
+			} else {
+				oTable.appendChild(tmpNode);
+			}
+		}
+	}
+	else {
+		alert("Invalid Value")
+	}
+}
+
+// for commit 
+function getcommitCheck(tablename,screenname,tableselect) {
+	var idnew = "";
+	var actualId =  $('#idOriginalOrder').val();
+	var id = $("[name=id]");
+	var upid = $("[name=rdoedit]");
+	var radioLength = upid.length;
+	$('#process').val(4);
+	for(var i = 0; i <radioLength; i++) {
+		if (i == (radioLength-1)) {
+			idnew += id[i].value;
+		} else {
+			idnew += id[i].value+',';
+		}   
+	}
+
+	if ( confirm("Do You Want To Commit ?")) {
+		 fnsettingcommitajax(actualId,idnew,tablename,screenname,tableselect);
+	}
+} 
+
+function fnsettingcommitajax(actualId,idnew,tablename,screenname,tableselect){
+    pageload();
 	
+	$.ajax({
+		async: true,
+		type: 'GET',
+		url: 'commitProcess',
+		data: {"actualId": actualId,"idnew": idnew,"tablename": tablename},
+		success: function(data) {
+			$('#frmaccountingindex').submit();
+		},
+		error: function(data) {
+			 alert(data.status);
+		}
+	});
 }

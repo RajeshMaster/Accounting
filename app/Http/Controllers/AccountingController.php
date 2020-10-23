@@ -199,7 +199,6 @@ class AccountingController extends Controller {
 		$cashDetailsIndex = Accounting::fetchcashRegister($start, $end, $request);
 		$cashDetails =array();
 		$i = 0;
-		// print_r($cashDetailsIndex);exit;
 		foreach ($cashDetailsIndex as $key => $value) {
 			$cashDetails[$i]['id'] = $value->id;
 			$cashDetails[$i]['date'] = $value->date;
@@ -211,10 +210,11 @@ class AccountingController extends Controller {
 			$cashDetails[$i]['remarks'] = $value->remarks;
 			$cashDetails[$i]['baseAmt'] = 0;
 			$cashDetails[$i]['bankId'] = $value->bankId;
+			$cashDetails[$i]['bankIdFrom'] = $value->bankIdFrom;
 			$cashDetails[$i]['fileDtl'] = $value->fileDtl;
 			$cashDetails[$i]['transferId'] = $value->transferId;
 			$cashDetails[$i]['pageFlg'] = $value->pageFlg;
-			$cashDetails[$i]['accNo'] = $value->AccNo;
+			$cashDetails[$i]['accNo'] = $value->accountNumberFrom;
 			$baseAmt = Accounting::baseAmt($value->bankIdFrom,$value->accountNumberFrom);
 			$cashDetails[$i]['subId'] = $value->subjectId;
 			$cashDetails[$i]['subject'] = $value->Subject;
@@ -756,6 +756,26 @@ class AccountingController extends Controller {
 													]);
 	}
 
+	public function getcashDetails(Request $request){ 
+		$fromDate =$request->selYear.'-'.$request->selMonth.'-01';
+		$toDate = $request->selYear .'-'.$request->selMonth.'-'.Common::fnGetMaximumDateofMonth($fromDate);
+
+		$getBankDtls = Accounting::fetchcashRegisterPopup($fromDate ,$toDate,$request);
+
+		return view('Accounting.orderChangepopup',['request' => $request,
+													'getBankDtls' => $getBankDtls,
+													]);
+	}
+
+	/**  
+	*  For Commit Process
+	*  @author RAjesh 
+	*  @param $request
+	*  Created At 2020/10/01
+	**/
+	public function commitProcess(Request $request) {
+		$commit = Accounting::fngetcommitProcess($request);
+	}
 	
 
 }

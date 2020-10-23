@@ -152,8 +152,8 @@
 		{{ Form::hidden('searchmethod', $request->searchmethod, array('id' => 'searchmethod')) }}
 		{{ Form::hidden('edit_flg', '', array('id' => 'edit_flg')) }}
 		{{ Form::hidden('editId', '', array('id' => 'editId')) }}
-		{{ Form::text('bankNo', '', array('id' => 'bankNo')) }}
-		{{ Form::text('accNo', '', array('id' => 'accNo')) }}
+		{{ Form::hidden('bankNo', '', array('id' => 'bankNo')) }}
+		{{ Form::hidden('accNo', '', array('id' => 'accNo')) }}
 
 		<!-- Year Bar Start -->
 		{{ Form::hidden('selMonth', $request->selMonth, array('id' => 'selMonth')) }}
@@ -247,7 +247,7 @@
 								{{ $data['Bank_NickName'] }}     
 
 								<div style="text-align: right;display: inline-block;float: right">
-									<a href="javascript:changeOrderpopUp('{{ $data['bankId'] }}','1','{{ $data['accNo'] }}');">
+									<a href="javascript:changeOrderpopUp('{{ $data['bankIdFrom'] }}','{{ $data['accNo'] }}');">
 										{{ trans('messages.lbl_changeOrder') }}
 									</a>
 								</div>
@@ -332,6 +332,16 @@
 			{{ $cashDetailsIndex->linkspagelimit() }}
 		</div>
 	</div>
+
+
+	<div id="getregisterpopup" class="modal fade">
+		<div id="login-overlay">
+			<div class="modal-content">
+				<!-- Popup will be loaded here -->
+			</div>
+		</div>
+	</div>
+
 </article>
 </div>
 
