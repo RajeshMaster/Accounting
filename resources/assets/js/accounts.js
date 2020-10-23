@@ -200,30 +200,32 @@ $(document).ready(function() {
 				var res = $(this).val().split("$"); 
 				if (getchecked == 1) {
 					getchecked = 2;
-					$('#hidloan').val(res[0] + ":" + res[1] + ":" + $('#'+"loanAmt"+res[4]).val() + ":" + $('#'+"loanFee"+res[4]).val());
-					$('#loanName').val(res[0]);
-					$('#hidloanId').val(res[1]);
-					document.getElementById('autoDebitAmountloan').innerHTML = $('#'+"loanAmt"+res[4]).val();
-					document.getElementById('autoDebitFeeloan').innerHTML = $('#'+"loanFee"+res[4]).val();
+					$('#hidloan').val(res[0] + ":" + res[1] + ":" + $('#'+"loanAmt"+res[4]).val() + ":" + $('#'+"loanFee"+res[4]).val() + ":" + $('#'+"loanBank"+res[4]).val());
+					// $('#loanName').val(res[0]);
+					// $('#hidloanId').val(res[1]);
+					// document.getElementById('autoDebitAmountloan').innerHTML = $('#'+"loanAmt"+res[4]).val();
+					// document.getElementById('autoDebitFeeloan').innerHTML = $('#'+"loanFee"+res[4]).val();
 				} else {
-					$('#hidloan').val($('#hidloan').val() + ";" + res[0] + ":" + res[1] + ":" + $('#'+"loanAmt"+res[4]).val() + ":" + $('#'+"loanFee"+res[4]).val());
-					$('#loanName').val($('#loanName').val() + ";" + res[0]);
-					$('#hidloanId').val($('#hidloanId').val() + ";" + res[1]);
-					document.getElementById('autoDebitAmountloan').innerHTML = document.getElementById('autoDebitAmountloan').innerHTML + ";" + $('#'+"loanAmt"+res[4]).val();
-					document.getElementById('autoDebitFeeloan').innerHTML = document.getElementById('autoDebitFeeloan').innerHTML + ";" + $('#'+"loanFee"+res[4]).val();
+					$('#hidloan').val($('#hidloan').val() + ";" + res[0] + ":" + res[1] + ":" + $('#'+"loanAmt"+res[4]).val() + ":" + $('#'+"loanFee"+res[4]).val() + ":" + $('#'+"loanBank"+res[4]).val());
+					// $('#loanName').val($('#loanName').val() + ";" + res[0]);
+					// $('#hidloanId').val($('#hidloanId').val() + ";" + res[1]);
+					// document.getElementById('autoDebitAmountloan').innerHTML = document.getElementById('autoDebitAmountloan').innerHTML + ";" + $('#'+"loanAmt"+res[4]).val();
+					// document.getElementById('autoDebitFeeloan').innerHTML = document.getElementById('autoDebitFeeloan').innerHTML + ";" + $('#'+"loanFee"+res[4]).val();
 				}
-				$('#hidempId').val($('#assetsUser').val());
+				// $('#hidempId').val($('#assetsUser').val());
 			});
-			
-			$("#enableamt").attr("style", "display: block");
-			$("#enablefee").attr("style", "display: block");
-			$("#hidamtfee").attr("style", "display: none");
-			$("#autoDebitContent").attr("disabled", "disabled");
-			$("#loanbutton").attr("disabled", "disabled");
-			$("#debitrequired").css("visibility", "hidden");
-			$("body div").removeClass("modalOverlay");
-			$('#getloanpopup').empty();
-			$('#getloanpopup').modal('toggle');
+			pageload();
+			form.submit();
+			return true;
+			// $("#enableamt").attr("style", "display: block");
+			// $("#enablefee").attr("style", "display: block");
+			// $("#hidamtfee").attr("style", "display: none");
+			// $("#autoDebitContent").attr("disabled", "disabled");
+			// $("#loanbutton").attr("disabled", "disabled");
+			// $("#debitrequired").css("visibility", "hidden");
+			// $("body div").removeClass("modalOverlay");
+			// $('#getloanpopup').empty();
+			// $('#getloanpopup').modal('toggle');
 		} else {
 			return false;
 		}

@@ -93,7 +93,7 @@
 						<img title="Current Date" class="box15" 
 							src="{{ URL::asset('resources/assets/images/add_date.png') }}"></a>
 				@if($request->edit_flg != 1)
-				<button type="button" id="salarybutton" style="background-color: blue; color: #fff;" 
+				<button type="button" id="salarybutton" style="background-color: purple; color: #fff;" 
 					onclick="return Getsalarypopup('');"  
 					class="btn box24per pt9 pb8 ml5">
 					{{ trans('messages.lbl_getsalary') }}
@@ -164,8 +164,8 @@
 					</label>
 				</div>
 				<div class="col-xs-9">
-					{{ Form::hidden('hidloan', '', array('id' => 'hidloan')) }}
-					{{ Form::hidden('hidcheckDeb', '', array('id' => 'hidcheckDeb')) }}
+					<!-- {{ Form::hidden('hidloan', '', array('id' => 'hidloan')) }}
+					{{ Form::hidden('hidcheckDeb', '', array('id' => 'hidcheckDeb')) }} -->
 					{{ Form::hidden('hidloanId', '', array('id' => 'hidloanId')) }}
 					{{ Form::hidden('hidempId', '', array('id' => 'hidempId')) }}
 					{{ Form::text('loanName',(isset($autodebitEdit[0]->loanName)) ? $autodebitEdit[0]->loanName : '',
