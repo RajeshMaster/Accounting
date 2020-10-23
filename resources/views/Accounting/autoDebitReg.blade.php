@@ -157,15 +157,15 @@
 				</div>
 			</div>
 
-			<div class="col-xs-12 mt5">
+			<!-- <div class="col-xs-12 mt5">
 				<div class="col-xs-3 text-right clr_blue">
 					<label>{{ trans('messages.lbl_loanname') }}
 						<span class="fr ml2 red" id = "loanrequired"> * </span>
 					</label>
 				</div>
 				<div class="col-xs-9">
-					<!-- {{ Form::hidden('hidloan', '', array('id' => 'hidloan')) }}
-					{{ Form::hidden('hidcheckDeb', '', array('id' => 'hidcheckDeb')) }} -->
+					{{ Form::hidden('hidloan', '', array('id' => 'hidloan')) }}
+					{{ Form::hidden('hidcheckDeb', '', array('id' => 'hidcheckDeb')) }}
 					{{ Form::hidden('hidloanId', '', array('id' => 'hidloanId')) }}
 					{{ Form::hidden('hidempId', '', array('id' => 'hidempId')) }}
 					{{ Form::text('loanName',(isset($autodebitEdit[0]->loanName)) ? $autodebitEdit[0]->loanName : '',
@@ -182,7 +182,7 @@
 						</button> 
 					@endif
 				</div>
-			</div>
+			</div> -->
 
 			<div class="col-xs-12 mt5">
 				<div class="col-xs-3 text-right clr_blue">

@@ -240,18 +240,25 @@ $(document).ready(function() {
 			return false;
 		}
 		var salerr = 0;
-		$('#txt_empname').val("");
-		document.getElementById("empid").value = "";
-		document.getElementById("transferContent").value = "";
-
+		// $('#txt_empname').val("");
+		// document.getElementById("empid").value = "";
+		// document.getElementById("transferContent").value = "";
+		
 		$('input[type=checkbox]:not(:checked)').each(function(){
 			var res = $(this).val().split("$"); 
-			if ($('#'+"loanAmt"+res[4]).val() =="" || $('#'+"loanAmt"+res[4]).val() ==0) {
-				$('#'+"loanAmt"+res[4]).attr("style", "background-color: #E88F8F");
+			if ($('#'+"salaryBank"+res[4]).val() == "") {
+				$('#'+"salaryBank"+res[4]).attr("style", "background-color: #E88F8F");
 				salerr = 1;
 				return false;
 			} else {
-				$('#'+"loanAmt"+res[4]).attr("style", "background-color:none");
+				$('#'+"salaryBank"+res[4]).attr("style", "background-color:none");
+			}
+			if ($('#'+"salAmt"+res[4]).val() =="" || $('#'+"salAmt"+res[4]).val() ==0) {
+				$('#'+"salAmt"+res[4]).attr("style", "background-color: #E88F8F");
+				salerr = 1;
+				return false;
+			} else {
+				$('#'+"salAmt"+res[4]).attr("style", "background-color:none");
 			}
 		});
 		if (salerr) {
@@ -268,32 +275,35 @@ $(document).ready(function() {
 				var res = $(this).val().split("$"); 
 				if (getchecked == 1) {
 					getchecked = 2;
-					$('#hidempid').val(res[0] + ":" + res[1] + ":" + $('#'+"salAmt"+res[4]).val() + ":" + $('#'+"salFee"+res[4]).val());
-					$('#txt_empname').val(res[0]);
-					$('#hidemp').val(res[1]);
-					document.getElementById('transferAmountsalary').innerHTML = $('#'+"salAmt"+res[4]).val();
-					document.getElementById('transferFeesalary').innerHTML = $('#'+"salFee"+res[4]).val();
+					$('#hidempid').val(res[0] + ":" + res[1] + ":" + $('#'+"salAmt"+res[4]).val() + ":" + $('#'+"salFee"+res[4]).val() + ":" + $('#'+"salaryBank"+res[4]).val());
+					// $('#txt_empname').val(res[0]);
+					// $('#hidemp').val(res[1]);
+					// document.getElementById('transferAmountsalary').innerHTML = $('#'+"salAmt"+res[4]).val();
+					// document.getElementById('transferFeesalary').innerHTML = $('#'+"salFee"+res[4]).val();
 				} else {
-					$('#hidempid').val($('#hidempid').val() + ";" + res[0] + ":" + res[1] + ":" + $('#'+"salAmt"+res[4]).val() + ":" + $('#'+"salFee"+res[4]).val());
-					$('#txt_empname').val($('#txt_empname').val() + ";" + res[0]);
-					$('#hidemp').val($('#hidemp').val() + ";" + res[1]);
-					document.getElementById('transferAmountsalary').innerHTML = document.getElementById('transferAmountsalary').innerHTML + ";" + $('#'+"salAmt"+res[4]).val();
-					document.getElementById('transferFeesalary').innerHTML = document.getElementById('transferFeesalary').innerHTML + ";" + $('#'+"salFee"+res[4]).val();
+					$('#hidempid').val($('#hidempid').val() + ";" + res[0] + ":" + res[1] + ":" + $('#'+"salAmt"+res[4]).val() + ":" + $('#'+"salFee"+res[4]).val() + ":" + $('#'+"salaryBank"+res[4]).val());
+					// $('#txt_empname').val($('#txt_empname').val() + ";" + res[0]);
+					// $('#hidemp').val($('#hidemp').val() + ";" + res[1]);
+					// document.getElementById('transferAmountsalary').innerHTML = document.getElementById('transferAmountsalary').innerHTML + ";" + $('#'+"salAmt"+res[4]).val();
+					// document.getElementById('transferFeesalary').innerHTML = document.getElementById('transferFeesalary').innerHTML + ";" + $('#'+"salFee"+res[4]).val();
 				}
 			});
-			$("#enableamt").attr("style", "display: block");
-			$("#enablefee").attr("style", "display: block");
-			$("#hidamtfee").attr("style", "display: none");
-			$("#transferContent").attr("disabled", "disabled");
-			$("#contentrequired").css("visibility", "hidden");
-			$("#salarybutton").attr("disabled", "disabled");
-			$("#transsalarybutton").attr("disabled", "disabled");
-			$("#browseEmp").attr("style", "display: none");
-			$("#clearEmp").attr("style", "display: none");
-			$("#clearSal").attr("style", "display: inline-block");
-			$("body div").removeClass("modalOverlay");
-			$('#getsalarypopup').empty();
-			$('#getsalarypopup').modal('toggle');
+			pageload();
+			form.submit();
+			return true;
+			// $("#enableamt").attr("style", "display: block");
+			// $("#enablefee").attr("style", "display: block");
+			// $("#hidamtfee").attr("style", "display: none");
+			// $("#transferContent").attr("disabled", "disabled");
+			// $("#contentrequired").css("visibility", "hidden");
+			// $("#salarybutton").attr("disabled", "disabled");
+			// $("#transsalarybutton").attr("disabled", "disabled");
+			// $("#browseEmp").attr("style", "display: none");
+			// $("#clearEmp").attr("style", "display: none");
+			// $("#clearSal").attr("style", "display: inline-block");
+			// $("body div").removeClass("modalOverlay");
+			// $('#getsalarypopup').empty();
+			// $('#getsalarypopup').modal('toggle');
 		} else {
 			return false;
 		}

@@ -166,9 +166,9 @@
 				<div class="col-xs-9">
 					{{ Form::hidden('empid', '', array('id' => 'empid')) }}
 					{{ Form::hidden('empID',(isset($transferEdit[0]->emp_ID)) ? $transferEdit[0]->emp_ID : '',array('id'=>'empID')) }}
-					{{ Form::hidden('hidempid', '', array('id' => 'hidempid')) }}
+					<!-- {{ Form::hidden('hidempid', '', array('id' => 'hidempid')) }} -->
 					{{ Form::hidden('hidemp', '', array('id' => 'hidemp')) }}
-					{{ Form::hidden('hidchkTrans', '', array('id' => 'hidchkTrans')) }}
+					<!-- {{ Form::hidden('hidchkTrans', '', array('id' => 'hidchkTrans')) }} -->
 					{{ Form::text('txt_empname',(isset($transferEdit[0]->Empname)) ? $transferEdit[0]->Empname : '',
 							array('id'=>'txt_empname', 
 									'name' => 'txt_empname',

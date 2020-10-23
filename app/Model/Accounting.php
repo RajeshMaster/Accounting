@@ -212,7 +212,7 @@ class Accounting extends Model {
 
 		$name = Session::get('FirstName').' '.Session::get('LastName');
 		$empId = "";
-		$bankacc = explode('-', $request->transferBank);
+		
 
 		$db = DB::connection('mysql');
 
@@ -229,6 +229,7 @@ class Accounting extends Model {
 
 			foreach ($empId as $key => $value) {
 				$empArr = explode(":", $value);
+				$bankacc = explode('-', $empArr['4']);
 				$insert = $db->table('acc_cashregister')
 							->insert([
 									'emp_ID' => $empArr['1'], 
@@ -238,16 +239,18 @@ class Accounting extends Model {
 									'accountNumberFrom' => $bankacc['1'],
 									'amount' => preg_replace("/,/", "", $empArr['2']),
 									'fee' => preg_replace("/,/", "", $empArr['3']),
-									'content' => $request->transferContent,
-									'subjectId' => $request->transferMainExp,
-									'remarks' => $request->transFerRemarks,
-									'fileDtl' => $fileName,
+									// 'content' => $request->transferContent,
+									// 'subjectId' => $request->transferMainExp,
+									// 'remarks' => $request->transFerRemarks,
+									// 'fileDtl' => $fileName,
 									'createdBy' => $name,
 									'pageFlg' => 2,
 								]);
 			}
 
 		} else {
+
+				$bankacc = explode('-', $request->transferBank);
 
 				$insert = $db->table('acc_cashregister')
 							->insert([

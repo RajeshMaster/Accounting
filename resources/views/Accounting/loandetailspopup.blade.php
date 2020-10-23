@@ -43,7 +43,7 @@
 		</div>
 		<div class="modal-body" style="height: 310px;overflow-y: scroll;width: 100%;">
 			 <table id="data" class="tablealternate box100per" style="height: 40px;">
-					<colgroup>
+				<colgroup>
 					<col width="6%">
 					<col width="13%">
 					<col width="25%">

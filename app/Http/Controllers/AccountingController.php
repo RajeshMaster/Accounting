@@ -505,8 +505,10 @@ class AccountingController extends Controller {
 	*/
 	public function getsalarypopup(Request $request) {
 
-		$salPaid =array();
-		if (isset($request->transferDate) ) {
+		$getBankDtls = array();
+		$salPaid = array();
+		if ($request->transferDate != "") {
+			$getBankDtls = Accounting::fetchbanknames($request);
 			$salPaid = Accounting::getsalaryPaid($request->transferDate);
 		}
 
@@ -596,6 +598,7 @@ class AccountingController extends Controller {
 			}
 		}
 		return view('Accounting.salarydetailspopup',['request' => $request,
+														'getBankDtls' => $getBankDtls,
 														'getSalaryDtls' => $getSalaryDtls,
 														'SalaryDtls' => $SalaryDtls
 													]);
