@@ -34,17 +34,19 @@
 	<div class="modal-body" style="height: 310px;overflow-y: scroll;width: 100%;">
 		 <table id="data" class="tablealternate box100per" style="height: 40px;">
 				<colgroup>
-				<col width="6%">
-				<col width="8%">
+				<col width="2%">
+				<col width="5%">
+				<col width="10%">
 				<col width="15%">
 				<col width="8%">
 				<col width="8%">
-				<col width="8%">
+				<col width="5%">
 			</colgroup>
 			<thead class="CMN_tbltheadcolor">
 				<tr class="tableheader fwb tac"> 
 					<th class="tac">{{ trans('messages.lbl_sno') }}</th>
 					<th class="tac">{{ trans('messages.lbl_loanno') }}</th>
+					<th class="tac">{{ trans('messages.lbl_bank') }}</th>
 					<th class="tac">{{ trans('messages.lbl_loanname') }}</th>
 					<th class="tac">{{ trans('messages.lbl_amount') }}</th>
 					<th class="tac">{{ trans('messages.lbl_interest') }}</th>
@@ -61,6 +63,9 @@
 						</td>
 						<td align="center">
 							{{ $loan->loanId}}
+						</td>
+						<td>
+							{{ $loan->bankName}}
 						</td>
 						<td align="left">
 							{{ $loan->loanName}}
@@ -104,7 +109,7 @@
 					@php $j++; @endphp
 				@empty
 					<tr>
-						<td class="text-center" colspan="6" style="color: red;">
+						<td class="text-center" colspan="7" style="color: red;">
 							{{ trans('messages.lbl_nodatafound') }}
 						</td>
 					</tr>

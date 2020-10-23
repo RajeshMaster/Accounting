@@ -761,7 +761,6 @@ class AccountingController extends Controller {
 		if ($request->autoDebitDate != "" && $request->userId != "") {
 			$getLoanDtls = Accounting::getLoanDtls($request);
 		}
-
 		return view('Accounting.loandetailspopup',['request' => $request,
 													'getUserDtls' => $getUserDtls,
 													'getLoanDtls' => $getLoanDtls

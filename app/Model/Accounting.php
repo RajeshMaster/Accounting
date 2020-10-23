@@ -456,8 +456,9 @@ class Accounting extends Model {
 		$db = DB::connection('mysql_Salary');
 		$MnthYear = explode("-", $request->autoDebitDate);
 		$query = $db->table('ams_loan_details as loan')
-					->SELECT('loan.loanId','loan.loanName','loan.loanAmount','loanEMI.monthInterest')
+					->SELECT('loan.loanId','loan.loanName','loan.loanAmount','loanEMI.monthInterest','bank.bankName','bank.id')
 					->leftJoin('ams_loan_emidetails as loanEMI','loan.loanId','=','loanEMI.loanId')
+					->leftJoin('ams_bankname_master as bank','loan.bank','=','bank.id')
 					->where('loan.activeFlg','=',0)
 					->where('loan.delFlg','=',0);
 		if ($request->userId != "") {
