@@ -24,9 +24,19 @@
 			 <h3 class="modal-title custom_align"><B>{{ trans('messages.lbl_salary_det') }}</B></h3>
 		</div>
 		<div class="col-xs-12 mt5">
-			<div class="col-xs-4 clr_black text-left mt10">
+			<div class="col-xs-5 clr_black text-left mt10">
 				<label>
 					{{ trans('messages.lbl_date') }} : {{ $request->transferDate }}
+				</label>
+			</div>
+			<div class="col-xs-6 clr_black text-right mt10">
+				<label>
+					{{ trans('messages.lbl_bank') }} : 
+					{{ Form::select('salaryBank',[null=>'']+$getBankDtls,'',
+									array('name' =>'salaryBank',
+											'id'=>'salaryBank',
+											'data-label' => trans('messages.lbl_bank'),
+											'class'=>'pl5 widthauto' ))}}
 				</label>
 			</div>
 		</div>
@@ -36,7 +46,6 @@
 					<col width="6%">
 					<col width="13%">
 					<col width="25%">
-					<col width="25%">
 					<col width="15%">
 					<col width="10%">
 					<col width="6%">
@@ -45,7 +54,6 @@
 					<tr class="tableheader fwb tac"> 
 						<th class="tac">{{ trans('messages.lbl_sno') }}</th>
 						<th class="tac">{{ trans('messages.lbl_empid') }}</th>
-						<th class="tac">{{ trans('messages.lbl_bank') }}</th>
 						<th class="tac">{{ trans('messages.lbl_empName') }}</th>
 						<th class="tac">{{ trans('messages.lbl_amount') }}</th>
 						<th class="tac">{{ trans('messages.lbl_fee') }}</th>
@@ -62,13 +70,6 @@
 							</td>
 							<td align="center">
 								{{ $salary->Emp_ID }}
-							</td>
-							<td>
-								{{ Form::select('salaryBank'.$j,[null=>'']+$getBankDtls,'',
-									array('name' =>'salaryBank'.$j,
-											'id'=>'salaryBank'.$j,
-											'data-label' => trans('messages.lbl_bank'),
-											'class'=>'pl5 box95per' ))}}
 							</td>
 							<td align="left">
 								{{ $SalaryDtls[$salary->Emp_ID]['empName'] }}
@@ -112,7 +113,7 @@
 						@php $j++; @endphp
 					@empty
 						<tr>
-							<td class="text-center" colspan="7" style="color: red;">
+							<td class="text-center" colspan="6" style="color: red;">
 								{{ trans('messages.lbl_nodatafound') }}
 							</td>
 						</tr>

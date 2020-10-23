@@ -228,7 +228,7 @@ class Accounting extends Model {
 
 			foreach ($empId as $key => $value) {
 				$empArr = explode(":", $value);
-				$bankacc = explode('-', $empArr['4']);
+				$bankacc = explode('-', $request->salaryBank);
 				$insert = $db->table('acc_cashregister')
 							->insert([
 									'emp_ID' => $empArr['1'], 

@@ -20,11 +20,11 @@
 		} else {
 			setDatePicker("dob");
 		}
-		if ($('#loanName').val() != "") {
+		/*if ($('#loanName').val() != "") {
 			$("#autoDebitContent").attr("disabled", "disabled");
 		} else {
 			$("#autoDebitContent").removeAttr("disabled");
-		}
+		}*/
 	});
 </script>
 <style type="text/css">
@@ -316,13 +316,6 @@
 
 			<div class="form-group">
 				<div align="center" class="mt5">
-				@if($request->edit_flg != 1)
-					<button type="button" id="debitloanbutton" class=" btn btn add box160" 
-						onclick="return Getloanpopup('');" 
-						style="margin-left: -10%!important;background-color: purple; color: #fff;">
-						{{ trans('messages.lbl_getloan') }}
-					</button>&nbsp;&nbsp;&nbsp;
-				@endif
 				@if($request->edit_flg == 1)
 					<button type="submit" class="btn btn-warning add box100 ml5 AutoDebitRegprocess">
 						<i class="fa fa-edit" aria-hidden="true"></i> 

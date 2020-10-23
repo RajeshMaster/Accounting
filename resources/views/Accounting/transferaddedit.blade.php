@@ -324,13 +324,6 @@
 
 			<div class="form-group">
 				<div align="center" class="mt5">
-					@if($request->edit_flg != 1)
-						<button type="button" id="transsalarybutton" class=" btn btn add box160" 
-							onclick="return Getsalarypopup();" 
-							style="margin-left: -10%!important;background-color: purple; color: #fff;">
-							{{ trans('messages.lbl_getsalary') }}
-						</button>&nbsp;&nbsp;&nbsp;
-					@endif
 					@if($request->edit_flg == 1)
 						<button type="submit" class="btn btn-warning add box100 ml5 tranferaddeditprocess">
 							<i class="fa fa-edit" aria-hidden="true"></i> 
