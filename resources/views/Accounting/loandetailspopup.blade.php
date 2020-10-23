@@ -80,12 +80,13 @@
 							</td>
 							<td>
 							@if(isset($loanBankId[$loan->loanId]['bankName']))
-								{{ Form::text('loanBank'.$j,$loanBankId[$loan->loanId]['bankName'],
-									array('id'=>'loanBank'.$j, 
-										'name' => 'loanBank'.$j,
+								{{ Form::text('loanBankName'.$j,$loanBankId[$loan->loanId]['bankName'],
+									array('id'=>'loanBankName'.$j, 
+										'name' => 'loanBankName'.$j,
 										'readonly' => 'true',
 										'data-label' => trans('messages.lbl_bank'),
 										'class'=>'pl5 box95per disabled')) }}
+								{{ Form::hidden('loanBank'.$j, $loanBankId[$loan->loanId]['bankId'], array('id' =>'loanBank'.$j)) }}
 							@else
 								{{ Form::select('loanBank'.$j,[null=>'']+$getBankDtls,'',
 									array('name' =>'loanBank'.$j,

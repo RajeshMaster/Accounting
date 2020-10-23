@@ -740,6 +740,7 @@ class AccountingController extends Controller {
 			foreach ($getLoanDtls as $loankey => $loanval) {
 				$loanBank = Accounting::getLoanBank($request,$loanval->loanId);
 				if (isset($loanBank[0]->ID)) {
+					$loanBankId[$loanval->loanId]['bankId'] = $loanBank[0]->ID;
 					$loanBankId[$loanval->loanId]['bankName'] = $loanBank[0]->BANKNAME;
 				}
 			}
