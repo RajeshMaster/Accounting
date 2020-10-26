@@ -59,7 +59,7 @@
 			</div>
 		</div>
 		<div class="col-xs-12 pt10">
-			<div class="col-xs-6" style="text-align: left;margin-left: -15px;">
+			<div class="col-xs-5" style="text-align: left;margin-left: -15px;">
 				<button type="button" id="cashbutton" class="btn btn-success box25per pt9 pb8">
 					<span class="fa fa-plus"></span>&nbsp;{{ trans('messages.lbl_cash') }}
 				</button> 
@@ -70,28 +70,56 @@
 					<span class="fa fa-plus"></span>&nbsp;{{ trans('messages.lbl_autodebit') }}
 				</button> 
 			</div>
+			<div class="col-xs-6 pull-right" style="text-align: right;">
+				{{ Form::text('accDate',(isset($editData[0]->date)) ? $editData[0]->date : '',
+							array('id'=>'accDate', 
+								'name' => 'accDate',
+								'data-label' => trans('messages.lbl_Date'),
+								'autocomplete' =>'off',
+								'class'=>' box18per form-control dob')) }}
+					<label class="mt10 ml2 fa fa-calendar fa-lg" for="accDate" aria-hidden="true">
+					</label>
+					<a href="javascript:getdate();" class="anchorstyle">
+						<img title="Current Date" class="box15" 
+							src="{{ URL::asset('resources/assets/images/add_date.png') }}"></a>
+				@if($request->edit_flg != 1)
+				<button type="button" id="salarybutton" style="background-color: purple; color: #fff;" 
+					onclick="return Getsalarypopup('');"  
+					class="btn box24per pt9 pb8 ml5">
+					{{ trans('messages.lbl_getsalary') }}
+				</button> 
+				<button type="button" id="loanbutton" style="background-color: purple; color: #fff;" 
+					onclick="return Getloanpopup('');"
+					class="btn box24per pt9 pb8 ml5">
+					{{ trans('messages.lbl_getloan') }}
+				</button> 
+				<button type="button" id="invoicebutton" style="background-color: purple; color: #fff;"
+					onclick="return GetInvoicepopup('');"
+					class="btn box21per pt9 pb8 ml5">
+					{{ trans('messages.lbl_getinvoiceDtl') }}
+				</button> 
+				@endif
+			</div>
 		</div>
 	<div class="col-xs-12 pl5 pr5" ondragstart="return false;" ondrop="return false;">
 	<fieldset>
 	
-		<div class="col-xs-12 mt10">
+		<!-- <div class="col-xs-12 mt10">
 			<div class="col-xs-3 text-right clr_blue">
 				<label>{{ trans('messages.lbl_Date') }}<span class="fr ml2 red"> * </span></label>
 			</div>
 			<div class="col-xs-9">
-				{{ Form::text('accDate',(isset($editData[0]->date)) ? $editData[0]->date : '', 
-										array('id'=>'accDate', 
-												'name' => 'accDate',
-												'data-label' => trans('messages.lbl_Date'),
-												'autocomplete' =>'off',
-												'class'=>'box11per form-control pl5 dob')) }}
-				<label class="mt10 ml2 fa fa-calendar fa-lg" for="accDate" aria-hidden="true"></label>
+					{{ Form::text('date',(isset($editData[0]->date)) ? $editData[0]->date : '',array('id'=>'date', 
+															'name' => 'date',
+															'data-label' => trans('messages.lbl_Date'),
+															'autocomplete' =>'off',
+															'class'=>'box11per form-control pl5 dob')) }}
+					<label class="mt10 ml2 fa fa-calendar fa-lg" for="date" aria-hidden="true"></label>
 					&nbsp;&nbsp;
-					<a href="javascript:getdate();" class="anchorstyle">
-					<img title="Current Date" class="box15" src="{{ URL::asset('resources/assets/images/add_date.png') }}"></a>
-				</label>
+					<a href="javascript:getdate('Cash');" class="anchorstyle">
+						<img title="Current Date" class="box15" src="{{ URL::asset('resources/assets/images/add_date.png') }}"></a></label>
 			</div>
-		</div>
+		</div> -->
 
 		<div class="col-xs-12 mt5">
 			<div class="col-xs-3 text-right clr_blue">
@@ -271,6 +299,30 @@
 		{{ Form::hidden('mainmenu', $request->mainmenu , array('id' => 'mainmenu')) }}
 
 {{ Form::close() }}
+
+<div id="getsalarypopup" class="modal fade">
+	<div id="login-overlay">
+		<div class="modal-content">
+			<!-- Popup will be loaded here -->
+		</div>
+	</div>
+</div>
+
+<div id="getloanpopup" class="modal fade">
+	<div id="login-overlay">
+		<div class="modal-content">
+			<!-- Popup will be loaded here -->
+		</div>
+	</div>
+</div>
+
+<div id="getinvoicepopup" class="modal fade">
+	<div id="login-overlay">
+		<div class="modal-content">
+			<!-- Popup will be loaded here -->
+		</div>
+	</div>
+</div>
 
 </article>
 </div>

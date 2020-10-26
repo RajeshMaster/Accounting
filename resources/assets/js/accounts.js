@@ -934,17 +934,16 @@ function fnsettingcommitajax(actualId,idnew,tablename,screenname,tableselect){
 }
 
 function GetInvoicepopup() {
-
 	var mainmenu = $('#mainmenu').val();
 	var invoiceDate = $('#accDate').val();
 	if (invoiceDate != "") {
 		popupopenclose(1);
-		$('#getloanpopup').load('../Accounting/getInvoicePopup?mainmenu='+mainmenu+'&time='+datetime+'&invoiceDate='+encodeURIComponent(invoiceDate));
-		$("#getloanpopup").modal({
+		$('#getinvoicepopup').load('../Accounting/getInvoicePopup?mainmenu='+mainmenu+'&time='+datetime+'&invoiceDate='+encodeURIComponent(invoiceDate));
+		$("#getinvoicepopup").modal({
 			backdrop: 'static',
 			keyboard: false
 			});
-		$('#getloanpopup').modal('show');
+		$('#getinvoicepopup').modal('show');
 	} else {
 		alert("Please select Date field");
 	}

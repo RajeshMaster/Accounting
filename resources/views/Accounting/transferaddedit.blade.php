@@ -405,6 +405,14 @@
 		</div>
 	</div>
 
+	<div id="getinvoicepopup" class="modal fade">
+		<div id="login-overlay">
+			<div class="modal-content">
+				<!-- Popup will be loaded here -->
+			</div>
+		</div>
+	</div>
+
 </article>
 </div>
 @endsection
