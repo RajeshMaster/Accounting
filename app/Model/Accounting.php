@@ -669,6 +669,7 @@ class Accounting extends Model {
 						})
 					->where('cashreg.emp_ID','=', $request->userId)
 					->where('cashreg.loan_ID','=', $loanId)
+					->where('cashreg.pageFlg','=', 3)
 					->get();
 
 		return $query;
@@ -686,14 +687,25 @@ class Accounting extends Model {
 		return $query;
 	}
 
-	public static function getLoanPaid($request) {
-		$date = substr($request->autoDebitDate, 0, 7);
+	public static function getLoanPaid($request,$flg) {
+		if ($flg == 2) {
+			$date = substr($request->invoiceDate, 0, 7);
+		} else {
+			$date = substr($request->autoDebitDate, 0, 7);
+		}
+		
 		$query = DB::table('acc_cashregister')
 						->select('date','loan_ID')
 						->WHERERAW("SUBSTRING(acc_cashregister.date,1,7) = '$date'")
 						->where('loan_ID','!=','')
-						->whereNotNull('loan_ID')
-						->get();
+						->whereNotNull('loan_ID');
+		if ($flg == 2) {
+			$query = $query->where('pageFlg','=', 4);
+		} else {
+			$query = $query->where('pageFlg','=', 3);
+							
+		}			
+			$query = $query->get();
 		return $query;
 	}
 
@@ -744,14 +756,16 @@ class Accounting extends Model {
         return true;
     }
 
-    public static function fetchinvoicePopup($request) {
+    public static function fetchinvoicePopup($request,$invoiceArr) {
 
 		$db = DB::connection('mysql');
+		// $invoiceArr = array('INSU0001','Insuv0002');
+		// print_r($invoiceArr);exit();
 		$date_month = substr($request->invoiceDate, 0, 7);
 		// print_r($date_month);exit();
 		$Estimate = $db->TABLE($db->raw("(SELECT main.quot_date,main.id,main.user_id,main.trading_destination_selection,dev_payment_registration.payment_date,main.del_flg,main.copyFlg,main.project_name,main.classification,
 		main.created_by,main.pdf_flg,main.project_type_selection,main.mailFlg, 
-		main.paid_date,main.paid_status,main.tax,main.estimate_id,main.company_name,main.bankid,main.bankbranchid,main.acc_no,works.amount,
+		main.paid_date,main.paid_status,main.tax,main.estimate_id,main.company_name,main.bankid,main.bankbranchid,main.acc_no,mstbank.Bank_NickName,works.amount,
 		works.work_specific,works.quantity,works.unit_price,works.remarks,works.emp_id,(CASE 
 		        WHEN main.classification = 2 THEN 3
 		        ELSE 0
@@ -760,9 +774,9 @@ class Accounting extends Model {
 		left join dev_invoices_registration main on works .invoice_id = main .user_id 
 		left join dev_estimatesetting on dev_estimatesetting.id = main.project_type_selection
 		left join dev_payment_registration on dev_payment_registration.invoice_id = main.id
-		WHERE main.del_flg = 0 AND SUBSTRING(main.quot_date,1,7) LIKE '%$date_month%' AND dev_payment_registration.payment_date != '' 
-		GROUP BY user_id Order By user_id Asc,quot_date Asc
-					) AS DDD "));
+		left join mstbank on mstbank.AccNo = main.acc_no
+		WHERE main.del_flg = 0 AND SUBSTRING(main.quot_date,1,7) LIKE '%$date_month%'
+		GROUP BY user_id Order By user_id Asc,quot_date Asc) AS DDD "));
    				// ACCESS RIGHTS
 				// CONTRACT EMPLOYEE
 				if (Auth::user()->userclassification == 1) {
@@ -790,6 +804,49 @@ class Accounting extends Model {
 						WHERE invoice_id = $invid ORDER BY id DESC) as tb1"))
 					->get();
 		return $query;
+	}
+
+	public static function insInvoiceDtls($request) {
+
+		$name = Session::get('FirstName').' '.Session::get('LastName');
+		$invId = "";
+		$insert = 1;
+
+		$db = DB::connection('mysql');
+
+		if ($request->hidInvid != "") {
+
+			$invId = explode(";", $request->hidInvid);
+
+			foreach ($invId as $key => $value) {
+
+				$statement = DB::select("show table status like 'acc_cashregister'");
+				
+				if (isset($statement[0]->Auto_increment)) {
+					$orderId = $statement[0]->Auto_increment;
+				} else {
+					$orderId = 1;
+				}
+
+				$invArr = explode(":", $value);
+				$insert = $db->table('acc_cashregister')
+							->insert([
+									'loan_ID' => $invArr['1'], 
+									'loanName' => $invArr['0'], 
+									'date' => $request->accDate,
+									'transcationType' => 1,
+									'bankIdFrom' => $invArr['3'],
+									'accountNumberFrom' => $invArr['4'],
+									'amount' => preg_replace("/,/", "", $invArr['2']),
+									'content' => "Invoice",
+									'orderId' => $orderId,
+									'createdBy' => $name,
+									'pageFlg' => 4,
+								]);
+			}
+		} 
+
+		return $insert;
 	}
 
 }

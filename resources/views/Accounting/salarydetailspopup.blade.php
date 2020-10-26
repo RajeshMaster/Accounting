@@ -36,7 +36,7 @@
 									array('name' =>'salaryBank',
 											'id'=>'salaryBank',
 											'data-label' => trans('messages.lbl_bank'),
-											'class'=>'pl5 widthauto' ))}}
+											'class'=>'pl5 box50per' ))}}
 				</label>
 			</div>
 		</div>
@@ -106,7 +106,7 @@
 							</td>
 							<td align="center">
 								<input  type="checkbox" name="salary[]" id="salary[]" 
-									class="<?php echo $salary->Emp_ID; ?>" 
+									class="salarychk" 
 									value="<?php  echo $SalaryDtls[$salary->Emp_ID]['empName']."$".$salary->Emp_ID."$".$SalaryDtls[$salary->Emp_ID]['Amount']."$".""."$".$j; ?>">
 							</td>
 						</tr>

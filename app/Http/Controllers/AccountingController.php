@@ -744,7 +744,7 @@ class AccountingController extends Controller {
 		// print_r($request->all());exit();
 		if ($request->autoDebitDate != "" && $request->userId != "") {
 			$getBankDtls = Accounting::fetchbanknames($request);
-			$getLoanPaid = Accounting::getLoanPaid($request);
+			$getLoanPaid = Accounting::getLoanPaid($request,1);
 			for ($i = 0; $i <count($getLoanPaid) ; $i++) { 
 				$loanPaidArr[$i] = $getLoanPaid[$i]->loan_ID;
 			}
@@ -796,6 +796,7 @@ class AccountingController extends Controller {
 		$TotEstquery = array();
 		$inv = array();
 		$invbal = array();
+		$invoicePaidArr = array();
 		$totalval = 0;
 		$grandtotal = 0;
 		$balance = 0;
@@ -804,7 +805,12 @@ class AccountingController extends Controller {
 		$paid_amount = 0;
 		$bal_amount = 0;
 		if ($request->invoiceDate != "") {
-			$TotEstquery = Accounting::fetchinvoicePopup($request);
+			$getLoanPaid = Accounting::getLoanPaid($request,2);
+			for ($i = 0; $i < count($getLoanPaid) ; $i++) { 
+				$invoicePaidArr[$i] = $getLoanPaid[$i]->loan_ID;
+			}
+			$TotEstquery = Accounting::fetchinvoicePopup($request,$invoicePaidArr);
+			// print_r($TotEstquery);exit();
 			$i = 0;
 			foreach ($TotEstquery as $key => $value) {
 				$inv[$i]['id'] = $value->id;
@@ -835,5 +841,27 @@ class AccountingController extends Controller {
 													'paid_amount'=>$paid_amount,
 													'bal_amount'=>$bal_amount,
 													]);
+	}
+
+	/**
+	*
+	* Addedit Process for Auto Debit
+	* @author Sastha
+	* @return object to particular view page
+	* Created At 2020/10/22
+	*
+	*/
+	public function invoiceaddeditprocess(Request $request) {
+	
+		$insertProcess = Accounting::insInvoiceDtls($request);
+		if($insertProcess) {
+			Session::flash('success', 'Inserted Sucessfully!'); 
+			Session::flash('type', 'alert-success'); 
+		} else {
+			Session::flash('type', 'Inserted Unsucessfully!'); 
+			Session::flash('type', 'alert-danger'); 
+		}
+		
+		return Redirect::to('Accounting/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 	}
 }

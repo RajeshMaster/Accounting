@@ -12,13 +12,13 @@
 </style>
 {{ Form::open(array('name'=>'invoiceDtlsPopup', 'id'=>'invoiceDtlsPopup',
 							'class' => 'form-horizontal',
-							'url' => 'Accounting/tranferaddeditprocess?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
+							'url' => 'Accounting/invoiceaddeditprocess?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
 							'method' => 'POST','files'=>true)) }}
 
 	{{ Form::hidden('mainmenu', $request->mainmenu , array('id' => 'mainmenu')) }}
 	{{ Form::hidden('accDate', $request->invoiceDate , array('id' => 'accDate')) }}
-	{{ Form::hidden('hidempid', '', array('id' => 'hidempid')) }}
-	{{ Form::hidden('hidchkTrans', '', array('id' => 'hidchkTrans')) }}
+	{{ Form::hidden('hidInvid', '', array('id' => 'hidInvid')) }}
+	{{ Form::hidden('hidchkInv', '', array('id' => 'hidchkInv')) }}
 	<div class="modal-content">
 		<div class="modal-header">
 			 <button type="button" class="close" data-dismiss="modal" style="color: red;" aria-hidden="true">&#10006;</button>
@@ -40,17 +40,19 @@
 			<table id="data" class="tablealternate box100per" style="height: 40px;">
 				<colgroup>
 					<col width="6%">
+					<col width="11%">
 					<col width="15%">
-					<col width="15%">
-					<col width="15%">
-					<col width="25%">
-					<col width="14%">
-					<col width="10%">
+					<col width="11%">
+					<col width="11%">
+					<col width="20%">
+					<col width="11%">
+					<col width="8%">
 				</colgroup>
 				<thead class="CMN_tbltheadcolor">
 					<tr class="tableheader fwb tac"> 
 						<th class="tac">{{ trans('messages.lbl_sno') }}</th>
 						<th class="tac">{{ trans('messages.lbl_invoiceno') }}</th>
+						<th class="tac">{{ trans('messages.lbl_bank') }}</th>
 						<th class="tac">{{ trans('messages.lbl_dateofissue') }}</th>
 						<th class="tac">{{ trans('messages.lbl_paymentdate') }}</th>
 						<th class="tac">{{ trans('messages.lbl_custname') }}</th>
@@ -61,6 +63,8 @@
 				<tbody>
 					@php 
 						$i = 1;
+						$j = 1;
+						$paidAmount = 0;
 					@endphp
 					@forelse($TotEstquery as $key => $data)
 						<tr>
@@ -69,20 +73,20 @@
 								{{ $i++ }}
 							</td>
 
-							<td class="tal pr10 vam pt5">
-								<div class="text-center vam">
-									<label class="pm0 vam" style="color:#136E83;">
-										{{ $data->user_id }}
-									</label>
-								</div>
+							<td class="tac vam">
+								<label class="pm0 vam" style="color:#136E83;">
+									{{ $data->user_id }}
+								</label>
+							</td>
+
+							<td class="tac vam">
+								<label style="color:#136E83;">
+									{{ $data->Bank_NickName }} - {{ $data->acc_no }}
+								</label>
 							</td>
 							
 							<td align="center">
-								<div class="ml5 pt5">
-									<div class="mb2">
-										{{$data->quot_date}}
-									</div>
-								</div>
+								{{ $data->quot_date }}
 							</td>
 
 							<td align="center">
@@ -90,11 +94,9 @@
 							</td>
 
 							<td align="left">
-								<div class="ml5 pt5">
-									<div class="mb2">
-										<b class="blue">{{$data->company_name}}</b>
-									</div>
-								</div>
+								<label class="blue">
+									{{$data->company_name}}
+								</label>
 							</td>
 
 							<td align="right">
@@ -137,7 +139,7 @@
 									if($data->paid_status != 1) {
 										$gr_total = number_format($grandtotal);
 										$grand_tot = str_replace(",", "",$gr_total);
-										$bal_amount = $divtotal-$paid_amount;
+										$bal_amount = $divtotal - $paid_amount;
 									}
 									if(isset($invbal[$key])) {
 										if($invbal[$key]['bal_amount'] > 0) {
@@ -145,69 +147,95 @@
 										} else {
 											$balance_style = "style='font-weight:bold;color:green;'";
 										}
+									} else {
+										$balance_style = "style='font-weight:bold;color:green;'";
 									}
 
 								?>
 								@if(isset($invbal[$key]))
 									@if($invbal[$key]['bal_amount'] > 0)
 										@if($invbal[$key]['bal_amount']==0)
-											@php 
-												$paidAmount = 0;
-											@endphp 
-											 {{ 0 }} 
+											@php $paidAmount = 0; @endphp 
 										@else
 											@php 
 												$paidAmount = $grandtotal - $invbal[$key]['bal_amount'] ;
 											@endphp
-												{{ number_format($paidAmount) }}
-											@endif
+										@endif
 									@else
 										@if($invbal[$key]['bal_amount'] == 0)
-											@php 
-												$paidAmount = 0;
-											@endphp 
-											{{ number_format($grandtotal) }}
+											@php $paidAmount = $grandtotal; @endphp 
 										@else
 											@php 
-												$paidAmount = $grandtotal - $invbal[$key]['bal_amount'] 
+												$paidAmount = $grandtotal - $invbal[$key]['bal_amount'] ;
 											@endphp
-											{{ number_format($paidAmount ) }}
 										@endif
 									@endif
 								@else
-									@php  
-									$paidAmount = 0;
-									@endphp
-									{{ 0 }}	
+									@php $paidAmount = 0; @endphp
+									<?php 
+										$findme = 'color:green';
+										$pos = strpos($balance_style, $findme);
+										$grand = strpos($grand_style, $findme);
+									?>
+									@if($pos == true && $grand == true)
+										@php $paidAmount = $grandtotal; @endphp
+									@else
+										@if($grand == true && $grand_style != "")
+											@php $paidAmount = $grandtotal; @endphp
+										@else
+											@php $paidAmount = 0; @endphp
+										@endif
+									@endif
 								@endif
+								{{ Form::text('invoiceAmt'.$j,($paidAmount != 0) ? number_format($paidAmount) : 0,
+									array('id'=>'invoiceAmt'.$j,
+										'name' => 'invoiceAmt'.$j,
+										'style'=>'text-align:right;padding-right:4px;',
+										'autocomplete' =>'off',
+										'class'=>'box96per ime_mode_disable ml7',
+										'onblur' => 'return fnSetZero11(this.id);',
+										'onfocus' => 'return fnRemoveZero(this.id);',
+										'onclick' => 'return fnRemoveZero(this.id);',
+										'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
+										'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
+										'data-label' => trans('messages.lbl_amount'))) }}
 							</td>
 
 							<td align="center">
 								<input  type="checkbox" name="invoice[]" id="invoice[]" 
-									class="<?php echo $data->user_id; ?>" 
-									value="">
+									class="invoicechk" 
+									value="<?php  echo $data->company_name."$".$data->user_id."$".number_format($paidAmount)."$".$j."$".$data->bankid."$".$data->acc_no; ?>">
 							</td>
 
 						</tr>
+						@php $j++; @endphp
 					@empty
+
 						<tr>
 							<td class="text-center" colspan="7" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
 						</tr>
+
 					@endforelse
 				</tbody>
 			 </table>
 		</div>
+
 		<div class="modal-footer bg-info mt10">
+
 			<center>
-				<button id="add" class="btn btn-success CMN_display_block box100 selectsalary">
+
+				<button id="add" class="btn btn-success CMN_display_block box100 selectinvoice">
 						<i class="fa fa-plus" aria-hidden="true"></i>
 							 {{ trans('messages.lbl_add') }}
 				</button>
+
 				<button data-dismiss="modal" class="btn btn-danger CMN_display_block box100">
 						<i class="fa fa-times" aria-hidden="true"></i>
 							 {{ trans('messages.lbl_cancel') }}
 				</button>
+
 			</center>
+
 		</div>
 	</div>
 {{ Form::close() }}

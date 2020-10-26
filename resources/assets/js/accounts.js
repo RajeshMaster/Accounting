@@ -164,12 +164,12 @@ $(document).ready(function() {
 
 		var loanerr = 0;
 		// document.getElementById("autoDebitContent").value = "";
-		var lengthOfUnchecked = $('input[type=checkbox]:not(:checked)').length;
+		var lengthOfUnchecked = $('input[class=loanchk]:not(:checked)').length;
 		if(lengthOfUnchecked == 0){
 			alert("Please select data");
 			return false;
 		}
-		$('input[type=checkbox]:not(:checked)').each(function(){
+		$('input[class=loanchk]:not(:checked)').each(function(){
 			var res = $(this).val().split("$"); 
 			if ($('#'+"loanBank"+res[4]).val() == "") {
 				$('#'+"loanBank"+res[4]).attr("style", "background-color: #E88F8F");
@@ -179,13 +179,11 @@ $(document).ready(function() {
 				$('#'+"loanBank"+res[4]).attr("style", "background-color:none");
 			}
 			if ($('#'+"loanAmt"+res[4]).val() == "" || $('#'+"loanAmt"+res[4]).val() == 0) {
-				$('#'+"loanAmt"+res[4]).attr("style", "background-color: #E88F8F");
-				$('#'+"loanAmt"+res[4]).attr("style", "text-align:right");
+				$('#'+"loanAmt"+res[4]).attr("style", "background-color: #E88F8F;text-align:right;");
 				loanerr = 1;
 				return false;
 			} else {
-				$('#'+"loanAmt"+res[4]).attr("style", "background-color:none");
-				$('#'+"loanAmt"+res[4]).attr("style", "text-align:right");
+				$('#'+"loanAmt"+res[4]).attr("style", "background-color:none;text-align:right;");
 			}
 		});
 		if (loanerr) {
@@ -198,7 +196,7 @@ $(document).ready(function() {
 			$("#hidcheckDeb").val('1');
 			var getchecked = $("#hidcheckDeb").val();
 
-			$('input[type=checkbox]:not(:checked)').each(function(){
+			$('input[class=loanchk]:not(:checked)').each(function(){
 				var res = $(this).val().split("$"); 
 				if (getchecked == 1) {
 					getchecked = 2;
@@ -235,7 +233,8 @@ $(document).ready(function() {
 
 	// For Salary Select Popup
 	$('.selectsalary').click(function(){
-		var lengthOfUnchecked = $('input[type=checkbox]:not(:checked)').length;
+		var lengthOfUnchecked = $('input[class=salarychk]:not(:checked)').length;
+		alert(lengthOfUnchecked);
 		if(lengthOfUnchecked == 0){
 			alert("Please select data");
 			return false;
@@ -251,17 +250,15 @@ $(document).ready(function() {
 		} else {
 			$('#salaryBank').attr("style", "background-color:none");
 		}
-		$('input[type=checkbox]:not(:checked)').each(function(){
+		$('input[class=salarychk]:not(:checked)').each(function(){
 			var res = $(this).val().split("$"); 
 			
 			if ($('#'+"salAmt"+res[4]).val() =="" || $('#'+"salAmt"+res[4]).val() ==0) {
-				$('#'+"salAmt"+res[4]).attr("style", "background-color: #E88F8F");
-				$('#'+"salAmt"+res[4]).attr("style", "text-align:right");
+				$('#'+"salAmt"+res[4]).attr("style", "background-color: #E88F8F;text-align:right;");
 				salerr = 1;
 				return false;
 			} else {
-				$('#'+"salAmt"+res[4]).attr("style", "background-color:none");
-				$('#'+"salAmt"+res[4]).attr("style", "text-align:right");
+				$('#'+"salAmt"+res[4]).attr("style", "background-color:none;text-align:right;");
 			}
 		});
 		if (salerr) {
@@ -274,7 +271,7 @@ $(document).ready(function() {
 		if(confirmgroup) {
 			$("#hidchkTrans").val('1');
 			var getchecked = $("#hidchkTrans").val();
-			$('input[type=checkbox]:not(:checked)').each(function(){
+			$('input[class=salarychk]:not(:checked)').each(function(){
 				var res = $(this).val().split("$"); 
 				if (getchecked == 1) {
 					getchecked = 2;
@@ -310,6 +307,52 @@ $(document).ready(function() {
 			return false;
 		}
 	});
+
+	// For Loan Select Popup
+	$('.selectinvoice').click(function(){
+
+		var invoiceerr = 0;
+		// document.getElementById("autoDebitContent").value = "";
+		var lengthOfUnchecked = $('input[class=invoicechk]:not(:checked)').length;
+		if(lengthOfUnchecked == 0){
+			alert("Please select data");
+			return false;
+		}
+		$('input[class=invoicechk]:not(:checked)').each(function(){
+			var res = $(this).val().split("$"); 
+			if ($('#'+"invoiceAmt"+res[3]).val() == "" || $('#'+"invoiceAmt"+res[3]).val() == 0) {
+				$('#'+"invoiceAmt"+res[3]).attr("style", "background-color: #E88F8F;text-align:right;");
+				invoiceerr = 1;
+				return false;
+			} else {
+				$('#'+"invoiceAmt"+res[3]).attr("style", "background-color:none;text-align:right;");
+			}
+		});
+		if (invoiceerr) {
+			return false;
+		}
+		var confirmgroup = confirm("Do You Want To Select Invoice?");
+		if(confirmgroup) {
+			$("#hidchkInv").val('1');
+			var getchecked = $("#hidchkInv").val();
+			$('input[class=invoicechk]:not(:checked)').each(function(){
+				var res = $(this).val().split("$"); 
+				if (getchecked == 1) {
+					getchecked = 2;
+					$('#hidInvid').val(res[0] + ":" + res[1] + ":" + $('#'+"invoiceAmt"+res[3]).val() + ":" + res[4] + ":" + res[5]);
+				} else {
+					$('#hidInvid').val($('#hidInvid').val() + ";" + res[0] + ":" + res[1] + ":" + $('#'+"invoiceAmt"+res[3]).val() + ":" + res[4] + ":" + res[5]);
+				}
+			});
+			pageload();
+			form.submit();
+			return true;
+
+		} else {
+			return false;
+		}
+	});
+
 
 });
 
@@ -493,6 +536,9 @@ function editCashDtl(id, editflg, pgFlg) {
 		$('#frmaccountingindex').attr('action', 'transferedit?mainmenu='+mainmenu+'&time='+datetime);
 		$("#frmaccountingindex").submit();
 	} else if(pgFlg == 3){
+		$('#frmaccountingindex').attr('action', 'autoDebitedit?mainmenu='+mainmenu+'&time='+datetime);
+		$("#frmaccountingindex").submit();
+	}  else if(pgFlg == 4){
 		$('#frmaccountingindex').attr('action', 'autoDebitedit?mainmenu='+mainmenu+'&time='+datetime);
 		$("#frmaccountingindex").submit();
 	} else {

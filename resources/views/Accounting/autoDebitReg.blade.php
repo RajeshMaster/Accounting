@@ -170,7 +170,6 @@
 				</div>
 			</div>
 			
-
 			<div class="col-xs-12 mt5">
 				<div class="col-xs-3 text-right clr_blue">
 					<label>{{ trans('messages.lbl_mainsubject') }}<span class="fr ml2 red"> * </span></label>
@@ -183,10 +182,22 @@
 										'class'=>'pl5 widthauto'))}}
 				</div>
 			</div>
+			
 
 			<div class="col-xs-12 mt5">
 				<div class="col-xs-3 text-right clr_blue">
-					<label>{{ trans('messages.lbl_loanname') }}
+					<label>
+						@if(isset($autodebitEdit[0]->pageFlg))
+							@if($autodebitEdit[0]->pageFlg == 4)
+								{{ trans('messages.lbl_invoiceno') }}
+								@php $loanName = $autodebitEdit[0]->loan_ID; @endphp
+							@else
+								@php $loanName = $autodebitEdit[0]->loanName; @endphp
+								{{ trans('messages.lbl_loanname') }}
+							@endif
+						@else
+							{{ trans('messages.lbl_loanname') }}
+						@endif
 						<span class="fr ml2 red" id = "loanrequired"> * </span>
 					</label>
 				</div>
@@ -195,7 +206,7 @@
 					<!-- {{ Form::hidden('hidcheckDeb', '', array('id' => 'hidcheckDeb')) }} -->
 					{{ Form::hidden('hidloanId', '', array('id' => 'hidloanId')) }}
 					{{ Form::hidden('hidempId', '', array('id' => 'hidempId')) }}
-					{{ Form::text('loanName',(isset($autodebitEdit[0]->loanName)) ? $autodebitEdit[0]->loanName : '',
+					{{ Form::text('loanName',(isset($loanName)) ? $loanName : '',
 							array('id'=>'loanName', 
 									'name' => 'loanName',
 									'readonly' => 'true',

@@ -112,7 +112,7 @@
 										'onclick' => 'return fnRemoveZero(this.id);',
 										'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
 										'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
-										'data-label' => trans('messages.lbl_fee'))) }}
+										'data-label' => trans('messages.lbl_amount'))) }}
 										<br/>
 								<!-- {{ $loan->loanAmount * 10000 }} -->
 							</td>
@@ -131,8 +131,7 @@
 										'data-label' => trans('messages.lbl_fee'))) }}
 							</td>
 							<td align="center">
-								<input  type="checkbox" name="loan[]" id="loan[]" 
-									class="<?php echo $loan->loanId; ?>" 
+								<input  type="checkbox" name="loan[]" id="loan[]" class="loanchk" 
 									value="<?php  echo $loan->loanName."$".$loan->loanId."$".($loan->loanAmount * 10000)."$".$loan->monthInterest."$".$j; ?>">
 							</td>
 						</tr>
