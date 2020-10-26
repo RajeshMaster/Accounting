@@ -756,47 +756,47 @@ function changeOrderpopUp(bankId,AccNo){
 }
 
 // Single text popup radio button check
-	function fnrdocheck(textbox1,editid,totalcount,val) {
-		var rowCount = $('#swaptable1 tr').length;
-		$('#rdoid').val(editid);
-		// EDIT BUTTON ENABLE
-		if(rowCount == 1) {
-			
-			document.getElementById("dwnArrow").disabled = true;
-			$("#dwnArrow").css("color","#bbb5b5");
-			document.getElementById("upArrow").disabled = true;
-			$("#upArrow").css("color","#bbb5b5");
-		} else {
+function fnrdocheck(textbox1,editid,totalcount,val) {
+	var rowCount = $('#swaptable1 tr').length;
+	$('#rdoid').val(editid);
+	// EDIT BUTTON ENABLE
+	if(rowCount == 1) {
 		
-			document.getElementById("dwnArrow").disabled = false;
-			$("#dwnArrow").css("color","#5cb85c");
-			document.getElementById("upArrow").disabled = true;
-			$("#rdoedit"+editid).attr("checked", true);
-			updownArrowEnableDisable(val, totalcount);
-		}
+		document.getElementById("dwnArrow").disabled = true;
+		$("#dwnArrow").css("color","#bbb5b5");
+		document.getElementById("upArrow").disabled = true;
+		$("#upArrow").css("color","#bbb5b5");
+	} else {
+	
+		document.getElementById("dwnArrow").disabled = false;
+		$("#dwnArrow").css("color","#5cb85c");
+		document.getElementById("upArrow").disabled = true;
+		$("#rdoedit"+editid).attr("checked", true);
+		updownArrowEnableDisable(val, totalcount);
 	}
+}
 
-	function updownArrowEnableDisable(val, totalcount) {
-		if (val == 0) {
-			document.getElementById("upArrow").disabled = true;
-			$("#upArrow").css("color","#bbb5b5");
-			document.getElementById("dwnArrow").disabled = false;
-			// $("#dwnArrow").css("background-color","#5cb85c");
-		} else if (val == totalcount-1) {
-			document.getElementById("upArrow").disabled = false;
-			$("#upArrow").css("color","#5cb85c");
-			document.getElementById("dwnArrow").disabled = true;
-			$("#dwnArrow").css("color","#bbb5b5");
-		} else {
-			// enable_arrow();
-			document.getElementById("dwnArrow").disabled = false;
-			document.getElementById("upArrow").disabled = false;
-			$("#dwnArrow").css("color","#5cb85c");
-			$("#upArrow").css("color","#5cb85c");
-		}
+function updownArrowEnableDisable(val, totalcount) {
+	if (val == 0) {
+		document.getElementById("upArrow").disabled = true;
+		$("#upArrow").css("color","#bbb5b5");
+		document.getElementById("dwnArrow").disabled = false;
+		// $("#dwnArrow").css("background-color","#5cb85c");
+	} else if (val == totalcount-1) {
+		document.getElementById("upArrow").disabled = false;
+		$("#upArrow").css("color","#5cb85c");
+		document.getElementById("dwnArrow").disabled = true;
+		$("#dwnArrow").css("color","#bbb5b5");
+	} else {
+		// enable_arrow();
+		document.getElementById("dwnArrow").disabled = false;
+		document.getElementById("upArrow").disabled = false;
+		$("#dwnArrow").css("color","#5cb85c");
+		$("#upArrow").css("color","#5cb85c");
 	}
+}
 
-	//setting Down Arrow process
+//setting Down Arrow process
 function getdowndata(){
 	//GO TO COMMIT ENABLE
 	Commit_buttonenable();

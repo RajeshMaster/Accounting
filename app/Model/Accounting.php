@@ -746,10 +746,9 @@ class Accounting extends Model {
 
     public static function fetchinvoicePopup($request) {
 
-
-    	$date_month ='2019-09';
-		$date = substr($request->invoiceDate, 0, 7);
-			$db = DB::connection('mysql');
+		$db = DB::connection('mysql');
+		$date_month = substr($request->invoiceDate, 0, 7);
+		// print_r($date_month);exit();
 		$Estimate = $db->TABLE($db->raw("(SELECT main.quot_date,main.id,main.user_id,main.trading_destination_selection,dev_payment_registration.payment_date,main.del_flg,main.copyFlg,main.project_name,main.classification,
 		main.created_by,main.pdf_flg,main.project_type_selection,main.mailFlg, 
 		main.paid_date,main.paid_status,main.tax,main.estimate_id,main.company_name,main.bankid,main.bankbranchid,main.acc_no,works.amount,
@@ -761,7 +760,7 @@ class Accounting extends Model {
 		left join dev_invoices_registration main on works .invoice_id = main .user_id 
 		left join dev_estimatesetting on dev_estimatesetting.id = main.project_type_selection
 		left join dev_payment_registration on dev_payment_registration.invoice_id = main.id
-		WHERE main.del_flg = 0 AND main.quot_date LIKE '%$date_month%' AND dev_payment_registration.payment_date != '' 
+		WHERE main.del_flg = 0 AND SUBSTRING(main.quot_date,1,7) LIKE '%$date_month%' AND dev_payment_registration.payment_date != '' 
 		GROUP BY user_id Order By user_id Asc,quot_date Asc
 					) AS DDD "));
    				// ACCESS RIGHTS

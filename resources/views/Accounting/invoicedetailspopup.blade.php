@@ -39,13 +39,13 @@
 		<div class="modal-body" style="height: 310px;overflow-y: scroll;width: 100%;">
 			<table id="data" class="tablealternate box100per" style="height: 40px;">
 				<colgroup>
-					<col width="4%">
-					<col width="10%">
-					<col width="12%">
-					<col width="12%">
-					<col width="10%">
-					<col width="8%">
 					<col width="6%">
+					<col width="15%">
+					<col width="15%">
+					<col width="15%">
+					<col width="25%">
+					<col width="14%">
+					<col width="10%">
 				</colgroup>
 				<thead class="CMN_tbltheadcolor">
 					<tr class="tableheader fwb tac"> 
@@ -60,15 +60,15 @@
 				</thead>
 				<tbody>
 					@php 
-						$i=0;
-						$paymenttotal = 0; 
-						$paidtotal = 0; 
-						$differencetotal = 0; 
+						$i = 1;
 					@endphp
 					@forelse($TotEstquery as $key => $data)
 						<tr>
-							<td>
+
+							<td align="center">
+								{{ $i++ }}
 							</td>
+
 							<td class="tal pr10 vam pt5">
 								<div class="text-center vam">
 									<label class="pm0 vam" style="color:#136E83;">
@@ -77,7 +77,7 @@
 								</div>
 							</td>
 							
-							<td>
+							<td align="center">
 								<div class="ml5 pt5">
 									<div class="mb2">
 										{{$data->quot_date}}
@@ -85,18 +85,19 @@
 								</div>
 							</td>
 
-							<td class="" align="center" >
+							<td align="center">
 								{{ $data->payment_date }}
 							</td>
 
-							<td class="" align="left" >
+							<td align="left">
 								<div class="ml5 pt5">
 									<div class="mb2">
 										<b class="blue">{{$data->company_name}}</b>
 									</div>
 								</div>
 							</td>
-							<td>
+
+							<td align="right">
 								<?php  $totalval += preg_replace('/,/', '', $data->totalval); ?>
 			   					{{--*/ $getTaxquery = Helpers::fnGetTaxDetails($data->quot_date); /*--}}
 								<?php 
@@ -180,13 +181,12 @@
 									{{ 0 }}	
 								@endif
 							</td>
+
 							<td align="center">
 								<input  type="checkbox" name="invoice[]" id="invoice[]" 
 									class="<?php echo $data->user_id; ?>" 
 									value="">
 							</td>
-							</td>
-
 
 						</tr>
 					@empty

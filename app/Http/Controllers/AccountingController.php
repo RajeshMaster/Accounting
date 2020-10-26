@@ -793,30 +793,31 @@ class AccountingController extends Controller {
 	*  Created At 2020/10/01
 	**/
 	public function getInvoicePopup(Request $request) {
-
-		$TotEstquery = Accounting::fetchinvoicePopup($request);
+		$TotEstquery = array();
+		$inv = array();
+		$invbal = array();
 		$totalval = 0;
 		$grandtotal = 0;
 		$balance = 0;
 		$paid_amo = 0;
 		$divtotal = 0;
 		$paid_amount = 0;
-        $bal_amount = 0;
-		$inv = array();
-		$i = 0;
-		foreach ($TotEstquery as $key => $value) {
-			$inv[$i]['id'] = $value->id;
-			$i++;
-		}
-
-		$invbal = array();
-		for ($k = 0; $k < count($inv); $k++) { 
-			$query = Accounting::fnGetBalanceDetails($inv[$k]['id']);
-			if(!empty($query)) {
-				$split = explode(",", $query[0]->paid_id);
-				for ($y = 0; $y < count($inv); $y++) {
-					if (end($split) == (isset($inv[$y]['id']) ? $inv[$y]['id'] : "")) {
-						$invbal[$y]['bal_amount'] = str_replace("," , "" , $query[0]->totalval);
+		$bal_amount = 0;
+		if ($request->invoiceDate != "") {
+			$TotEstquery = Accounting::fetchinvoicePopup($request);
+			$i = 0;
+			foreach ($TotEstquery as $key => $value) {
+				$inv[$i]['id'] = $value->id;
+				$i++;
+			}
+			for ($k = 0; $k < count($inv); $k++) { 
+				$query = Accounting::fnGetBalanceDetails($inv[$k]['id']);
+				if(!empty($query)) {
+					$split = explode(",", $query[0]->paid_id);
+					for ($y = 0; $y < count($inv); $y++) {
+						if (end($split) == (isset($inv[$y]['id']) ? $inv[$y]['id'] : "")) {
+							$invbal[$y]['bal_amount'] = str_replace("," , "" , $query[0]->totalval);
+						}
 					}
 				}
 			}
