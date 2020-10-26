@@ -294,11 +294,7 @@
 			   							}
 			   						}
 			   						?>
-			   					@if(!empty($data->totalval))
-			   					<!-- <div class="ml5 mb2 smallBlue">
-			   					<?php echo "<span style='background-color:#136E83;color:white;'>"; ?> {{trans('messages.lbl_tax')}}<?php echo"</span>&nbsp;" . $dispval1;$dispval1 = ''; ?>
-			   					</div>
-			   					@endif -->
+			   				
 			   					<div class="ml5 mb2 smallBlue" <?php echo $grand_style; ?>>
 			   						{{ number_format($grandtotal) }}
 			   					</div>
@@ -336,12 +332,27 @@
 	   								@php  
 										$paidAmount = 0;
 	   								@endphp
-	   								{{ 0 }}	
+
+	   								<?php 
+										$findme   = 'color:green';
+										$pos = strpos($balance_style, $findme);
+										$grand = strpos($grand_style, $findme);
+	   								?>
+	   								
+
+	   								@if($pos == true && $grand == true)
+	   									{{ number_format($grandtotal) }}
+	   								@else
+	   									{{ 0 }}	
+	   								@endif
+
+
 	   							@endif
 							</td>
 
 							<td class="" align="center" >
 								<div class="ml5 mb2 smallBlue" <?php echo $balance_style; ?>>
+
 	   								@if(isset($invbal[$key]))
 	   									@if($invbal[$key]['bal_amount'] > 0)
 	   										@if($invbal[$key]['bal_amount']==0)
