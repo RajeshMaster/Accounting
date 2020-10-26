@@ -132,7 +132,8 @@ $(document).ready(function() {
 				autoDebitBank: {required: true},
 				autoDebitMainExp: {required: true},
 				autoDebitAmount: {requiredWithZero: true},
-				autoDebitContent: {required: true},
+				loanName: {Anyonerequired: "#autoDebitContent"},
+				autoDebitContent: {Anyonerequired: "#loanName"},
 				autoDebitBill : {extension: "jpg,jpeg,png,JPG,JPEG,PNG", filesize : (2 * 1024 * 1024)},
 			},
 			submitHandler: function(form) { // for demo
@@ -519,13 +520,19 @@ function getdate() {
 
 function popupenable() {
 	var mainmenu = $('#mainmenu').val();
-	popupopenclose(1);
-	$('#empnamepopup').load('../Accounting/empnamepopup?mainmenu='+mainmenu+'&time='+datetime);
-	$("#empnamepopup").modal({
-		backdrop: 'static',
-		keyboard: false
-		});
-	$('#empnamepopup').modal('show');
+	var transferDate = $('#accDate').val();
+	if (transferDate != "") {
+		popupopenclose(1);
+		$('#empnamepopup').load('../Accounting/empnamepopup?mainmenu='+mainmenu+'&time='+datetime+'&transferDate='+encodeURIComponent(transferDate));
+		$("#empnamepopup").modal({
+			backdrop: 'static',
+			keyboard: false
+			});
+		$('#empnamepopup').modal('show');
+	} else {
+		alert("Please select Date field");
+	}
+	
 }
 
 function fnaddempid(){
