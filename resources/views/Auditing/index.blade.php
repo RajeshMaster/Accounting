@@ -307,31 +307,31 @@
 
 							<td class="" align="center" >
 								@if(isset($invbal[$key]))
-	   									@if($invbal[$key]['bal_amount'] > 0)
-	   										@if($invbal[$key]['bal_amount']==0)
+   									@if($invbal[$key]['bal_amount'] > 0)
+   										@if($invbal[$key]['bal_amount']==0)
 	   										@php 
 				   								$paidAmount = 0;
 				   							@endphp 
 	   										 {{ 0 }} 
-	   										@else
+   										@else
 	   										@php 
 	   											$paidAmount = $grandtotal - $invbal[$key]['bal_amount'] ;
-	   										 @endphp
-	   										{{ number_format($paidAmount) }}
+	   										@endphp
+	   											{{ number_format($paidAmount) }}
 	   										@endif
-	   									@else
-	   										@if($invbal[$key]['bal_amount']==0)
+   									@else
+   										@if($invbal[$key]['bal_amount']==0)
 	   										@php 
 				   								$paidAmount = 0;
 				   							@endphp 
-	   										{{ 0 }}
-	   										@else
+	   										{{ number_format($grandtotal) }}
+   										@else
 	   										@php 
 	   											$paidAmount = $grandtotal - $invbal[$key]['bal_amount'] 
-	   										 @endphp
-	   										{{ number_format($paidAmount ) }}
-	   										@endif
-	   									@endif
+	   										@endphp
+   											{{ number_format($paidAmount ) }}
+   										@endif
+   									@endif
 	   							@else
 	   								@php  
 										$paidAmount = 0;
