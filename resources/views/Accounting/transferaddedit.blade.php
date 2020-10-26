@@ -6,7 +6,7 @@
 {{ HTML::script('resources/assets/js/lib/additional-methods.min.js') }}
 {{ HTML::script('resources/assets/js/lib/lightbox.js') }}
 {{ HTML::style('resources/assets/css/lib/lightbox.css') }}
-
+@php use App\Http\Helpers; @endphp
 <script type="text/javascript">
 	var datetime = '<?php echo date('Ymdhis'); ?>';
 	var dates = '<?php echo date('Y-m-d'); ?>';
@@ -107,17 +107,17 @@
 				@if($request->edit_flg != 1)
 				<button type="button" id="salarybutton" style="background-color: purple; color: #fff;" 
 					onclick="return Getsalarypopup('');"  
-					class="btn box21per pt9 pb8 ml5">
+					class="btn box24per pt9 pb8 ml2">
 					{{ trans('messages.lbl_getsalary') }}
 				</button> 
 				<button type="button" id="loanbutton" style="background-color: purple; color: #fff;" 
 					onclick="return Getloanpopup('');"
-					class="btn box21per pt9 pb8 ml5">
+					class="btn box23per pt9 pb8 ml2">
 					{{ trans('messages.lbl_getloan') }}
 				</button> 
 				<button type="button" id="invoicebutton" style="background-color: purple; color: #fff;" 
 					onclick="return GetInvoicepopup('');"
-					class="btn box21per pt9 pb8 ml5">
+					class="btn box24per pt9 pb8 ml2">
 					{{ trans('messages.lbl_getinvoiceDtl') }}
 				</button> 
 				@endif

@@ -795,9 +795,44 @@ class AccountingController extends Controller {
 	public function getInvoicePopup(Request $request) {
 
 		$TotEstquery = Accounting::fetchinvoicePopup($request);
+		$totalval = 0;
+		$grandtotal = 0;
+		$balance = 0;
+		$paid_amo = 0;
+		$divtotal = 0;
+		$paid_amount = 0;
+        $bal_amount = 0;
+		$inv = array();
+		$i = 0;
+		foreach ($TotEstquery as $key => $value) {
+			$inv[$i]['id'] = $value->id;
+			$i++;
+		}
+
+		$invbal = array();
+		for ($k = 0; $k < count($inv); $k++) { 
+			$query = Accounting::fnGetBalanceDetails($inv[$k]['id']);
+			if(!empty($query)) {
+				$split = explode(",", $query[0]->paid_id);
+				for ($y = 0; $y < count($inv); $y++) {
+					if (end($split) == (isset($inv[$y]['id']) ? $inv[$y]['id'] : "")) {
+						$invbal[$y]['bal_amount'] = str_replace("," , "" , $query[0]->totalval);
+					}
+				}
+			}
+		}
+
+		
 		
 		return view('Accounting.invoicedetailspopup',['request' => $request,
-													'TotEstquery' => $TotEstquery
+													'TotEstquery' => $TotEstquery,
+													'invbal' => $invbal,
+													'grandtotal' => $grandtotal,
+													'totalval' => $totalval,
+													'paid_amo' => $paid_amo,
+													'divtotal'=>$divtotal,
+													'paid_amount'=>$paid_amount,
+													'bal_amount'=>$bal_amount,
 													]);
 	}
 }

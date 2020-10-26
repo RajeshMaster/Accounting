@@ -96,14 +96,102 @@
 									</div>
 								</div>
 							</td>
-							<td></td>
+							<td>
+								<?php  $totalval += preg_replace('/,/', '', $data->totalval); ?>
+			   					{{--*/ $getTaxquery = Helpers::fnGetTaxDetails($data->quot_date); /*--}}
+								<?php 
+									if(!empty($data->totalval)) {
+										if($data->tax != 2) {
+											$totroundval = preg_replace("/,/", "", $data->totalval);
+											$dispval = (($totroundval * intval((isset($getTaxquery[0]->Tax)?$getTaxquery[0]->Tax:0)))/100);
+											$dispval1 = number_format($dispval);
+											$grandtotal = $totroundval + $dispval;
+										} else {
+											$totroundval = preg_replace("/,/", "", $data->totalval);
+											$dispval = 0;
+											$grandtotal = $totroundval + $dispval;
+											$dispval1 = $dispval;
+										}
+									}
 
+									$grand_total = number_format($grandtotal);
+									$divtotal += str_replace(",", "",$grand_total);
+
+									if ($data->paid_status != 1) {
+										$grand_style = "style='font-weight:bold;color:red;'";
+										$balance += $grandtotal;
+									} else {
+										$grand_style = "style='font-weight:bold;color:green;'";
+										$paid_amo += $grandtotal;
+									}
+
+									if($data->paid_status == 1) {
+										$pay_balance = str_replace(",", "",(isset($invoice_balance[$key][0]->totalval)?$invoice_balance[$key][0]->totalval:0));
+										$gr_total = number_format($grandtotal);
+										$grand_tot = str_replace(",", "",$gr_total);
+										$paid_amount += (isset($invoice_balance[$key][0]->deposit_amount)?$invoice_balance[$key][0]->deposit_amount:0);
+										$bal_amount = $divtotal - $paid_amount;
+									}
+
+									if($data->paid_status != 1) {
+										$gr_total = number_format($grandtotal);
+										$grand_tot = str_replace(",", "",$gr_total);
+										$bal_amount = $divtotal-$paid_amount;
+									}
+									if(isset($invbal[$key])) {
+										if($invbal[$key]['bal_amount'] > 0) {
+											$balance_style = "style='font-weight:bold;color:red;'";
+										} else {
+											$balance_style = "style='font-weight:bold;color:green;'";
+										}
+									}
+
+								?>
+								@if(isset($invbal[$key]))
+									@if($invbal[$key]['bal_amount'] > 0)
+										@if($invbal[$key]['bal_amount']==0)
+											@php 
+												$paidAmount = 0;
+											@endphp 
+											 {{ 0 }} 
+										@else
+											@php 
+												$paidAmount = $grandtotal - $invbal[$key]['bal_amount'] ;
+											@endphp
+												{{ number_format($paidAmount) }}
+											@endif
+									@else
+										@if($invbal[$key]['bal_amount'] == 0)
+											@php 
+												$paidAmount = 0;
+											@endphp 
+											{{ number_format($grandtotal) }}
+										@else
+											@php 
+												$paidAmount = $grandtotal - $invbal[$key]['bal_amount'] 
+											@endphp
+											{{ number_format($paidAmount ) }}
+										@endif
+									@endif
+								@else
+									@php  
+									$paidAmount = 0;
+									@endphp
+									{{ 0 }}	
+								@endif
+							</td>
+							<td align="center">
+								<input  type="checkbox" name="invoice[]" id="invoice[]" 
+									class="<?php echo $data->user_id; ?>" 
+									value="">
+							</td>
+							</td>
 
 
 						</tr>
 					@empty
 						<tr>
-							<td class="text-center" colspan="10" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
+							<td class="text-center" colspan="7" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
 						</tr>
 					@endforelse
 				</tbody>

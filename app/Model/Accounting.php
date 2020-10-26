@@ -761,14 +761,14 @@ class Accounting extends Model {
 		left join dev_invoices_registration main on works .invoice_id = main .user_id 
 		left join dev_estimatesetting on dev_estimatesetting.id = main.project_type_selection
 		left join dev_payment_registration on dev_payment_registration.invoice_id = main.id
-		WHERE main.del_flg = 0 AND main.quot_date LIKE '%$date_month%'
+		WHERE main.del_flg = 0 AND main.quot_date LIKE '%$date_month%' AND dev_payment_registration.payment_date != '' 
 		GROUP BY user_id Order By user_id Asc,quot_date Asc
 					) AS DDD "));
    				// ACCESS RIGHTS
 				// CONTRACT EMPLOYEE
 				if (Auth::user()->userclassification == 1) {
 					$accessDate = Auth::user()->accessDate;
-					$Estimate=$Estimate->WHERE(function($joincont) use($accessDate) {
+					$Estimate = $Estimate->WHERE(function($joincont) use($accessDate) {
                            $joincont->WHERE('dev_invoices_registration.quot_date', '>', 
                            						$accessDate)
                             		->ORWHERE('accessFlg','=',1);
@@ -783,8 +783,8 @@ class Accounting extends Model {
 
 
 	public static function fnGetBalanceDetails($invid) {
-		$db=DB::connection('mysql');
-		$query=$db->TABLE($db->raw("(SELECT invoice_id,id,totalval,paid_id,
+		$db = DB::connection('mysql');
+		$query = $db->TABLE($db->raw("(SELECT invoice_id,id,totalval,paid_id,
 						(SELECT SUM(replace(deposit_amount, ',', '')) 
 						FROM dev_payment_registration WHERE invoice_id = $invid) 
 						as deposit_amount FROM dev_payment_registration 
