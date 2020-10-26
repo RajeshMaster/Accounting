@@ -294,7 +294,7 @@
 			   							}
 			   						}
 			   						?>
-			   				
+			   		
 			   					<div class="ml5 mb2 smallBlue" <?php echo $grand_style; ?>>
 			   						{{ number_format($grandtotal) }}
 			   					</div>
@@ -338,12 +338,15 @@
 										$pos = strpos($balance_style, $findme);
 										$grand = strpos($grand_style, $findme);
 	   								?>
-	   								
 
 	   								@if($pos == true && $grand == true)
 	   									{{ number_format($grandtotal) }}
 	   								@else
-	   									{{ 0 }}	
+		   								@if($grand == true && $grand_style != "")
+	  										{{ number_format($grandtotal) }}
+	   									@else
+	   										{{ 0 }}	
+		   								@endif
 	   								@endif
 
 
