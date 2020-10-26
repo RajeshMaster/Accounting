@@ -69,7 +69,7 @@
 		</div>
 
 		<div class="col-xs-12 pt10">
-			<div class="col-xs-6" style="text-align: left;margin-left: -15px;">
+			<div class="col-xs-5" style="text-align: left;margin-left: -15px;">
 				<button type="button" onclick="javascript:addedit('autoDebitCash','{{ $request->mainmenu }}');" class="btn btn-success box25per pt9 pb8">
 					<span class="fa fa-plus"></span>&nbsp;{{ trans('messages.lbl_cash') }}
 				</button> 
@@ -80,13 +80,13 @@
 					<span class="fa fa-plus"></span>&nbsp;{{ trans('messages.lbl_autodebit') }}
 				</button> 
 			</div>
-			<div class="col-xs-6 pull-right" style="text-align: right;">
+			<div class="col-xs-7 pull-right" style="text-align: right;padding: 0px;">
 				{{ Form::text('accDate',(isset($autodebitEdit[0]->date)) ? $autodebitEdit[0]->date : '',
 							array('id'=>'accDate', 
 								'name' => 'accDate',
 								'data-label' => trans('messages.lbl_Date'),
 								'autocomplete' =>'off',
-								'class'=>' box20per form-control dob')) }}
+								'class'=>' box15per form-control dob')) }}
 					<label class="mt10 ml2 fa fa-calendar fa-lg" for="accDate" aria-hidden="true">
 					</label>
 					<a href="javascript:getdate();" class="anchorstyle">
@@ -95,13 +95,18 @@
 				@if($request->edit_flg != 1)
 				<button type="button" id="salarybutton" style="background-color: purple; color: #fff;" 
 					onclick="return Getsalarypopup('');"  
-					class="btn box24per pt9 pb8 ml5">
+					class="btn box20per pt9 pb8 ml5">
 					{{ trans('messages.lbl_getsalary') }}
 				</button> 
 				<button type="button" id="loanbutton" style="background-color: purple; color: #fff;" 
 					onclick="return Getloanpopup('');"
-					class="btn box24per pt9 pb8 ml5">
+					class="btn box20per pt9 pb8 ml5">
 					{{ trans('messages.lbl_getloan') }}
+				</button>
+				<button type="button" id="invoicebutton" style="background-color: purple; color: #fff;" 
+					onclick="return GetInvoicepopup('');"
+					class="btn box20per pt9 pb8 ml5">
+					{{ trans('messages.lbl_getinvoiceDtl') }}
 				</button> 
 				@endif
 			</div>

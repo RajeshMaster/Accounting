@@ -485,6 +485,7 @@ Route::group(['prefix'=>'Accounting','middleware' => 'auth'], function() {
     Route::any('addedit', 'AccountingController@addedit');
     Route::any('cashedit', 'AccountingController@cashedit');
     Route::any('addeditprocess', 'AccountingController@addeditprocess');
+    Route::any('getInvoicePopup', 'AccountingController@getInvoicePopup');
     // Transfer // Sarath
     Route::any('empnamepopup', 'AccountingController@empnamepopup');
     Route::any('getsalarypopup', 'AccountingController@getsalarypopup');

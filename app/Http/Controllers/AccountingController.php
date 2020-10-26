@@ -771,11 +771,19 @@ class AccountingController extends Controller {
 	*  For Commit Process
 	*  @author RAjesh 
 	*  @param $request
-	*  Created At 2020/10/01
+	*  Created At 2020/10/23
 	**/
 	public function commitProcess(Request $request) {
 		$commit = Accounting::fngetcommitProcess($request);
 	}
 	
-
+	/**  
+	*  For Commit Process
+	*  @author RAjesh 
+	*  @param $request
+	*  Created At 2020/10/01
+	**/
+	public function getInvoicePopup(Request $request) {
+		print_r($request->all());exit;
+	}
 }
