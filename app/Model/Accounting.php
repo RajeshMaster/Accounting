@@ -744,4 +744,53 @@ class Accounting extends Model {
         return true;
     }
 
+    public static function fetchinvoicePopup($request) {
+
+
+    	$date_month ='2019-09';
+		$date = substr($request->invoiceDate, 0, 7);
+			$db = DB::connection('mysql');
+		$Estimate = $db->TABLE($db->raw("(SELECT main.quot_date,main.id,main.user_id,main.trading_destination_selection,dev_payment_registration.payment_date,main.del_flg,main.copyFlg,main.project_name,main.classification,
+		main.created_by,main.pdf_flg,main.project_type_selection,main.mailFlg, 
+		main.paid_date,main.paid_status,main.tax,main.estimate_id,main.company_name,main.bankid,main.bankbranchid,main.acc_no,works.amount,
+		works.work_specific,works.quantity,works.unit_price,works.remarks,works.emp_id,(CASE 
+		        WHEN main.classification = 2 THEN 3
+		        ELSE 0
+		    END) AS orderbysent,`dev_estimatesetting`.`ProjectType`,main.totalval 
+		FROM   tbl_work_amount_details works 
+		left join dev_invoices_registration main on works .invoice_id = main .user_id 
+		left join dev_estimatesetting on dev_estimatesetting.id = main.project_type_selection
+		left join dev_payment_registration on dev_payment_registration.invoice_id = main.id
+		WHERE main.del_flg = 0 AND main.quot_date LIKE '%$date_month%'
+		GROUP BY user_id Order By user_id Asc,quot_date Asc
+					) AS DDD "));
+   				// ACCESS RIGHTS
+				// CONTRACT EMPLOYEE
+				if (Auth::user()->userclassification == 1) {
+					$accessDate = Auth::user()->accessDate;
+					$Estimate=$Estimate->WHERE(function($joincont) use($accessDate) {
+                           $joincont->WHERE('dev_invoices_registration.quot_date', '>', 
+                           						$accessDate)
+                            		->ORWHERE('accessFlg','=',1);
+                            });
+				}
+				// END ACCESS RIGHTS
+				$Estimate = $Estimate->orderByRaw("orderbysent ASC, user_id DESC")
+					  		->get();
+				//->toSql();dd($Estimate);
+			return $Estimate;
+	}
+
+
+	public static function fnGetBalanceDetails($invid) {
+		$db=DB::connection('mysql');
+		$query=$db->TABLE($db->raw("(SELECT invoice_id,id,totalval,paid_id,
+						(SELECT SUM(replace(deposit_amount, ',', '')) 
+						FROM dev_payment_registration WHERE invoice_id = $invid) 
+						as deposit_amount FROM dev_payment_registration 
+						WHERE invoice_id = $invid ORDER BY id DESC) as tb1"))
+					->get();
+		return $query;
+	}
+
 }

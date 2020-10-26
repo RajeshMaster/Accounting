@@ -1212,5 +1212,6 @@ return [
 	'lbl_gensen_download' => 'Gensen Download',
 	'lbl_changeOrder' => 'Change Order',
 	'lbl_getinvoiceDtl' => 'Get Invoice Details',
+	'lbl_invoiceDtl' => 'Invoice Details',
 
 ];

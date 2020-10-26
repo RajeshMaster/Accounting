@@ -793,6 +793,11 @@ class AccountingController extends Controller {
 	*  Created At 2020/10/01
 	**/
 	public function getInvoicePopup(Request $request) {
-		print_r($request->all());exit;
+
+		$TotEstquery = Accounting::fetchinvoicePopup($request);
+		
+		return view('Accounting.invoicedetailspopup',['request' => $request,
+													'TotEstquery' => $TotEstquery
+													]);
 	}
 }

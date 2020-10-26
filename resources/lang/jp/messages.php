@@ -1387,5 +1387,6 @@ return [
 	'lbl_gensen_download' => '原線 ダウンロード',
 	'lbl_changeOrder' => '順番変更',
 	'lbl_getinvoiceDtl' => '請求書情報の取得',
+	'lbl_invoiceDtl' => '請求書情報',
 
 ];
