@@ -20,11 +20,11 @@
 		} else {
 			setDatePicker("dob");
 		}
-		/*if ($('#loanName').val() != "") {
+		if ($('#loanName').val() != "") {
 			$("#autoDebitContent").attr("disabled", "disabled");
 		} else {
 			$("#autoDebitContent").removeAttr("disabled");
-		}*/
+		}
 	});
 </script>
 <style type="text/css">
@@ -69,7 +69,7 @@
 		</div>
 
 		<div class="col-xs-12 pt10">
-			<div class="col-xs-5" style="text-align: left;margin-left: -15px;">
+			<div class="col-xs-6" style="text-align: left;margin-left: -15px;">
 				<button type="button" onclick="javascript:addedit('autoDebitCash','{{ $request->mainmenu }}');" class="btn btn-success box25per pt9 pb8">
 					<span class="fa fa-plus"></span>&nbsp;{{ trans('messages.lbl_cash') }}
 				</button> 
@@ -80,33 +80,38 @@
 					<span class="fa fa-plus"></span>&nbsp;{{ trans('messages.lbl_autodebit') }}
 				</button> 
 			</div>
-			<div class="col-xs-7 pull-right" style="text-align: right;padding: 0px;">
-				{{ Form::text('accDate',(isset($autodebitEdit[0]->date)) ? $autodebitEdit[0]->date : '',
+			<div class="col-xs-6 pull-right" style="text-align: right;">
+				@if($request->edit_flg != 1)
+					{{ Form::text('accDate',(isset($autodebitEdit[0]->date)) ? $autodebitEdit[0]->date : '',
 							array('id'=>'accDate', 
 								'name' => 'accDate',
 								'data-label' => trans('messages.lbl_Date'),
 								'autocomplete' =>'off',
-								'class'=>' box15per form-control dob')) }}
+								'class'=>' box20per form-control dob')) }}
 					<label class="mt10 ml2 fa fa-calendar fa-lg" for="accDate" aria-hidden="true">
 					</label>
 					<a href="javascript:getdate();" class="anchorstyle">
 						<img title="Current Date" class="box15" 
 							src="{{ URL::asset('resources/assets/images/add_date.png') }}"></a>
+				@else
+					{{ Form::text('accDate',(isset($autodebitEdit[0]->date)) ? $autodebitEdit[0]->date : '',
+							array('id'=>'accDate', 
+								'name' => 'accDate',
+								'readonly' => 'true',
+								'data-label' => trans('messages.lbl_Date'),
+								'autocomplete' =>'off',
+								'class'=>' box20per form-control disabled')) }}
+				@endif
 				@if($request->edit_flg != 1)
 				<button type="button" id="salarybutton" style="background-color: purple; color: #fff;" 
 					onclick="return Getsalarypopup('');"  
-					class="btn box20per pt9 pb8 ml5">
+					class="btn box24per pt9 pb8 ml5">
 					{{ trans('messages.lbl_getsalary') }}
 				</button> 
 				<button type="button" id="loanbutton" style="background-color: purple; color: #fff;" 
 					onclick="return Getloanpopup('');"
-					class="btn box20per pt9 pb8 ml5">
+					class="btn box24per pt9 pb8 ml5">
 					{{ trans('messages.lbl_getloan') }}
-				</button>
-				<button type="button" id="invoicebutton" style="background-color: purple; color: #fff;" 
-					onclick="return GetInvoicepopup('');"
-					class="btn box20per pt9 pb8 ml5">
-					{{ trans('messages.lbl_getinvoiceDtl') }}
 				</button> 
 				@endif
 			</div>
@@ -136,18 +141,30 @@
 				</div>
 			</div> -->
 
+			
 			<div class="col-xs-12 mt5">
 				<div class="col-xs-3 text-right clr_blue">
 					<label>{{ trans('messages.lbl_bank') }}<span class="fr ml2 red"> * </span></label>
 				</div>
 				<div class="col-xs-9">
-					{{ Form::select('autoDebitBank',[null=>'']+$bankDetail,(isset($autodebitEdit[0]->bankIdFrom)) ? $autodebitEdit[0]->bankIdFrom.'-'.$autodebitEdit[0]->accountNumberFrom : '',
-							array('name' =>'autoDebitBank',
-										'id'=>'autoDebitBank',
+					@if(isset($autodebitEdit[0]->loanName))
+						{{ Form::text('autoDebitBankName',$autodebitEdit[0]->Bank_NickName.'-'.$autodebitEdit[0]->AccNo,
+									array('id'=>'autoDebitBankName', 
+										'name' => 'autoDebitBankName',
+										'readonly' => 'true',
 										'data-label' => trans('messages.lbl_bank'),
-										'class'=>'pl5 widthauto'))}}
+										'class'=>'pl5 widthauto disabled')) }}
+						{{ Form::hidden('autoDebitBank', $autodebitEdit[0]->bankIdFrom.'-'.$autodebitEdit[0]->accountNumberFrom , array('id' =>'autoDebitBank','name' =>'autoDebitBank')) }}
+					@else
+						{{ Form::select('autoDebitBank',[null=>'']+$bankDetail,(isset($autodebitEdit[0]->bankIdFrom)) ? $autodebitEdit[0]->bankIdFrom.'-'.$autodebitEdit[0]->accountNumberFrom : '',
+								array('name' =>'autoDebitBank',
+											'id'=>'autoDebitBank',
+											'data-label' => trans('messages.lbl_bank'),
+											'class'=>'pl5 widthauto'))}}
+					@endif
 				</div>
 			</div>
+			
 
 			<div class="col-xs-12 mt5">
 				<div class="col-xs-3 text-right clr_blue">
@@ -162,15 +179,15 @@
 				</div>
 			</div>
 
-			<!-- <div class="col-xs-12 mt5">
+			<div class="col-xs-12 mt5">
 				<div class="col-xs-3 text-right clr_blue">
 					<label>{{ trans('messages.lbl_loanname') }}
 						<span class="fr ml2 red" id = "loanrequired"> * </span>
 					</label>
 				</div>
 				<div class="col-xs-9">
-					{{ Form::hidden('hidloan', '', array('id' => 'hidloan')) }}
-					{{ Form::hidden('hidcheckDeb', '', array('id' => 'hidcheckDeb')) }}
+					<!-- {{ Form::hidden('hidloan', '', array('id' => 'hidloan')) }} -->
+					<!-- {{ Form::hidden('hidcheckDeb', '', array('id' => 'hidcheckDeb')) }} -->
 					{{ Form::hidden('hidloanId', '', array('id' => 'hidloanId')) }}
 					{{ Form::hidden('hidempId', '', array('id' => 'hidempId')) }}
 					{{ Form::text('loanName',(isset($autodebitEdit[0]->loanName)) ? $autodebitEdit[0]->loanName : '',
@@ -187,7 +204,7 @@
 						</button> 
 					@endif
 				</div>
-			</div> -->
+			</div>
 
 			<div class="col-xs-12 mt5">
 				<div class="col-xs-3 text-right clr_blue">

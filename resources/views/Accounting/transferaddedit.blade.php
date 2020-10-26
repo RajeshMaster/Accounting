@@ -70,7 +70,7 @@
 			</div>
 		</div>
 		<div class="col-xs-12 pt10">
-			<div class="col-xs-5" style="text-align: left;margin-left: -15px;">
+			<div class="col-xs-6" style="text-align: left;margin-left: -15px;">
 				<button type="button" onclick="javascript:addedit('transferCash','{{ $request->mainmenu }}');" class="btn btn-success box25per pt9 pb8">
 					<span class="fa fa-plus"></span>&nbsp;{{ trans('messages.lbl_cash') }}
 				</button> 
@@ -81,34 +81,39 @@
 					<span class="fa fa-plus"></span>&nbsp;{{ trans('messages.lbl_autodebit') }}
 				</button> 
 			</div>
-			<div class="col-xs-7 pull-right" style="text-align: right;padding: 0px;">
+			<div class="col-xs-6 pull-right" style="text-align: right;">
+				@if($request->edit_flg != 1)
 				{{ Form::text('accDate',(isset($transferEdit[0]->date)) ? $transferEdit[0]->date : '',
 							array('id'=>'accDate', 
 								'name' => 'accDate',
 								'data-label' => trans('messages.lbl_Date'),
 								'autocomplete' =>'off',
-								'class'=>' box15per form-control dob')) }}
+								'class'=>' box20per form-control dob')) }}
+					
 					<label class="mt10 ml2 fa fa-calendar fa-lg" for="accDate" aria-hidden="true">
 					</label>
 					<a href="javascript:getdate();" class="anchorstyle">
 						<img title="Current Date" class="box15" 
 							src="{{ URL::asset('resources/assets/images/add_date.png') }}"></a>
+				@else
+					{{ Form::text('accDate',(isset($transferEdit[0]->date)) ? $transferEdit[0]->date : '',
+							array('id'=>'accDate', 
+								'name' => 'accDate',
+								'readonly' => 'true',
+								'data-label' => trans('messages.lbl_Date'),
+								'autocomplete' =>'off',
+								'class'=>' box20per form-control disabled')) }}
+				@endif
 				@if($request->edit_flg != 1)
 				<button type="button" id="salarybutton" style="background-color: purple; color: #fff;" 
 					onclick="return Getsalarypopup('');"  
-					class="btn box20per pt9 pb8 ml5">
+					class="btn box24per pt9 pb8 ml5">
 					{{ trans('messages.lbl_getsalary') }}
 				</button> 
 				<button type="button" id="loanbutton" style="background-color: purple; color: #fff;" 
 					onclick="return Getloanpopup('');"
-					class="btn box20per pt9 pb8 ml5">
+					class="btn box24per pt9 pb8 ml5">
 					{{ trans('messages.lbl_getloan') }}
-				</button>
-
-				<button type="button" id="invoicebutton" style="background-color: purple; color: #fff;" 
-					onclick="return GetInvoicepopup('');"
-					class="btn box20per pt9 pb8 ml5">
-					{{ trans('messages.lbl_getinvoiceDtl') }}
 				</button> 
 				@endif
 			</div>
@@ -140,11 +145,21 @@
 					<label>{{ trans('messages.lbl_bank_name') }}<span class="fr ml2 red"> * </span></label>
 				</div>
 				<div class="col-xs-9">
-					{{ Form::select('transferBank',[null=>'']+$bankDetail,(isset($transferEdit[0]->bankIdFrom)) ? $transferEdit[0]->bankIdFrom.'-'.$transferEdit[0]->accountNumberFrom : '',
-								array('name' =>'transferBank',
-										'id'=>'transferBank',
+					@if(isset($transferEdit[0]->Empname))
+						{{ Form::text('transferBankName',$transferEdit[0]->Bank_NickName.'-'.$transferEdit[0]->AccNo,
+									array('id'=>'transferBankName', 
+										'name' => 'transferBankName',
+										'readonly' => 'true',
 										'data-label' => trans('messages.lbl_bank'),
-										'class'=>'pl5 widthauto'))}}
+										'class'=>'pl5 widthauto disabled')) }}
+						{{ Form::hidden('transferBank', $transferEdit[0]->bankIdFrom.'-'.$transferEdit[0]->accountNumberFrom , array('id' =>'transferBank','name' =>'transferBank')) }}
+					@else
+						{{ Form::select('transferBank',[null=>'']+$bankDetail,(isset($transferEdit[0]->bankIdFrom)) ? $transferEdit[0]->bankIdFrom.'-'.$transferEdit[0]->accountNumberFrom : '',
+								array('name' =>'transferBank',
+											'id'=>'transferBank',
+											'data-label' => trans('messages.lbl_bank'),
+											'class'=>'pl5 widthauto'))}}
+					@endif
 				</div>
 			</div>
 
