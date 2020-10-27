@@ -832,7 +832,7 @@ class Accounting extends Model {
 				}
 
 				$invArr = explode(":", $value);
-				$bankAcc =explode("-", $invArr['3']);
+				$bankAcc = explode("-", $invArr['3']);
 				$insert = $db->table('acc_cashregister')
 							->insert([
 									'loan_ID' => $invArr['1'], 

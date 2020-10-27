@@ -650,6 +650,7 @@ class AccountingController extends Controller {
 		$autodebitEdit = Accounting::fetchEditData($request);
 		if ($request->edit_flg == 2) {
 			$autodebitEdit[0]->date = "";
+			$autodebitEdit[0]->loan_ID = "";
 			$autodebitEdit[0]->loanName = "";
 			$autodebitEdit[0]->fileDtl = "";
 		}
@@ -804,8 +805,8 @@ class AccountingController extends Controller {
 		$divtotal = 0;
 		$paid_amount = 0;
 		$bal_amount = 0;
-        $balance_style ="";
-        $grand_style="";
+        $balance_style = "";
+        $grand_style = "";
 
 
 		if ($request->invoiceDate != "") {
@@ -843,12 +844,12 @@ class AccountingController extends Controller {
 													'grandtotal' => $grandtotal,
 													'totalval' => $totalval,
 													'paid_amo' => $paid_amo,
-													'divtotal'=>$divtotal,
-													'paid_amount'=>$paid_amount,
+													'divtotal'=> $divtotal,
+													'paid_amount'=> $paid_amount,
                                 				    'balance_style' => $balance_style,
                                 				    'grand_style' => $grand_style,
-													'bal_amount'=>$bal_amount,
-													'getBankDtls'=>$getBankDtls,
+													'bal_amount'=> $bal_amount,
+													'getBankDtls'=> $getBankDtls,
 													]);
 	}
 

@@ -40,11 +40,11 @@
 			<table id="data" class="tablealternate box100per" style="height: 40px;">
 				<colgroup>
 					<col width="6%">
-					<col width="11%">
+					<col width="12%">
 					<col width="15%">
 					<col width="13%">
 					<col width="13%">
-					<col width="19%">
+					<col width="18%">
 					<col width="13%">
 					<col width="8%">
 				</colgroup>
