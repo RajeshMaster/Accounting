@@ -234,7 +234,6 @@ $(document).ready(function() {
 	// For Salary Select Popup
 	$('.selectsalary').click(function(){
 		var lengthOfUnchecked = $('input[class=salarychk]:not(:checked)').length;
-		alert(lengthOfUnchecked);
 		if(lengthOfUnchecked == 0){
 			alert("Please select data");
 			return false;

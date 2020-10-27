@@ -804,6 +804,10 @@ class AccountingController extends Controller {
 		$divtotal = 0;
 		$paid_amount = 0;
 		$bal_amount = 0;
+        $balance_style ="";
+        $grand_style="";
+
+
 		if ($request->invoiceDate != "") {
 			$getLoanPaid = Accounting::getLoanPaid($request,2);
 			for ($i = 0; $i < count($getLoanPaid) ; $i++) { 
@@ -829,7 +833,8 @@ class AccountingController extends Controller {
 			}
 		}
 
-		
+		// print_r($request->all());echo "<br/>";		
+		// print_r($TotEstquery);echo "<br/>";		
 		
 		return view('Accounting.invoicedetailspopup',['request' => $request,
 													'TotEstquery' => $TotEstquery,
@@ -839,6 +844,8 @@ class AccountingController extends Controller {
 													'paid_amo' => $paid_amo,
 													'divtotal'=>$divtotal,
 													'paid_amount'=>$paid_amount,
+                                				    'balance_style' => $balance_style,
+                                				    'grand_style' => $grand_style,
 													'bal_amount'=>$bal_amount,
 													]);
 	}

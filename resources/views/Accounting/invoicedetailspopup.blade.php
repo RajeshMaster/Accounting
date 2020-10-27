@@ -116,18 +116,14 @@
 											$dispval1 = $dispval;
 										}
 									}
-
+									
 									$grand_total = number_format($grandtotal);
 									$divtotal += str_replace(",", "",$grand_total);
-
 									if ($data->paid_status != 1) {
 										$grand_style = "style='font-weight:bold;color:red;'";
-										$balance += $grandtotal;
 									} else {
 										$grand_style = "style='font-weight:bold;color:green;'";
-										$paid_amo += $grandtotal;
 									}
-
 									if($data->paid_status == 1) {
 										$pay_balance = str_replace(",", "",(isset($invoice_balance[$key][0]->totalval)?$invoice_balance[$key][0]->totalval:0));
 										$gr_total = number_format($grandtotal);
@@ -152,6 +148,7 @@
 									}
 
 								?>
+
 								@if(isset($invbal[$key]))
 									@if($invbal[$key]['bal_amount'] > 0)
 										@if($invbal[$key]['bal_amount']==0)
@@ -177,6 +174,7 @@
 										$pos = strpos($balance_style, $findme);
 										$grand = strpos($grand_style, $findme);
 									?>
+
 									@if($pos == true && $grand == true)
 										@php $paidAmount = $grandtotal; @endphp
 									@else
@@ -186,6 +184,7 @@
 											@php $paidAmount = 0; @endphp
 										@endif
 									@endif
+									
 								@endif
 								{{ Form::text('invoiceAmt'.$j,($paidAmount != 0) ? number_format($paidAmount) : 0,
 									array('id'=>'invoiceAmt'.$j,
