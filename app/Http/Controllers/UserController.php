@@ -416,8 +416,20 @@ class UserController extends Controller {
 
 	public function userIdExist(Request $request){
 		
-		$datetimeExist = User::fnGetUserIdExist($request);
-		if (!empty($datetimeExist)) {
+		$userEmailIdExist = User::getUserEmailIdExist($request,1);
+
+		if (!empty($userEmailIdExist)) {
+			print_r("1");exit;
+		} else {
+			print_r("0");exit;
+		}
+	}
+
+	public function mailIdExist(Request $request){
+		
+		$userEmailIdExist = User::getUserEmailIdExist($request,2);
+
+		if (!empty($userEmailIdExist)) {
 			print_r("1");exit;
 		} else {
 			print_r("0");exit;

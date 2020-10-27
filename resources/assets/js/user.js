@@ -43,6 +43,7 @@ $(document).ready(function() {
 			submitHandler: function(form) { // for demo
 				var userid = $('#MstuserUserID').val();
 				var usercode = $('#usercode').val();
+				var email = $('#MstuserMailID').val();
 				$.ajax({
 					type: 'GET',
 					url: 'userIdExist',
@@ -65,18 +66,46 @@ $(document).ready(function() {
 							} 
 							return false;
 						} else {
-							if($('#editid').val() == "") {
-								var confirmprocess = confirm("Do You Want To Register?");
-							} else {
-								var confirmprocess = confirm("Do You Want To Update?");
-							}
-							if(confirmprocess) {
-								pageload();
-								// form.submit(); dont use this cause of double time insert in internet explorer
-								return true;
-							} else {
-								return false
-							}
+							$.ajax({
+								type: 'GET',
+								url: 'mailIdExist',
+								data: { "usercode": usercode , "email": email },
+								success: function(resp) {
+									if (resp != 0) {
+										document.getElementById('errorSectiondisplay').innerHTML = "";
+										err_invalidcer = "Email Id Already exists";
+										var error='<div align="center" style="padding: 0px;" id="inform">';
+										error+='<table cellspacing="0" class="statusBg1" cellpadding="0" border="0">';
+										error+='<tbody><tr><td style="padding: 4px 10px" align="center"><span class="innerBg" id="mc_msg_txt">'+err_invalidcer+'</span></td>';
+										error+='<td width="20" valign="top" style="padding-top: 4px; _padding-top: 2px;"><span>';
+										error+='<a href="javascript:intdisplaymessage();" class="fa fa-times" style="color:white;"/>';
+										error+='</span></td>';
+										error+='</tr></tbody></table></div>';
+										document.getElementById('errorSectiondisplay').style.display = 'block';
+										document.getElementById('errorSectiondisplay').innerHTML = error;
+										if (resp == 1) {
+											$("#MstuserMailID").focus();
+										} 
+										return false;
+									} else {
+										if($('#editid').val() == "") {
+											var confirmprocess = confirm("Do You Want To Register?");
+										} else {
+											var confirmprocess = confirm("Do You Want To Update?");
+										}
+										if(confirmprocess) {
+											pageload();
+											// form.submit(); dont use this cause of double time insert in internet explorer
+											return true;
+										} else {
+											return false
+										}
+									}
+								},
+								error: function(data) {
+									// alert(data);
+								}
+							});
 						}
 					},
 					error: function(data) {
@@ -113,6 +142,10 @@ $(document).ready(function() {
 	});
 
 });
+
+function intdisplaymessage() {
+	document.getElementById('errorSectiondisplay').style.display='none';
+}
 
 $(document).ready(function() {
 

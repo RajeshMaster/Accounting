@@ -314,18 +314,21 @@ class User extends Model {
 
 	}
 
-	public static function fnGetUserIdExist($request) {
+	public static function getUserEmailIdExist($request,$flg) {
 
 			$result = DB::table('dev_mstuser')
-
-							->SELECT('*')
-							->WHERE('userid', '=', $request->userid);
+							->SELECT('*');
 
 		if ($request->usercode != "") {
 			$result = $result->WHERE('usercode', '!=', $request->usercode);
+		} 
+		if ($flg == 1) {
+			$result = $result->WHERE('userid', '=', $request->userid);
+		} else {
+			$result = $result->WHERE('email', '=', $request->email);
 		}
-		
-			$result = $result->get();
+
+		$result = $result->get();
 
 		return $result;
 
