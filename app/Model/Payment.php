@@ -234,8 +234,6 @@ class Payment extends Model {
 		return $result;
 	}
 	public static function fnGetPaymentDetails($request,$intfrom,$intto) {
-		print_r($intfrom);echo "<br/>";
-		print_r($intto);echo "<br/>";
 		// ACCESS RIGHTS
 		// CONTRACT EMPLOYEE
 		$conditionAppend = "";
