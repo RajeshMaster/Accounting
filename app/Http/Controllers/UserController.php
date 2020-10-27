@@ -414,4 +414,14 @@ class UserController extends Controller {
 
 	}
 
+	public function userIdExist(Request $request){
+		
+		$datetimeExist = User::fnGetUserIdExist($request);
+		if (!empty($datetimeExist)) {
+			print_r("1");exit;
+		} else {
+			print_r("0");exit;
+		}
+	}
+
 }

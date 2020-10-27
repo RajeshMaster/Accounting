@@ -90,6 +90,8 @@
 
 	<fieldset>
 
+		<div id="errorSectiondisplay" align="center" class="box100per mt5"></div>
+
 		@if($request->editflg =="edit")
 
 		<div class="col-xs-12 mt15">
@@ -102,7 +104,8 @@
 
 			<div>
 
-				<label class="">{{ ($userview[0]->usercode != "") ? $userview[0]->usercode : 'Nill'}}</label>
+				<label class="" >{{ ($userview[0]->usercode != "") ? $userview[0]->usercode : 'Nill'}}</label>
+				{{ Form::hidden('usercode', ($userview[0]->usercode != "") ? $userview[0]->usercode : '' , array('id' => 'usercode')) }}
 
 			</div>
 
@@ -113,6 +116,7 @@
 		@else
 
 		<div class="col-xs-12  mt15">
+			{{ Form::hidden('usercode', '' , array('id' => 'usercode')) }}
 
 		@endif
 

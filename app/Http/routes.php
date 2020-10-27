@@ -60,6 +60,7 @@ Route::group(['prefix'=>'User', 'middleware' => 'auth'], function() {
     Route::any('view', 'UserController@view');
     Route::any('changepassword', 'UserController@changepassword');
     Route::any('passwordchangeprocess', 'UserController@passwordchangeprocess');
+    Route::any('userIdExist', 'UserController@userIdExist');
 });
 
 // Master Bank
