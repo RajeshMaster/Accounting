@@ -107,8 +107,11 @@ class LoginController extends Controller
 
 
 	        	// print_r(Auth::user()->FirstName);exit;
-
-				return Redirect::to('Menu/index?mainmenu=home&time='.date('YmdHis'));
+		        if (Session::get('userclassification') == 5) {
+					return Redirect::to('Auditing/index?mainmenu=Auditing&time='.date('YmdHis'));
+		        } else {
+					return Redirect::to('Menu/index?mainmenu=home&time='.date('YmdHis'));
+		        }
 
 			}
 

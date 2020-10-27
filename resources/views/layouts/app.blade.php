@@ -86,6 +86,7 @@
 			<div class="CMN_header_wrap">
 				<nav id="CMN_gmenu">
 					<ul class="" style="padding: 0px;">
+						@if(Session::get('userclassification') != 5)
 						<li class="home jop_btn">
 							<a class="pageload" href="{{ url('Menu/index?mainmenu=home&time='.date('Ymdhis')) }}">
 							{{ trans('messages.lbl_home') }}</a>
@@ -129,17 +130,18 @@
 							<a href="{{ url('Accounting/index?mainmenu=Accounting&time='.date('Ymdhis')) }}">
 							{{ trans('messages.lbl_accounting') }}</a>
 						</li>
-
+						@endif
 						<li class="btn_auditing jop_btn">
 							<a href="{{ url('Auditing/index?mainmenu=Auditing&time='.date('Ymdhis')) }}">
 							{{ trans('messages.lbl_auditing') }}</a>
 						</li>
-
+						@if(Session::get('userclassification') != 5)
 						@if(Session::get('userclassification') == 4 || Session::get('userclassification') == 1)
 						<li class="btn_setting jop_btn">
 							<a href="{{ url('Setting/index?mainmenu=Setting&time='.date('Ymdhis')) }}">
 							{{ trans('messages.lbl_setting') }}</a>
 						</li>
+						@endif
 						@endif
 
 						
@@ -168,6 +170,7 @@
 				@endif
 			</div>
 			<div id="salesDiv" class="CMN_sub_gmenu">
+			@if(Session::get('userclassification') != 5)
 			@if (isset($request->mainmenu) && ($request->mainmenu == "estimation") || ($request->mainmenu == "invoice")||   ($request->mainmenu == "billing") || ($request->mainmenu == "payment")|| ($request->mainmenu == "salesdetails") ||   ($request->mainmenu == "engineerdetailsplus") ||   ($request->mainmenu == "salesplus")
 			|| ($request->mainmenu == "engineerdetails"))
 			<!-- Sales sub -->
@@ -343,7 +346,7 @@
 					<a href="{{ url('AccBankDetail/index?mainmenu=AccBankDetail&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_bankdetail') }}</a>
 				</div>
 			@endif
-
+			@endif
 			@if(isset($request->mainmenu) && ($request->mainmenu == "Auditing" || $request->mainmenu == "salarycalcplus" || $request->mainmenu == "AuditingAccounting"))
 				<div id="auditing_sub_1">
 					<a href="{{ url('Auditing/index?mainmenu=Auditing&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_invoice') }}</a>
@@ -357,7 +360,7 @@
 				</div>
 			@endif
 
-
+			@if(Session::get('userclassification') != 5)
 			@if(isset($request->mainmenu) && ($request->mainmenu == "Setting" || $request->mainmenu == "Ourdetail" || $request->mainmenu == "user" || $request->mainmenu == "Bank_invoice"))
 			<!-- Setting Sub -->
 				<div id="setting_sub_1">
@@ -379,6 +382,7 @@
 				</div>
 				@endif
 			<!-- // Setting Sub -->
+			@endif
 			@endif
 			</div>
 		</div>

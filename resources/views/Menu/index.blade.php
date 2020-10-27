@@ -298,7 +298,7 @@
 			<div class="col-xs-3" style="padding-left: 53px;">
 				<div class="image_b div_inline mb15 mr90">{{ trans('messages.lbl_auditing') }}</div>
 				<div class="alinkEng ml20 mt5 tal">
-					<a class="pageload csrp btn-link" href="{{ url('Auditing/index?mainmenu=Accounting&time='.date('Ymdhis')) }}" style="color:blue;font-size: 13px;">
+					<a class="pageload csrp btn-link" href="{{ url('Auditing/index?mainmenu=Auditing&time='.date('Ymdhis')) }}" style="color:blue;font-size: 13px;">
 						{{ trans('messages.lbl_invoice') }}
 					</a>
 				</div>
