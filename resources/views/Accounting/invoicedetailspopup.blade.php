@@ -42,10 +42,10 @@
 					<col width="6%">
 					<col width="11%">
 					<col width="15%">
-					<col width="11%">
-					<col width="11%">
-					<col width="20%">
-					<col width="11%">
+					<col width="13%">
+					<col width="13%">
+					<col width="19%">
+					<col width="13%">
 					<col width="8%">
 				</colgroup>
 				<thead class="CMN_tbltheadcolor">
@@ -80,8 +80,20 @@
 							</td>
 
 							<td class="tac vam">
-								<label style="color:#136E83;">
-									{{ $data->Bank_NickName }} - {{ $data->acc_no }}
+								<label style="">
+									@if($data->bankid != 0 && $data->acc_no != "")
+										{{ $data->bankid }}-{{ $data->acc_no }}
+										@php
+											$bankId = $data->bankid.'-'.$data->acc_no;
+										@endphp
+										{{ Form::hidden('loanBank'.$j, $bankId, array('id' =>'loanBank'.$j)) }}
+									@else
+									{{ Form::select('loanBank'.$j,[null=>'']+$getBankDtls,'',
+												array('name' =>'loanBank'.$j,
+												'id'=>'loanBank'.$j,
+												'data-label' => trans('messages.lbl_bank'),
+												'class'=>'pl5 box95per' ))}}
+									@endif
 								</label>
 							</td>
 							
@@ -186,6 +198,8 @@
 									@endif
 									
 								@endif
+
+
 								{{ Form::text('invoiceAmt'.$j,($paidAmount != 0) ? number_format($paidAmount) : 0,
 									array('id'=>'invoiceAmt'.$j,
 										'name' => 'invoiceAmt'.$j,
@@ -211,7 +225,7 @@
 					@empty
 
 						<tr>
-							<td class="text-center" colspan="7" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
+							<td class="text-center" colspan="8" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
 						</tr>
 
 					@endforelse

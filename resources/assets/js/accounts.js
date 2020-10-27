@@ -317,8 +317,23 @@ $(document).ready(function() {
 			alert("Please select data");
 			return false;
 		}
+		$('input[class=invoicechk]:checked').each(function(){
+			var res = $(this).val().split("$"); 
+			$('#'+"loanBank"+res[3]).attr("style", "background-color:none");
+			$('#'+"invoiceAmt"+res[3]).attr("style", "background-color:none;text-align:right;");
+		});
+
 		$('input[class=invoicechk]:not(:checked)').each(function(){
 			var res = $(this).val().split("$"); 
+
+			if ($('#'+"loanBank"+res[3]).val() == "") {
+				$('#'+"loanBank"+res[3]).attr("style", "background-color: #E88F8F");
+				invoiceerr = 1;
+				return false;
+			} else {
+				$('#'+"loanBank"+res[3]).attr("style", "background-color:none");
+			}
+
 			if ($('#'+"invoiceAmt"+res[3]).val() == "" || $('#'+"invoiceAmt"+res[3]).val() == 0) {
 				$('#'+"invoiceAmt"+res[3]).attr("style", "background-color: #E88F8F;text-align:right;");
 				invoiceerr = 1;

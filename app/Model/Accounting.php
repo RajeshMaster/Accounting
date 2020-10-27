@@ -700,10 +700,13 @@ class Accounting extends Model {
 						->where('loan_ID','!=','')
 						->whereNotNull('loan_ID');
 		if ($flg == 2) {
-			$query = $query->where('pageFlg','=', 4);
+			$query = $query->where('pageFlg','=', 4)
+						->WHERE('loan_ID', 'LIKE', '%INV%');
+
 		} else {
-			$query = $query->where('pageFlg','=', 3);
-							
+			$query = $query->where('pageFlg','=', 3)
+						->WHERE('loan_ID', 'LIKE', '%LOAN%');
+
 		}			
 			$query = $query->get();
 		return $query;
@@ -757,7 +760,6 @@ class Accounting extends Model {
     }
 
     public static function fetchinvoicePopup($request,$invoiceArr) {
-
 		$db = DB::connection('mysql');
 		// $invoiceArr = array('INSU0001','Insuv0002');
 		// print_r($invoiceArr);exit();
@@ -775,7 +777,7 @@ class Accounting extends Model {
 		left join dev_estimatesetting on dev_estimatesetting.id = main.project_type_selection
 		left join dev_payment_registration on dev_payment_registration.invoice_id = main.id
 		left join mstbank on mstbank.AccNo = main.acc_no
-		WHERE main.del_flg = 0 AND SUBSTRING(main.quot_date,1,7) LIKE '%$date_month%'
+		WHERE main.del_flg = 0 AND main.paid_status = 1 AND SUBSTRING(main.quot_date,1,7) LIKE '%$date_month%'
 		GROUP BY user_id Order By user_id Asc,quot_date Asc) AS DDD "));
    				// ACCESS RIGHTS
 				// CONTRACT EMPLOYEE
@@ -788,9 +790,10 @@ class Accounting extends Model {
                             });
 				}
 				// END ACCESS RIGHTS
-				$Estimate = $Estimate->orderByRaw("orderbysent ASC, user_id DESC")
-					  		->get();
-				//->toSql();dd($Estimate);
+			$Estimate = $Estimate->whereNotIn('user_id', $invoiceArr)
+								->orderByRaw("orderbysent ASC, user_id DESC")
+					  			->get();
+				// ->toSql();dd($Estimate);
 			return $Estimate;
 	}
 

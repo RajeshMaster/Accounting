@@ -809,12 +809,13 @@ class AccountingController extends Controller {
 
 
 		if ($request->invoiceDate != "") {
-			$getLoanPaid = Accounting::getLoanPaid($request,2);
-			for ($i = 0; $i < count($getLoanPaid) ; $i++) { 
-				$invoicePaidArr[$i] = $getLoanPaid[$i]->loan_ID;
+			$getInvoicePaid = Accounting::getLoanPaid($request,2);
+
+			for ($i = 0; $i < count($getInvoicePaid) ; $i++) { 
+				$invoicePaidArr[$i] = $getInvoicePaid[$i]->loan_ID;
 			}
+
 			$TotEstquery = Accounting::fetchinvoicePopup($request,$invoicePaidArr);
-			// print_r($TotEstquery);exit();
 			$i = 0;
 			foreach ($TotEstquery as $key => $value) {
 				$inv[$i]['id'] = $value->id;
@@ -832,8 +833,8 @@ class AccountingController extends Controller {
 				}
 			}
 		}
+		$getBankDtls = Accounting::fetchbanknames($request);
 
-		// print_r($request->all());echo "<br/>";		
 		// print_r($TotEstquery);echo "<br/>";		
 		
 		return view('Accounting.invoicedetailspopup',['request' => $request,
@@ -847,6 +848,7 @@ class AccountingController extends Controller {
                                 				    'balance_style' => $balance_style,
                                 				    'grand_style' => $grand_style,
 													'bal_amount'=>$bal_amount,
+													'getBankDtls'=>$getBankDtls,
 													]);
 	}
 
@@ -859,7 +861,6 @@ class AccountingController extends Controller {
 	*
 	*/
 	public function invoiceaddeditprocess(Request $request) {
-	
 		$insertProcess = Accounting::insInvoiceDtls($request);
 		if($insertProcess) {
 			Session::flash('success', 'Inserted Sucessfully!'); 
