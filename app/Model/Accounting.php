@@ -832,14 +832,15 @@ class Accounting extends Model {
 				}
 
 				$invArr = explode(":", $value);
+				$bankAcc =explode("-", $invArr['3']);
 				$insert = $db->table('acc_cashregister')
 							->insert([
 									'loan_ID' => $invArr['1'], 
 									'loanName' => $invArr['0'], 
 									'date' => $request->accDate,
 									'transcationType' => 1,
-									'bankIdFrom' => $invArr['3'],
-									'accountNumberFrom' => $invArr['4'],
+									'bankIdFrom' => $bankAcc['0'],
+									'accountNumberFrom' => $bankAcc['1'],
 									'amount' => preg_replace("/,/", "", $invArr['2']),
 									'content' => "Invoice",
 									'orderId' => $orderId,

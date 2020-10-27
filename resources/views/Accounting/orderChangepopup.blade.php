@@ -64,11 +64,11 @@
 		 <h3 class="modal-title custom_align"><B>{{ trans('messages.lbl_changeOrder') }}</B></h3>
 	</div>
 	<div class="col-xs-12 mt5">
-		<div class="col-xs-5 clr_black text-left mt10">
+		<div class="col-xs-6 clr_black text-left mt10">
 			@if(isset($getBankDtls[0]->Bank_NickName))
-				<h2>
+				<h3>
 					{{ $getBankDtls[0]->Bank_NickName }} - {{ $getBankDtls[0]->accountNumberFrom }}
-				</h2>
+				</h3>
 			@endif
 		</div>
 		<div class="col-xs-6 clr_black text-right mt10" style="float: right">

@@ -82,11 +82,16 @@
 							<td class="tac vam">
 								<label style="">
 									@if($data->bankid != 0 && $data->acc_no != "")
-										{{ $data->bankid }}-{{ $data->acc_no }}
+										<!-- {{ $data->bankid }}-{{ $data->acc_no }} -->
 										@php
 											$bankId = $data->bankid.'-'.$data->acc_no;
 										@endphp
-										{{ Form::hidden('loanBank'.$j, $bankId, array('id' =>'loanBank'.$j)) }}
+
+										{{ Form::select('loanBank'.$j,[null=>'']+$getBankDtls,$bankId,
+												array('name' =>'loanBank'.$j,
+												'id'=>'loanBank'.$j,
+												'data-label' => trans('messages.lbl_bank'),
+												'class'=>'pl5 box95per' ))}}
 									@else
 									{{ Form::select('loanBank'.$j,[null=>'']+$getBankDtls,'',
 												array('name' =>'loanBank'.$j,
