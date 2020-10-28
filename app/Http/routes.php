@@ -507,16 +507,16 @@ Route::group(['prefix'=>'Accounting','middleware' => 'auth'], function() {
 // AccBankDetail Process by Rajesh
 Route::group(['prefix'=>'AccBankDetail','middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
-    Route::any('index', 'AccBankDetailController@index');
-    Route::any('add', 'AccBankDetailController@add');
-    Route::any('addeditprocess', 'AccBankDetailController@addeditprocess');
-    Route::any('Viewlist', 'AccBankDetailController@Viewlist');
+    Route::any('index', 'AccBankDetailController@index')->middleware('accessright:4');
+    Route::any('add', 'AccBankDetailController@add')->middleware('accessright:4');
+    Route::any('addeditprocess', 'AccBankDetailController@addeditprocess')->middleware('accessright:4');
+    Route::any('Viewlist', 'AccBankDetailController@Viewlist')->middleware('accessright:4');
 });
 
 // Auditing Process by Rajesh
 Route::group(['prefix'=>'Auditing','middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
-    Route::any('index', 'AuditingController@index');
+    Route::any('index', 'AuditingController@index')->middleware('accessright:4,5');
 });
 
 // Salary Calculation Process By Sastha

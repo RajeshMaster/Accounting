@@ -95,7 +95,7 @@ $(document).ready(function() {
 										}
 										if(confirmprocess) {
 											pageload();
-											// form.submit(); dont use this cause of double time insert in internet explorer
+											form.submit(); // dont use this cause of double time insert in internet explorer
 											return true;
 										} else {
 											return false
