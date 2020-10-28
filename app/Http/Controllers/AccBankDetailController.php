@@ -352,6 +352,7 @@ class AccBankDetailController extends Controller {
 			$balance -= $balVal->fee;
 		} 
 
+
 		$curBal = $baseAmtInsChk[0]->amount;
 		if ($previous_date == "") {
 			$curBal = $baseAmtInsChk[0]->amount;
