@@ -254,6 +254,21 @@
 
 				}}
 
+				<span>|</span>
+
+				{{ Form::button(
+
+								trans('messages.lbl_auditing'),
+
+								array('class'=>'pageload btn btn-link '.$disabledaudit,
+
+								'type'=>'button',
+
+								'onclick' => 'javascript:return filter(7)')) 
+
+				}}
+
+
 			</div>
 
 			<div class="col-xs-5 pm0 pr12">

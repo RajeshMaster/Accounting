@@ -39,6 +39,8 @@ class UserController extends Controller {
 		$disabledsubcontract="";
 
 		$disabledprivate="";
+		$disabledaudit="";
+
 
 	//Setting page limit
 
@@ -79,6 +81,10 @@ class UserController extends Controller {
       		} elseif ($request->filterval == 6) {
 
         		$disabledprivate="disabled fb";
+
+      		} elseif ($request->filterval == 7) {
+
+        		$disabledaudit="disabled fb";
 
       		}
 
@@ -155,14 +161,11 @@ class UserController extends Controller {
     //values for multisearch select box
 
 		$Classificationarray = array("0"=>trans('messages.lbl_staff'),
-
 									"1"=>trans('messages.lbl_conEmployee'),
-
 									"2"=>trans('messages.lbl_subEmployee'),
-
 									"3"=>trans('messages.lbl_pvtPerson'),
-
-									"4"=>trans('messages.lbl_superadmin'),);
+									"4"=>trans('messages.lbl_superadmin'),
+									"5"=>trans('messages.lbl_auditing'),);
 
 	//Query to get data
 
@@ -189,7 +192,7 @@ class UserController extends Controller {
 								  'Classificationarray'=>$Classificationarray,
 
 								  'sortMargin' => $sortMargin,
-
+								  'disabledaudit' => $disabledaudit,
 								  'request' => $request]);
 
 	}

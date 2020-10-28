@@ -240,6 +240,18 @@ class User extends Model {
 
                                       });
 
+		} else if($request->filterval == 7){
+
+						$result = $result->where(function($joincont) use ($request) {
+
+                                      $joincont->where('delflg', '=', 0)
+
+                                      		   ->where('userclassification', '=', 5)
+
+                                      		   ->where('delchgflg', '=', 0);
+
+                                      });
+
 		}
 
 		if ($request->searchmethod == 1) {
