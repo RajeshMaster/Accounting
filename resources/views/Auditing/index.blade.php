@@ -318,7 +318,7 @@
    									@else
    										@if($invbal[$key]['bal_amount']==0)
 	   										@php 
-				   								$paidAmount = 0;
+				   								$paidAmount = $grandtotal;
 				   							@endphp 
 	   										{{ number_format($grandtotal) }}
    										@else
@@ -329,9 +329,6 @@
    										@endif
    									@endif
 	   							@else
-	   								@php  
-										$paidAmount = 0;
-	   								@endphp
 
 	   								<?php 
 										$findme   = 'color:green';
@@ -340,11 +337,20 @@
 	   								?>
 
 	   								@if($pos == true && $grand == true)
+	   									@php 
+   											$paidAmount = $grandtotal ;
+   										@endphp
 	   									{{ number_format($grandtotal) }}
 	   								@else
 		   								@if($grand == true && $grand_style != "")
+		   									@php 
+	   											$paidAmount = $grandtotal ;
+	   										@endphp
 	  										{{ number_format($grandtotal) }}
 	   									@else
+	   										@php  
+												$paidAmount = 0;
+			   								@endphp
 	   										{{ 0 }}	
 		   								@endif
 	   								@endif
