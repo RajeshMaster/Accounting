@@ -170,7 +170,7 @@
 
 		<div class="col-xs-12 pm0 pull-left">
 
-			<div class="col-xs-7 pm0 CMN_display_block pull-left">
+			<div class="col-xs-8 pm0 CMN_display_block pull-left">
 
 				{{ Form::button(
 
@@ -271,7 +271,7 @@
 
 			</div>
 
-			<div class="col-xs-5 pm0 pr12">
+			<div class="col-xs-4 pm0 pr12">
 
 				<div class="form-group pm0 pull-right moveleft nodropdownsymbol" id="moveleft">
 

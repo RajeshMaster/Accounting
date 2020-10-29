@@ -5,14 +5,17 @@
 	var datetime = '<?php echo date('Ymdhis'); ?>';
 	var mainmenu = '<?php echo $request->mainmenu; ?>';
 	$(document).ready(function() {
+
 		setDatePicker("from_date");
 		setDatePicker("to_date");
-		if(mainmenu == "AuditingAccounting"){
+		if($('#hidAuth').val() == "5" || mainmenu == "AuditingAccounting"){
 			$(".divdisplay").css("display", "none");
+			$(".chnageorder").css("display", "none");
 			$('.columnspan').attr('colspan','8');
 			$('.columnspan1').attr('colspan','2');
   		}else{
   			$(".divdisplay").css("");
+  			$(".chnageorder").css("");
   			$('.columnspan').attr('colspan','9');
   			$('.columnspan1').attr('colspan','3');
   		}
@@ -154,6 +157,8 @@
 		{{ Form::hidden('editId', '', array('id' => 'editId')) }}
 		{{ Form::hidden('bankNo', '', array('id' => 'bankNo')) }}
 		{{ Form::hidden('accNo', '', array('id' => 'accNo')) }}
+		{{ Form::hidden('hidAuth', Auth::user()->userclassification, array('id' => 'hidAuth')) }}
+
 
 		<!-- Year Bar Start -->
 		{{ Form::hidden('selMonth', $request->selMonth, array('id' => 'selMonth')) }}
@@ -246,7 +251,7 @@
 							<td colspan="9" class="columnspan"> 
 								{{ $data['Bank_NickName'] }}     
 
-								<div style="text-align: right;display: inline-block;float: right">
+								<div style="text-align: right;display: inline-block;float: right" class="chnageorder">
 									<a href="javascript:changeOrderpopUp('{{ $data['bankIdFrom'] }}','{{ $data['accNo'] }}');">
 										{{ trans('messages.lbl_changeOrder') }}
 									</a>
@@ -306,7 +311,7 @@
 					@endphp 
 				@empty
 					<tr>
-						<td class="text-center" colspan="9" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
+						<td class="text-center columnspan" colspan="9" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
 					</tr>
 				@endforelse
 
