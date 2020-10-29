@@ -250,11 +250,11 @@
 			@endif
 			<!-- Session msg -->
 
-			<a class="pull-left" href="javascript:salaryselectpopup_main();">
+			<!-- <a class="pull-left" href="javascript:salaryselectpopup_main();">
 	          	<img class="box19" src="{{ URL::asset('resources/assets/images/edit.png') }}"></a>
 				<a href="javascript:salaryselectpopup_main();" class="pull-left pr10 ml5 anchorstyle" title="{{ trans('messages.lbl_cempsel') }}">
 				{{ trans('messages.lbl_cempsel') }}
-			</a>
+			</a> -->
 			
 			<!-- <div style="display: inline-block;" class="mr10 mb10 pull-right">
 				<a href="javascript:multi_reg_calc();" class="btn btn-success" title="Multiple Register" style="color: white;">
