@@ -131,7 +131,7 @@
 				@php $i++ @endphp
 				@empty
 					<tr>
-						<td class="text-center" colspan="6" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
+						<td class="text-center" colspan="8" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
 					</tr>
 				@endforelse
 			</tbody>
