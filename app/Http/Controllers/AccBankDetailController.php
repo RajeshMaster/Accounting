@@ -134,7 +134,7 @@ class AccBankDetailController extends Controller {
 				Session::flash('success', 'Inserted Sucessfully!'); 
 				Session::flash('type', 'alert-success'); 
 			} else {
-				Session::flash('type', 'Inserted Unsucessfully!'); 
+				Session::flash('danger', 'Inserted Unsucessfully!'); 
 				Session::flash('type', 'alert-danger'); 
 			}
 			Session::flash('id', $insert); 
@@ -153,7 +153,7 @@ class AccBankDetailController extends Controller {
 				Session::flash('success', 'Updated Sucessfully!'); 
 				Session::flash('type', 'alert-success'); 
 			} else {
-				Session::flash('type', 'Updated Unsucessfully!'); 
+				Session::flash('danger', 'Updated Unsucessfully!'); 
 				Session::flash('type', 'alert-danger'); 
 			}
 			Session::flash('id', $request->id); 
@@ -171,7 +171,6 @@ class AccBankDetailController extends Controller {
 	}
 
 	public function Viewlist(Request $request) {
-
 		if ($request->plimit == "") {
 			$request->plimit = 50;
 			$request->page = 1;
