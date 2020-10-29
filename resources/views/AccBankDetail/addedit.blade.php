@@ -40,6 +40,7 @@
 			{{ Form::hidden('intialValue', $request->intialValue , array('id' => 'intialValue')) }}
 			{{ Form::hidden('date_month', $request->date_month  , array('id' => 'date_month')) }}
 			{{ Form::hidden('checkflg', $request->checkflg , array('id' => 'checkflg')) }}
+			{{ Form::hidden('startdate', $request->startdate , array('id' => 'startdate')) }}
 
 	<div class="row hline pm0">
 		<div class="col-xs-12">
@@ -190,6 +191,7 @@
 			{{ Form::hidden('balance', $request->balance , array('id' => 'balance')) }}
 			{{ Form::hidden('date_month', $request->date_month  , array('id' => 'date_month')) }}
 			{{ Form::hidden('checkflg', $request->checkflg , array('id' => 'checkflg')) }}
+			{{ Form::hidden('startdate',  $request->startdate , array('id' => 'startdate')) }}
 	</div>
 
 @endsection

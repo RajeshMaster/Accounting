@@ -120,7 +120,9 @@ class AccBankDetailController extends Controller {
 	}
 
 	public function add(Request $request) {
-
+		if (!isset($request->bankid)) {
+			return Redirect::to('AccBankDetail/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
+		}
 		return view('AccBankDetail.addedit',['request' => $request]);	
 	}
 
