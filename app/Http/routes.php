@@ -568,3 +568,13 @@ Route::group(['prefix'=>'salarycalcplus','middleware' => 'auth'], function() {
     Route::any('historyTotal', 'SalarycalcplusController@historyTotal');
     // End Madasamy Code 22/05/20
 });
+
+// Audit Payment Screen Process by Rajesh
+Route::group(['prefix'=>'AudPayment','middleware' => 'auth'], function() {
+    Route::get('changelanguage', 'AjaxController@index');
+    Route::any('index', 'AudPaymentController@index')->middleware('accessright:0,1,2,3,4,5');
+    Route::any('customerspecification', 'AudPaymentController@specificationview')->middleware('accessright:0,1,2,3,4,5');
+    Route::any('customerview', 'AudPaymentController@customerview')->middleware('accessright:0,1,2,3,4,5');
+    
+
+});
