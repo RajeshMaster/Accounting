@@ -100,7 +100,7 @@
     display: block ;
 	}*/
 </style>
-{{ HTML::script('resources/assets/js/invoice.js') }}
+{{ HTML::script('resources/assets/js/auditing.js') }}
 {{ HTML::script('resources/assets/js/switch.js') }}
 {{ HTML::script('resources/assets/js/hoe.js') }}
 {{ HTML::style('resources/assets/css/extra.css') }}
@@ -111,8 +111,8 @@
 <div class="CMN_display_block" id="main_contents">
 <!-- article to select the main&sub menu -->
 <article id="auditing" class="DEC_flex_wrapper " data-category="auditing auditing_sub_1">
-	{{ Form::open(array('name'=>'frminvoiceindex', 
-						'id'=>'frminvoiceindex', 
+	{{ Form::open(array('name'=>'frmAuditingindex', 
+						'id'=>'frmAuditingindex', 
 						'url' => 'Auditing/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
 						'files'=>true,
 						'method' => 'POST')) }}
@@ -156,7 +156,7 @@
 		</div>
 	</div>
 
-	@if($request->searchmethod=="6" || $request->searchmethod=="")
+	@if($request->searchmethod == "6" || $request->searchmethod == "" || $request->searchmethod == "3")
 	<div class="box100per pr10 pl10 mt10">
 		<div class="mt10">
 			{{ Helpers::displayYear_MonthEst($account_period, $year_month, $db_year_month, $date_month, $dbnext, $dbprevious,$last_year, $current_year, $account_val) }}
@@ -166,17 +166,23 @@
 
 	<!-- End Heading -->
 	<div class="col-xs-12 pm0 pull-left">
-		
-	<!-- Session msg -->
+		<div class="col-xs-8 ml10 pm0 pull-left mt10 mb10">
+			<a href="javascript:invoiceexceldownload('{{$request->mainmenu}}', '{{ $date_month }}');"  class="btn btn-primary box125">
+				<span class="fa fa-download"></span> {{ trans('messages.lbl_download') }}
+			</a>
+		</div>
+		<!-- Session msg -->
 		@if(Session::has('success'))
 			<div class="alertboxalign" role="alert">
 				<p class="alert {{ Session::get('alert', Session::get('type') ) }}">
-	            {{ Session::get('success') }}
-	          	</p>
+					{{ Session::get('success') }}
+				</p>
 			</div>
 		@endif
 		@php Session::forget('success'); @endphp
-	<!-- Session msg -->
+		<!-- Session msg -->
+
+	</div>
 
 	<div class="mr10 ml10 mt10">
 		<div class="minh300">
@@ -204,13 +210,10 @@
 			   	<tbody>
 			   		<?php $i=0; ?>
 			   		@php 
-
-	   				$paymenttotal = 0; 
-	   				$paidtotal = 0; 
-	   				$differencetotal = 0; 
-
-
-   				@endphp
+						$paymenttotal = 0; 
+						$paidtotal = 0; 
+						$differencetotal = 0; 
+   					@endphp
 			   		@forelse($TotEstquery as $key => $data)
 			   		{{--*/ $invoice_balance[$key] = Helpers::fnfetchinvoicebalance($data->id); /*--}}
 			   			<tr>
@@ -231,28 +234,22 @@
 									</div>
 								</div>
 							</td>
-							<td class="" align="left" >
-								<div class="ml5 pt5">
-									<div class="mb2">
-										<b class="blue">{{$data->company_name}}</b>
-									</div>
-								</div>
+							<td class= "vam" align="left" >
+								<a href="javascript:customernameclick('{{ $data->company_name }}');" class="blue ml5">
+									<b class="blue">{{ $data->company_name }}</b>
+								</a>
 							</td>
-
 							<td class="" align="left" >
 								{{$data->ProjectType}}
 							</td>
-
 							<td class="" align="center" >
 								{{ $data->payment_date }}
 							</td>
-
 							<td class="" align="center" >
-
 								<!-- {{ $data->totalval }} -->
 			   					<?php  $totalval += preg_replace('/,/', '', $data->totalval); ?>
 			   					{{--*/ $getTaxquery = Helpers::fnGetTaxDetails($data->quot_date); /*--}}
-							<?php 
+								<?php 
 									if(!empty($data->totalval)) {
 										if($data->tax != 2) {
 			   								$totroundval = preg_replace("/,/", "", $data->totalval);
@@ -295,14 +292,11 @@
 			   								$balance_style = "style='font-weight:bold;color:green;'";
 			   							}
 			   						}
-			   						?>
-			   		
+			   					?>
 			   					<div class="ml5 mb2 smallBlue" <?php echo $grand_style; ?>>
 			   						{{ number_format($grandtotal) }}
 			   					</div>
-			   					
 							</td>
-
 							<td class="" align="center" >
 								@if(isset($invbal[$key]))
    									@if($invbal[$key]['bal_amount'] > 0)
@@ -360,8 +354,7 @@
 
 	   							@endif
 							</td>
-
-							<td class="" align="center" >
+							<td class="" align= "center" >
 								<div class="ml5 mb2 smallBlue" <?php echo $balance_style; ?>>
 
 	   								@if(isset($invbal[$key]))
@@ -402,22 +395,15 @@
 			   					</div>
 							</td>
 			   				@php 
-
 				   				$paymenttotal += $grandtotal; 
 				   				$paidtotal += $paidAmount; 
 				   				$differencetotal += $difftot; 
-
-
 			   				@endphp
-
-
-			   				@php $grandtotal=0; @endphp
-
-							<td class="" align="center">
-
+			   				@php $grandtotal = 0; @endphp
+							<td class= "" align= "center">
 							</td>
 						</tr>
-						<?php $i=$i+1; ?>
+						<?php $i = $i+1; ?>
 			   		@empty
 						<tr>
 							<td class="text-center" colspan="10" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
@@ -465,8 +451,8 @@
 
 	{{ Form::hidden('totalrecords', $TotEstquery->total(), array('id' => 'totalrecords')) }}
 	{{ Form::close() }}
-	{{ Form::open(array('name'=>'frminvoiceexceldownload', 
-						'id'=>'frminvoiceexceldownload', 
+	{{ Form::open(array('name'=>'frmAuditingexceldownload', 
+						'id'=>'frmAuditingexceldownload', 
 						'url' => 'Invoice/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
 						'files'=>true,
 						'method' => 'POST')) }}
@@ -480,10 +466,13 @@
 						'method' => 'POST')) }}
 		{{ Form::hidden('hdn_invoice_arr', '', array('id' => 'hdn_invoice_arr')) }}
 	{{ Form::close() }}
+
 </article>
 </div>
+
 <script type="text/javascript">
 	var recordTotal = '<?php echo $TotEstquery->total(); ?>';
 	$('#totalrecords').val(recordTotal);
 </script>
+
 @endsection

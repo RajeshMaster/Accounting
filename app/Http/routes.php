@@ -517,6 +517,7 @@ Route::group(['prefix'=>'AccBankDetail','middleware' => 'auth'], function() {
 Route::group(['prefix'=>'Auditing','middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
     Route::any('index', 'AuditingController@index')->middleware('accessright:0,1,2,3,4,5');
+    Route::any('auditingexldwnldprocess', 'AuditingController@auditingexldwnldprocess')->middleware('accessright:0,1,2,3,4,5');
 });
 
 // Salary Calculation Process By Sastha
