@@ -182,7 +182,7 @@ class AccBankDetail extends Model {
 
 	public static function AccBalance($request,$startDate,$prevDate) {
 		$startDate = substr($startDate, 0,7);
-		$curDate = date('Y-m');
+		$curDate = date('Y-m-d');
 		$db = DB::connection('mysql');
 			$query = $db->table('acc_cashregister')
 						->SELECT('transcationType','amount')
@@ -192,7 +192,7 @@ class AccBankDetail extends Model {
 						->where('delFlg','=','0');
 		
 			$query = $query->WHERERAW("SUBSTRING(date,1,7) >= '$startDate'");
-			$query = $query->WHERERAW("SUBSTRING(date,1,7) <= '$curDate'");
+			$query = $query->WHERERAW("date <= '$curDate'");
 		if ($prevDate != "") {
 			$query = $query->WHERERAW("SUBSTRING(date,1,7) <= '$prevDate'");
 		}			
