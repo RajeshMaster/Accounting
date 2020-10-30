@@ -567,3 +567,9 @@ Route::group(['prefix'=>'salarycalcplus','middleware' => 'auth'], function() {
     Route::any('historyTotal', 'SalarycalcplusController@historyTotal');
     // End Madasamy Code 22/05/20
 });
+
+// AccBankDetail Process by Rajesh
+Route::group(['prefix'=>'AudPayment','middleware' => 'auth'], function() {
+    Route::get('changelanguage', 'AjaxController@index');
+    Route::any('index', 'AudPaymentController@index')->middleware('accessright:0,1,2,3,4,5');
+});
