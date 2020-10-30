@@ -177,7 +177,8 @@
 			   				<td style="text-align: center;">
 			   					<div class="pl10 tac fll">
 			   					<?php if($data['deposit_amount']!="") { ?>
-			   					{{ $data['invoiceno'] }}
+			   					<a class="btn-link" style="color: blue !important;" href ="javascript:fngotospecification('{{ $data['id'] }}','{{ $data['invid'] }}');">
+			   					{{ $data['invoiceno'] }}</a>
 			   					<?php } else { ?>
 			   						{{ $data['invoiceno'] }}
 			   					<?php } ?>
@@ -191,7 +192,8 @@
 
 			   				<td style="{{$style_tdcomp}}">
 			   					@if($loccomp != $tempcomp)
-			   						<b>{{ $data['clientName'] }}</b>
+				   					<a class="btn-link" style="color: blue !important;" href="javascript:fncustomerview('{{ $data['clientName'] }}');">
+			   						<b>{{ $data['clientName'] }}</b></a>
 			   					@endif
 			   				</td>
 

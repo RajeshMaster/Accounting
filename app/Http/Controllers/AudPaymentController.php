@@ -228,7 +228,9 @@ class AudPaymentController extends Controller {
 			if (!isset($request->selMonth) || empty($request->selMonth)) {
 				// $dbrecordvalue this array is for CurrentYr and CurrentMonth Record
 				if ((empty($dbrecordvalue))&&(!empty($dbprevious))) {
+					if ($pre != 0) {
 						$date_month = $dbprevious[$pre-1];
+					}
 				} else {
 					if (isset($cur_key[0])) {
 						$currentkey = $cur_key[0]-1;
@@ -236,7 +238,7 @@ class AudPaymentController extends Controller {
 
 					if(empty($preArray[$currentkey])){
 						$date_month=date('Y-m');
-					}else{
+					} else {
 						if (isset($preArray[count($preArray) - 1])) {
 							$date_month = $preArray[count($preArray) - 1];
 						}
@@ -446,43 +448,24 @@ class AudPaymentController extends Controller {
 		return view('AudPayment.index',[
 
 									'g_query' => $g_query,
-
 									'get_det' => $get_det,
-
 									'g_tot_query' => $g_tot_query,
-
 									'account_period' => $account_period,
-
 									'year_month' => $year_month,
-
 									'db_year_month' => $db_year_month,
-
 									'date_month' => $date_month,
-
 									'dbnext' => $dbnext,
-
 									'dbprevious' => $dbprevious,
-
 									'last_year' => $last_year,
-
 									'paymentsortarray' => $paymentsortarray,
-
 									'gettotalforaperiod' => $gettotalforaperiod,
-
 									'current_year' => $current_year,
-
 									'account_val' => $account_val,
-
 									'allTotal' => $allTotal,
-
 									'debit_total' => $debit_total,
-
 									'bankcharge_total' => $bankcharge_total,
-
 									'credit_total' => $credit_total,
-
 									'grand_total' => $grand_total,
-
 									'request' => $request]);
 
 	}
@@ -511,7 +494,7 @@ class AudPaymentController extends Controller {
 	public function getaccount() {
 
 		$bank_id = $_REQUEST['bank_id'];
-		$res = Payment::fnGetBankAccountDetails($bank_id);
+		$res = AudPayment::fnGetBankAccountDetails($bank_id);
 		$rslt = "";
 		$type  = "";
 
@@ -529,6 +512,217 @@ class AudPaymentController extends Controller {
 		$rslt = $type."$".$res[0]->AccNo."$".$res[0]->FirstName."$".$res[0]->Branch."$".$res[0]->BankName."$". $res[0]->BranchName;
 		echo $rslt;
 		exit;
+
+	}
+
+
+	public static function specificationview(Request $request) {
+
+		if (!isset($request->invoiceid) || !isset($request->payid)) {
+			return Redirect::to('AudPayment/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
+		}
+
+		$g_prev_quey=array();
+		$get_estimate_query = AudPayment::fnGetEstimateUserDatas($request);
+		$getquery = AudPayment::fnGetEstimateUserDataEst($request);
+		// print_r($getquery); exit;
+		$get_customer_detail = AudPayment::fnGetCustomerDetailsView($getquery[0]->trading_destination_selection);
+		$datemonth=$request->selYear."-".$request->selMonth;
+		$gettaxquery =Estimation::fnGetTaxDetails($getquery[0]->quot_date);
+		$invoice_quot_date = $get_estimate_query[0]->date_month;
+		$get_tax_query = AudPayment::fnGetEstimateDtl($getquery[0]->estimate_id);
+		$get_invoice_query = AudPayment::fnfetchInvoiceDetails($request, $invoice_quot_date, $getquery[0]->trading_destination_selection);
+		// CHECK IF ALREADY DATA EXIST IN THIS MONTH
+		$get_exist = AudPayment::fnCheckDataExistSingle($get_estimate_query[0]->company_name, $invoice_quot_date, $get_estimate_query[0]->created_datetime);
+		// CHECK IF ANY PREVIOUS MONTH BALANCE
+
+		$get_balance_invoice = AudPayment::fnfetchCheckDataBalanceInvoice($invoice_quot_date,$get_estimate_query[0]->company_name);
+		$dispval_inv = 0;
+		$grandtotal_inv = 0;
+		$divtotal_inv = 0;
+		foreach ($get_balance_invoice as $key => $value) {
+			$getTaxquery = AudPayment::fnGetTaxDetails($value->quot_date);
+			if (!empty($value->totalval)) {
+				if ($value->tax == 1) {
+					$totroundval = preg_replace("/,/", "", $value->totalval);
+					$dispval_inv = (($totroundval * intval((isset($getTaxquery[0]->Tax)?$getTaxquery[0]->Tax:0)))/100);
+					$dispval_inv1 = number_format($dispval_inv);
+					$grandtotal_inv = $totroundval + $dispval_inv;
+
+				} else {
+					$totroundval = preg_replace("/,/", "", $value->totalval);
+					$dispval_inv = 0;
+					$grandtotal_inv = $totroundval + $dispval_inv;
+					$dispval_inv1 = $dispval_inv;
+				}
+			}
+			$divtotal_inv += $grandtotal_inv;
+
+		}
+
+		$ext_balance = AudPayment::fnfetchCheckDataBalancePayment($invoice_quot_date,$get_estimate_query[0]->company_name);
+		$pre_balance = 0;
+		$pre_date = array();
+
+		if (isset($ext_balance)) {
+			foreach ($ext_balance as $key => $value) {
+				$pre_balance += preg_replace("/,/", "", $value->totalval);
+				array_push($pre_date, $value->invoice_id);
+			}
+		}
+
+		if (isset($pre_date)) {
+			if (count($pre_date)>0) {
+				$g_prev_quey = AudPayment::fnGetInvoiceDtl(reset($pre_date));
+			}
+		}
+
+		$balance_invoice = $divtotal_inv - $pre_balance;
+		$i = 0;
+		$disp_record = array();
+		if (!empty($balance_invoice)) {
+			$disp_record[$i]['id'] = "";
+			$disp_record[$i]['user_id'] = "";
+			$disp_record[$i]['quot_date'] = isset($g_prev_quey[0]->payment_date) ? $g_prev_quey[0]->payment_date : "";
+			$disp_record[$i]['company_name'] = "未払残高";
+			$disp_record[$i]['payment_date'] = "";
+			$disp_record[$i]['totalval'] = $balance_invoice;//$pre_balance;
+			$disp_record[$i]['tax'] = 2;
+			$i++;
+		}
+
+		foreach ($get_invoice_query as $key => $value) {
+			$disp_record[$i]['id'] = $value->id;
+			$disp_record[$i]['user_id'] = $value->user_id;
+			$disp_record[$i]['quot_date'] = $value->quot_date;
+			$disp_record[$i]['company_name'] = $value->company_name;
+			$disp_record[$i]['payment_date'] = $value->payment_date;
+			$disp_record[$i]['totalval'] = $value->totalval;
+			$disp_record[$i]['tax'] = $value->tax;
+			$i++;
+		}
+
+		if (count($get_exist)>0) {
+			$checkboxdisabled = "disabled";
+			foreach ($get_exist as $key => $value) {
+				$disp_record[$i]['id'] = "";
+				$disp_record[$i]['user_id'] = "";
+				$disp_record[$i]['quot_date'] = $value->invoice_payment_date;
+				$disp_record[$i]['company_name'] = "入金";
+				$disp_record[$i]['payment_date'] = $value->payment_date;
+				$disp_record[$i]['totalval'] = -$value->totalval;
+				$disp_record[$i]['tax'] = 2;
+				$i++;
+			}
+		}
+
+			return view('AudPayment.paymentview',[
+									'disp_record' => $disp_record,
+									'get_estimate_query' => $get_estimate_query,
+									'get_customer_detail' => $get_customer_detail,
+									'request' => $request]);
+
+	}
+
+	public static function customerview(Request $request) {
+
+		if (!isset($request->companyname)) {
+			return Redirect::to('AudPayment/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
+		}
+
+		$companynameClick=$request->companyname;
+		if (empty($request->plimit)) {
+			$request->plimit = 50;
+		}
+
+		$query = AudPayment::fnPaymentlistview($request);
+		$payid = array();
+		$userValue=array();
+		$inv_query=array();
+		$i = 0;
+		$payment_total=0;
+		$invoice_total=0;
+
+		foreach ($query as $key => $value) {
+			$inarraylist=0;
+			$grandtotal =0;
+			$balance_amount =0;
+			$userValue[$i]['paid_id']=$value->paid_id;
+			if (!in_array($value->paid_id, $payid)) {
+				array_push($payid, $value->paid_id);
+				$inarraylist=1;
+			}
+
+			$inv_query = AudPayment::fninvoicelistview($request,$companynameClick,$value->paid_id);
+			foreach ($inv_query as $key => $data) {
+				if ($inarraylist==1) {
+					$userValue[$i]['id'] = $data->id;
+					$userValue[$i]['user_id'] = $data->user_id;
+					$userValue[$i]['company_name'] = $data->company_name;
+					$userValue[$i]['project_name'] = $data->project_name;
+					$userValue[$i]['pay_inv_date'] = $data->quot_date;
+				}
+
+				$invoice_amount =str_replace(',', '',$data->totalval);
+
+				if($data->tax !=2 ){
+					$gettaxquery = Estimation::fnGetTaxDetails($data->quot_date);
+					$totroundval = preg_replace("/,/", "", $data->totalval);
+					$dispval = (($totroundval * intval(isset($gettaxquery[0]->Tax)?$gettaxquery[0]->Tax:0))/100);
+					$dispval_inv1 = $totroundval + $dispval;
+					$grandtotal = number_format($dispval_inv1);
+					$tax_amount= str_replace(',', '',$grandtotal);
+					if ($inarraylist==1) {
+						$invoice_total +=$tax_amount;
+					}
+
+					if (!empty($tax_amount)) {
+						$data->totalval = (number_format($tax_amount));
+					}else{
+						$data->totalval ="";
+					}
+				} else{
+					if ($inarraylist==1) {
+						$invoice_total +=$invoice_amount;
+					}
+				}
+
+				if ($inarraylist==1) {
+					$userValue[$i]['totalval']=str_replace(',', '',$data->totalval);
+					$i++;
+				}
+			}
+
+			$userValue[$i]['id'] = $value->id;
+			$userValue[$i]['payment_date'] = $value->payment_date;  
+			$userValue[$i]['BankName'] = $value->BankName;
+			$payment_amount= str_replace(',', '',$value->deposit_amount);
+			$fee =str_replace(',', '',$value->bank_charge);
+			$payment_fee_amount=$payment_amount + $fee;
+			if (!empty($payment_fee_amount)) {
+				$userValue[$i]['deposit_amount'] = (number_format($payment_fee_amount));
+			}else{
+				$userValue[$i]['deposit_amount'] ="";
+			}
+
+			if (!empty($fee)) {
+				$userValue[$i]['bank_charge'] = (number_format($fee));
+			}else{
+				$userValue[$i]['bank_charge'] ="";
+			}
+				$payment_total +=$payment_fee_amount;
+				$i++;
+		}
+		$balance_amount = (isset($invoice_total)?$invoice_total:0) - (isset($payment_total)?$payment_total:0);
+		$datacount=(count($userValue)-1);
+		return view('AudPayment.customerpaymentdetails',[
+								'userValue' => $userValue,
+								'datacount' => $datacount,
+								'inv_query' => $inv_query,
+								'balance_amount' => $balance_amount,
+								'request' => $request]);
+
+
 
 	}
 
