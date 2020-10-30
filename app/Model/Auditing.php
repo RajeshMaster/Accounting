@@ -163,4 +163,27 @@ class Auditing extends Model {
 		}
 		return $Estimate;
 	}
+
+	public static function fnGetinvoiceDownload($request,$date_month) {
+		
+		$db = DB::connection('mysql');
+		$Estimate = $db->TABLE($db->raw("(SELECT main.quot_date,main.id,main.user_id,main.trading_destination_selection,main.payment_date,main.del_flg,main.copyFlg,main.project_name,
+		main.created_by,main.pdf_flg,main.project_type_selection,main.mailFlg, 
+		main.paid_date,main.paid_status,main.tax,main.estimate_id,main.company_name,main.bankid,main.bankbranchid,main.acc_no,works.amount,main.classification,
+		works.work_specific,works.quantity,works.unit_price,works.remarks,works.emp_id,(CASE 
+		WHEN main.classification = 2 THEN 3
+		ELSE 0
+		END) AS orderbysent,`dev_estimatesetting`.`ProjectType`,main.totalval 
+		FROM   tbl_work_amount_details works 
+		left join dev_invoices_registration main on works .invoice_id = main .user_id 
+		left join dev_estimatesetting on dev_estimatesetting.id = main.project_type_selection
+		WHERE works.del_flg = 0 AND main.quot_date LIKE '%$date_month%' AND main.company_name LIKE '%$request->companynameClick%'
+		GROUP BY user_id Order By user_id Asc,quot_date Asc
+			) AS DDD Order By user_id DESC"))
+		->get();
+		// ->toSql();dd($query);
+		return $Estimate;
+
+
+	}
 }

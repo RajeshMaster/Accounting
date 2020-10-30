@@ -370,17 +370,17 @@ class AuditingController extends Controller {
 		$dbnext = array();
 		$dbprevious = array();
 	}
-	$totalval　=　0;
-	$divtotal=　0;
-	$invoicetotalamount　=　(isset($query[0]->totalval)?$query[0]->totalval:0);
-	$invoicedepositamt　=　(isset($query[0]->deposit_amount)?$query[0]->deposit_amount:0);
-	$paid_amount　=　0;
-	$bal_amount　=　0;
-	$grand_style　=　"";
-	$grandtotal =　0;
-	$balance_style =　"";
-	$balance　=　0;
-	$paid_amo　=　0;
+	$totalval=0;
+	$divtotal=0;
+	$invoicetotalamount=(isset($query[0]->totalval)?$query[0]->totalval:0);
+	$invoicedepositamt=(isset($query[0]->deposit_amount)?$query[0]->deposit_amount:0);
+	$paid_amount=0;
+	$bal_amount=0;
+	$grand_style="";
+	$grandtotal=0;
+	$balance_style="";
+	$balance=0;
+	$paid_amo=0;
 	$selectboxtext = Invoice::Fntogetprojecttype($request);
 	$othersArray = array('0' => trans('messages.lbl_creating'),
 						'1' => trans('messages.lbl_approved'),
@@ -445,7 +445,7 @@ class AuditingController extends Controller {
 		$selectedYearMonth = explode("-", $request->selYearMonth);
 		$date_month = $request->selYearMonth;
 		//print_r($date_month);
-		$TotEstquery = Invoice::fnGetinvoiceDownload($request,$date_month);
+		$TotEstquery = Auditing::fnGetinvoiceDownload($request,$date_month);
 		$rowcnt = count($TotEstquery);
 		// print_r($TotEstquery);exit();
 		$template_name = 'resources/assets/uploadandtemplates/templates/invoice_details.xls';
@@ -462,12 +462,12 @@ class AuditingController extends Controller {
 			$x = 5;
 			$y = 1;
 			$z = $x + $rowcnt;
-			$totalval = 0;
-			$sumdispval1 = 0;
-			$sumtotalval = 0;
-			$sumgrandtotal = 0;
-			$grandtax = 0;
-			$get_dat　=　array();
+			$totalval=0;
+			$sumdispval1=0;
+			$sumtotalval=0;
+			$sumgrandtotal=0;
+			$grandtax=0;
+			$get_dat=array();
 			foreach ($TotEstquery as $key => $value) {
 				if($value->classification == 0) {
 					$condition = "作成中";
@@ -513,7 +513,7 @@ class AuditingController extends Controller {
 						$dispval1 = number_format($dispval);
 						$dispval1 = preg_replace("/,/", "", $dispval1);
 						$grandtotal = $totroundval + $dispval1;
-					}　else　{
+					}else{
 						$totroundval = preg_replace("/,/", "", $value->totalval);
 						$dispval1 = 0;
 						$grandtotal = $totroundval + $dispval1;
@@ -521,7 +521,7 @@ class AuditingController extends Controller {
 					$grandtax = preg_replace("/,/", "", $dispval1);
 					$sumdispval1 += $grandtax;
 					$sumgrandtotal += round($grandtotal);
-				}　else　{
+				}else{
 					$grandtotal = '0';
 					$dispval1 = 0;
 					$value->totalval='0';

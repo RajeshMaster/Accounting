@@ -245,7 +245,7 @@
 							<td class="" align="center" >
 								{{ $data->payment_date }}
 							</td>
-							<td class="" align="center" >
+							<td class="" align="right" >
 								<!-- {{ $data->totalval }} -->
 			   					<?php  $totalval += preg_replace('/,/', '', $data->totalval); ?>
 			   					{{--*/ $getTaxquery = Helpers::fnGetTaxDetails($data->quot_date); /*--}}
@@ -297,7 +297,7 @@
 			   						{{ number_format($grandtotal) }}
 			   					</div>
 							</td>
-							<td class="" align="center" >
+							<td class="" align="right" >
 								@if(isset($invbal[$key]))
    									@if($invbal[$key]['bal_amount'] > 0)
    										@if($invbal[$key]['bal_amount']==0)
@@ -354,7 +354,7 @@
 
 	   							@endif
 							</td>
-							<td class="" align= "center" >
+							<td class="" align= "right" >
 								<div class="ml5 mb2 smallBlue" <?php echo $balance_style; ?>>
 
 	   								@if(isset($invbal[$key]))
@@ -456,15 +456,8 @@
 						'url' => 'Invoice/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
 						'files'=>true,
 						'method' => 'POST')) }}
+	{{ Form::hidden('companynameClick', $request->companynameClick, array('id' => 'companynameClick')) }}
 	{{ Form::hidden('selYearMonth', '', array('id' => 'selYearMonth')) }}
-	{{ Form::close() }}
-
-	{{ Form::open(array('name'=>'frmallinvoiceexceldownload', 
-						'id'=>'frmallinvoiceexceldownload', 
-						'url' => 'Invoice/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
-						'files'=>true,
-						'method' => 'POST')) }}
-		{{ Form::hidden('hdn_invoice_arr', '', array('id' => 'hdn_invoice_arr')) }}
 	{{ Form::close() }}
 
 </article>
