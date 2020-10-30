@@ -150,7 +150,7 @@
 					<label>{{ trans('messages.lbl_bank_name') }}<span class="fr ml2 red"> * </span></label>
 				</div>
 				<div class="col-xs-9">
-					@if(isset($transferEdit[0]->Empname))
+					@if(isset($transferEdit[0]->Empname) && $request->edit_flg == 1)
 						{{ Form::text('transferBankName',$transferEdit[0]->Bank_NickName.'-'.$transferEdit[0]->AccNo,
 									array('id'=>'transferBankName', 
 										'name' => 'transferBankName',

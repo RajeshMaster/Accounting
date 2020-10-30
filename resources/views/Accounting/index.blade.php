@@ -331,11 +331,11 @@
 			<span class="pull-left mt24">
 				{{ $cashDetailsIndex->firstItem() }} ~ {{ $cashDetailsIndex->lastItem() }} / {{ $cashDetailsIndex->total() }}
 			</span>
+			{{ $cashDetailsIndex->links() }}
+			<div class="CMN_display_block flr pr14">
+				{{ $cashDetailsIndex->linkspagelimit() }}
+			</div>
 		@endif 
-		{{ $cashDetailsIndex->links() }}
-		<div class="CMN_display_block flr pr14">
-			{{ $cashDetailsIndex->linkspagelimit() }}
-		</div>
 	</div>
 
 

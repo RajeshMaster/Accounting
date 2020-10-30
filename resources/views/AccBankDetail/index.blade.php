@@ -59,6 +59,25 @@
 		</div>
 	</div>
 
+	<!-- Session msg -->
+	@if(Session::has('success'))
+		<div align="center" class="alertboxalign" role="alert">
+			<p class="alert {{ Session::get('alert', Session::get('type') ) }}">
+			{{ Session::get('success') }}
+			</p>
+		</div>
+	@endif
+	@if(Session::has('danger'))
+		<div align="center" class="alertboxalign" role="alert">
+			<p class="alert {{ Session::get('alert', Session::get('type') ) }}">
+			{{ Session::get('danger') }}
+			</p>
+		</div>
+	@endif
+	@php Session::forget('danger'); @endphp
+	@php Session::forget('success'); @endphp
+	<!-- Session msg -->
+	
 	<div class="pt43 minh300 pl15 pr15" style="padding:3px 3px 20px">
 		<table class="tablealternate CMN_tblfixed">
 			<colgroup>
@@ -140,17 +159,15 @@
 	</div>
 
 	<div class="text-center pl13">
-
 		@if(!empty($index->total()))
 			<span class="pull-left mt24">
 				{{ $index->firstItem() }} ~ {{ $index->lastItem() }} / {{ $index->total() }}
 			</span>
+			{{ $index->links() }}
+			<div class="CMN_display_block flr mr18">
+				{{ $index->linkspagelimit() }}
+			</div>
 		@endif 
-
-		{{ $index->links() }}
-		<div class="CMN_display_block flr mr18">
-			{{ $index->linkspagelimit() }}
-		</div>
 	</div>
 
 	<!-- End Heading -->
