@@ -1362,7 +1362,8 @@ return [
 
 	/* Accounting Invoice */
 	'lbl_accounting' => 'Accounting',
-	'lbl_paidamt' => 'Paid Amount',
+	'lbl_paymentamount' => '請求金額',
+	'lbl_paidamt' => '入金金額',
 
 	/* Auditing  */
 	'lbl_auditing' => 'Auditing',

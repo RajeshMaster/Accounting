@@ -201,7 +201,7 @@
 						<th class="tac">{{ trans('messages.lbl_custname') }}</th>
 						<th class="tac">{{ trans('messages.lbl_projecttitle') }}</th>
 						<th class="tac">{{ trans('messages.lbl_paymentdate') }}</th>
-						<th class="tac">{{ trans('messages.lbl_payamount') }}</th>
+						<th class="tac">{{ trans('messages.lbl_paymentamount') }}</th>
 						<th class="tac">{{ trans('messages.lbl_paidamt') }}</th>
 						<th class="tac">{{ trans('messages.lbl_difference') }}</th>
 						<th class="tac">{{ trans('messages.lbl_status') }}</th>
