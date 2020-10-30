@@ -148,13 +148,14 @@
 		{{ Form::hidden('checkdefault', '', array('id' => 'checkdefault')) }}
 		{{ Form::hidden('identEdit', 0, array('id' => 'identEdit')) }}
 
-<!-- Start Heading -->
+	<!-- Start Heading -->
 	<div class="row hline">
 		<div class="col-xs-12">
 			<img class="pull-left box35 mt10" src="{{ URL::asset('resources/assets/images/invoices-icon-3.png') }}">
 			<h2 class="pull-left pl5 mt15">{{ trans('messages.lbl_invoice') }}</h2>
 		</div>
 	</div>
+
 	@if($request->searchmethod=="6" || $request->searchmethod=="")
 	<div class="box100per pr10 pl10 mt10">
 		<div class="mt10">
@@ -162,21 +163,22 @@
 		</div>
 	</div>
 	@endif
-<!-- End Heading -->
+
+	<!-- End Heading -->
 	<div class="col-xs-12 pm0 pull-left">
 		
-		<!-- Session msg -->
-			@if(Session::has('success'))
-				<div class="alertboxalign" role="alert">
-					<p class="alert {{ Session::get('alert', Session::get('type') ) }}">
-		            {{ Session::get('success') }}
-		          	</p>
-				</div>
-			@endif
-			@php Session::forget('success'); @endphp
-		<!-- Session msg -->
+	<!-- Session msg -->
+		@if(Session::has('success'))
+			<div class="alertboxalign" role="alert">
+				<p class="alert {{ Session::get('alert', Session::get('type') ) }}">
+	            {{ Session::get('success') }}
+	          	</p>
+			</div>
+		@endif
+		@php Session::forget('success'); @endphp
+	<!-- Session msg -->
 
-		<div class="mr10 ml10 mt10">
+	<div class="mr10 ml10 mt10">
 		<div class="minh300">
 			<table class="tablealternate box100per">
 				<colgroup>
@@ -453,13 +455,13 @@
 				<span class="pull-left mt24">
 					{{ $TotEstquery->firstItem() }} ~ {{ $TotEstquery->lastItem() }} / {{ $TotEstquery->total() }}
 				</span>
+				{{ $TotEstquery->links() }}
+				<div class="CMN_display_block flr mr0">
+				{{ $TotEstquery->linkspagelimit() }}
+			</div>
 			@endif 
-			{{ $TotEstquery->links() }}
-			<div class="CMN_display_block flr mr0">
-          		{{ $TotEstquery->linkspagelimit() }}
-        	</div>
 		</div>
-		</div>
+	</div>
 
 	{{ Form::hidden('totalrecords', $TotEstquery->total(), array('id' => 'totalrecords')) }}
 	{{ Form::close() }}
