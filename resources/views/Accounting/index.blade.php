@@ -12,12 +12,12 @@
 			$(".divdisplay").css("display", "none");
 			$(".chnageorder").css("display", "none");
 			$('.columnspan').attr('colspan','8');
-			$('.columnspan1').attr('colspan','2');
+			$('.columnspan1').attr('colspan','1');
   		}else{
   			$(".divdisplay").css("");
   			$(".chnageorder").css("");
   			$('.columnspan').attr('colspan','9');
-  			$('.columnspan1').attr('colspan','3');
+  			$('.columnspan1').attr('colspan','2');
   		}
 	});
 		function mulclick(divid){
@@ -237,13 +237,14 @@
 				@forelse($cashDetails as $key => $data)
 					@if($preBankName != $data['Bank_NickName'] && $preBankName !="")
 						<tr style="background-color: #f1a2a2">
-							<td colspan="6" >
+							<td colspan="6" align="right">
 								{{ trans('messages.lbl_total') }}
 							</td>
-							<td colspan="3" class="columnspan1">
+							<td colspan="1" align="right">
 								{{ $balanceAmt }}
 								@php $balanceAmt = 0; @endphp
 							</td>
+							<td colspan="1" class="columnspan1"></td>
 						</tr>
 					@endif
 					@if($lastBankName != $data['Bank_NickName'])
@@ -317,8 +318,9 @@
 
 				@if(count($cashDetails) > 0)
 					<tr style="background-color: #f1a2a2">
-						<td colspan="6">{{ trans('messages.lbl_total') }}</td>
-						<td colspan="3" class="columnspan1">{{ $balanceAmt }}</td>
+						<td colspan="6" align="right">{{ trans('messages.lbl_total') }}</td>
+						<td colspan="1" align="right">{{ $balanceAmt }}</td>
+						<td colspan="1" class="columnspan1"></td>
 					</tr>
 				@endif
 				

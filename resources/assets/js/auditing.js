@@ -60,3 +60,12 @@ function invoiceexceldownload(mainmenu, selectedyearmonth) {
 		$("#frmAuditingexceldownload").submit();
 	}
 }
+function filter(val) {
+	$("#filter").val(val);
+	$('#plimit').val('');
+	$('#pageclick').val('');
+	$('#sorting').val('');
+	$('#searchmethod').val(6);
+	$('#frmAuditingindex').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+	$('#frmAuditingindex').submit();
+}

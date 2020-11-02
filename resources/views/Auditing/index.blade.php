@@ -166,11 +166,13 @@
 
 	<!-- End Heading -->
 	<div class="col-xs-12 pm0 pull-left">
+		@if($TotEstquery->total() != 0)
 		<div class="col-xs-8 ml10 pm0 pull-left mt10 mb10">
 			<a href="javascript:invoiceexceldownload('{{$request->mainmenu}}', '{{ $date_month }}');"  class="btn btn-primary box125">
 				<span class="fa fa-download"></span> {{ trans('messages.lbl_download') }}
 			</a>
 		</div>
+		@endif
 		<!-- Session msg -->
 		@if(Session::has('success'))
 			<div class="alertboxalign" role="alert">
@@ -181,6 +183,20 @@
 		@endif
 		@php Session::forget('success'); @endphp
 		<!-- Session msg -->
+
+		<div class="col-xs-12 pm0 pull-left">
+			<div class="box55per pm0 CMN_display_block pull-left">
+				<a class="btn btn-link {{ $disabledall }}" href="javascript:filter('1');"> {{ trans('messages.lbl_all') }} </a>
+				<span>|</span>
+				<a class="btn btn-link {{ $disabledcreating }}" href="javascript:filter('2');"> {{ trans('messages.lbl_creating') }} </a>
+				<span>|</span>
+				<a class="btn btn-link {{ $disabledapproved }}" href="javascript:filter('3');"> {{ trans('messages.lbl_approved') }} </a>
+				<span>|</span>
+				<a class="btn btn-link {{ $disabledunused }}" href="javascript:filter('4');"> {{ trans('messages.lbl_unused') }} </a>
+				<span>|</span>
+				<a class="btn btn-link {{ $disabledsend }}" href="javascript:filter('5');"> {{ trans('messages.lbl_sent') }} </a>
+			</div>
+		</div>
 
 	</div>
 
