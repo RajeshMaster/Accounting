@@ -167,7 +167,7 @@
 	<!-- End Heading -->
 	<div class="col-xs-12 pm0 pull-left">
 		@if($TotEstquery->total() != 0)
-		<div class="col-xs-8 ml10 pm0 pull-left mt10 mb10">
+		<div class="col-xs-8 ml10 pm0 pull-left mt10">
 			<a href="javascript:invoiceexceldownload('{{$request->mainmenu}}', '{{ $date_month }}');"  class="btn btn-primary box125">
 				<span class="fa fa-download"></span> {{ trans('messages.lbl_download') }}
 			</a>
@@ -184,7 +184,7 @@
 		@php Session::forget('success'); @endphp
 		<!-- Session msg -->
 
-		<div class="col-xs-12 pm0 pull-left">
+		<div class="col-xs-12 pm0 pull-left mt10 mb10">
 			<div class="box55per pm0 CMN_display_block pull-left">
 				<a class="btn btn-link {{ $disabledall }}" href="javascript:filter('1');"> {{ trans('messages.lbl_all') }} </a>
 				<span>|</span>
@@ -196,8 +196,19 @@
 				<span>|</span>
 				<a class="btn btn-link {{ $disabledsend }}" href="javascript:filter('5');"> {{ trans('messages.lbl_sent') }} </a>
 			</div>
+			<div class=" pm0 pr12">
+				<div class="form-group pm0 pull-right moveleft nodropdownsymbol" id="moveleft">
+					<a href="javascript:clearsearch()" title="Clear Search">
+						<img class="pull-left box30 mr5 " src="{{ URL::asset('resources/assets/images/clearsearch.png') }}">
+					</a>
+					{{ Form::select('invoicesort', [null=>''] + $invoicesortarray, $request->invoicesort, array('class' => 'form-control'.' ' .$request->sortstyle.' '.'CMN_sorting pull-right',
+												'id' => 'invoicesort',
+												'style' => $sortMargin,
+												'name' => 'invoicesort'))
+					}}
+				</div>
+			</div>
 		</div>
-
 	</div>
 
 	<div class="mr10 ml10 mt10">
@@ -427,7 +438,7 @@
 					@endforelse
 					@if(count($TotEstquery) != 0)
 						<tr style="background-color: #bfbbbb;">
-							<td colspan="6" align="left">
+							<td colspan="6" align="right">
 								Total
 							</td>
 							<td align="right">

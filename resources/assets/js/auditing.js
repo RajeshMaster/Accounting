@@ -1,3 +1,55 @@
+var data = {};
+$(function () {
+	var cc = 0;
+	$('#invoicesort').click(function () {
+		cc++;
+		if (cc == 2) {
+			$(this).change();
+			cc = 0;
+		}         
+	}).change (function () {
+		sortingfun();
+		cc = -1;
+	}); 
+	// MOVE SORTING
+	var ccd = 0;
+	$('#sidedesignselector').click(function () {
+		if( $('#searchmethod').val() == 1 || $('#searchmethod').val() == 2) {
+			ccd++;
+		}
+		if (ccd % 2 == 0) {
+			movediv = "+=260px"
+		} else {
+			movediv = "-=260px"
+		}
+		$('#invoicesort').animate({
+			'marginRight' : movediv //moves down
+		});
+		ccd++;
+		if( $('#searchmethod').val() == 1 || $('#searchmethod').val() == 2){
+			ccd--;
+		}  
+	});
+});
+function sortingfun() {
+	pageload();
+	$('#plimit').val(50);
+	$('#page').val('');
+	var sortselect = $('#invoicesort').val();
+	$('#sortOptn').val(sortselect);
+	var alreadySelectedOptn = $('#sortOptn').val();
+	var alreadySelectedOptnOrder = $('#sortOrder').val();
+	if (sortselect == alreadySelectedOptn) {
+		if (alreadySelectedOptnOrder == "asc") {
+			$('#sortOrder').val('desc');
+		} else {
+			$('#sortOrder').val('asc');
+		}
+	}
+	$('#checkdefault').val(1);
+	$('#frmAuditingindex').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+	$("#frmAuditingindex").submit();
+}
 function underconstruction() {
 	alert("Under Construction");
 }
@@ -68,4 +120,21 @@ function filter(val) {
 	$('#searchmethod').val(6);
 	$('#frmAuditingindex').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
 	$('#frmAuditingindex').submit();
+}
+function clearsearch() {
+	$('#plimit').val(50);
+	$('#page').val('');
+	/*$('#sortOptn').val('');*/
+	$("#filterval").val('');
+	$('#sortOrder').val('asc'); 
+	$('#singlesearch').val('');
+	$('#searchmethod').val('');
+	$('#msearchusercode').val('');
+	$('#msearchcustomer').val('');
+	$('#msearchstdate').val('');
+	$('#msearcheddate').val('');
+	$('#protype1').val('');
+	$('#protype2').val('');
+	$('#checkdefault').val('');
+	$("#frmAuditingindex").submit();
 }
