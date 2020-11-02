@@ -21,6 +21,32 @@
 		$("#frmcustomerview").submit();
 	}
 
+	function getData(month, year, flg, prevcnt, nextcnt, account_period, lastyear, currentyear, account_val) {
+
+		var yearmonth = year + "-" +  ("0" + month).substr(-2);
+		var mainmenu = $('#mainmenu').val();
+		if ((prevcnt == 0) && (flg == 0) && (parseInt(month) < account_period) && (year == lastyear)) {
+			alert("No Previous Record.");
+			//return false;
+		} else if ((nextcnt == 0) && (flg == 0) && (parseInt(month) > account_period) && (year == currentyear)) {
+			alert("No Next Record.");
+		} else {
+			if (flg == 1) {
+				$('#previou_next_year').val(year + "-" +  ("0" + month).substr(-2)); 
+			}
+
+			$('#pageclick').val('');
+			$('#selMonth').val(("0" + month).substr(-2));
+			$('#selYear').val(year);
+			$('#prevcnt').val(prevcnt);
+			$('#nextcnt').val(nextcnt);
+			$('#account_val').val(account_val);
+			$('#topclick').val('1');
+			$('#frmcustomerview').attr('action', 'customerview?mainmenu='+mainmenu+'&time='+datetime);
+			$('#frmcustomerview').submit();
+		}
+	}
+
 </script>
 
 <div class="CMN_display_block" id="main_contents">
@@ -56,6 +82,11 @@
 		<div class="col-xs-12">
 			<img class="pull-left box35 mt10" src="{{ URL::asset('resources/assets/images/payment.png') }}">
 			<h2 class="pull-left pl5 mt15">{{ trans('messages.lbl_payment') }} {{ trans('messages.lbl_view') }} {{ trans('messages.lbl_Details') }}</h2>
+		</div>
+	</div>
+	<div class="box100per pr10 pl10 mt10">
+		<div class="mt10">
+			{{ Helpers::displayYear_Monthpayment($account_period, $year_month, $db_year_month, $date_month, $dbnext, $dbprevious, $last_year, $current_year, $account_val) }}
 		</div>
 	</div>
 
@@ -113,7 +144,6 @@
 
 			   		if(!empty($inv_query)) {
 			   		for($i=$datacount; $i >= 0; $i--) {
-
 						$loc=$userValue[$i]['id'];
 							if($loc != $temp){
 								if($row==1){

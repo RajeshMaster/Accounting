@@ -442,7 +442,7 @@ class AudPayment extends Model {
 				}
 		return $update;
 	}
-	public static function fnPaymentlistview($request) {
+	public static function fnPaymentlistview($request,$intfrom,$intto) {
 		$query= DB::table('dev_payment_registration')
 						->SELECT('mstbanks.id',
 								 'dev_payment_registration.deposit_amount',
@@ -451,7 +451,8 @@ class AudPayment extends Model {
 								 'dev_payment_registration.paid_id',
 								 'mstbanks.BankName'
 								)
-						->leftjoin('mstbanks', 'dev_payment_registration.bankid', '=', 'mstbanks.id');
+						->leftjoin('mstbanks', 'dev_payment_registration.bankid', '=', 'mstbanks.id')
+						->WHEREBETWEEN('dev_payment_registration.invoice_payment_date', [$intfrom, $intto]);
 			// ACCESS RIGHTS
 			// CONTRACT EMPLOYEE
 			if (Auth::user()->userclassification == 1) {
@@ -466,6 +467,7 @@ class AudPayment extends Model {
 						->orderBy('dev_payment_registration.payment_date', 'ASC')
 						->paginate($request->plimit);
 						// ->toSql();
+						// dd($query);
 						// print_r($query); exit;
 			return $query;
 	}
@@ -541,5 +543,37 @@ class AudPayment extends Model {
 			$cards = DB::select($result);
 			return $cards;
 	}	
+
+	public static function fnGetPayment($from_date, $to_date,$companyname) {
+		// ACCESS RIGHTS
+		// CONTRACT EMPLOYEE
+		if (Auth::user()->userclassification == 1) {
+			$from_date = Auth::user()->accessDate;
+		}
+		// END ACCESS RIGHTS
+		$query=DB::TABLE(DB::raw("(SELECT SUBSTRING(invoice_payment_date, 1, 7) AS invoice_payment_date,invoice_payment_date as payment_date FROM dev_payment_registration WHERE del_flg = 0 AND company_name = '$companyname' AND (invoice_payment_date > '$from_date' AND invoice_payment_date < '$to_date') ORDER BY payment_date ASC) as tb1"))
+					->get();
+			return $query;
+	}
+
+	public static function fnGetPaymentPrevious($from_date,$companyname) {
+		// ACCESS RIGHTS
+		// CONTRACT EMPLOYEE
+		$conditionAppend = "";
+		if (Auth::user()->userclassification == 1) {
+			$to_date = Auth::user()->accessDate;
+			$conditionAppend = "AND invoice_payment_date >= '$to_date'";
+		}
+		// END ACCESS RIGHTS
+		$result=DB::TABLE(DB::raw("(SELECT SUBSTRING(invoice_payment_date, 1, 7) AS invoice_payment_date FROM dev_payment_registration WHERE del_flg = 0  AND company_name = '$companyname' AND (invoice_payment_date <= '$from_date' $conditionAppend) ORDER BY invoice_payment_date ASC) as tb1"))
+					->get();
+			return $result;
+	}
+
+	public static function fnGetPaymentNext($to_date,$companyname) {
+		$query=DB::TABLE(DB::raw("(SELECT SUBSTRING(invoice_payment_date, 1, 7) AS invoice_payment_date FROM dev_payment_registration WHERE del_flg = 0 AND company_name = '$companyname'  AND (invoice_payment_date >= '$to_date') ORDER BY invoice_payment_date ASC) as tb1"))
+					->get();
+			return $query;
+	}
 }
 ?>

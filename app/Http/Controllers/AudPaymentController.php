@@ -630,32 +630,259 @@ class AudPaymentController extends Controller {
 			return Redirect::to('AudPayment/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 		}
 
-		$companynameClick=$request->companyname;
 		if (empty($request->plimit)) {
 			$request->plimit = 50;
 		}
 
-		$query = AudPayment::fnPaymentlistview($request);
-		$payid = array();
-		$userValue=array();
-		$inv_query=array();
-		$i = 0;
-		$payment_total=0;
-		$invoice_total=0;
+		// Start Year Bar Sastha
+		$pre = 0;	
+		$date_month = "";
+		$intervaldayfrom = "16";
+		$intervaldayto = "15";
+		$g_accountperiod = AudPayment::fnGetAccountPeriod($request);
+		$account_close_yr = $g_accountperiod[0]->Closingyear;
+		$account_close_mn = $g_accountperiod[0]->Closingmonth;
+		$account_period = intval($g_accountperiod[0]->Accountperiod);
+		$splityear = explode("-", $request->previou_next_year);
 
-		foreach ($query as $key => $value) {
-			$inarraylist=0;
-			$grandtotal =0;
-			$balance_amount =0;
-			$userValue[$i]['paid_id']=$value->paid_id;
-			if (!in_array($value->paid_id, $payid)) {
-				array_push($payid, $value->paid_id);
-				$inarraylist=1;
+		if ($request->previou_next_year != "") {
+			if (intval($splityear[1]) > $account_close_mn) {
+				$last_year = intval($splityear[0]);
+				$current_year = intval($splityear[0]) + 1;
+			} else {
+				$last_year = intval($splityear[0]) - 1;
+				$current_year = intval($splityear[0]);
+			}
+		} else if ($request->selYear) {
+			if ($request->selMonth > $account_close_mn) {
+				$current_year = intval($request->selYear) + 1;
+				$last_year = intval($request->selYear);
+			} else {
+				$current_year = intval($request->selYear);
+				$last_year = intval($request->selYear) - 1;
+			}
+		} else {
+			if (date('m') > $account_close_mn) {
+			    $current_year = date('Y') + 1;
+				$last_year = date('Y');
+			} else {
+			    $current_year = date('Y');
+				$last_year = date('Y') - 1;
+			}
+		}
+
+		$year_month = array();
+		if ($account_close_mn == 12) {
+			for ($i = 1; $i <= 12; $i++) {
+				$year_month[$current_year][$i] = $i;
+			}
+		} else {
+			for ($i = ($account_close_mn + 1); $i <= 12; $i++) {
+				$year_month[$last_year][$i] = $i;
+			}
+			for ($i = 1; $i <= $account_close_mn; $i++) {
+				$year_month[$current_year][$i] = $i;
+			}
+		}
+
+		$year_month_day = $current_year . "-" . $account_close_mn . "-01";
+		$maxday = Common::fnGetMaximumDateofMonth($year_month_day);
+		$from_date = $last_year . "-" . substr("0" . $account_close_mn, -2). "-" . $intervaldayfrom;
+		$to_date = $current_year . "-" . substr("0" . ($account_close_mn + 1), -2). "-"  . $intervaldayto;
+		$est_query = AudPayment::fnGetPayment($from_date, $to_date,$request->companyname);
+		$dbrecord = array();
+		foreach ($est_query as $key => $value) {
+			$currentdate = Carbon\Carbon::createFromFormat('Y-m-d', $value->payment_date);
+			$currentdate = $currentdate->modify('first day of this month');
+			$currentdate->addDays(14);
+			$currentdate = $currentdate->format('Y-m-d');
+			if ($value->payment_date > $currentdate) {
+				$addmonth = Carbon\Carbon::createFromFormat('Y-m-d', $value->payment_date);
+				$addmonth = $addmonth->addMonths(1);
+				$addmonth = $addmonth->modify('first day of this month');
+				$addmonth = $addmonth->format('Y-m');
+				$value->invoice_payment_date = $addmonth;
 			}
 
-			$inv_query = AudPayment::fninvoicelistview($request,$companynameClick,$value->paid_id);
+			$dbrecord[] = $value->invoice_payment_date;
+		}
+
+		$est_query1 = AudPayment::fnGetPaymentPrevious($from_date,$request->companyname);
+		$dbprevious = array();
+		$dbpreviousYr = array();
+		foreach ($est_query1 as $key => $value) {
+			$dbprevious[] = $value->invoice_payment_date;
+			$dbpreviousYr[] = substr($value->invoice_payment_date, 0, 4);
+		}
+
+		$est_query2 = AudPayment::fnGetPaymentNext($to_date,$request->companyname);
+		$dbnext = array();
+		foreach ($est_query2 as $key => $value) {
+			$dbnext[] = $value->invoice_payment_date;
+		}
+
+		$dbrecord = array_unique($dbrecord);
+
+		$dbpreviouscheck = array_unique($dbprevious);
+		if(empty($dbrecord)) {
+			$db_year_month = array();
+				foreach ($dbpreviouscheck AS $dbrecordkey => $dbrecordcheck) {
+					$split_val = explode("-", $dbrecordcheck);
+					$db_year_month[$split_val[0]][intval($split_val[1])] = intval($split_val[1]);
+				}
+			} else {
+			$db_year_month = array();
+			$t = 0;
+			foreach ($dbrecord AS $dbrecordkey => $dbrecordvalue) {
+				$split_val = explode("-", $dbrecordvalue);
+				$db_year_month[$split_val[0]][intval($split_val[1])] = intval($split_val[1]);
+				$preArray[$t] = $dbrecordvalue;
+				$t++;			
+			}
+		}
+
+		if (isset($dbprevious[$pre-1])) {
+			$split_vpre = explode("-", $dbprevious[$pre-1]);
+			if ($account_close_mn == 12) {
+				if ((empty($dbrecordvalue))&&(!empty($dbprevious))) {
+					for ($i = 1; $i <= $account_close_mn; $i++) {
+						$year_month[$split_vpre[0]][$i] = $i;
+					}
+					$last_year = $split_vpre[0]- 1;
+					$current_year = $split_vpre[0];
+				} else {
+					for ($i = 1; $i <= 12; $i++) {
+						$year_month[$current_year][$i] = $i;
+					}
+				}
+			} else {
+				if ((empty($dbrecordvalue))&&(!empty($dbprevious))) {
+					for ($i = ($account_close_mn + 1); $i <= 12; $i++) {
+						$year_month[($split_vpre[0]-1)][$i] = $i;
+					}
+					for ($i = 1; $i <= $account_close_mn; $i++) {
+						$year_month[$split_vpre[0]][$i] = $i;
+					}
+					$last_year = $split_vpre[0]- 1;
+					$current_year = $split_vpre[0];
+				} else {
+					for ($i = ($account_close_mn + 1); $i <= 12; $i++) {
+						$year_month[$last_year][$i] = $i;
+					}
+					for ($i = 1; $i <= $account_close_mn; $i++) {
+						$year_month[$current_year][$i] = $i;
+					}
+				}
+			}
+
+		}
+
+		// Future USe
+		if(isset($date_month)) {
+			$split_date = explode('-', $date_month);
+		}
+
+		if (!empty($preArray)) {
+			for ($i = 0; $i < count($preArray); $i++) {
+				if ($preArray[$i] == date('Y-m')) {
+					if(isset($preArray[$i - 1])) {
+						$cur_key=array_keys($preArray,$preArray[$i - 1]);
+						if(!empty($preArray[$i - 2])) {
+							$preArray[$i] = $preArray[$i - 2];
+						} else {
+							if (isset($preArray[$cur_key[0]-1])) {
+
+								$preArray[$i] = $preArray[$cur_key[0]-1];
+							}
+						}
+					}
+				}
+			}
+		}
+
+		$currentkey = "";
+		if (!isset($request->selMonth) || empty($request->selMonth)) {
+			// $dbrecordvalue this array is for CurrentYr and CurrentMonth Record
+			if ((empty($dbrecordvalue)) && (!empty($dbprevious))) {
+				if ($pre != 0) {
+					$date_month = $dbprevious[$pre-1];
+				}
+			} else {
+				if (isset($cur_key[0])) {
+					$currentkey = $cur_key[0]-1;
+				}
+				if(empty($preArray[$currentkey])){
+					$date_month=date('Y-m');
+				} else {
+					if (isset($preArray[count($preArray) - 1])) {
+						$date_month = $preArray[count($preArray) - 1];
+					}
+				}
+			}
+		} else {
+			if (isset($request->selMonth) && !empty($request->selMonth) ) {
+				$date_month = $request->selYear . "-" . substr("0" . $request->selMonth , -2);
+			} else {
+				$date_month = $request->date_month;
+			}
+		}
+
+		if($request->selYear == "") {
+			$request->selYear = date("Y");
+			$request->selMonth = date("m");
+		}
+
+		$totaldispval = 0;
+		$date_month = $request->selYear."-".$request->selMonth;
+
+		//ACCOUNT PERIOD FOR PARTICULAR YEAR MONTH
+		$priormonth = date ('Y-m', strtotime ( '-1 month' , strtotime($date_month)));
+		$datemonths = $date_month."-".$intervaldayfrom;
+		$intervalfrom = $priormonth."-".$intervaldayfrom;
+		$intervalto = $date_month."-".$intervaldayto;
+		$premonth = date ('Y-m-d', strtotime ( '-1 month' , strtotime($intervalfrom)));
+		$account_val = Common::getAccountPeriod($year_month,$account_close_yr,$account_close_mn, $account_period);
+
+		// $g_query = AudPayment::fnGetPaymentDetails($request,$intervalfrom,$intervalto);
+		$query = AudPayment::fnPaymentlistview($request,$intervalfrom,$intervalto);
+
+		// SET FROM DATE
+		$currentfrom = Carbon\Carbon::createFromFormat('Y-m-d', $datemonths);
+		$past6months = $currentfrom->subMonths(7);
+		$past6months = $past6months->modify('first day of this month');
+		$past6months->addDays(15);
+		$oldbalance_from = $past6months->format('Y-m-d');
+		$currentto = Carbon\Carbon::createFromFormat('Y-m-d', $datemonths);
+		$past1month = $currentto->subMonths(1);
+		$past1month = $past1month->modify('first day of this month');
+		$past1month->addDays(14);
+		$oldbalance_to = $past1month->format('Y-m-d');
+
+		// End Year Bar Sastha
+
+		$companynameClick = $request->companyname;
+		// $query = AudPayment::fnPaymentlistview($request);
+		$payid = array();
+		$userValue = array();
+		$inv_query = array();
+		$i = 0;
+		$payment_total = 0;
+		$invoice_total = 0;
+
+		foreach ($query as $key => $value) {
+			$inarraylist = 0;
+			$grandtotal = 0;
+			$balance_amount = 0;
+			$userValue[$i]['paid_id'] = $value->paid_id;
+			if (!in_array($value->paid_id, $payid)) {
+				array_push($payid, $value->paid_id);
+				$inarraylist = 1;
+			}
+
+		$inv_query = AudPayment::fninvoicelistview($request,$companynameClick,$value->paid_id);
+
 			foreach ($inv_query as $key => $data) {
-				if ($inarraylist==1) {
+				if ($inarraylist == 1) {
 					$userValue[$i]['id'] = $data->id;
 					$userValue[$i]['user_id'] = $data->user_id;
 					$userValue[$i]['company_name'] = $data->company_name;
@@ -663,32 +890,32 @@ class AudPaymentController extends Controller {
 					$userValue[$i]['pay_inv_date'] = $data->quot_date;
 				}
 
-				$invoice_amount =str_replace(',', '',$data->totalval);
+				$invoice_amount = str_replace(',', '',$data->totalval);
 
-				if($data->tax !=2 ){
+				if($data->tax != 2 ){
 					$gettaxquery = Estimation::fnGetTaxDetails($data->quot_date);
 					$totroundval = preg_replace("/,/", "", $data->totalval);
 					$dispval = (($totroundval * intval(isset($gettaxquery[0]->Tax)?$gettaxquery[0]->Tax:0))/100);
 					$dispval_inv1 = $totroundval + $dispval;
 					$grandtotal = number_format($dispval_inv1);
-					$tax_amount= str_replace(',', '',$grandtotal);
-					if ($inarraylist==1) {
-						$invoice_total +=$tax_amount;
+					$tax_amount = str_replace(',', '',$grandtotal);
+					if ($inarraylist == 1) {
+						$invoice_total += $tax_amount;
 					}
 
 					if (!empty($tax_amount)) {
 						$data->totalval = (number_format($tax_amount));
-					}else{
-						$data->totalval ="";
+					} else {
+						$data->totalval = "";
 					}
 				} else{
-					if ($inarraylist==1) {
-						$invoice_total +=$invoice_amount;
+					if ($inarraylist == 1) {
+						$invoice_total += $invoice_amount;
 					}
 				}
 
-				if ($inarraylist==1) {
-					$userValue[$i]['totalval']=str_replace(',', '',$data->totalval);
+				if ($inarraylist == 1) {
+					$userValue[$i]['totalval'] = str_replace(',', '',$data->totalval);
 					$i++;
 				}
 			}
@@ -701,26 +928,40 @@ class AudPaymentController extends Controller {
 			$payment_fee_amount=$payment_amount + $fee;
 			if (!empty($payment_fee_amount)) {
 				$userValue[$i]['deposit_amount'] = (number_format($payment_fee_amount));
-			}else{
+			} else {
 				$userValue[$i]['deposit_amount'] ="";
 			}
 
 			if (!empty($fee)) {
 				$userValue[$i]['bank_charge'] = (number_format($fee));
-			}else{
+			} else {
 				$userValue[$i]['bank_charge'] ="";
 			}
-				$payment_total +=$payment_fee_amount;
-				$i++;
+			$payment_total +=$payment_fee_amount;
+			$i++;
 		}
+
 		$balance_amount = (isset($invoice_total)?$invoice_total:0) - (isset($payment_total)?$payment_total:0);
-		$datacount=(count($userValue)-1);
+		$datacount = (count($userValue)-1);
+
+		
+
 		return view('AudPayment.customerpaymentdetails',[
-								'userValue' => $userValue,
-								'datacount' => $datacount,
-								'inv_query' => $inv_query,
-								'balance_amount' => $balance_amount,
-								'request' => $request]);
+										'request' => $request,
+										'userValue' => $userValue,
+										'datacount' => $datacount,
+										'inv_query' => $inv_query,
+										'balance_amount' => $balance_amount,
+										'account_period' => $account_period,
+										'year_month' => $year_month,
+										'db_year_month' => $db_year_month,
+										'date_month' => $date_month,
+										'dbnext' => $dbnext,
+										'dbprevious' => $dbprevious,
+										'last_year' => $last_year,
+										'current_year' => $current_year,
+										'account_val' => $account_val,
+									]);
 
 
 

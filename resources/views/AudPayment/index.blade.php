@@ -5,6 +5,33 @@
 <script type="text/javascript">
 	var datetime = '<?php echo date('Ymdhis'); ?>';
 	var mainmenu = '<?php echo $request->mainmenu; ?>';
+
+	function getData(month, year, flg, prevcnt, nextcnt, account_period, lastyear, currentyear, account_val) {
+
+		var yearmonth = year + "-" +  ("0" + month).substr(-2);
+		var mainmenu = $('#mainmenu').val();
+		if ((prevcnt == 0) && (flg == 0) && (parseInt(month) < account_period) && (year == lastyear)) {
+			alert("No Previous Record.");
+			//return false;
+		} else if ((nextcnt == 0) && (flg == 0) && (parseInt(month) > account_period) && (year == currentyear)) {
+			alert("No Next Record.");
+		} else {
+			if (flg == 1) {
+				$('#previou_next_year').val(year + "-" +  ("0" + month).substr(-2)); 
+			}
+
+			$('#pageclick').val('');
+			$('#selMonth').val(("0" + month).substr(-2));
+			$('#selYear').val(year);
+			$('#prevcnt').val(prevcnt);
+			$('#nextcnt').val(nextcnt);
+			$('#account_val').val(account_val);
+			$('#topclick').val('1');
+			$('#sorting').val('');
+			$('#frmaudpaymentindex').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+			$('#frmaudpaymentindex').submit();
+		}
+	}
 </script>
 
 <style type="text/css">
