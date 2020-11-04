@@ -37,15 +37,15 @@ Class SalarycalcplusController extends Controller {
 		if ($request->plimit=="") {
 			$request->plimit = 50;
 		}
-		$getdetailsemp = SalaryCalcplus::fnGetdetailsfromemp();
-		if ($getdetailsemp == 0) {
-			$insertdetailsemp = SalaryCalcplus::fninsertdetailsfromemp($request);
-		}
+		// $getdetailsemp = SalaryCalcplus::fnGetdetailsfromemp();
+		// if ($getdetailsemp == 0) {
+		// 	$insertdetailsemp = SalaryCalcplus::fninsertdetailsfromemp($request);
+		// }
 		//START PREVIOUS CURRENT YEAR MONTH RECORD CHECK AND REGISTER
-		$temp_count = SalaryCalcplus::getTempDetails($request);
-		if ($temp_count == 0) {
-			$empdetails = SalaryCalcplus::getEmpDetailsId($request);
-		}
+		// $temp_count = SalaryCalcplus::getTempDetails($request);
+		// if ($temp_count == 0) {
+		// 	$empdetails = SalaryCalcplus::getEmpDetailsId($request);
+		// }
 		//END PREVIOUS CURRENT YEAR MONTH RECORD CHECK AND REGISTER
 		$year_month = array();
 		$db_year_month = array();
