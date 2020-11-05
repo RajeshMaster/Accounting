@@ -3565,56 +3565,55 @@ public static function addeditinv(Request $request) {
                     }
                 }      
             }
-
-
-          
         }
 
-              //download secction
-                $path= "resources/assets/uploadandtemplates/upload/Invoice";       
-                $id=$in_query[0]->user_id;
-                if(!is_dir($path)){         
-                    mkdir($path, true);         
-                }           
-                chmod($path, 0777); 
-                $files = glob($path . '/' . $id . '*.pdf');
-                if ( $files !== false )
-                {
-                    $filecount = count( $files );
-                }
-                $pdf_name = "";
-                if($in_query[0]->pdf_flg == 0){
+        //download secction
+        $path= "resources/assets/uploadandtemplates/upload/Invoice";
+        if (isset($in_query[0])) {
+            $id = $in_query[0]->user_id;
+        } else {
+             $id = "PdfDwnld";
+        } 
+       
+        if(!is_dir($path)){         
+            mkdir($path, true);         
+        }           
+        chmod($path, 0777); 
+        $files = glob($path . '/' . $id . '*.pdf');
+        if ( $files !== false ) {
+            $filecount = count( $files );
+        }
+        $pdf_name = "";
+        if(isset($in_query[0]->pdf_flg)) { 
+            if($in_query[0]->pdf_flg == 0){
                 if($filecount != 0){
-                        $pdf_name=$in_query[0]->user_id."_".str_pad($filecount , 2, '0', STR_PAD_LEFT);
-                        $pdfnamelist=$pdf_name;
-                    } else {
-                        $pdf_name=$in_query[0]->user_id;
-                        $pdfnamelist=$pdf_name;
-                    }
+                    $pdf_name=$in_query[0]->user_id."_".str_pad($filecount , 2, '0', STR_PAD_LEFT);
+                    $pdfnamelist=$pdf_name;
                 } else {
                     $pdf_name=$in_query[0]->user_id;
                     $pdfnamelist=$pdf_name;
                 }
-                // $pdfflg = Invoice::pdfflgset($in_query[0]->user_id,$pdfnamelist); 
+            } else {
+                $pdf_name=$in_query[0]->user_id;
+                $pdfnamelist=$pdf_name;
+            }
+        }
+        // $pdfflg = Invoice::pdfflgset($in_query[0]->user_id,$pdfnamelist); 
 
-                if((isset($in_query[0]->pdf_flg)?$in_query[0]->pdf_flg:"") == 0){
-                    $filepath = "resources/assets/uploadandtemplates/upload/Invoice/".$pdf_name.".pdf";
-                } else {
-                    $filepath = "resources/assets/uploadandtemplates/upload/Invoice/".$pdf_name.".pdf";
-                }
-                $pdf->Output($filepath, 'F');       
-                chmod($filepath, 0777);       
-                $pdfname = "MB_INVOICE".$date_month;       
-                header('Pragma: public');  // required      
-                header('Expires: 0');  // no cache      
-                header('Cache-Control: must-revalidate, post-check=0, pre-check=0');        
-                header('Cache-Control: private', false);        
-                header('Content-Type: application/pdf; charset=utf-8');     
-                header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($filepath)) . ' GMT');        
-                header('Content-disposition: attachment; filename=' . $pdfname . '.pdf');       
-                header("Content-Transfer-Encoding:  binary");       
-                header('Content-Length: ' . filesize($filepath)); // provide file size      
-                header('Connection: close');        
-                readfile($filepath);       
+        $filepath = "resources/assets/uploadandtemplates/upload/Invoice/".$pdf_name.".pdf";
+        $pdf->Output($filepath, 'F');       
+        chmod($filepath, 0777);       
+        $pdfname = "MB_INVOICE".$date_month;       
+        header('Pragma: public');  // required      
+        header('Expires: 0');  // no cache      
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');        
+        header('Cache-Control: private', false);        
+        header('Content-Type: application/pdf; charset=utf-8');     
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($filepath)) . ' GMT');        
+        header('Content-disposition: attachment; filename=' . $pdfname . '.pdf');       
+        header("Content-Transfer-Encoding:  binary");       
+        header('Content-Length: ' . filesize($filepath)); // provide file size      
+        header('Connection: close');        
+        readfile($filepath);       
     }
 }

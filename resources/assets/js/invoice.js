@@ -1269,59 +1269,63 @@ function cloneaddblade() {
 }
 function cloneremoveabove(thisattr) {
 	if((thisattr.id)!="removeiconid_1"){
-	var rowCount = $('#workspectable tr').length-1;
-	var currentidsplit = thisattr.id.split('_');
-	var currentid = currentidsplit[1];
-	$button = $("#othercc_"+currentid).remove();
-	var newattribute = currentid;
-	for (var i = 1; i <= (rowCount-currentid); i++) {
-		$('#othercc_'+(currentid-(-i))).attr({id: "othercc_"+newattribute});
-		$('#work_specific'+(currentid-(-i))).attr({id: "work_specific"+newattribute,name: "work_specific"+newattribute});
-		$('#quantity'+(currentid-(-i))).attr({id: "quantity"+newattribute,name: "quantity"+newattribute})
-		.attr("onkeyup","fnCalculateAmount("+newattribute+", '', '',"+rowCount+")")
-		.attr("onfocus","return fnControlAddOrRemove("+newattribute+")")
-		.attr("onblur","return fnControlAddOrRemove("+newattribute+")")
-		.attr("ondragstart","return false").attr("ondrop","return false");
+		var rowCount = $('#workspectable tr').length-1;
+		var currentidsplit = thisattr.id.split('_');
+		var currentid = currentidsplit[1];
+		$button = $("#othercc_"+currentid).remove();
+		var newattribute = currentid;
+		for (var i = 1; i <= (rowCount-currentid); i++) {
+			$('#othercc_'+(currentid-(-i))).attr({id: "othercc_"+newattribute});
+			$('#work_specific'+(currentid-(-i))).attr({id: "work_specific"+newattribute,name: "work_specific"+newattribute});
+			$('#quantity'+(currentid-(-i))).attr({id: "quantity"+newattribute,name: "quantity"+newattribute})
+			.attr("onkeyup","fnCalculateAmount("+newattribute+", '', '',"+rowCount+")")
+			.attr("onfocus","return fnControlAddOrRemove("+newattribute+")")
+			.attr("onblur","return fnControlAddOrRemove("+newattribute+")")
+			.attr("ondragstart","return false").attr("ondrop","return false");
 
-		$('#unit_price'+(currentid-(-i))).attr({id: "unit_price"+newattribute,name: "unit_price"+newattribute})
-		.attr("onkeyup","return fnCalculateAmount("+newattribute+",'','',"+rowCount+")")
-		.attr("onfocus","return fnControlAddOrRemove("+newattribute+")").attr("onblur","return fnControlAddOrRemove("+newattribute+")")
-		.attr("ondragstart","return false").attr("ondrop","return false");
-		$('#amount'+(currentid-(-i))).attr({id: "amount"+newattribute,name: "amount"+newattribute});
-		$('#remarks'+(currentid-(-i))).attr({id: "remarks"+newattribute,name: "remarks"+newattribute})
-		.attr("onfocus","return fnControlAddOrRemove("+newattribute+")").attr("onblur","return fnControlAddOrRemove("+newattribute+")")
-		.attr("onkeyup","return fnControlAddOrRemove("+newattribute+")");
-		$('#addrow'+(currentid-(-i))).attr({id: "addrow"+newattribute,name: "addrow"})
-		.attr("onclick","return fnAddTR("+newattribute+")");
-		$('#removerow'+(currentid-(-i))).attr({id: "removerow"+newattribute,name: "removerow"})
-		.attr("onclick","return fnRemoveTR("+newattribute+")");
-		$('#removeiconid_'+(currentid-(-i))).attr({id: "removeiconid_"+newattribute});
-		$('#fordisable_hdn'+(currentid-(-i))).attr({id: "fordisable_hdn"+newattribute});
-		$('#work_specific_hdn'+(currentid-(-i))).attr({id: "work_specific_hdn"+newattribute});
-		$('#quantity_hdn'+(currentid-(-i))).attr({id: "quantity_hdn"+newattribute});
-		$('#amount_hdn'+(currentid-(-i))).attr({id: "amount_hdn"+newattribute});
-		$('#amountfif'+(currentid-(-i))).attr({id: "amountfif"+newattribute});
-		$('#remarks_hdn'+(currentid-(-i))).attr({id: "remarks_hdn"+newattribute});
-		$('#fordisable_hdn'+(currentid-(-i))).attr({id: "fordisable_hdn"+newattribute});
-		$('#emp_ID'+(currentid-(-i))).attr({id: "emp_ID"+newattribute,name:"emp_ID"+newattribute});
-		$('#empKanaNames'+(currentid-(-i))).attr({id: "empKanaNames"+newattribute,name:"empKanaNames"+newattribute});
-		$('#crossid'+(currentid-(-i))).attr({id: "crossid"+newattribute,name:"crossid"+newattribute})
-		.attr("onclick","return fngetEmpty('"+newattribute+"')");;
-		$('#divid'+(currentid-(-i))).attr({id: "divid"+newattribute,name:"divid"+newattribute});
-		$('#emp').attr("onclick","return popupenableempname('invoice','"+newattribute+"')");
-		newattribute++;
+			$('#unit_price'+(currentid-(-i))).attr({id: "unit_price"+newattribute,name: "unit_price"+newattribute})
+			.attr("onkeyup","return fnCalculateAmount("+newattribute+",'','',"+rowCount+")")
+			.attr("onfocus","return fnControlAddOrRemove("+newattribute+")").attr("onblur","return fnControlAddOrRemove("+newattribute+")")
+			.attr("ondragstart","return false").attr("ondrop","return false");
+			$('#amount'+(currentid-(-i))).attr({id: "amount"+newattribute,name: "amount"+newattribute});
+			$('#remarks'+(currentid-(-i))).attr({id: "remarks"+newattribute,name: "remarks"+newattribute})
+			.attr("onfocus","return fnControlAddOrRemove("+newattribute+")").attr("onblur","return fnControlAddOrRemove("+newattribute+")")
+			.attr("onkeyup","return fnControlAddOrRemove("+newattribute+")");
+			$('#addrow'+(currentid-(-i))).attr({id: "addrow"+newattribute,name: "addrow"})
+			.attr("onclick","return fnAddTR("+newattribute+")");
+			$('#removerow'+(currentid-(-i))).attr({id: "removerow"+newattribute,name: "removerow"})
+			.attr("onclick","return fnRemoveTR("+newattribute+")");
+			$('#removeiconid_'+(currentid-(-i))).attr({id: "removeiconid_"+newattribute});
+			$('#fordisable_hdn'+(currentid-(-i))).attr({id: "fordisable_hdn"+newattribute});
+			$('#work_specific_hdn'+(currentid-(-i))).attr({id: "work_specific_hdn"+newattribute});
+			$('#quantity_hdn'+(currentid-(-i))).attr({id: "quantity_hdn"+newattribute});
+			$('#amount_hdn'+(currentid-(-i))).attr({id: "amount_hdn"+newattribute});
+			$('#amountfif'+(currentid-(-i))).attr({id: "amountfif"+newattribute});
+			$('#remarks_hdn'+(currentid-(-i))).attr({id: "remarks_hdn"+newattribute});
+			$('#fordisable_hdn'+(currentid-(-i))).attr({id: "fordisable_hdn"+newattribute});
+			$('#emp_ID'+(currentid-(-i))).attr({id: "emp_ID"+newattribute,name:"emp_ID"+newattribute});
+			$('#empKanaNames'+(currentid-(-i))).attr({id: "empKanaNames"+newattribute,name:"empKanaNames"+newattribute});
+			$('#crossid'+(currentid-(-i))).attr({id: "crossid"+newattribute,name:"crossid"+newattribute})
+			.attr("onclick","return fngetEmpty('"+newattribute+"')");;
+			$('#divid'+(currentid-(-i))).attr({id: "divid"+newattribute,name:"divid"+newattribute});
+			$('#emp').attr("onclick","return popupenableempname('invoice','"+newattribute+"')");
+			newattribute++;
+		}
+		fnCalculateTotal(rowCount);
+		fnControlAddOrRemove(newattribute);
 	}
-	fnCalculateTotal(rowCount);
-	fnControlAddOrRemove(newattribute);
-
-}
 }
 
 
-function allpdfdownload (mainmenu) {
-	var confirm_create="Do you Want to Create Invoice";
-	if(confirm(confirm_create)) {
-		$('#frminvoiceindex').attr('action', 'invoiceallPdfdownloadprocess?mainmenu='+mainmenu+'&time='+datetime);
-		$("#frminvoiceindex").submit();
+function allpdfdownload(mainmenu,countData) {
+	if (countData == 0) {
+		alert("Invoice Has Atleast One Record");
+	} else {
+		var confirm_create="Do you Want to Create Invoice";
+		if(confirm(confirm_create)) {
+			$('#frmallinvoicepdfdownload').attr('action', 'invoiceallPdfdownloadprocess?mainmenu='+mainmenu+'&time='+datetime);
+			$("#frmallinvoicepdfdownload").submit();
+		}
 	}
+	
 }

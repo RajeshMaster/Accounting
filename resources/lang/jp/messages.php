@@ -1373,7 +1373,7 @@ return [
 	'lbl_getsalary' => 'Get Salary Details',
 	'lbl_getloan' => 'Get Loan Details',
 	'lbl_notneed' => 'Not Needed',
-
+	'lbl_pdfdwnld' => 'PDF Download',
 
 	/* Salary Calc */
 	'lbl_amt_dif' => '金額差',
