@@ -171,6 +171,8 @@
 			<a href="javascript:fnassignemployee('{{ $date_month }}', '{{ $date_month }}');"  class="btn btn-warning box145"><span class="fa fa-plus"></span> {{ trans('messages.lbl_assignemployee') }}</a>
 			<a href="javascript:fninvoicecopy('{{ $date_month }}');"  class="btn btn-primary box145"><span class="fa fa-plus"></span> {{ trans('messages.lbl_multiple') }}{{ trans('messages.lbl_copy') }}</a>
 			<a href="javascript:allinvoiceexceldownload('{{$request->mainmenu}}');"  class="btn btn-primary box145"><span class="fa fa-download"></span> {{ trans('messages.lbl_invoice') }} {{ trans('messages.lbl_download') }}</a>
+
+			<a href="javascript:allpdfdownload('{{$request->mainmenu}}');"  class="btn btn-primary mt5"><span class="fa fa-download"></span> {{ trans('messages.lbl_pdffile') }} {{ trans('messages.lbl_download') }}</a>
 		</div>
 		<!-- Session msg -->
 			@if(Session::has('success'))
@@ -227,7 +229,7 @@
 			   		</tr>
 			   	</thead>
 			   	<tbody>
-			   		<?php $i=0; ?>
+			   		<?php $i=0; ?>			
 			   		@forelse($TotEstquery as $key => $data)
 			   		{{--*/ $invoice_balance[$key] = Helpers::fnfetchinvoicebalance($data->id); /*--}}
 			   			<tr>

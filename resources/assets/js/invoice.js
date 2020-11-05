@@ -436,6 +436,7 @@ function fnvalidatedatefield(tvalue) {
 		}
 }
 function newpdf(id,estimateno,pdfflg,pdfimg,mainmenu,custid) {
+	
 	var res = confirm("Do You want to Create New PDF?");
 	if(res==true) {
 		if (pdfflg == 0) {
@@ -1314,4 +1315,13 @@ function cloneremoveabove(thisattr) {
 	fnControlAddOrRemove(newattribute);
 
 }
+}
+
+
+function allpdfdownload (mainmenu) {
+	var confirm_create="Do you Want to Create Invoice";
+	if(confirm(confirm_create)) {
+		$('#frminvoiceindex').attr('action', 'invoiceallPdfdownloadprocess?mainmenu='+mainmenu+'&time='+datetime);
+		$("#frminvoiceindex").submit();
+	}
 }

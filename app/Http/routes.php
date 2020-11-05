@@ -248,6 +248,7 @@ Route::group(['prefix'=>'Invoice', 'middleware' => 'auth'], function() {
     Route::any('invoicecopyprocess', 'InvoiceController@invoicecopyprocess')->middleware('accessright:0,1,2,3,4');
     Route::any('newexceldownloadprocess', 'InvoiceController@newexceldownloadprocess')->middleware('accessright:0,1,2,3,4');
     Route::any('allinvoiceexceldownloadprocess', 'InvoiceController@allinvoiceexceldownloadprocess')->middleware('accessright:0,1,2,3,4');
+     Route::any('invoiceallPdfdownloadprocess', 'InvoiceController@invoiceallPdfdownloadprocess')->middleware('accessright:0,1,2,3,4');
 });
 
 // COMPANY EXPENSES - LOAN DETAILS
