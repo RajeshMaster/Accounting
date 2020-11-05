@@ -164,8 +164,10 @@ class AuditingController extends Controller {
 		} else {
 			$current_year = date('Y');
 			$last_year = date('Y') - 1;
-		}
+
+					}
 	}
+	// print_r($last_year);exit;
 	$year_month_day = $current_year . "-" . $account_close_mn . "-01";
 	$maxday = date('t', strtotime($year_month_day));
 	$from_date = $last_year . "-" . substr("0" . $account_close_mn, -2). "-" . substr("0" . $maxday, -2);
@@ -397,7 +399,6 @@ class AuditingController extends Controller {
 	if ($strTwoMthBefore == $strDateTime) {
 		$copyFlag = 1;
 	}
-
 	return view('Auditing.index',[
 								'account_period' => $account_period,
 								'year_month' => $year_month,
@@ -555,6 +556,14 @@ class AuditingController extends Controller {
 			header('Content-Disposition: attachment;filename="'.$flpath.'"');
 			header('Cache-Control: max-age=0');
 		})->setFilename($excel_name)->download('xls');
+	}
+
+	public function confirmProcess_ajax(Request $request) {
+
+		$updateProcess = Auditing::updInvoice($request);
+
+		$process = json_encode($updateProcess);
+		echo $process;
 	}
 
 }

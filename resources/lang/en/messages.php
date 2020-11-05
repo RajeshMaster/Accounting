@@ -1214,5 +1214,7 @@ return [
 	'lbl_changeOrder' => 'Change Order',
 	'lbl_getinvoiceDtl' => 'Get Invoice Details',
 	'lbl_invoiceDtl' => 'Invoice Details',
+	'lbl_confirm' => 'Confirm',
+	'lbl_confirmed' => 'Confirmed',
 
 ];

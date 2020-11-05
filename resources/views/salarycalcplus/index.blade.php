@@ -268,10 +268,6 @@
 					{{ trans('messages.lbl_salhistory').' '.trans('messages.lbl_total') }}
 				</a>&nbsp;
 
-				<a href="javascript:transferdetailsdownload('{{ $request->mainmenu }}');" class="btn btn-primary" title="Download" style="color: white;"><span class="fa fa-download"></span>
-					{{ trans('messages.lbl_transferdetails') }}
-				</a>&nbsp;
-
 				<a href="javascript:salaryplusdownload('{{ $request->mainmenu }}');" class="btn btn-primary" title="Download" style="color: white;"><span class="fa fa-download"></span>
 					{{ trans('messages.lbl_salledger') }}
 				</a>

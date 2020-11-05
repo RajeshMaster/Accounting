@@ -100,9 +100,11 @@ Class SalarycalcplusController extends Controller {
 			if (date('m') > $account_close_mn) {
 				$current_year = date('Y')+1;
 				$last_year = date('Y');
+			
 			} else {
 				$current_year = date('Y');
 				$last_year = date('Y') - 1;
+				
 			}
 		}
 		if ($account_close_mn == 12) {
@@ -1390,92 +1392,6 @@ Class SalarycalcplusController extends Controller {
                 $sheet->mergeCells ($merge);
             }
         }
-    }
-
-    public function transferdetailsdownload(Request $request) {
-    	$hdn_empid = explode(',', $request->hdn_empid_arr);
-    	if ($request->get_prev_yr == 1) {
-			$prev_month_ts = strtotime($request->selYear.'-'.$request->selMonth.' -1 month');
-			$date_month = date('Y-m', $prev_month_ts);
-			$date_month = explode('-', $date_month);
-			$request->selYear = $date_month[0];
-			$request->selMonth = $date_month[1];
-		}
-		$template_name = 'resources/assets/uploadandtemplates/templates/salary_details.xls';
-        $tempname = "Salary+_".$request->selMonth.'_'.$request->selYear;
-        $excel_name=$tempname;
-		Excel::load($template_name, function($objTpl) use($request, $hdn_empid) {
-			$objTpl->setActiveSheetIndex(0);
-        	$objTpl->getActiveSheet(0)->setSelectedCells('A1');
-
-			if (!isset($hdn_empid) && $hdn_empid == '') {
-				$hdn_empid = array();
-			}
-			
-	    	$salPlus = self::getSalaryDetailsTotal($hdn_empid,$request->selYear,$request->selMonth);
-			$salArr = $salPlus['salArr'];
-			$salArrTot = $salPlus['salArrTot'];
-
-	        $x = 4;
-	        $start_pos = $x;
-	        $y = 1;
-	        $z = $x + count($salArr);
-	        	
-	        $objTpl->getActiveSheet()->getStyle('A3:E3')->getBorders()->getTop()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-        	$grandtotalval = 0;
-        	foreach ($salArr as $key => $value) {
-
-        		$grandtotalval += $value['grandTotal'];
-
-        		$objTpl->getActiveSheet()->getRowDimension($x)->setRowHeight(28);
-        		$objTpl->getActiveSheet()->getStyle('A'.$x.':E'.$x)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-        		$objTpl->getActiveSheet()->getStyle('A'.$x)->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-        		$objTpl->getActiveSheet()->getStyle('A'.$x)->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-	            $objTpl->getActiveSheet()->getStyle('B'.$x)->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-	            $objTpl->getActiveSheet()->getStyle('B'.$x)->getBorders()->getLeft()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-	            $objTpl->getActiveSheet()->getStyle('C'.$x)->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-	            $objTpl->getActiveSheet()->getStyle('D'.$x)->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-	            $objTpl->getActiveSheet()->getStyle('E'.$x)->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-	            // $objTpl->getActiveSheet()->setCellValue('A'.$x, $y);
-	            $objTpl->getActiveSheet()->setCellValue('A'.$x,'=ROW()-3');
-	            $objTpl->getActiveSheet()->getStyle('B'.$x)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-	            $objTpl->getActiveSheet()->setCellValue('B'.$x, $value['Emp_ID']);
-	            $objTpl->getActiveSheet()->getStyle('E'.$x)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-	            $objTpl->getActiveSheet()->setCellValue('C'.$x, strtoupper($value['FirstName'].' '.$value['LastName']));
-	            $objTpl->getActiveSheet()->setCellValue('D'.$x, $value['KanaFirstName'].' '.$value['KanaLastName']);
-	            $objTpl->getActiveSheet()->setCellValue('E'.$x, number_format($value['grandTotal']));
-            	$objTpl->getActiveSheet()->getStyle('E'.$x)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
-	            $x++;
-	            $y++;
-        	}
-        	$end_pos = $x-1;
-
-	        $objTpl->getActiveSheet()->getStyle('A3:E3')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('BFBFBF');
-	        $objTpl->getActiveSheet()->getRowDimension($z)->setRowHeight(30);
-	        $objTpl->getActiveSheet()->getStyle('D'.$z.':'.'E'.$z)->getFont()->setBold(true);
-        	$objTpl->getActiveSheet()->getStyle('D'.$z.':'.'E'.$z)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-        	$objTpl->getActiveSheet()->getStyle('D'.$z.':'.'E'.$z)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('BFBFBF');
-	        $objTpl->getActiveSheet()->setCellValue('D'.$z, "合計");
-			// $objTpl->getActiveSheet()->setCellValue('E'.$z, number_format($grandtotalval));
-			$objTpl->getActiveSheet()->setCellValue('E'.$z,'=SUM(E'.$start_pos.':'.'E'.$end_pos.')');
-        	$objTpl->getActiveSheet()->getStyle('D'.$z)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
-        	$objTpl->getActiveSheet()->getStyle('E'.$z)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
-        	$objTpl->getActiveSheet()->mergeCells('B1:C1');
-	        $objTpl->getActiveSheet()->getRowDimension(1)->setRowHeight(30);
-        	$objTpl->getActiveSheet()->mergeCells('B2:C2');
-        	$objTpl->getActiveSheet()->getCell('B1')->setValue('株式会社Microbit');
-	        $objTpl->getActiveSheet()->getStyle('B1')->getFont()->setBold(true);
-	        $objTpl->getActiveSheet()->getStyle('D1')->getFont()->setBold(true);
-	        
-        	$objTpl->getActiveSheet()->getCell('D1')->setValue('給料月:   '.$request->selYear.'-'.$request->selMonth.' '.'振込日:   '.date('Y-m-d'));
-        	$objTpl->getActiveSheet()->setTitle('Salary_'.$request->selMonth.'_'.$request->selYear);
-        	$objTpl->setActiveSheetIndex();
-			$objTpl->getActiveSheet(0)->setSelectedCells('A1');
-        	$flpath='.xls';
-        	header('Content-Type: application/vnd.ms-excel');
-        	header('Content-Disposition: attachment;filename="'.$flpath.'"');
-        	header('Cache-Control: max-age=0');
-        })->setFilename($excel_name)->download('xls');
     }
 
     public function salaryplusPayrollSingleDownload(Request $request) {

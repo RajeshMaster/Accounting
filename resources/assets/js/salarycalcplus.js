@@ -253,30 +253,30 @@ function fngodownloadempid(mainmenu) {
 	}
 }
 
-function transferdetailsdownload(mainmenu) {
-	$('#hdn_empid_arr').val('');
-	var cbChecked = new Array();
-	var cbChecked_text_mailflg_0 = new Array();
-	var cbChecked_text_mailflg_1 = new Array();
-	if($('.checkbox:checkbox:checked').length > 0){
-		$('.checkbox:checkbox:checked').each(function() {
-			if ($(this).attr("data-mailflg") == 0) {
-	      		cbChecked[cbChecked.length] = this.value;            
-	      		cbChecked_text_mailflg_0[cbChecked_text_mailflg_0.length] = $(this).attr("data-name-empid").toUpperCase();            
-			} else {
-	      		cbChecked_text_mailflg_1[cbChecked_text_mailflg_1.length] = $(this).attr("data-name-empid").toUpperCase();            
-			}
-	    });
-	    $('#hdn_empid_arr').val(cbChecked);
-	    var confirmprocess_download = confirm("Do You Want To Download?");
-	    if(confirmprocess_download) {
-			$('#salarycalcindex').attr('action','../salarycalcplus/transferdetailsdownload?mainmenu='+mainmenu+'&time='+datetime);
-			$("#salarycalcindex").submit();
-		}
-	} else {
-		alert("Please Select Employee ID");return;
-	}
-}
+// function transferdetailsdownload(mainmenu) {
+// 	$('#hdn_empid_arr').val('');
+// 	var cbChecked = new Array();
+// 	var cbChecked_text_mailflg_0 = new Array();
+// 	var cbChecked_text_mailflg_1 = new Array();
+// 	if($('.checkbox:checkbox:checked').length > 0){
+// 		$('.checkbox:checkbox:checked').each(function() {
+// 			if ($(this).attr("data-mailflg") == 0) {
+// 	      		cbChecked[cbChecked.length] = this.value;            
+// 	      		cbChecked_text_mailflg_0[cbChecked_text_mailflg_0.length] = $(this).attr("data-name-empid").toUpperCase();            
+// 			} else {
+// 	      		cbChecked_text_mailflg_1[cbChecked_text_mailflg_1.length] = $(this).attr("data-name-empid").toUpperCase();            
+// 			}
+// 	    });
+// 	    $('#hdn_empid_arr').val(cbChecked);
+// 	    var confirmprocess_download = confirm("Do You Want To Download?");
+// 	    if(confirmprocess_download) {
+// 			$('#salarycalcindex').attr('action','../salarycalcplus/transferdetailsdownload?mainmenu='+mainmenu+'&time='+datetime);
+// 			$("#salarycalcindex").submit();
+// 		}
+// 	} else {
+// 		alert("Please Select Employee ID");return;
+// 	}
+// }
 
 // Start Madasamy 03/08/2020
 function salaryplusdownload(mainmenu) {

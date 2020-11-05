@@ -138,3 +138,28 @@ function clearsearch() {
 	$('#checkdefault').val('');
 	$("#frmAuditingindex").submit();
 }
+
+function confirmProcess(flg,invcId,i) {
+	
+	$.ajax({
+		type: 'GET',
+		dataType: "JSON",
+		url: 'confirmProcess_ajax',
+		data: {"flg": flg,
+				"invcId": invcId},
+		success: function(resp) {
+			if (resp) {
+				if (flg == 0) {
+					$(".aaaaa"+i).css("display", "");
+					$(".bbbb"+i).css("display", "none");
+				} else {
+					$(".bbbb"+i).css("display", "");
+					$(".aaaaa"+i).css("display", "none");
+				}
+			}
+		},
+		error: function(data) {
+			// alert(data.status);
+		}
+	});
+}

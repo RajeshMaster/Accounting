@@ -720,6 +720,7 @@ GROUP BY user_id Order By user_id Asc,quot_date Asc
 			'company_name' => $request->companynames,
 			'pdf_flg' => 0,
 			'mailFlg' => 0,
+			'confirmFlg' => 0,
 			'memo' => $request->memo,
 		];
 

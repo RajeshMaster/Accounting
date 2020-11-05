@@ -130,7 +130,7 @@ class Auditing extends Model {
 					main.del_flg,main.copyFlg,main.project_name,main.classification,
 					main.created_by,main.pdf_flg,main.project_type_selection,main.mailFlg, 
 					main.paid_date,main.paid_status,main.tax,main.estimate_id,main.company_name,
-					main.bankid,main.bankbranchid,main.acc_no,works.amount,works.work_specific,
+					main.bankid,main.bankbranchid,main.acc_no,works.amount,main.confirmFlg,works.work_specific,
 					works.quantity,works.unit_price,works.remarks,works.emp_id,
 					(CASE WHEN main.classification = 2 THEN 3
 						ELSE 0
@@ -185,5 +185,20 @@ class Auditing extends Model {
 		return $Estimate;
 
 
+	}
+
+
+	public static function updInvoice($request) {
+
+		$name = Session::get('FirstName').' '.Session::get('LastName');
+		$update=DB::table('dev_invoices_registration')
+						->where('user_id', $request->invcId)
+						->update(
+							array(
+								'confirmFlg' => $request->flg,
+								'updated_by' => $name
+							)
+						);
+		return $update;
 	}
 }

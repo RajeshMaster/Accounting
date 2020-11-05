@@ -428,6 +428,23 @@
 			   				@endphp
 			   				@php $grandtotal = 0; @endphp
 							<td class= "" align= "center">
+								@if($data->confirmFlg == 0)
+									<a href="javascript:confirmProcess('1', '{{ $data->user_id }}', '{{ $i }}');" class="blue ml5 aaaaa{{ $i }}">
+										<b class="blue">{{ trans('messages.lbl_confirm') }}</b>
+									</a>
+
+									<a href="javascript:confirmProcess('0', '{{ $data->user_id }}', '{{ $i }}');" style="display: none"  class="red ml5 bbbb{{ $i }}" >
+										<b class="red">{{ trans('messages.lbl_confirmed') }}</b>
+									</a>
+								@else
+									<a href="javascript:confirmProcess('1', '{{ $data->user_id }}', '{{ $i }}');" class="blue ml5 aaaaa{{ $i }}"style="display: none">
+										<b class="blue">{{ trans('messages.lbl_confirm') }}</b>
+									</a>
+									<a href="javascript:confirmProcess('0', '{{ $data->user_id }}', '{{ $i }}');"  class="red ml5 bbbb{{ $i }}">
+										<b class="red">{{ trans('messages.lbl_confirmed') }}</b>
+									</a>
+								@endif
+
 							</td>
 						</tr>
 						<?php $i = $i+1; ?>
