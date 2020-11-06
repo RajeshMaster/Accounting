@@ -1,5 +1,11 @@
+
+{{ HTML::script('resources/assets/js/lib/bootstrap-datetimepicker.js') }}
+{{ HTML::style('resources/assets/css/lib/bootstrap-datetimepicker.min.css') }}
+
 <script type="text/javascript">
   $(document).ready(function() {
+    setDatePicker("dob");
+    
     $('#swaptable1').delegate('tr', 'click' , function(){
       if (event.target.type !== 'radio') {
         if (event.target.nodeName != "SPAN") {
@@ -55,8 +61,6 @@
 
 'method'=>'POST', 'class' => '','id' => 'settingform')) }}
 
-{{ Form::hidden('countryflg', $request->countryflg, array('id' => 'countryflg')) }}
-{{ Form::hidden('tableselect', $request->tableselect, array('id' => 'tableselect')) }}
 {{ Form::hidden('hid_txtval', '', array('id' => 'hid_txtval')) }}
 {{ Form::hidden('hid_txt2val', '', array('id' => 'hid_txt2val')) }}
 {{ Form::hidden('hid_txt3val', '', array('id' => 'hid_txt3val')) }}
@@ -160,92 +164,54 @@
       <col width="20%">
       <col width="17%">
       <tbody class="box100per h35">
-
         @php ($i = 1)
-        <?php $tempspan="";?>
         @forelse($query as $count => $data)
-
-        <tr class="h37" onclick="fnrdocheckthreefield(
+          <tr class="h37" onclick="fnrdocheckthreefield(
                   '{{ $data->$selectfiled['1'] }}','{{ $data->$selectfiled['2'] }}',
                   '{{ $data->$selectfiled['3'] }}','{{ $data->$selectfiled['0'] }}');">
-          <td class="text-center" title="Select">
 
-            <input type="radio" name="rdoedit" id="rdoedit{{ $data->$selectfiled['0'] }}"
+            <td class="text-center" title="Select">
+              <input type="radio" name="rdoedit" id="rdoedit{{ $data->$selectfiled['0'] }}"
                    class="h13 w13"  onclick="fnrdocheckthreefield(
                   '{{ $data->$selectfiled['1'] }}','{{ $data->$selectfiled['2'] }}',
                   '{{ $data->$selectfiled['3'] }}','{{ $data->$selectfiled['0'] }}');">
               {{ Form::hidden('rdoid', $data->$selectfiled['0'] , array('id' => 'rdoid')) }}  
-          </td>
+            </td>
 
-          <td class="text-center pt7">{{ $i++ }}
-          </td>
+            <td class="text-center pt7">{{ $i++ }}</td>
+            <td class="pl5 pt7" id="datanametd2{{$data->$selectfiled['0']}}">{{ $data->$selectfiled['1'] }}
+              <input type="hidden" name="hiddenselectvalue"  id="dataname1{{$data->$selectfiled['0']}}" value="{{ $data->$selectfiled['1'] }}">
+            </td>
 
-          <td class="pl5 pt7" id="datanametd2{{$data->$selectfiled['0']}}">
+            <td class="pl5 pt7" id="dataname2{{$data->$selectfiled['0']}}">{{ $data->$selectfiled['2'] }}</td>
 
-          <?php
+            <td class="pl5 pt7" id="dataname3{{$data->$selectfiled['0']}}">{{ $data->$selectfiled['3'] }}</td>
 
-          if($tempspan!=$data->$selectfiled['1']) {
+            <td class="tac pt7" title="Use/Not Use">
 
-            $tempspan=$data->$selectfiled['1'];
-
-            echo $data->$selectfiled['1'];
-
-          }?>
-
-          <input type="hidden" name="hiddenselectvalue"  id="dataname1{{$data->$selectfiled['0']}}" value="{{ $data->selectfield }}">
-
-          </td>
-
-          <td class="pl5 pt7" id="dataname2{{$data->$selectfiled['0']}}">{{ $data->$selectfiled['2'] }}</td>
-
-          <td class="pl5 pt7" id="dataname3{{$data->$selectfiled['0']}}">{{ $data->$selectfiled['3'] }}</td>
-
-          <td class="tac pt7" title="Use/Not Use">
-
-            <a id="usenotuseanchor{{$i}}"  href="javascript:useNotuse('{{ $data->$selectfiled['0'] }}',
-
-                     '{{$i}}');" class="btn-link" style="color:blue;">
-
-              @if ($data->$selectfiled['4'] != 1) 
-
-              <span class="btn-link" id="usenotuselabel{{$i}}" 
-
-              data-type="{{ $data->$selectfiled['4'] }}" style="color:blue;cursor: pointer;">
-
-              {{ trans('messages.lbl_use') }}</span>
-
-                @else 
-
+              <a id="usenotuseanchor{{$i}}"  href="javascript:useNotuse('{{ $data->$selectfiled['0'] }}', '{{$i}}');" class="btn-link" style="color:blue;cursor: pointer;">
+                @if ($data->$selectfiled['4'] != 1) 
                   <span class="btn-link" id="usenotuselabel{{$i}}" 
-
-                  data-type="{{ $data->$selectfiled['4'] }}" style="color:red;cursor: pointer;"> 
-
-                  {{ trans('messages.lbl_notuse') }}</span>
-
-              @endif
-
-            </a>
-
-            {{ Form::hidden('curtFlg'.$i, $data->$selectfiled['4'] , array('id' => 'curtFlg'.$i)) }} 
-
+                  data-type="{{ $data->$selectfiled['4'] }}" style="color:blue;cursor: pointer;">
+                  {{ trans('messages.lbl_use') }}</span>
+                @else 
+                    <span class="btn-link" id="usenotuselabel{{$i}}" 
+                    data-type="{{ $data->$selectfiled['4'] }}" style="color:red;cursor: pointer;"> 
+                    {{ trans('messages.lbl_notuse') }}</span>
+                @endif
+              </a>
+              {{ Form::hidden('curtFlg'.$i, $data->$selectfiled['4'] , array('id' => 'curtFlg'.$i)) }} 
               {{ Form::hidden('editid'.$i, $data->$selectfiled['0'], array('id' => 'editid'.$i)) }} 
 
-          </td>
+            </td>
 
-        </tr>
-
+          </tr>
         @empty
-
-        <tr class="nodata">
-
-          <td class="text-center red" colspan="9">
-
-            {{ trans('messages.lbl_nodatafound') }}
-
-          </td>
-
-        </tr>
-
+          <tr class="nodata">
+            <td class="text-center red" colspan="9">
+              {{ trans('messages.lbl_nodatafound') }}
+            </td>
+          </tr>
         @endforelse
 
       </tbody>
@@ -255,101 +221,62 @@
   </div>
 
   <div class="box96per ml15">
-
     <fieldset class="h50">
-
       <div class="col-md-12 mt10 ml50">
-
         <div class="box25per pull-left text-right clr_blue fwb mt5">
-
           {{$field1lbl}}
-
-          <span style="color:red;">*
-
-          </span>
-
+          <span style="color:red;">*</span>
         </div>
 
         <div class="ml15 pull-left box50per mb5">
-
-          {{Form::select('selectbox1',[null=>''] + $selectboxval, '', array('id' => 'selectbox1',
-
-          'class'=>'box40per form-control ime_mode_active','maxlength' => 40,
-
-          'onblur'=>'this.value=jQuery.trim(this.value);'))}}
-
+          {{ Form::select('selectbox1',[null=>'']+$bankDetail,(isset($editData[0]->bankIdFrom)) ? 
+                            $editData[0]->bankIdFrom.'-'.$editData[0]->accountNumberFrom : '',            array('name' =>'bank',
+                                  'id'=>'selectbox1',
+                                  'data-label' => trans('messages.lbl_bank'),
+                                  'class'=>'pl5 widthauto'))}}
           <label id="empty_selectbox1" class="registernamecolor display_none">
-
            This Field is required.
-
           </label>
-
         </div>
-
       </div>
 
       <div class="col-md-12 mt5 ml50">
 
         <div class="box25per pull-left text-right clr_blue fwb mt5">
-
           {{$field2lbl}}
-
-          <span style="color:red;">*
-
-          </span>
-
+          <span style="color:red;">*</span>
         </div>
 
         <div class="ml15 pull-left box70per mb5">
-
           {{ Form::text('textbox1','',array('id' => 'textbox1',
-
-          'class'=>'box40per form-control ime_mode_active','maxlength' => 40,
-
+          'class'=>'box40per form-control ime_mode_active dob','maxlength' => 40,
           'onkeypress' =>'return blockSpecialChar(event)',
-
           'onblur'=>'this.value=jQuery.trim(this.value);')) }}
-
+            <label class="mt10 ml2 fa fa-calendar fa-lg" for="textbox1" aria-hidden="true">
+            </label>
+           
           <label id="empty_textbox1" class="registernamecolor display_none">
-
             This Field is required.
-
           </label>
-
         </div>
 
       </div>
 
       <div class="mt3 col-md-12 ml50">
-
         <div class="box25per mt5 pull-left text-right clr_blue fwb">
-
           {{$field3lbl}}
-
-          <span style="color:red;">*
-
-          </span>
-
+          <span style="color:red;">*</span>
         </div>
 
         <div class="ml15 pull-left box70per mb10">
-
           {{ Form::text('textbox2','',array('id' => 'textbox2',
-
           'class'=>'box40per form-control ime_mode_active','maxlength' => 40,
-
           'onkeypress' =>'return blockSpecialChar(event)',
-
           'onblur'=>'this.value=jQuery.trim(this.value);')) }}
-
           <label id="empty_textbox2" class="registernamecolor display_none">
-
             This Field is required.
-
           </label>
-
         </div>
-
       </div>  
 
     </fieldset>
@@ -357,65 +284,36 @@
   </div>
 
   <div class="modal-footer mt5">
-
     <div class="bg-info pt6 pb6">
-
     <center>
-
       <div class="box100per text-center">
-
         <div class="CMN_display_block" id="add_var">
-
           <button  id="btnadd" type="button" 
-
-                  onclick="return fnaddeditthreefield('{{ $request->mainmenu }}',
-
+                  onclick="return fnaddeditcreditcard('{{ $request->mainmenu }}',
                   '{{ $request->tablename }}','{{ 1 }}');" 
-
                   class="btn btn-success CMN_display_block box100 mt10" >
-
-            <i class="fa fa-plus" id="plusicon">
-
-            </i>
-
-            {{ trans('messages.lbl_add') }}
-
+            <i class="fa fa-plus" id="plusicon"> </i>
+             {{ trans('messages.lbl_add') }}
           </button>
-
         </div>
 
         <div class="CMN_display_block" id="update_var"  style="display: none;">
-
             <button  id="btnadd" type="button" 
-
-                onclick="return fnaddeditthreefield('{{ $request->mainmenu }}',
-
+                onclick="return fnaddeditcreditcard('{{ $request->mainmenu }}',
                   '{{ $request->tablename }}',
-
                 '{{ 2 }}');" 
-
                 class="CMN_display_block box100 mt10 btn add btn-warning">
-
                     <i class="fa fa-edit" id="plusicon"></i>
-
                       {{ trans('messages.lbl_update') }}
-
               </button>
-
         </div>
 
         <button type="button" onclick="divpopupclose();" 
-
                   class="btn btn-danger CMN_display_block box110 button mt10" >
-
             <i class="fa fa-remove" aria-hidden="true">
-
             </i> 
-
             {{ trans('messages.lbl_cancel') }}
-
           </button>
-
       </div>
 
     </center>

@@ -337,7 +337,7 @@
 			<!-- //Customer sub -->
 			@endif
 	
-			@if(isset($request->mainmenu) && ($request->mainmenu == "Accounting") || ($request->mainmenu == "AccBankDetail"))
+			@if(isset($request->mainmenu) && ($request->mainmenu == "Accounting") || ($request->mainmenu == "AccBankDetail") || ($request->mainmenu == "CreditCardPay"))
 				<div id="accounting_sub_1">
 					<a href="{{ url('Accounting/index?mainmenu=Accounting&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_accounting') }}</a>
 				</div>
@@ -345,7 +345,12 @@
 				<div id="accounting_sub_4">
 					<a href="{{ url('AccBankDetail/index?mainmenu=AccBankDetail&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_bankdetail') }}</a>
 				</div>
+
+				<div id="accounting_sub_2">
+					<a href="{{ url('CreditCardPay/index?mainmenu=CreditCardPay&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_creditCardPay') }}</a>
+				</div>
 			@endif
+			
 			@endif
 			@if(isset($request->mainmenu) && ($request->mainmenu == "Auditing" || $request->mainmenu == "salarycalcplus" || $request->mainmenu == "AuditingAccounting" || $request->mainmenu == "AudPayment"))
 				<div id="auditing_sub_1">

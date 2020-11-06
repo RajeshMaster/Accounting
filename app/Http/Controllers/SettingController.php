@@ -345,9 +345,7 @@ class SettingController extends Controller {
 		$tbl_name = $request->tablename;
 
 		if (!empty($location)) {
-
 			$orderidval = Setting::Orderidgenerateforbranch($tbl_name,$location);
-
 	 		$orderid = $orderidval+1;
 
 
@@ -618,6 +616,42 @@ class SettingController extends Controller {
 
 	    return $ext;
 
+	}
+
+	function selectcrditCardDatas(Request $request) {
+		$getTableFields = settingscommon::getDbFieldsforProcess();
+
+		$tablename = $request->tablename;
+
+		$query = Setting::selectCreditCardDatas($getTableFields[$tablename]['selectfields'],$getTableFields[$tablename]['commitfields'][0],$request->tablename);
+		$headinglbl = $getTableFields[$tablename]['labels']['heading'];
+		$field1lbl = $getTableFields[$tablename]['labels']['field1lbl'];
+		$field2lbl = $getTableFields[$tablename]['labels']['field2lbl'];
+		$field3lbl = $getTableFields[$tablename]['labels']['field3lbl'];
+		$bankDetail = Setting::fetchbanknames();
+		$selectfiled  = $getTableFields[$tablename]['selectfields'];
+
+		return view('Setting.selectCreditCard',['query'=>$query,
+												'request'=>$request,
+												'headinglbl'=>$headinglbl,
+												'field1lbl' => $field1lbl,
+												'field2lbl' => $field2lbl,
+												'field3lbl' => $field3lbl,
+												'bankDetail' => $bankDetail,
+												'selectfiled' => $selectfiled,
+												'getTableFields'=> $getTableFields,]);
+	}
+
+	function creditAddEdit(Request $request) {
+		if ($request->flag == 2) {
+	 		echo $update_query=Setting::updatecreditCardField($request);
+	 		exit();
+		}
+
+		$tbl_name = $request->tablename;
+		$orderidval = Setting::Orderidgenerate($tbl_name);
+ 		echo $orderid = $orderidval+1;
+ 		$ins_query=Setting::insertqueryforcreditCard($tbl_name,$request);
 	}
 
 }

@@ -800,6 +800,68 @@ class Setting extends Model {
 
     }
 
+    public static function selectCreditCardDatas($fieldArray,$orderid,$request) {
 
+        $query = DB::table('acc_creditCard')
+                        ->select('*')
+                        ->get();
+        return $query;
+    }
+
+    public static function fetchbanknames() {
+        $db = DB::connection('mysql');
+        $query = $db->TABLE('mstbank')
+                        ->SELECT(DB::RAW("CONCAT(mstbank.Bank_NickName,'-',mstbank.AccNo) AS BANKNAME"),DB::RAW("CONCAT(mstbank.BankName,'-',mstbank.AccNo) AS ID"),'mstbank.id')
+                        // ->leftJoin('mstbanks', 'mstbanks.id', '=', 'mstbank.BankName')
+                        ->orderBy('mstbank.id','ASC')
+                        ->lists('BANKNAME','ID');
+                        // ->toSql();
+        return $query;
+    }
+
+    public static function insertqueryforcreditCard($tbl_name,$request) { 
+
+        $db = DB::connection('mysql');
+        $getTableFields = settingscommon::getDbFieldsforProcess();
+        $bankname = $getTableFields[$tbl_name]['insertfields'][0];
+        $date = $getTableFields[$tbl_name]['insertfields'][1];
+        $creditCardName = $getTableFields[$tbl_name]['insertfields'][2];
+        $DelFlg = $getTableFields[$tbl_name]['insertfields'][3];
+        $CreatedBy = $getTableFields[$tbl_name]['insertfields'][4];
+        $UpdatedBy = $getTableFields[$tbl_name]['insertfields'][5];
+        $fieldcount = count($getTableFields[$tbl_name]['insertfields']);
+        $CreatedByname = Session::get('FirstName').' '.Session::get('LastName');
+        $sql= $db->table($tbl_name)->insert(
+                [$bankname => $request->selectbox1,
+                $date => $request->textbox1,
+                $creditCardName => $request->textbox2,
+                $DelFlg =>'0',
+                $CreatedBy => $CreatedByname,
+                $UpdatedBy => $CreatedByname]
+        );
+        return  $sql;
+    }
+
+     public static function updatecreditCardField($request) {
+
+        $getTableFields = settingscommon::getDbFieldsforProcess();
+        $selectbox1 = $getTableFields[$request->tablename]['updatefields'][0];
+        $Typename1 = $getTableFields[$request->tablename]['updatefields'][1];
+        $Typename2 = $getTableFields[$request->tablename]['updatefields'][2];
+        $UpdatedBy = $getTableFields[$request->tablename]['updatefields'][3];
+        $db = DB::connection('mysql');
+        $CreatedByname = "Sathish Kumar"; //it will fix later
+        $update = $db->table($request->tablename)
+            ->where('id', $request->id)
+            ->update(
+                [$selectbox1 => $request->selectbox1,
+                $Typename1 => $request->textbox1,
+                $Typename2 => $request->textbox2,
+                $UpdatedBy => $CreatedByname]
+        );
+
+        return $update;            
+
+     }
 
 }

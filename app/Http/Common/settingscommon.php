@@ -627,6 +627,19 @@ namespace App\Http\Common;
 
 		 										 	'commitfields'=>array('Name')),
 
+						'acc_creditCard'=>array('labels'=>
+												array('heading'=>trans('messages.lbl_creditCard'),
+												 	'field1lbl'=>trans('messages.lbl_creditCardName'),
+												 	'field2lbl'=>trans('messages.lbl_Date'),
+												 	'field3lbl'=>trans('messages.lbl_bank_name')),
+			    	  							 	'selectfields'=>array('id','bank','date','creditCardName','createdAt','delFlg'),
+		 										 	'displayfields'=>array('id','bank','date','creditCardName','Ins_DT',
+		 										 							'delflg'),
+		 										 	'insertfields'=>array('bank','date','creditCardName','delFlg','createdBy','updatedBy'),
+		 										 	'updatefields'=>array('bank','date','creditCardName','updatedBy'),
+												 	'usenotusefields'=>array('delFlg'),
+		 										 	'commitfields'=>array('bank')),
+
 						
 
 			    );

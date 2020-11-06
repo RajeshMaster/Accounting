@@ -1391,5 +1391,9 @@ return [
 	'lbl_invoiceDtl' => '請求書情報',
 	'lbl_confirm' => '確認',
 	'lbl_confirmed' => '確認済',
+	'lbl_creditCardPay' => 'Credit Card Payment',
+	'lbl_creditCard' => 'Credit Card',
+	'lbl_creditCardName' => 'Credit Card Name',
+	'lbl_categorie' => 'Categorie',
 
 ];

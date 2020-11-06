@@ -5,7 +5,11 @@
 {{ HTML::script('resources/assets/js/Setting.js') }}
 
 {{ HTML::script('resources/assets/js/lib/additional-methods.min.js') }}
-
+<script type="text/javascript">
+	
+	$(document).ready(function() {
+	});
+</script>
 <style type="text/css">
 
 	.alertboxalign {
@@ -347,59 +351,68 @@
 	        	<div>
 
 	        		<div class="mt20 box475" 
-
 	        			style="background-color: #43C0E8">
-
 	        			<label class="mt2 ml5"> 
-
 	        				{{ trans('messages.lbl_expenses') }} 
-
 	        			</label> 
-
 	        		</div>
 
 	        		<label class="ml40 mt20">>>&nbsp;&nbsp;
-
 	        			{{ trans('messages.lbl_expenses') }}
-
 	        		</label> 
 
 	        		<div>
-
 	        			@php
-
-	        			$tbl_name = 'dev_expensesetting'
-
+	        				$tbl_name = 'dev_expensesetting'
 	        			@endphp
-
 	        			<a class="mt20 ml80 btn-link" style="color:blue;" 
-
 	        				href="javascript:settingpopupsinglefield('twotextpopup',
-
 	        				'{{ $tbl_name}}')">
-
 	        				{{ trans('messages.lbl_mainsubjectinsetting') }}
-
 	        			</a></br>
-
 	        			{{--*/ $tbl_name = 'inv_set_expensesub' /*--}}
-
 						{{--*/ $tbl_select = 'dev_expensesetting' /*--}}
 
 	        			<a class="mt20 ml80 btn-link" style="color:blue;" 
-
 	        				href="javascript:settingpopupsinglefield('selectthreefieldDatas',
-
 	        				'{{ $tbl_name }}','{{ 2 }}','{{ $tbl_select }}','{{ 2 }}');">
-
 	        				{{ trans('messages.lbl_subsubjectinsetting') }}
-
 	        			</a>
+	        		</div>
+	        		<div class="mt4" style="border-bottom:1px solid #136E83;"></div>
+	        	</div>
 
+	        		<div>
+
+	        		<div class="mt20 box475" 
+	        			style="background-color: #43C0E8">
+	        			<label class="mt2 ml5"> 
+	        				{{ trans('messages.lbl_creditCardPay') }} 
+	        			</label> 
 	        		</div>
 
-	        		<div class="mt4" style="border-bottom:1px solid #136E83;"></div>
+	        		<label class="ml40 mt20">>>&nbsp;&nbsp;
+	        			{{ trans('messages.lbl_creditCardPay') }}
+	        		</label> 
 
+	        		<div>
+	        			@php
+	        				$tbl_name = 'acc_creditCard'
+	        			@endphp
+	        			<a class="mt20 ml80 btn-link" style="color:blue;" 
+	        				href="javascript:settingpopupcreditcard('{{ $tbl_name}}')">
+	        				{{ trans('messages.lbl_creditCard') }}
+	        			</a></br>
+	        			{{--*/ $tbl_name = 'inv_set_expensesub' /*--}}
+						{{--*/ $tbl_select = 'dev_expensesetting' /*--}}
+
+	        			<a class="mt20 ml80 btn-link" style="color:blue;" 
+	        				href="javascript:settingpopupsinglefield('selectthreefieldDatas',
+	        				'{{ $tbl_name }}','{{ 2 }}','{{ $tbl_select }}','{{ 2 }}');">
+	        				{{ trans('messages.lbl_categorie') }}
+	        			</a>
+	        		</div>
+	        		<div class="mt4" style="border-bottom:1px solid #136E83;"></div>
 	        	</div>
 
         	</div>
@@ -652,15 +665,10 @@
 	        	<div>
 
 	        		<div class="mt20 box455" 
-
 	        			style="background-color: #43C0E8">
-
 	        			<label class="mt2 ml5"> 
-
 	        				{{ trans('messages.lbl_contract') }}
-
 	        			</label> 
-
 	        		</div>
 
 	        		<label class="ml40 mt20">>>&nbsp;&nbsp;
@@ -668,87 +676,52 @@
 	        			{{ trans('messages.lbl_contract') }}
 
 	        		</label>
-
 	        		<div>
 
 	        			@php
-
 	        			$tbl_name = 'inv_set_contractallowance'
-
 	        			@endphp
-
 	        			<a class="mt20 ml80 btn-link" style="color:blue;" 
-
 	        				href="javascript:settingpopupsinglefield('twotextpopup',
-
 	        				'{{ $tbl_name}}')">
-
 	        				{{ trans('messages.lbl_allowances') }}
-
 	        			</a></br> 
-
 	        		</div>
-
 	        		<div class="mt25" style="border-bottom:1px solid #136E83;"></div>
 
 	        	</div>
 
 	        	<div>
-
 	        		<div class="mt20 box455" 
-
 	        			style="background-color: #43C0E8">
-
 	        			<label class="mt2 ml5"> 
-
 	        				{{ trans('messages.lbl_catagories') }}
-
 	        			</label> 
-
 	        		</div>
 
 	        		<label class="ml40 mt20">>>&nbsp;&nbsp;
-
 	        			{{ trans('messages.lbl_catagories') }}
-
 	        		</label>
 
 	        		<div>
-
 	        			@php
-
 	        			$tbl_name = 'inv_set_salarymain'
-
 	        			@endphp
-
 	        			<a class="mt20 ml80 btn-link" style="color:blue;" 
-
 	        			href="javascript:settingpopupsinglefield('twotextpopup',
-
 	        				'{{ $tbl_name}}')">
-
 	        				{{ trans('messages.lbl_maincategories') }}
-
 	        			</a></br>
 
 	        			{{--*/ $tbl_name = 'inv_set_salarysub' /*--}}
-
 						{{--*/ $tbl_select = 'inv_set_salarymain' /*--}}
-
 	        			<a class="mt20 ml80 btn-link" style="color:blue;"
-
 	        			href="javascript:settingpopupsinglefield('selectthreefieldDatas',
-
 	        				'{{ $tbl_name }}','{{ 2 }}','{{ $tbl_select }}','{{ 4 }}');">
-
 	        				{{ trans('messages.lbl_subcategories') }}
-
 	        			</a></br> 
-
 	        		</div>
-
 	        		<div class="mt4" style="border-bottom:1px solid #136E83;"></div>
-
 	        	</div>
 
 	        	@endif
@@ -762,17 +735,11 @@
 </div>
 
 <div id="showpopup" class="modal fade" style="width: 775px;">
-
     <div id="login-overlay">
-
         <div class="modal-content">
-
             <!-- Popup will be loaded here -->
-
         </div>
-
     </div>
-
 </div>
 
 @endsection

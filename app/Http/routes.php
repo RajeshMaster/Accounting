@@ -427,6 +427,10 @@ Route::get('threeFieldaddedit', 'SettingController@threeFieldaddedit')->middlewa
 Route::any('uploadpopup', 'SettingController@uploadpopup')->middleware('accessright:0,1,2,3,4');
 Route::any('useNotuse', 'SettingController@useNotuse')->middleware('accessright:0,1,2,3,4');
 Route::any('settingpopupupload', 'SettingController@settingpopupupload')->middleware('accessright:0,1,2,3,4');
+Route::get('selectcrditCardDatas', 'SettingController@selectcrditCardDatas')->middleware('accessright:0,1,2,3,4');
+Route::get('creditAddEdit', 'SettingController@creditAddEdit')->middleware('accessright:0,1,2,3,4');
+
+
 });
 
 // Staff -> Salary
@@ -512,6 +516,12 @@ Route::group(['prefix'=>'AccBankDetail','middleware' => 'auth'], function() {
     Route::any('add', 'AccBankDetailController@add')->middleware('accessright:0,1,2,3,4');
     Route::any('addeditprocess', 'AccBankDetailController@addeditprocess')->middleware('accessright:0,1,2,3,4');
     Route::any('Viewlist', 'AccBankDetailController@Viewlist')->middleware('accessright:0,1,2,3,4');
+});
+
+Route::group(['prefix'=>'CreditCardPay','middleware' => 'auth'], function() {
+    Route::get('changelanguage', 'AjaxController@index');
+    Route::any('index', 'CreditCardPayController@index')->middleware('accessright:0,1,2,3,4');
+    Route::any('addedit', 'CreditCardPayController@addedit')->middleware('accessright:0,1,2,3,4');
 });
 
 // Auditing Process by Rajesh

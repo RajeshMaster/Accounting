@@ -1217,5 +1217,9 @@ return [
 	'lbl_invoiceDtl' => 'Invoice Details',
 	'lbl_confirm' => 'Confirm',
 	'lbl_confirmed' => 'Confirmed',
+	'lbl_creditCardPay' => 'Credit Card Payment',
+	'lbl_creditCard' => 'Credit Card',
+	'lbl_creditCardName' => 'Credit Card Name',
+	'lbl_categorie' => 'Categorie',
 
 ];
