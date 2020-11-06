@@ -65,19 +65,23 @@
 		<table class="tablealternate CMN_tblfixed mt10">
 			<colgroup>
 				<col width="4%">
-				<col width="9%">
 				<col width="14%">
+				<col width="9%">
+				<col width="9%">
 				<col width="16%">
 				<col width="8%">
+				<col width="5%">
 				<col width="8%">
-				<!-- <col width="8%"> -->
+				<col width="15%">
 				<col width="">
 			</colgroup>
 
 			<thead class="CMN_tbltheadcolor">
 				<tr id="data">
 					<th class="vam">{{ trans('messages.lbl_sno') }}</th>
+					<th class="vam">{{ trans('messages.lbl_creditName') }}</th>
 					<th class="vam">{{ trans('messages.lbl_Date') }}</th>
+					<th class="vam">{{ trans('messages.lbl_CreditDate') }}</th>
 					<th class="vam">{{ trans('messages.lbl_content') }}</th>
 					<th class="vam">{{ trans('messages.lbl_amount') }}</th>
 					<th class="vam ">{{ trans('messages.lbl_bill') }}</th>
@@ -87,9 +91,26 @@
 				</tr>
 			</thead>
 			<tbody>
-			<!-- 	<tr>
-					<td class="text-center columnspan" colspan="6" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
-				</tr> -->
+				@forelse($creditcardDetails as $key => $data)
+					<tr>
+						<td align="center">{{ $key+1 }}</td>
+						<td align="center">
+							{{ $data->creditCardName }}
+						</td>
+						<td align="center"> {{ $data->mainDate }} </td>
+						<td align="center">{{ $data->creditCardDate }}</td>
+						<td>{{ $data->creditCardContent }}</td>
+						<td>{{ $data->creditCardAmount }}</td>
+						<td align="center">@if($data->rdoBill == "1")有@else無@endif</td>
+						<td>{{ $data->Category }}</td>
+						<td>{{ $data->remarks }}</td>
+						<td></td>
+					</tr>
+				@empty
+					<tr>
+						<td class="text-center columnspan" colspan="10" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
+					</tr>
+				@endforelse
 			</tbody>
 		</table>
 

@@ -25,11 +25,10 @@ class CreditCardPayController extends Controller {
 	*/
 	public function index(Request $request) {
 
-		/*echo "<pre>";
-		print_r($bankdetailindex);
-		echo "</pre>";*/
-
-		return view('CreditCardPay.index',[ 'request' => $request
+		$creditcardDetails = CreditCardPay::fetchcreditcarddetails($request);
+		
+		return view('CreditCardPay.index',[ 'request' => $request,
+											'creditcardDetails' => $creditcardDetails,
 										]);
 	}
 

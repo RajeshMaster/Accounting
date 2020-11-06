@@ -1395,5 +1395,6 @@ return [
 	'lbl_creditCard' => 'Credit Card',
 	'lbl_creditCardName' => 'Credit Card Name',
 	'lbl_categories' => 'Categories',
-
+	'lbl_creditName' => 'Creditcard Name',
+	'lbl_CreditDate' => 'Credit Date',
 ];

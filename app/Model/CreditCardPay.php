@@ -74,4 +74,14 @@ class CreditCardPay extends Model {
 		return $insert;
 	}
 
+	public static function fetchcreditcarddetails($request) {
+
+		$db = DB::connection('mysql');
+		$query = $db->table('acc_creditcardpayment')
+						->SELECT('acc_creditcardpayment.*','acc_creditcard.creditCardName','acc_categorysetting.Category')
+						->leftJoin('acc_creditcard', 'acc_creditcard.id', '=', 'acc_creditcardpayment.creditCardId')
+						->leftJoin('acc_categorysetting', 'acc_categorysetting.id', '=', 'acc_creditcardpayment.categoryId')
+						->get();
+		return $query;
+	}
 }
