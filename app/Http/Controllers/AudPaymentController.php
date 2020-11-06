@@ -411,7 +411,8 @@ class AudPaymentController extends Controller {
 
 				// END FOR DEBIT AND CREDIT PROCESS
 				$get_det[$k]['id'] = $value->id;
-				$get_det[$k]['invpaymentdate'] = $value->invpaymentdate; 
+				$get_det[$k]['invpaymentdate'] = $value->invpaymentdate;
+				$get_det[$k]['invoicepaymentdate'] = $value->invoicepaymentdate; 
 				$get_det[$k]['user_id'] = $value->user_id;
 				$get_det[$k]['invid'] = $value->invid;
 				$get_det[$k]['payidtotal'] = $value->payidtotal;

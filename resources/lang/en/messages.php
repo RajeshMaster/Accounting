@@ -1220,6 +1220,6 @@ return [
 	'lbl_creditCardPay' => 'Credit Card Payment',
 	'lbl_creditCard' => 'Credit Card',
 	'lbl_creditCardName' => 'Credit Card Name',
-	'lbl_categorie' => 'Categorie',
+	'lbl_categories' => 'Categories',
 
 ];

@@ -104,11 +104,12 @@
 		</div>
 	</div>
 
-	<div class="mr10 ml10">
+	<div class="mr10 ml10 mb10">
 		<div class="minh400">
 			<table class="tablealternate box100per">
 				<colgroup>
 				   <col width="4%">
+				   <col width="9%">
 				   <col width="9%">
 				   <col width="8%">
 				   <col width="">
@@ -123,6 +124,7 @@
 				<thead class="CMN_tbltheadcolor">
 			   		<tr class="tableheader tac"> 
 				  		<th class="tac">{{ trans('messages.lbl_sno') }}</th>
+				  		<th class="tac">{{ trans('messages.lbl_invoice') }} {{ trans('messages.lbl_paymentdate') }}</th>
 				  		<th class="tac">{{ trans('messages.lbl_paymentdate') }}</th>
 				  		<th class="tac">{{ trans('messages.lbl_invoiceno') }}</th>
 				  		<th class="tac">{{ trans('messages.lbl_customername') }}</th>
@@ -137,16 +139,19 @@
 
 			   	<tbody>
 
-			   			{{ $temp = ""}}
-                  		{{--*/ $row = '0' /*--}}
-                  		{{ $tempcomp = ""}}
-                  		{{--*/ $rowcomp = '0' /*--}}
-                  		{{ $tempbtn = ""}}
-                  		{{--*/ $rowbtn = '0' /*--}}
+					{{ $temp = ""}}
+					{{--*/ $row = '0' /*--}}
+					{{ $tempinv = ""}}
+					{{--*/ $rowinv = '0' /*--}}
+					{{ $tempcomp = ""}}
+					{{--*/ $rowcomp = '0' /*--}}
+					{{ $tempbtn = ""}}
+					{{--*/ $rowbtn = '0' /*--}}
 		   			<?php $newbal=0;$debitbal=0;$style_tr="";$style_tdold=""; ?>
-			   			<?php $last_key = (count($get_det)-1); ?>
+			   		<?php $last_key = (count($get_det)-1); ?>
 			   		@forelse($get_det as $key => $data)
 			   			{{--*/ $loc = $data['invpaymentdate'] /*--}}
+			   			{{--*/ $locinv = $data['invoicepaymentdate'] /*--}}
 			   			{{--*/ $loccomp = $data['clientnumber'] /*--}}
 			   			{{--*/ $locold = $data['oldbalance'][0]->Ctotal /*--}}
 			   			{{--*/ $locedit = $data['paid_status'] /*--}}
@@ -177,6 +182,19 @@
                         	{{--*/ $style_td = 'border-top: hidden;' /*--}}
                       	@endif
 
+                      	@if($locinv != $tempinv)
+                        	@if($row==1)
+                          		{{--*/ $style_trinv = 'background-color: #E5F4F9;' /*--}}
+                          		{{--*/ $rowinv = '0' /*--}}
+                        	@else
+                          		{{--*/ $style_trinv = 'background-color: #FFFFFF;' /*--}}
+                          		{{--*/ $rowinv = '1' /*--}}
+                        	@endif
+                        	{{--*/ $style_tdinv = '' /*--}}
+                      	@else
+                        	{{--*/ $style_tdinv = 'border-top: hidden;' /*--}}
+                      	@endif
+
                       	@if($loccomp != $tempcomp) 
                         @if($rowcomp==1)
                           {{--*/ $style_trcomp = 'background-color: #E5F4F9;' /*--}}
@@ -195,12 +213,16 @@
 			   				<td style="text-align: center;">
 			   				{{ $key + 1 }}
 			   				</td>
+			   				<td style="{{$style_tdinv}}" class="tac">
+			   					@if($locinv != $tempinv || $loc != $temp)
+			   						{{ $data['invoicepaymentdate'] }}
+			   					@endif
+			   				</td>
 			   				<td style="{{$style_td}}" class="tac">
 			   					@if($loc != $temp)
 			   						{{ $data['invpaymentdate'] }}
 			   					@endif
 			   				</td>
-
 			   				<td style="text-align: center;">
 			   					<div class="pl10 tac fll">
 			   					<?php if($data['deposit_amount']!="") { ?>
@@ -258,16 +280,18 @@
 			   			</tr>
 
 			   				{{--*/ $temp = $loc /*--}}
+			   				{{--*/ $tempinv = $locinv /*--}}
 			   				{{--*/ $tempcomp = $loccomp /*--}}
 			   				{{--*/ $tempbtn = $locbtn /*--}}
 			   		@empty
 						<tr>
-							<td class="text-center" colspan="7" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
+							<td class="text-center" colspan="8" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
 						</tr>
 					@endforelse
 			   		@if(isset($get_det[0]["invoiceno"]))
 
 						<tr>
+			   				<td style="border: none;background: white;"></td>
 			   				<td style="border: none;background: white;"></td>
 			   				<td style="border: none;background: white;"></td>
 			   				<td style="border: none;background: white;"></td>
@@ -298,8 +322,9 @@
 			   				<td style="border: none;background: white;"></td>
 			   				<td style="border: none;background: white;"></td>
 			   				<td style="border: none;background: white;"></td>
+			   				<td style="border: none;background: white;"></td>
 			   				<td class="tar fwb" style="background: #b0e0f2">{{ trans('messages.lbl_grandtot') }}</td>
-			   				<td colspan="<?php echo $coltemp; ?>" class="fwb" style="background: #e5f4f9;text-align: center;">
+			   				<td colspan="<?php echo $coltemp; ?>" class="fwb" style="background: #e5f4f9;text-align: right;">
 			   					<!-- {{ $allTotal[0]->Gtotal }} -->
 			   					{{ ($grand_total==0)?"":number_format($grand_total) }}
 			   				</td>

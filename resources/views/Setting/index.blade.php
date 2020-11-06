@@ -403,18 +403,17 @@
 	        				href="javascript:settingpopupcreditcard('{{ $tbl_name}}')">
 	        				{{ trans('messages.lbl_creditCard') }}
 	        			</a></br>
-	        			{{--*/ $tbl_name = 'inv_set_expensesub' /*--}}
-						{{--*/ $tbl_select = 'dev_expensesetting' /*--}}
-
-	        			<a class="mt20 ml80 btn-link" style="color:blue;" 
-	        				href="javascript:settingpopupsinglefield('selectthreefieldDatas',
-	        				'{{ $tbl_name }}','{{ 2 }}','{{ $tbl_select }}','{{ 2 }}');">
-	        				{{ trans('messages.lbl_categorie') }}
-	        			</a>
+	        			@php
+							$tbl_name = 'acc_categorysetting'
+						@endphp
+						<a class="mt20 ml80 btn-link" style="color:blue;" 
+							href="javascript:settingpopupsinglefield('singletextpopup',
+									'{{ $tbl_name }}','{{ 1 }}');">
+							{{ trans('messages.lbl_categories') }}
+						</a>
 	        		</div>
 	        		<div class="mt4" style="border-bottom:1px solid #136E83;"></div>
 	        	</div>
-
         	</div>
 
         	<div class="col-xs-6 pl40">

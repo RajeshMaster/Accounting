@@ -251,6 +251,7 @@
           {{ Form::text('textbox1','',array('id' => 'textbox1',
           'class'=>'box40per form-control ime_mode_active dob','maxlength' => 40,
           'onkeypress' =>'return blockSpecialChar(event)',
+          'autocomplete' =>'off',
           'onblur'=>'this.value=jQuery.trim(this.value);')) }}
             <label class="mt10 ml2 fa fa-calendar fa-lg" for="textbox1" aria-hidden="true">
             </label>

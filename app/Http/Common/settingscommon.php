@@ -629,9 +629,9 @@ namespace App\Http\Common;
 
 						'acc_creditCard'=>array('labels'=>
 												array('heading'=>trans('messages.lbl_creditCard'),
-												 	'field1lbl'=>trans('messages.lbl_creditCardName'),
+												 	'field1lbl'=>trans('messages.lbl_bank_name'),
 												 	'field2lbl'=>trans('messages.lbl_Date'),
-												 	'field3lbl'=>trans('messages.lbl_bank_name')),
+												 	'field3lbl'=>trans('messages.lbl_creditCardName')),
 			    	  							 	'selectfields'=>array('id','bank','date','creditCardName','createdAt','delFlg'),
 		 										 	'displayfields'=>array('id','bank','date','creditCardName','Ins_DT',
 		 										 							'delflg'),
@@ -639,6 +639,32 @@ namespace App\Http\Common;
 		 										 	'updatefields'=>array('bank','date','creditCardName','updatedBy'),
 												 	'usenotusefields'=>array('delFlg'),
 		 										 	'commitfields'=>array('bank')),
+
+						// Category
+
+						'acc_categorysetting'=>array('labels'=>
+
+												array('heading'=>trans('messages.lbl_categories'),
+
+													'field1lbl'=>trans('messages.lbl_categories')),
+
+													'selectfields'=>array('id','Category','Ins_DT',
+
+														'delflg'),
+
+													'displayfields'=>array('id','Category',
+
+																			'delflg'),
+
+													'insertfields'=>array('location','Category',
+
+																		'delflg','Ins_DT','Up_DT','CreatedBy','UpdatedBy'),
+
+													'updatefields'=>array('Category','Up_DT','UpdatedBy'),
+
+													'usenotusefields'=>array('delflg'),
+
+													'commitfields'=>array('Category')),
 
 						
 

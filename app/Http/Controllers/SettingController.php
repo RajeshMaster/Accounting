@@ -650,7 +650,7 @@ class SettingController extends Controller {
 
 		$tbl_name = $request->tablename;
 		$orderidval = Setting::Orderidgenerate($tbl_name);
- 		echo $orderid = $orderidval+1;
+ 		echo $orderid = $orderidval;
  		$ins_query=Setting::insertqueryforcreditCard($tbl_name,$request);
 	}
 

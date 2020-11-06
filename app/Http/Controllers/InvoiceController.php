@@ -2966,6 +2966,14 @@ public static function addeditinv(Request $request) {
 
 
     public static function invoiceallPdfdownloadprocess(Request $request) {
+         if (empty($request->plimit)) {
+            $request->plimit = 50;
+        }
+        if (empty($request->pageclick)) {
+            $page_no = 1;
+        } else {
+            $page_no = $request->pageclick;
+        }
         $taxSearch ="";
         $date_month = $request->selYear.'-'.$request->selMonth;
         $search_flg = 0;
