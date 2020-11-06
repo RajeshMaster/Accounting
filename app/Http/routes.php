@@ -519,6 +519,7 @@ Route::group(['prefix'=>'Auditing','middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
     Route::any('index', 'AuditingController@index')->middleware('accessright:0,1,2,3,4,5');
     Route::any('auditingexldwnldprocess', 'AuditingController@auditingexldwnldprocess')->middleware('accessright:0,1,2,3,4,5');
+    Route::any('invoiceallPdfdownloadAudit', 'AuditingController@invoiceallPdfdownloadAudit')->middleware('accessright:0,1,2,3,4,5');
     Route::any('confirmProcess_ajax', 'AuditingController@confirmProcess_ajax')->middleware('accessright:0,1,2,3,4,5');
     
 });

@@ -126,7 +126,7 @@ class Auditing extends Model {
 		} else {
 			$db = DB::connection('mysql');
 			$Estimate = $db->TABLE($db->raw("(SELECT main.quot_date,main.id,main.user_id,
-					main.trading_destination_selection,dev_payment_registration.payment_date,
+					main.trading_destination_selection,dev_payment_registration.payment_date,main.payment_date as planPayDate,
 					main.del_flg,main.copyFlg,main.project_name,main.classification,
 					main.created_by,main.pdf_flg,main.project_type_selection,main.mailFlg, 
 					main.paid_date,main.paid_status,main.tax,main.estimate_id,main.company_name,

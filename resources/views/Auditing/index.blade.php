@@ -165,13 +165,27 @@
 	@endif
 
 	<!-- End Heading -->
-	<div class="col-xs-12 pm0 pull-left">
-		@if($TotEstquery->total() != 0)
-		<div class="col-xs-8 ml10 pm0 pull-left mt10">
-			<a href="javascript:invoiceexceldownload('{{$request->mainmenu}}', '{{ $date_month }}');"  class="btn btn-primary box125">
-				<span class="fa fa-download"></span> {{ trans('messages.lbl_download') }}
-			</a>
-		</div>
+	<div class="col-xs-12 pm0 pull-left mb10">
+		@if($TotEstquery->total() == 0)
+			<div class="col-xs-8 ml10 pm0 pull-left mt10">
+				<a href="javascript:invoiceexceldownload('{{$request->mainmenu}}', '{{ $date_month }}');"  class="btn btn-primary  disabled">
+					<span class="fa fa-download"></span> {{ trans('messages.lbl_excel') }} {{ trans('messages.lbl_download') }}
+				</a>
+
+				<a href="javascript:allpdfdownload('{{$request->mainmenu}}','{{ count($TotEstquery) }}');"  class="btn btn-primary box145 disabled">
+							<span class="fa fa-download"></span> 
+							{{ trans('messages.lbl_pdfdwnld') }}
+				</a>
+			</div>
+		@else
+			<div class="col-xs-8 ml10 pm0 pull-left mt10">
+				<a href="javascript:invoiceexceldownload('{{$request->mainmenu}}', '{{ $date_month }}');"  class="btn btn-primary ">
+					<span class="fa fa-download"></span> {{ trans('messages.lbl_excel') }} {{ trans('messages.lbl_download') }}
+				</a>
+				<a href="javascript:allpdfdownloadaudit('{{$request->mainmenu}}');"  class="btn btn-primary box145">
+					<span class="fa fa-download"></span> {{ trans('messages.lbl_pdfdwnld') }}
+				</a>
+			</div>
 		@endif
 		<!-- Session msg -->
 		@if(Session::has('success'))
@@ -184,19 +198,8 @@
 		@php Session::forget('success'); @endphp
 		<!-- Session msg -->
 
-		<div class="col-xs-12 pm0 pull-left mt10 mb10">
-			<div class="box55per pm0 CMN_display_block pull-left">
-				<a class="btn btn-link {{ $disabledall }}" href="javascript:filter('1');"> {{ trans('messages.lbl_all') }} </a>
-				<span>|</span>
-				<a class="btn btn-link {{ $disabledcreating }}" href="javascript:filter('2');"> {{ trans('messages.lbl_creating') }} </a>
-				<span>|</span>
-				<a class="btn btn-link {{ $disabledapproved }}" href="javascript:filter('3');"> {{ trans('messages.lbl_approved') }} </a>
-				<span>|</span>
-				<a class="btn btn-link {{ $disabledunused }}" href="javascript:filter('4');"> {{ trans('messages.lbl_unused') }} </a>
-				<span>|</span>
-				<a class="btn btn-link {{ $disabledsend }}" href="javascript:filter('5');"> {{ trans('messages.lbl_sent') }} </a>
-			</div>
-			<div class=" pm0 pr12">
+			
+			<div class=" pm0 pr12 mt10">
 				<div class="form-group pm0 pull-right moveleft nodropdownsymbol" id="moveleft">
 					<a href="javascript:clearsearch()" title="Clear Search">
 						<img class="pull-left box30 mr5 " src="{{ URL::asset('resources/assets/images/clearsearch.png') }}">
@@ -208,11 +211,10 @@
 					}}
 				</div>
 			</div>
-		</div>
 	</div>
 
 	<div class="mr10 ml10 mt10">
-		<div class="minh300">
+		<div class="minh300 ">
 			<table class="tablealternate box100per">
 				<colgroup>
 					<col width="5%">
@@ -502,6 +504,46 @@
 						'method' => 'POST')) }}
 	{{ Form::hidden('companynameClick', $request->companynameClick, array('id' => 'companynameClick')) }}
 	{{ Form::hidden('selYearMonth', '', array('id' => 'selYearMonth')) }}
+	{{ Form::close() }}
+
+
+	{{ Form::open(array('name'=>'frmallinvoicepdfdownloadAudit', 
+						'id'=>'frmallinvoicepdfdownloadAudit', 
+						'url' => 'Auditing/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
+						'files'=>true,
+						'method' => 'POST')) }}
+		{{ Form::hidden('filter', $request->filter, array('id' => 'filter')) }}
+		{{ Form::hidden('plimit', $request->plimit , array('id' => 'plimit')) }}
+	    {{ Form::hidden('page', $request->page , array('id' => 'page')) }}
+	    {{ Form::hidden('selMonth', $request->selMonth, array('id' => 'selMonth')) }}
+	    {{ Form::hidden('mainmenu', $request->mainmenu, array('id' => 'mainmenu')) }}
+		{{ Form::hidden('selYear', $request->selYear, array('id' => 'selYear')) }}
+		{{ Form::hidden('prevcnt', $request->prevcnt, array('id' => 'prevcnt')) }}
+		{{ Form::hidden('nextcnt', $request->nextcnt, array('id' => 'nextcnt')) }}
+		{{ Form::hidden('account_val', $account_val, array('id' => 'account_val')) }}
+		{{ Form::hidden('topclick', $request->topclick, array('id' => 'topclick')) }}
+		{{ Form::hidden('sortOptn',$request->invoicesort , array('id' => 'sortOptn')) }}
+	    {{ Form::hidden('sortOrder', $request->sortOrder , array('id' => 'sortOrder')) }}
+		{{ Form::hidden('ordervalue', $request->ordervalue, array('id' => 'ordervalue')) }}
+		{{ Form::hidden('year_month', $date_month, array('id' => 'year_month')) }}
+		{{ Form::hidden('searchmethod', $request->searchmethod, array('id' => 'searchmethod')) }}
+		{{ Form::hidden('previou_next_year', $request->previou_next_year, array('id' => 'previou_next_year')) }}
+		{{ Form::hidden('invoice_id', '', array('id' => 'invoice_id')) }}
+		{{ Form::hidden('userid', '', array('id' => 'userid')) }}
+		{{ Form::hidden('editflg', $request->editflg, array('id' => 'editflg')) }}
+		{{ Form::hidden('editid', $request->editid, array('id' => 'editid')) }}
+		{{ Form::hidden('invoiceid', '', array('id' => 'invoiceid')) }}
+		{{ Form::hidden('cust_id', $request->cust_id, array('id' => 'cust_id')) }}
+		{{ Form::hidden('sendmailfrom', 'Invoice', array('id' => 'sendmailfrom')) }}
+		{{ Form::hidden('estimate_id', '', array('id' => 'estimate_id')) }}
+		{{ Form::hidden('currentRec', '', array('id' => 'currentRec')) }}
+		{{ Form::hidden('invoicestatus', '', array('id' => 'invoicestatus')) }}
+		{{ Form::hidden('invoicestatusid', '', array('id' => 'invoicestatusid')) }}
+		{{ Form::hidden('companynameClick', $request->companynameClick, array('id' => 'companynameClick')) }}
+		{{ Form::hidden('estid', '', array('id' => 'estid')) }}
+		{{ Form::hidden('checkdefault', '', array('id' => 'checkdefault')) }}
+		{{ Form::hidden('identEdit', 0, array('id' => 'identEdit')) }}
+
 	{{ Form::close() }}
 
 </article>

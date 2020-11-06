@@ -831,7 +831,6 @@ class PaymentController extends Controller {
 	}
 
 	public static function  paymentaddeditprocess(Request $request) {
-
 		if($request->type=="edit") {
 
 			$g_query = Payment::fnUpdatePayment($request);

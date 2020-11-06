@@ -579,7 +579,45 @@ function fnControlAddOrRemove(cnt,invflg) {
     }
   }
 }
-function fnAddTR(cnt,flg=null) {
+
+function toenavledisable() {
+  var rowCount = $('#workspectable tr').length-1;
+
+  for (i = 1; i <= rowCount; i++) {
+    if ($('#fordisable_hdn'+i).val() == 0) {
+        $('#work_specific'+i).attr('disabled', false);
+        $('#quantity'+i).attr('disabled', false);
+        $('#unit_price'+i).attr('disabled', false);
+      }
+      if ($('#fordisable_hdn'+i).val() == 1) {
+        $('#work_specific'+i).attr('disabled', true);
+        $('#quantity'+i).attr('disabled', true);
+        $('#unit_price'+i).attr('disabled', true);
+      }
+    }
+}
+
+function fnRemoveZero(fname) {
+  var getvalue = document.getElementById(fname);
+  if (getvalue.value.trim() == 0) {
+    getvalue.value = '';
+    getvalue.focus();
+    getvalue.select();
+  }
+}
+function fnSetZero11(fid) {
+  var getvalue = document.getElementById(fid);
+  if (getvalue.value.trim() == "") {
+    getvalue.value = 0;
+  }
+}
+function blockSpecialChar(e){
+  var k;
+  document.all ? k = e.keyCode : k = e.which;
+  return ((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57));
+}
+
+function fnAddTR(cnt,flg) {
   var invflg = "";
   if (flg == 1) {
     invflg = 1;
@@ -682,23 +720,8 @@ function fnAddTR(cnt,flg=null) {
   toenavledisable();
   fnControlAddOrRemove(rowCount,invflg);
 }
-function toenavledisable() {
-  var rowCount = $('#workspectable tr').length-1;
 
-  for (i = 1; i <= rowCount; i++) {
-    if ($('#fordisable_hdn'+i).val() == 0) {
-        $('#work_specific'+i).attr('disabled', false);
-        $('#quantity'+i).attr('disabled', false);
-        $('#unit_price'+i).attr('disabled', false);
-      }
-      if ($('#fordisable_hdn'+i).val() == 1) {
-        $('#work_specific'+i).attr('disabled', true);
-        $('#quantity'+i).attr('disabled', true);
-        $('#unit_price'+i).attr('disabled', true);
-      }
-    }
-}
-function fnRemoveTR(cnt,flg=null) {
+function fnRemoveTR(cnt,flg) {
   var invflg = "";
   if (flg == 1) {
     invflg = 1;
@@ -800,22 +823,3 @@ function fnRemoveTR(cnt,flg=null) {
     fnCalculateTotal();
     toenavledisable();
   }
-function fnRemoveZero(fname) {
-  var getvalue = document.getElementById(fname);
-  if (getvalue.value.trim() == 0) {
-    getvalue.value = '';
-    getvalue.focus();
-    getvalue.select();
-  }
-}
-function fnSetZero11(fid) {
-  var getvalue = document.getElementById(fid);
-  if (getvalue.value.trim() == "") {
-    getvalue.value = 0;
-  }
-}
-function blockSpecialChar(e){
-  var k;
-  document.all ? k = e.keyCode : k = e.which;
-  return ((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57));
-}

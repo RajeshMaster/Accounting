@@ -163,3 +163,11 @@ function confirmProcess(flg,invcId,i) {
 		}
 	});
 }
+
+function allpdfdownloadaudit(mainmenu,countData) {
+	var confirm_create="Do you Want to Create Invoice?";
+	if(confirm(confirm_create)) {
+		$('#frmallinvoicepdfdownloadAudit').attr('action', 'invoiceallPdfdownloadAudit?mainmenu='+mainmenu+'&time='+datetime);
+		$("#frmallinvoicepdfdownloadAudit").submit();
+	}
+}
