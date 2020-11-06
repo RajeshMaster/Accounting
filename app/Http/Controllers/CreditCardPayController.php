@@ -2,8 +2,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
-use App\Model\Bankdetail;
-use App\Model\AccBankDetail;
+use App\Model\CreditCardPay;
 use App\Http\Helpers;
 use DB;
 use Input;
@@ -13,13 +12,6 @@ use App\Http\Common;
 use Fpdf;
 use Fpdi;
 use Excel;
-use PHPExcel_Style_Border;
-use PHPExcel_Style_Alignment;
-use PHPExcel_Style_Fill;
-use PHPExcel_Cell;
-use Carbon;
-use PHPExcel_Style_Conditional;
-use PHPExcel_Style_Color;
 
 class CreditCardPayController extends Controller {
 
@@ -42,11 +34,32 @@ class CreditCardPayController extends Controller {
 	}
 
 	public function addedit(Request $request) {
+
+		$creditcard = CreditCardPay::fetchcreditCardnames();
 		/*echo "<pre>";
 		print_r($bankdetailindex);
 		echo "</pre>";*/
 
-		return view('CreditCardPay.addedit',[ 'request' => $request
+		return view('CreditCardPay.addedit',[ 'request' => $request,
+												'creditcard' => $creditcard
+										]);
+	}
+
+	public function addeditprocess(Request $request) {
+		print_r($request->all());exit;
+		$sheetData = array();
+        if (($handle = fopen($_FILES["fileToUpload"]["tmp_name"], "r")) !== FALSE) 
+        {
+            while (($dat = fgetcsv($handle, 1000, ",")) !== FALSE) 
+            {
+                $sheetData[] = $dat;
+            }
+            fclose($handle);
+        }
+
+
+        return view('CreditCardPay.addedit',[ 'request' => $request,
+												'creditcard' => $creditcard
 										]);
 	}
 }
