@@ -10,10 +10,10 @@ class CreditCardPay extends Model {
 
 	public static function fetchcreditCardnames() {
 		$db = DB::connection('mysql');
-		$query = $db->TABLE('acc_creditCard')
+		$query = $db->TABLE('acc_creditcard')
 						->SELECT('*')
 						// ->leftJoin('mstbanks', 'mstbanks.id', '=', 'mstbank.BankName')
-						->orderBy('acc_creditCard.id','ASC')
+						->orderBy('acc_creditcard.id','ASC')
 						->lists('creditCardName','id');
 						// ->toSql();
 		return $query;

@@ -802,7 +802,7 @@ class Setting extends Model {
 
     public static function selectCreditCardDatas($fieldArray,$orderid,$request) {
 
-        $query = DB::table('acc_creditCard')
+        $query = DB::table('acc_creditcard')
                         ->select('*')
                         ->get();
         return $query;

@@ -1186,7 +1186,7 @@ function fnaddeditcreditcard(mainmenu,tablename,flag) {
 						url: url,
 						data: {"selectbox1": selectbox1,"textbox1": textbox1,"textbox2": textbox2,"mainmenu": mainmenu,"tablename": tablename,"id": editid,"flag": flag},
 						success: function(data) {
-							alert(data);
+							// alert(data);
 							if (data != "") {
 								 $('#selectbox1').val('');
 								 $('#textbox1').val('');

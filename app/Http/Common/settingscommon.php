@@ -627,7 +627,7 @@ namespace App\Http\Common;
 
 		 										 	'commitfields'=>array('Name')),
 
-						'acc_creditCard'=>array('labels'=>
+						'acc_creditcard'=>array('labels'=>
 												array('heading'=>trans('messages.lbl_creditCard'),
 												 	'field1lbl'=>trans('messages.lbl_bank_name'),
 												 	'field2lbl'=>trans('messages.lbl_Date'),

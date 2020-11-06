@@ -397,7 +397,7 @@
 
 	        		<div>
 	        			@php
-	        				$tbl_name = 'acc_creditCard'
+	        				$tbl_name = 'acc_creditcard'
 	        			@endphp
 	        			<a class="mt20 ml80 btn-link" style="color:blue;" 
 	        				href="javascript:settingpopupcreditcard('{{ $tbl_name}}')">
