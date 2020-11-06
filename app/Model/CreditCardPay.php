@@ -32,4 +32,46 @@ class CreditCardPay extends Model {
 						);
 		return $update;
 	}
+
+	public static function fetchcategorynames() {
+		$db = DB::connection('mysql');
+		$query = $db->TABLE('acc_categorysetting')
+						->SELECT('*')
+						->orderBy('acc_categorysetting.id','ASC')
+						->lists('Category','id');
+		return $query;
+	}
+
+	public static function inscreditCardDtls($request) {
+
+		$name = Session::get('FirstName').' '.Session::get('LastName');
+		$i = 1;
+		$insert = 0;
+		$sheetData = $request->sheetData;
+		$db = DB::connection('mysql');
+		if ($sheetData != 0) {
+			for ($i = 1; $i < $sheetData-1; $i++) { 
+				$creditCardDate = "creditCardDate".$i;
+				$creditCardContent = "creditCardContent".$i;
+				$creditCardAmount = "creditCardAmount".$i;
+				$rdoBill = "rdoBill".$i;
+				$categoryId = "categoryId".$i;
+				$remarks = "remarks".$i;
+				$insert = $db->table('acc_creditcardpayment')
+							->insert([
+									'mainDate' => $request->mainDate,
+									'creditCardId' => $request->creditCardId,
+									'creditCardDate' => $request->$creditCardDate,
+									'creditCardContent' => $request->$creditCardContent,
+									'creditCardAmount' => $request->$creditCardAmount,
+									'rdoBill' => $request->$rdoBill,
+									'categoryId' => $request->$categoryId,
+									'remarks' => $request->$remarks,
+									'createdBy' => $name,
+								]);
+			}
+		}
+		return $insert;
+	}
+
 }

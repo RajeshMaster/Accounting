@@ -81,7 +81,7 @@
 					<th class="vam">{{ trans('messages.lbl_content') }}</th>
 					<th class="vam">{{ trans('messages.lbl_amount') }}</th>
 					<th class="vam ">{{ trans('messages.lbl_bill') }}</th>
-					<th class="vam">{{ trans('messages.lbl_categorie') }}</th>
+					<th class="vam">{{ trans('messages.lbl_categories') }}</th>
 					<th class="vam">{{ trans('messages.lbl_remarks') }}</th>
 					<th class="vam">{{ trans('messages.lbl_file') }}</th>
 				</tr>

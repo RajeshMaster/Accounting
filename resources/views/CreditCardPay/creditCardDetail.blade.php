@@ -23,9 +23,14 @@
 
 	<article id="accounting" class="DEC_flex_wrapper " data-category="accounting accounting_sub_2">
 
-	{{ Form::open(array('name'=>'creditCaredPayIndex', 'id'=>'creditCaredPayIndex', 'url' => 'CreditCardPay/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),'files'=>true,
-		  'method' => 'POST')) }}
+	{{ Form::open(array('name'=>'creditCardDtls', 'id'=>'creditCardDtls', 
+						'url' => 'CreditCardPay/creditCardAddDtls?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
+						'files'=>true,'method' => 'POST')) }}
+
 		{{ Form::hidden('mainmenu', $request->mainmenu , array('id' => 'mainmenu')) }}
+		{{ Form::hidden('mainDate', $request->mainDate , array('id' => 'mainDate')) }}
+		{{ Form::hidden('creditCardId', $request->creditCard , array('id' => 'creditCardId')) }}
+		{{ Form::hidden('sheetData', count($sheetData) , array('id' => 'sheetData')) }}
 
 		
 	<!-- Start Heading -->
@@ -40,17 +45,16 @@
 	</div>
 	<!-- End Heading -->
 
-	<div class="pt43 minh300 pl10 pr10 " style="padding:3px 3px 20px">
+	<div class="minh300 mt10 mb10" style="padding:2px 2px 2px 2px">
 		<table class="tablealternate CMN_tblfixed mt10">
 			<colgroup>
-				<col width="4%">
-				<col width="9%">
-				<col width="14%">
-				<col width="16%">
-				<col width="8%">
-				<col width="8%">
-				<!-- <col width="8%"> -->
-				<col width="">
+				<col width="5%">
+				<col width="10%">
+				<col width="20%">
+				<col width="10%">
+				<col width="12%">
+				<col width="15%">
+				<col width="38%">
 			</colgroup>
 
 			<thead class="CMN_tbltheadcolor">
@@ -60,7 +64,7 @@
 					<th class="vam">{{ trans('messages.lbl_content') }}</th>
 					<th class="vam">{{ trans('messages.lbl_amount') }}</th>
 					<th class="vam ">{{ trans('messages.lbl_bill') }}</th>
-					<th class="vam">{{ trans('messages.lbl_categorie') }}</th>
+					<th class="vam">{{ trans('messages.lbl_categories') }}</th>
 					<th class="vam">{{ trans('messages.lbl_remarks') }}</th>
 				</tr>
 			</thead>
@@ -69,31 +73,74 @@
 					$i = 1;
 				@endphp
 				@forelse($sheetData as $key => $data)
-					@if($key != 0 )
+					@if($key != 0 && $i != count($sheetData)-1)
 						<tr>
-							<td>{{ $i }}</td>
-							<td>{{ $data[0] }}</td>
-							<td>{{ $data[1] }}</td>
-							<td align="right">{{ $data[2] }}</td>
-							<td></td>
-							<td></td>
-							<td></td>
+							<td class="tac">{{ $i }}</td>
+							<td class="tac">
+								{{ Form::hidden('creditCardDate'.$i, $data[0] , array('id' => 'creditCardDate'.$i)) }}
+								{{ $data[0] }}
+							</td>
+							<td>
+								{{ Form::hidden('creditCardContent'.$i, $data[1] , array('id' => 'creditCardContent'.$i)) }}
+								{{ $data[1] }}</td>
+							<td align="right">
+								{{ Form::hidden('creditCardAmount'.$i, $data[2] , array('id' => 'creditCardAmount'.$i)) }}
+								{{ $data[2] }}</td>
+							<td class="tac">
+							<label style="font-weight: normal;display: inline-block;">
+								{{ Form::radio('rdoBill'.$i, '1',1, 
+											array('id' =>'Bill1'.$i,
+												  'name' => 'rdoBill'.$i,
+												  'class' => 'Bill1'.$i,
+												  'style' => 'margin:-2px 0 0 !important',
+												  'checked' => 'true',
+												  'data-label' => trans('messages.lbl_bill'))) }}
+								<span class="vam">&nbsp; 有 &nbsp;</span>
+							</label>
+							<label style="font-weight: normal;display: inline-block;">
+								{{ Form::radio('rdoBill'.$i, '2',2, 
+											array('id' =>'Bill2'.$i,
+												  'name' => 'rdoBill'.$i,
+												  'class' => 'Bill2'.$i,
+												  'style' => 'margin:-2px 0 0 !important',
+												  'data-label' => trans('messages.lbl_bill'))) }}
+								<span class="vam">&nbsp; 無 &nbsp;</span>
+							</label>
+							</td>
+							<td class="tac">
+								{{ Form::select('categoryId'.$i,[null=>'']+$categoryName,		array('name' =>'categoryId'.$i,
+										'id'=>'categoryId'.$i,
+										'data-label' =>trans('messages.lbl_categories'),
+										'class'=>'pl10 widthauto'))}}	
+							</td>
+							<td class="tac">
+								{{ Form::text('remarks'.$i,$data[6], 
+										array('name' => 'remarks'.$i,
+										 		'id' => 'remarks'.$i,
+												'class' => 'pl10 box95per form-control')) }}
+							</td>
 						</tr>
 						@php
 							$i++;
 						@endphp
 					@endif
-				
 				@empty
 					<tr>
-						<td class="text-center columnspan" colspan="9" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
+						<td class="text-center columnspan" colspan="7" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
 					</tr>
 				@endforelse
 
-		
 			</tbody>
 		</table>
-
+	</div>
+	<div class="col-xs-12">
+		<div class="col-xs-5"></div>
+		<div class="col-xs-2">
+			<button type="submit" class="btn btn-success mt10 mb10 creditcashprocess">
+				{{ trans('messages.lbl_submit') }}
+			</button>
+		</div>
+		<div class="col-xs-5"></div>
 	</div>
 	{{ Form::close() }}
 	</article>
