@@ -46,9 +46,13 @@ class CreditCardPayController extends Controller {
 	}
 
 	public function addeditprocess(Request $request) {
-		print_r($request->all());exit;
 		$sheetData = array();
-        if (($handle = fopen($_FILES["fileToUpload"]["tmp_name"], "r")) !== FALSE) 
+
+		$sjis = file_get_contents($_FILES["fileToUpload"]["tmp_name"]);
+		$utf8 = mb_convert_encoding($sjis, 'UTF-8', 'SJIS-win');
+		file_put_contents('utf8.csv', $utf8);
+
+        if (($handle = fopen('utf8.csv', "r")) !== FALSE) 
         {
             while (($dat = fgetcsv($handle, 1000, ",")) !== FALSE) 
             {
@@ -56,10 +60,8 @@ class CreditCardPayController extends Controller {
             }
             fclose($handle);
         }
-
-
-        return view('CreditCardPay.addedit',[ 'request' => $request,
-												'creditcard' => $creditcard
+        return view('CreditCardPay.creditCardDetail',[ 'request' => $request,
+												'sheetData' => $sheetData
 										]);
 	}
 }
