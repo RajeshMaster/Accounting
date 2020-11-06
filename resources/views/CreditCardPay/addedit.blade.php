@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-{{ HTML::script('resources/assets/js/accounts.js') }}
+{{ HTML::script('resources/assets/js/creditcardpay.js') }}
 {{ HTML::script('resources/assets/js/lib/bootstrap-datetimepicker.js') }}
 {{ HTML::style('resources/assets/css/lib/bootstrap-datetimepicker.min.css') }}
 {{ HTML::script('resources/assets/js/lib/additional-methods.min.js') }}
@@ -46,9 +46,10 @@
 
 <div class="CMN_display_block" id="main_contents">
 <!-- article to select the main&sub menu -->
-<article id="accounting" class="DEC_flex_wrapper " data-category="accounting accounting_sub_1">
-		{{ Form::open(array('name'=>'frmtransferaddedit','id'=>'frmtransferaddedit', 
-			'url' => 'Accounting/tranferaddeditprocess?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
+<article id="accounting" class="DEC_flex_wrapper " data-category="accounting accounting_sub_2">
+		{{ Form::open(array('name'=>'creditCardPayaddedit','id'=>'creditCardPayaddedit', 
+			'url' => 'CreditCardPay/addeditprocess?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
+			'enctype' => 'multipart/form-data',
 			'files'=>true,'method' => 'POST')) }}
 
 		{{ Form::hidden('edit_flg', $request->edit_flg, array('id' => 'edit_flg')) }}
@@ -76,15 +77,15 @@
 					<label>{{ trans('messages.lbl_Date') }}<span class="fr ml2 red"> * </span></label>
 				</div>
 				<div class="col-xs-9">
-						{{ Form::text('transferDate',(isset($transferEdit[0]->date)) ? $transferEdit[0]->date : '',
-								array('id'=>'transferDate',
-									'name' => 'transferDate',
+						{{ Form::text('mainDate',(isset($transferEdit[0]->date)) ? $transferEdit[0]->date : '',
+								array('id'=>'mainDate',
+									'name' => 'mainDate',
 									'autocomplete' => 'off',
 									'class'=>'box12per txt_startdate form-control dob',
 									'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
 									'data-label' => trans('messages.lbl_Date'),
 									'maxlength' => '10')) }}
-						<label class="fa fa-calendar fa-lg" for="transferDate" aria-hidden="true">
+						<label class="fa fa-calendar fa-lg" for="mainDate" aria-hidden="true">
 						</label>
 						<a href="javascript:getdate('Transfer');" class="anchorstyle">
 							<img title="Current Date" class="box15" src="{{ URL::asset('resources/assets/images/add_date.png') }}"></a>
@@ -92,15 +93,30 @@
 			</div>
 			<div class="col-xs-12 mt5">
 				<div class="col-xs-3 text-right clr_blue">
-					<label>{{ trans('messages.lbl_bank_name') }}<span class="fr ml2 red"> * </span></label>
+					<label>{{ trans('messages.lbl_creditCardName') }}<span class="fr ml2 red"> * </span></label>
 				</div>
 				<div class="col-xs-9">
-				
+					{{ Form::select('creditCard',[null=>'']+$creditcard,(isset($editData[0]->bankIdFrom)) ? 
+														$editData[0]->bankIdFrom.'-'.$editData[0]->accountNumberFrom : '',						array('name' =>'creditCard',
+																	'id'=>'creditCard',
+																	'data-label' => trans('messages.lbl_creditCard'),
+																	'class'=>'pl5 widthauto'))}}
 				</div>
 			</div>
 
-			
 			<div class="col-xs-12 mt5">
+				<div class="col-xs-3 text-right clr_blue">
+					<label>Csv File<span class="fr ml2 red"> &nbsp;&nbsp; </span></label>
+				</div>
+				<div class="col-xs-9">
+				<input type="file" name="fileToUpload" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+					<span>&nbsp;(Ex: Csv File Only)</span>
+		
+				</div>
+			</div>
+
+
+			<!-- <div class="col-xs-12 mt5">
 				<div class="col-xs-3 text-right clr_blue">
 					<label>{{ trans('messages.lbl_bill') }}<span class="fr ml2 red"> &nbsp;&nbsp; </span></label>
 				</div>
@@ -116,7 +132,6 @@
 					@if(isset($transferEdit) && $request->edit_flg == 1)
 					<?php $file_url = '../AccountingUpload/Accounting/' . $transferEdit[0]->fileDtl; ?>
 					@if(isset($transferEdit[0]->fileDtl) && file_exists($file_url))
-						<!-- <a style="text-decoration:none" href="{{ URL::asset('../../../../AccountingUpload/Accounting').'/'.$transferEdit[0]->fileDtl }}" data-lightbox="visa-img"></a> -->
 						<img width="20" height="20" name="empimg" id="empimg" 
 						class="ml5 box20 viewPic3by2" src="{{ URL::asset('../../../../AccountingUpload/Accounting').'/'.$transferEdit[0]->fileDtl }}">
 						{{ Form::hidden('pdffiles', $transferEdit[0]->fileDtl , array('id' => 'pdffiles')) }}
@@ -124,7 +139,7 @@
 					@endif
 				@endif
 				</div>
-			</div>
+			</div> -->
 
 			<div class="col-xs-12 mt5 mb10">
 				<div class="col-xs-3 text-right clr_blue">
@@ -147,12 +162,12 @@
 			<div class="form-group">
 				<div align="center" class="mt5">
 					@if($request->edit_flg == 1)
-						<button type="submit" class="btn btn-warning add box100 ml5 tranferaddeditprocess">
+						<button type="submit" class="btn btn-warning add box100 ml5 creditCardAddedit">
 							<i class="fa fa-edit" aria-hidden="true"></i> 
 							{{ trans('messages.lbl_update') }}
 						</button>&nbsp;
 					@else
-						<button type="submit" class="btn btn-success add box100 ml5 tranferaddeditprocess">
+						<button type="submit" class="btn btn-success add box100 ml5 creditCardAddedit">
 							<i class="fa fa-plus" aria-hidden="true"></i> 
 							{{ trans('messages.lbl_register') }}
 						</button>&nbsp;
@@ -177,7 +192,7 @@
 
 	{{ Form::close() }}
 
-	<div id="empnamepopup" class="modal fade">
+	<div id="detailPopup" class="modal fade">
 		<div id="login-overlay">
 			<div class="modal-content">
 				<!-- Popup will be loaded here -->
