@@ -113,10 +113,10 @@
 
       <colgroup>
         <col width="10%">
-        <col width="10%">
+        <!-- <col width="10%"> -->
         <col width="25%">
         <col width="20%">
-        <col width="20%">
+        <col width="">
         <col width="17%">
       </colgroup>
 
@@ -134,9 +134,9 @@
             {{ $field1lbl }}
           </th>
 
-          <th class="fs14 pb3 CMN_tbltheadcolor">
+       <!--    <th class="fs14 pb3 CMN_tbltheadcolor">
             {{ $field2lbl }}
-          </th>
+          </th> -->
 
           <th class="fs14 pb3 CMN_tbltheadcolor">
             {{ $field3lbl }}
@@ -158,10 +158,10 @@
 
     <table id="swaptable1" class="table table-striped table-bordered CMN_tblfixed">
       <col width="10%">
-      <col width="10%">
+      <!-- <col width="10%"> -->
       <col width="25%">
       <col width="20%">
-      <col width="20%">
+      <col width="">
       <col width="17%">
       <tbody class="box100per h35">
         @php ($i = 1)
@@ -183,7 +183,7 @@
               <input type="hidden" name="hiddenselectvalue"  id="dataname1{{$data->$selectfiled['0']}}" value="{{ $data->$selectfiled['1'] }}">
             </td>
 
-            <td class="pl5 pt7" id="dataname2{{$data->$selectfiled['0']}}">{{ $data->$selectfiled['2'] }}</td>
+            <!-- <td class="pl5 pt7" id="dataname2{{$data->$selectfiled['0']}}">{{ $data->$selectfiled['2'] }}</td> -->
 
             <td class="pl5 pt7" id="dataname3{{$data->$selectfiled['0']}}">{{ $data->$selectfiled['3'] }}</td>
 
@@ -240,7 +240,7 @@
         </div>
       </div>
 
-      <div class="col-md-12 mt5 ml50">
+     <!--  <div class="col-md-12 mt5 ml50">
 
         <div class="box25per pull-left text-right clr_blue fwb mt5">
           {{$field2lbl}}
@@ -262,7 +262,7 @@
         </div>
 
       </div>
-
+ -->
       <div class="mt3 col-md-12 ml50">
         <div class="box25per mt5 pull-left text-right clr_blue fwb">
           {{$field3lbl}}

@@ -48,6 +48,8 @@ class CreditCardPay extends Model {
 		$i = 1;
 		$insert = 0;
 		$sheetData = $request->sheetData;
+		$selectedYearMonth = date('Y').'-'.$request->selectedMonth.'-01';
+
 		$db = DB::connection('mysql');
 		if ($sheetData != 0) {
 			for ($i = 1; $i < $sheetData-1; $i++) { 
@@ -59,6 +61,7 @@ class CreditCardPay extends Model {
 				$remarks = "remarks".$i;
 				$insert = $db->table('acc_creditcardpayment')
 							->insert([
+									'selectedYearMonth' => $selectedYearMonth,
 									'mainDate' => $request->mainDate,
 									'creditCardId' => $request->creditCardId,
 									'creditCardDate' => $request->$creditCardDate,
@@ -74,14 +77,114 @@ class CreditCardPay extends Model {
 		return $insert;
 	}
 
-	public static function fetchcreditcarddetails($request) {
+	public static function fetchcreditcarddetails($from_date, $to_date,$request) {
 
 		$db = DB::connection('mysql');
 		$query = $db->table('acc_creditcardpayment')
 						->SELECT('acc_creditcardpayment.*','acc_creditcard.creditCardName','acc_categorysetting.Category')
 						->leftJoin('acc_creditcard', 'acc_creditcard.id', '=', 'acc_creditcardpayment.creditCardId')
 						->leftJoin('acc_categorysetting', 'acc_categorysetting.id', '=', 'acc_creditcardpayment.categoryId')
+						->where('selectedYearMonth','>=',$from_date)
+						->where('selectedYearMonth','<=',$to_date)
+						->orderBy('creditCardId', 'ASC')
+						->orderBy('creditCardDate', 'ASC')
+						->paginate($request->plimit);
+						// ->get();
+		return $query;
+	}
+
+	public static function fetchcreditcardEdit($request) {
+
+		$db = DB::connection('mysql');
+		$query = $db->table('acc_creditcardpayment')
+						->SELECT('acc_creditcardpayment.*','acc_creditcard.creditCardName','acc_categorysetting.Category')
+						->leftJoin('acc_creditcard', 'acc_creditcard.id', '=', 'acc_creditcardpayment.creditCardId')
+						->leftJoin('acc_categorysetting', 'acc_categorysetting.id', '=', 'acc_creditcardpayment.categoryId')
+						->where('acc_creditcardpayment.id', $request->id)
 						->get();
 		return $query;
 	}
+
+	public static function updateDtls($request,$fileName) {
+
+		$name = Session::get('FirstName').' '.Session::get('LastName');
+		$update = DB::table('acc_creditcardpayment')
+						->where('id', $request->id)
+						->update(
+							array(
+								'mainDate' => $request->mainDate,
+								'creditCardId' => $request->creditCard,
+								'creditCardDate' => $request->creditCardDate,
+								'creditCardContent' => $request->content,
+								'creditCardAmount' => preg_replace("/,/", "", $request->amount),
+								'rdoBill' => $request->rdoBill,
+								'categoryId' => $request->categories,
+								'remarks' => $request->remarks,
+								'file' => $fileName,
+								'UpdatedBy' => $name
+							)
+						);
+		return $update;
+
+	}
+
+	public static function fnGetAccountPeriodAcc() {
+		$accperiod=DB::table('dev_kessandetails')
+						->SELECT('*')
+						->WHERE('delflg', '=', 0)
+	                    ->get();
+	        return $accperiod;
+	}
+
+	public static function fnGetcreditCardAllRecord() {
+		
+		$sql = "SELECT SUBSTRING(selectedYearMonth, 1, 7) AS date FROM acc_creditcardpayment 
+				where delFlg = '0'  ORDER BY selectedYearMonth ASC";
+
+		$cards = DB::select($sql);
+		return $cards;
+	}
+
+
+	public static function fnGetcreditCardRecord($from_date, $to_date) {
+	
+		$tbl_name = "acc_creditcardpayment";
+		$sql = "SELECT SUBSTRING(selectedYearMonth, 1, 7) AS date 
+				FROM $tbl_name 
+				WHERE (selectedYearMonth > '$from_date' AND selectedYearMonth <= '$to_date') 
+				AND delFlg = '0'
+				ORDER BY creditCardDate ASC";
+		$cards = DB::select($sql);
+		return $cards;
+	}
+
+	public static function fnGetcreditCardRecordPrevious($from_date) {
+
+		$tbl_name = "acc_creditcardpayment";
+		$conditionAppend = "AND (delFlg = 0)";
+		
+		$sql = "SELECT SUBSTRING(selectedYearMonth, 1, 7) AS date FROM $tbl_name 
+			WHERE (selectedYearMonth <= '$from_date' $conditionAppend) ORDER BY creditCardDate ASC";
+		$cards = DB::select($sql);
+		return $cards;
+	}
+
+	public static function fnGetCreditCardRecordNext($to_date) {
+		
+		$sql = "SELECT SUBSTRING(selectedYearMonth, 1, 7) AS date FROM acc_creditcardpayment 
+			WHERE (selectedYearMonth >= '$to_date') AND delFlg = '0' ORDER BY creditCardDate ASC";
+		$cards = DB::select($sql);
+		return $cards;
+	}
+
+	public static function getDataBycard($request) {
+		$db = DB::connection('mysql');
+		$query = $db->table('acc_creditcardpayment')
+						->SELECT('acc_creditcardpayment.selectedYearMonth')
+						->where('creditCardId','=',$request->creditCardVal)
+						->orderBy('selectedYearMonth', 'ASC')
+						->get();
+		return $query;
+	}
+
 }

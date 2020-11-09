@@ -55,6 +55,7 @@
 		{{ Form::hidden('edit_flg', $request->edit_flg, array('id' => 'edit_flg')) }}
 		{{ Form::hidden('mainmenu', $request->mainmenu , array('id' => 'mainmenu')) }}
 		{{ Form::hidden('editId', $request->editId, array('id' => 'editId')) }}
+		{{ Form::hidden('selectedMonth', '', array('id' => 'selectedMonth')) }}
 
 		<div class="row hline pm0">
 			<div class="col-xs-12">
@@ -71,7 +72,20 @@
 		
 		<div class="col-xs-12 pl5 pr5">
 		<fieldset>
-		
+			<div class="col-xs-12 mt5">
+				<div class="col-xs-3 text-right clr_blue">
+					<label>{{ trans('messages.lbl_creditCardName') }}<span class="fr ml2 red"> * </span></label>
+				</div>
+				<div class="col-xs-9">
+					{{ Form::select('creditCard',[null=>'']+$creditcard,(isset($editData[0]->bankIdFrom)) ? 
+														$editData[0]->bankIdFrom.'-'.$editData[0]->accountNumberFrom : '',						array('name' =>'creditCard',
+																	'id'=>'creditCard',
+																	'onchange'=>'fnGetInsertedValue();',
+																	'data-label' => trans('messages.lbl_creditCard'),
+																	'class'=>'pl5 widthauto'))}}
+				</div>
+			</div>
+
 			<div class="col-xs-12 mt15">
 				<div class="col-xs-3 text-right clr_blue">
 					<label>{{ trans('messages.lbl_Date') }}<span class="fr ml2 red"> * </span></label>
@@ -91,16 +105,18 @@
 							<img title="Current Date" class="box15" src="{{ URL::asset('resources/assets/images/add_date.png') }}"></a>
 				</div>
 			</div>
+			
 			<div class="col-xs-12 mt5">
 				<div class="col-xs-3 text-right clr_blue">
-					<label>{{ trans('messages.lbl_creditCardName') }}<span class="fr ml2 red"> * </span></label>
+					<label><span class="fr ml2 red"> * </span>{{ trans('messages.lbl_expmonth') }}</label>
 				</div>
 				<div class="col-xs-9">
-					{{ Form::select('creditCard',[null=>'']+$creditcard,(isset($editData[0]->bankIdFrom)) ? 
-														$editData[0]->bankIdFrom.'-'.$editData[0]->accountNumberFrom : '',						array('name' =>'creditCard',
-																	'id'=>'creditCard',
-																	'data-label' => trans('messages.lbl_creditCard'),
-																	'class'=>'pl5 widthauto'))}}
+					@for($i = 1; $i <= 12; $i++)
+						{{ Form::checkbox('month',$i,'',['id' => 'month'.$i,
+													'class' => 'checkboxid',
+													'style' => 'display:inline-block']) }}
+						{{ $i }}月							
+					@endfor
 				</div>
 			</div>
 
@@ -109,7 +125,7 @@
 					<label>Csv File<span class="fr ml2 red"> &nbsp;&nbsp; </span></label>
 				</div>
 				<div class="col-xs-9">
-				<input type="file" name="fileToUpload" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+				<input type="file" name="fileToUpload" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" id="fileToUpload">
 					<span>&nbsp;(Ex: Csv File Only)</span>
 		
 				</div>
@@ -140,22 +156,6 @@
 				@endif
 				</div>
 			</div> -->
-
-			<div class="col-xs-12 mt5 mb10">
-				<div class="col-xs-3 text-right clr_blue">
-					<label>{{ trans('messages.lbl_remarks') }}<span class="fr ml2 red"> &nbsp;&nbsp; </span></label>
-				</div>
-				<div class="col-xs-9">
-					{{ Form::textarea('transFerRemarks',(isset($transferEdit[0]->remarks)) ? $transferEdit[0]->remarks : '',
-									array('id'=>'transFerRemarks', 
-												'name' => 'transFerRemarks',
-												'class' => 'box45per',
-												'style'=>'text-align:left;padding-left:4px;',
-												'size' => '60x5',
-												'data-label' => trans('messages.lbl_remarks'))) }}
-				</div>
-			</div>
-
 		</fieldset>
 		<fieldset style="background-color: #DDF1FA;">
 

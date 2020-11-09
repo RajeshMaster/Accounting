@@ -1391,10 +1391,10 @@ return [
 	'lbl_invoiceDtl' => '請求書情報',
 	'lbl_confirm' => '確認',
 	'lbl_confirmed' => '確認済',
-	'lbl_creditCardPay' => 'Credit Card Payment',
+	'lbl_creditCardPay' => 'Credit Card',
 	'lbl_creditCard' => 'Credit Card',
 	'lbl_creditCardName' => 'Credit Card Name',
 	'lbl_categories' => 'Categories',
 	'lbl_creditName' => 'Creditcard Name',
-	'lbl_CreditDate' => 'Credit Date',
+	'lbl_CreditDate' => 'Credit Card Date',
 ];

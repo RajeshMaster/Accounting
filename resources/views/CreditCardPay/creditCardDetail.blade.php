@@ -6,15 +6,6 @@
 <script type="text/javascript">
 	var datetime = '<?php echo date('Ymdhis'); ?>';
 	var mainmenu = '<?php echo $request->mainmenu; ?>';
-	function pageClick(pageval) {
-		$('#page').val(pageval);
-			$("#creditCaredPayIndex").submit();
-	}
-	function pageLimitClick(pagelimitval) {
-		$('#page').val('');
-		$('#plimit').val(pagelimitval);
-		$("#creditCaredPayIndex").submit();
-	}
 </script>
 
 	<div class="CMN_display_block" id="main_contents">
@@ -30,6 +21,8 @@
 		{{ Form::hidden('mainmenu', $request->mainmenu , array('id' => 'mainmenu')) }}
 		{{ Form::hidden('mainDate', $request->mainDate , array('id' => 'mainDate')) }}
 		{{ Form::hidden('creditCardId', $request->creditCard , array('id' => 'creditCardId')) }}
+		{{ Form::hidden('creditCard', $request->creditCard , array('id' => 'creditCard')) }}
+		{{ Form::hidden('selectedMonth', $request->selectedMonth , array('id' => 'selectedMonth')) }}
 		{{ Form::hidden('sheetData', count($sheetData) , array('id' => 'sheetData')) }}
 
 		
@@ -87,25 +80,25 @@
 								{{ Form::hidden('creditCardAmount'.$i, $data[2] , array('id' => 'creditCardAmount'.$i)) }}
 								{{ $data[2] }}</td>
 							<td class="tac">
-							<label style="font-weight: normal;display: inline-block;">
-								{{ Form::radio('rdoBill'.$i, '1',1, 
-											array('id' =>'Bill1'.$i,
-												  'name' => 'rdoBill'.$i,
-												  'class' => 'Bill1'.$i,
-												  'style' => 'margin:-2px 0 0 !important',
-												  'checked' => 'true',
-												  'data-label' => trans('messages.lbl_bill'))) }}
-								<span class="vam">&nbsp; 有 &nbsp;</span>
-							</label>
-							<label style="font-weight: normal;display: inline-block;">
-								{{ Form::radio('rdoBill'.$i, '2',2, 
-											array('id' =>'Bill2'.$i,
-												  'name' => 'rdoBill'.$i,
-												  'class' => 'Bill2'.$i,
-												  'style' => 'margin:-2px 0 0 !important',
-												  'data-label' => trans('messages.lbl_bill'))) }}
-								<span class="vam">&nbsp; 無 &nbsp;</span>
-							</label>
+								<label style="font-weight: normal;display: inline-block;">
+									{{ Form::radio('rdoBill'.$i, '1',1, 
+												array('id' =>'Bill1'.$i,
+													  'name' => 'rdoBill'.$i,
+													  'class' => 'Bill1'.$i,
+													  'style' => 'margin:-2px 0 0 !important',
+													  'checked' => 'true',
+													  'data-label' => trans('messages.lbl_bill'))) }}
+									<span class="vam">&nbsp; 有 &nbsp;</span>
+								</label>
+								<label style="font-weight: normal;display: inline-block;">
+									{{ Form::radio('rdoBill'.$i, '2',2, 
+												array('id' =>'Bill2'.$i,
+													  'name' => 'rdoBill'.$i,
+													  'class' => 'Bill2'.$i,
+													  'style' => 'margin:-2px 0 0 !important',
+													  'data-label' => trans('messages.lbl_bill'))) }}
+									<span class="vam">&nbsp; 無 &nbsp;</span>
+								</label>
 							</td>
 							<td class="tac">
 								{{ Form::select('categoryId'.$i,[null=>'']+$categoryName,		array('name' =>'categoryId'.$i,
@@ -134,11 +127,14 @@
 		</table>
 	</div>
 	<div class="col-xs-12">
-		<div class="col-xs-5"></div>
-		<div class="col-xs-2">
+		<div class="col-xs-12" align="center">
 			<button type="submit" class="btn btn-success mt10 mb10 creditcashprocess">
 				{{ trans('messages.lbl_submit') }}
 			</button>
+			<a href="javascript:gotoregister('Transfer','{{ $request->mainmenu }}');" 
+				class="btn btn-danger box120 white">
+				<i class="fa fa-times" aria-hidden="true"></i> {{trans('messages.lbl_cancel')}}
+			</a>
 		</div>
 		<div class="col-xs-5"></div>
 	</div>

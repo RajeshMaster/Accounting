@@ -1,9 +1,11 @@
 @extends('layouts.app')
-
 @section('content')
 
-{{ HTML::script('resources/assets/js/creditcardpay.js') }}
+@php use App\Http\Helpers; @endphp
 
+{{ HTML::script('resources/assets/js/creditcardpay.js') }}
+{{ HTML::script('resources/assets/js/lib/lightbox.js') }}
+{{ HTML::style('resources/assets/css/lib/lightbox.css') }}
 <script type="text/javascript">
 
 	var datetime = '<?php echo date('Ymdhis'); ?>';
@@ -30,7 +32,16 @@
 		{{ Form::hidden('mainmenu', $request->mainmenu , array('id' => 'mainmenu')) }}
 		{{ Form::hidden('plimit', $request->plimit , array('id' => 'plimit')) }}
 		{{ Form::hidden('page', $request->page , array('id' => 'page')) }}
+		{{ Form::hidden('id', '', array('id' => 'id')) }}
 		
+		<!-- Year Bar Start -->
+		{{ Form::hidden('selMonth', $request->selMonth, array('id' => 'selMonth')) }}
+		{{ Form::hidden('selYear', $request->selYear, array('id' => 'selYear')) }}
+		{{ Form::hidden('prevcnt', $request->prevcnt, array('id' => 'prevcnt')) }}
+		{{ Form::hidden('nextcnt', $request->nextcnt, array('id' => 'nextcnt')) }}
+		{{ Form::hidden('account_val', $account_val, array('id' => 'account_val')) }}
+		<!-- Year Bar End -->
+
 	<!-- Start Heading -->
 
 	<div class="row hline pm0">
@@ -42,6 +53,12 @@
 		</div>
 	</div>
 	<!-- End Heading -->
+
+	<div class=" pr10 pl10 ">
+		<div class="mt10 ">
+			{{ Helpers::displayYear_MonthEst($account_period, $year_month, $db_year_month, $date_month, $dbnext, $dbprevious, $last_year, $current_year, $account_val) }}
+		</div>
+	</div>
 
 
 	<div class="col-xs-12 pull-left pl10 pr10">
@@ -64,23 +81,22 @@
 	<div class="pt43 minh300 pl10 pr10 " style="padding:3px 3px 20px">
 		<table class="tablealternate CMN_tblfixed mt10">
 			<colgroup>
+				<col width="3%">
+				<!-- <col width="8%"> -->
+				<col width="8%">
+				<col width="20%">
+				<col width="8%">
 				<col width="4%">
-				<col width="14%">
-				<col width="9%">
-				<col width="9%">
-				<col width="16%">
-				<col width="8%">
-				<col width="5%">
-				<col width="8%">
 				<col width="15%">
-				<col width="">
+				<col width="22%">
+				<col width="4.5%">
+				<col width="6.5%">
 			</colgroup>
 
 			<thead class="CMN_tbltheadcolor">
 				<tr id="data">
 					<th class="vam">{{ trans('messages.lbl_sno') }}</th>
-					<th class="vam">{{ trans('messages.lbl_creditName') }}</th>
-					<th class="vam">{{ trans('messages.lbl_Date') }}</th>
+					<!-- <th class="vam">{{ trans('messages.lbl_Date') }}</th> -->
 					<th class="vam">{{ trans('messages.lbl_CreditDate') }}</th>
 					<th class="vam">{{ trans('messages.lbl_content') }}</th>
 					<th class="vam">{{ trans('messages.lbl_amount') }}</th>
@@ -88,29 +104,80 @@
 					<th class="vam">{{ trans('messages.lbl_categories') }}</th>
 					<th class="vam">{{ trans('messages.lbl_remarks') }}</th>
 					<th class="vam">{{ trans('messages.lbl_file') }}</th>
+					<th class="vam"></th>
 				</tr>
 			</thead>
 			<tbody>
+				@php
+					$creditCradId ="";
+					$totalFlg = "";
+					$CreditCardCheck = "0";
+					$balanceAmt = 0;
+				@endphp
 				@forelse($creditcardDetails as $key => $data)
+					@if(($CreditCardCheck != 0 && $CreditCardCheck != $data->creditCardId))
+						<tr style="background-color: #f1a2a2">
+							<td colspan="3" align="right">
+								{{ trans('messages.lbl_total') }}
+							</td>
+							<td colspan="1" align="right">
+								{{ number_format($balanceAmt) }}
+								@php $balanceAmt = 0; @endphp
+							</td>
+							<td colspan="5" class="columnspan1"></td>
+						</tr>
+					@endif
+					@if( $creditCradId != $data->creditCardId)
+						<tr style="background-color: lightgrey">
+							<td colspan="9" class="columnspan"> 
+								{{ $data->creditCardName }}     
+							</td>
+						</tr>
+					@endif
 					<tr>
 						<td align="center">{{ $key+1 }}</td>
-						<td align="center">
-							{{ $data->creditCardName }}
-						</td>
-						<td align="center"> {{ $data->mainDate }} </td>
+						<!-- <td align="center"> {{ $data->mainDate }} </td> -->
 						<td align="center">{{ $data->creditCardDate }}</td>
 						<td>{{ $data->creditCardContent }}</td>
-						<td>{{ $data->creditCardAmount }}</td>
-						<td align="center">@if($data->rdoBill == "1")有@else無@endif</td>
+						<td align="right">{{ number_format($data->creditCardAmount) }}</td>
+						<td align="center">@if($data->rdoBill == "1")有@endif</td>
 						<td>{{ $data->Category }}</td>
 						<td>{{ $data->remarks }}</td>
-						<td></td>
+						<td align="center">
+							@if($data->file != "")
+								<a style="text-decoration:none" href="{{ URL::asset('../../../../AccountingUpload/CreditCard').'/'.$data->file }}" data-lightbox="visa-img">
+								<img width="20" height="20" name="empimg" id="empimg" 
+								class=" box20 viewPic3by2" src="{{ URL::asset('../../../../AccountingUpload/CreditCard').'/'.$data->file }}"></a>
+							@endif
+						</td>
+						<td align="center">
+							<a href="javascript:fileUpload('{{ $data->id }}');">
+								<img class="vam ml12" src="{{ URL::asset('resources/assets/images/uploadFile.png') }}" width="20" height="20">
+							</a>
+							<a href="javascript:editCreditCard('{{ $data->id }}');">
+								<img class="vam ml12" src="{{ URL::asset('resources/assets/images/edit.png') }}" width="20" height="20">
+							</a>	
+						</td>
 					</tr>
+					@php 
+						$creditCradId = $data->creditCardId;
+						$CreditCardCheck = $data->creditCardId;
+						$balanceAmt += $data->creditCardAmount;
+					@endphp
 				@empty
 					<tr>
-						<td class="text-center columnspan" colspan="10" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
+						<td class="text-center columnspan" colspan="9" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
 					</tr>
 				@endforelse
+
+				@if(count($creditcardDetails) > 0)
+					<tr style="background-color: #f1a2a2">
+						<td colspan="3" align="right">{{ trans('messages.lbl_total') }}</td>
+						<td colspan="1" align="right">{{ number_format($balanceAmt) }}</td>
+						<td colspan="5" class="columnspan1"></td>
+					</tr>
+				@endif
+
 			</tbody>
 		</table>
 

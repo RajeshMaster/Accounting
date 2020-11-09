@@ -1217,10 +1217,10 @@ return [
 	'lbl_invoiceDtl' => 'Invoice Details',
 	'lbl_confirm' => 'Confirm',
 	'lbl_confirmed' => 'Confirmed',
-	'lbl_creditCardPay' => 'Credit Card Payment',
+	'lbl_creditCardPay' => 'Credit Card',
 	'lbl_creditCard' => 'Credit Card',
 	'lbl_creditCardName' => 'Credit Card Name',
 	'lbl_categories' => 'Categories',
 	'lbl_creditName' => 'Creditcard Name',
-	'lbl_CreditDate' => 'Credit Date',
+	'lbl_CreditDate' => 'Credit Card Date',
 ];
