@@ -144,7 +144,6 @@ $(document).ready(function() {
 				amount: {requiredWithZero: true},
 				transferBill : {extension: "jpg,jpeg,png,JPG,JPEG,PNG", filesize : (2 * 1024 * 1024)},
 				// remarks: {required: true},
-				// transferBill : {extension: "csv", filesize : (2 * 1024 * 1024)},
 			},
 			submitHandler: function(form) { // for demo
 				

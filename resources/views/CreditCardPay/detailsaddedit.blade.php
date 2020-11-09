@@ -213,7 +213,7 @@
 												'id' => 'transferBill',
 												'name' => 'transferBill',
 												'style' => 'height:23px;',
-												'accept' => 'image/x-png,image/gif,image/jpeg',
+												'accept' => 'image/*',
 												'data-label' => trans('messages.lbl_bill'))) }}
 						<span>&nbsp;(Ex: Image File Only)</span>
 						@if(isset($creditcardDetails))
