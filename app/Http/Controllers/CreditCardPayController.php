@@ -207,14 +207,21 @@ class CreditCardPayController extends Controller {
 	}
 
 	public function addedit(Request $request) {
-
+		$yearArr = array();
 		$creditcard = CreditCardPay::fetchcreditCardnames();
+		$year = date('Y');
+		$yearArr[date('Y')-1] = date('Y')-1;
+		$yearArr[date('Y')] = date('Y');
+		$yearArr[date('Y')+1] = date('Y')+1;
+
 		/*echo "<pre>";
 		print_r($bankdetailindex);
 		echo "</pre>";*/
 
 		return view('CreditCardPay.addedit',[ 'request' => $request,
-												'creditcard' => $creditcard
+												'creditcard' => $creditcard,
+												'yearArr' => $yearArr,
+												'year' => $year
 										]);
 	}
 

@@ -234,6 +234,7 @@ function getData(month, year, flg, prevcnt, nextcnt, account_period, lastyear, c
 
 function fnGetInsertedValue(){
 	creditCardVal = $('#creditCard').val();
+	mainYear = $('#mainYear').val();
 	$(".checkboxid").prop("disabled", false);
 	$(":checkbox").attr("checked", false);
 	if(creditCardVal != "") {
@@ -241,7 +242,9 @@ function fnGetInsertedValue(){
 			type: 'GET',
 			dataType: "JSON",
 			url: 'GetInsMonth_ajax',
-			data: {"creditCardVal": creditCardVal},
+			data: {"creditCardVal": creditCardVal,
+				"mainYear": mainYear,
+			},
 			success: function(resp) {
 				for (i = 0; i < resp.length; i++) {
 					$("#month"+resp[i]).prop("disabled", true);

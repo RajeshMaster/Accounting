@@ -22,6 +22,7 @@
 		{{ Form::hidden('mainDate', $request->mainDate , array('id' => 'mainDate')) }}
 		{{ Form::hidden('creditCardId', $request->creditCard , array('id' => 'creditCardId')) }}
 		{{ Form::hidden('creditCard', $request->creditCard , array('id' => 'creditCard')) }}
+		{{ Form::hidden('mainYear', $request->mainYear , array('id' => 'mainYear')) }}
 		{{ Form::hidden('selectedMonth', $request->selectedMonth , array('id' => 'selectedMonth')) }}
 		{{ Form::hidden('sheetData', count($sheetData) , array('id' => 'sheetData')) }}
 

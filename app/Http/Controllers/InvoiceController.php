@@ -1426,32 +1426,32 @@ public static function addeditinv(Request $request) {
             $objTpl->setActiveSheetIndex(0);  //set first sheet as active
 
             $objTpl->getActiveSheet()->setCellValue('AE1', $getinvoicedetails[0]->quot_date);
-            $objTpl->getActiveSheet()->setCellValue('AE52', $getinvoicedetails[0]->quot_date);
+            // $objTpl->getActiveSheet()->setCellValue('AE52', $getinvoicedetails[0]->quot_date);
             $objTpl->getActiveSheet()->setCellValue('C5', $getinvoicedetails[0]->company_name."  御中");
-            $objTpl->getActiveSheet()->setCellValue('C56', $getinvoicedetails[0]->company_name."  御中");
+            // $objTpl->getActiveSheet()->setCellValue('C56', $getinvoicedetails[0]->company_name."  御中");
             $objTpl->getActiveSheet()->getStyle('H14')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
             $objTpl->getActiveSheet()->setCellValue('H14','¥ '. number_format($grandtotal).'-');
-            $objTpl->getActiveSheet()->getStyle('H65')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
-            $objTpl->getActiveSheet()->setCellValue('H65','¥ '. number_format($grandtotal).'-');
+            // $objTpl->getActiveSheet()->getStyle('H65')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+            // $objTpl->getActiveSheet()->setCellValue('H65','¥ '. number_format($grandtotal).'-');
             $objTpl->getActiveSheet()->getStyle('H14')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
-            $objTpl->getActiveSheet()->getStyle('H65')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+            // $objTpl->getActiveSheet()->getStyle('H65')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
             $objTpl->getActiveSheet()->setCellValue('X39', $getinvoicedetails[0]->totalval);
             $objTpl->getActiveSheet()->setCellValue('X40', number_format($dispval));
             $objTpl->getActiveSheet()->setCellValue('X42', number_format($grandtotal));
                 //client excel
-            $objTpl->getActiveSheet()->setCellValue('X90', $getinvoicedetails[0]->totalval);
-            $objTpl->getActiveSheet()->setCellValue('X91', number_format($dispval));
-            $objTpl->getActiveSheet()->setCellValue('X93', number_format($grandtotal));
+            // $objTpl->getActiveSheet()->setCellValue('X90', $getinvoicedetails[0]->totalval);
+            // $objTpl->getActiveSheet()->setCellValue('X91', number_format($dispval));
+            // $objTpl->getActiveSheet()->setCellValue('X93', number_format($grandtotal));
             if ($getinvoicedetails[0]->tax == 1) {
                 $objTpl->getActiveSheet()->setCellValue('U41', "税込合計");
                 $objTpl->getActiveSheet()->setCellValue('X41', number_format($grandtotal));
                 $objTpl->getActiveSheet()->setCellValue('U42', "");
                 $objTpl->getActiveSheet()->setCellValue('X42', "");
                 //client excel
-                $objTpl->getActiveSheet()->setCellValue('U92', "税込合計");
-                $objTpl->getActiveSheet()->setCellValue('X92', number_format($grandtotal));
-                $objTpl->getActiveSheet()->setCellValue('U93', "");
-                $objTpl->getActiveSheet()->setCellValue('X93', "");
+                // $objTpl->getActiveSheet()->setCellValue('U92', "税込合計");
+                // $objTpl->getActiveSheet()->setCellValue('X92', number_format($grandtotal));
+                // $objTpl->getActiveSheet()->setCellValue('U93', "");
+                // $objTpl->getActiveSheet()->setCellValue('X93', "");
             } 
             if ($getinvoicedetails[0]->tax == 2) {
                 $objTpl->getActiveSheet()->setCellValue('U40', "非課税");
@@ -1461,12 +1461,12 @@ public static function addeditinv(Request $request) {
                 $objTpl->getActiveSheet()->setCellValue('U42', "");
                 $objTpl->getActiveSheet()->setCellValue('X42', "");
                 //client excel
-                $objTpl->getActiveSheet()->setCellValue('U91', "非課税");
-                $objTpl->getActiveSheet()->setCellValue('X91', "0");
-                $objTpl->getActiveSheet()->setCellValue('U92', "税込合計");
-                $objTpl->getActiveSheet()->setCellValue('X92', number_format($grandtotal));
-                $objTpl->getActiveSheet()->setCellValue('U93', "");
-                $objTpl->getActiveSheet()->setCellValue('X93', "");
+                // $objTpl->getActiveSheet()->setCellValue('U91', "非課税");
+                // $objTpl->getActiveSheet()->setCellValue('X91', "0");
+                // $objTpl->getActiveSheet()->setCellValue('U92', "税込合計");
+                // $objTpl->getActiveSheet()->setCellValue('X92', number_format($grandtotal));
+                // $objTpl->getActiveSheet()->setCellValue('U93', "");
+                // $objTpl->getActiveSheet()->setCellValue('X93', "");
             }
             $na=(isset($get_customer_detail[0]->customer_name)?$get_customer_detail[0]->customer_name:"")."\r\n".(isset($get_customer_detail[0]->customer_address)?$get_customer_detail[0]->customer_address:"")."\r\n".(isset($get_customer_detail[0]->customer_contact_no)?$get_customer_detail[0]->customer_contact_no:"");
             $objTpl->getActiveSheet()->setCellValue('H39', (isset($acc_details[0]->bankname)?$acc_details[0]->bankname:""));
@@ -1476,12 +1476,12 @@ public static function addeditinv(Request $request) {
             $objTpl->getActiveSheet()->setCellValue('K40', (isset($acc_details[0]->AccNo)?$acc_details[0]->AccNo:""));
             $objTpl->getActiveSheet()->setCellValue('AE3', (isset($getinvoicedetails[0]->user_id)?$getinvoicedetails[0]->user_id:""));
             //client excel
-            $objTpl->getActiveSheet()->setCellValue('H90', (isset($acc_details[0]->bankname)?$acc_details[0]->bankname:""));
-            $objTpl->getActiveSheet()->setCellValue('H91', $type);
-            $objTpl->getActiveSheet()->setCellValue('H92', (isset($acc_details[0]->bankbranch)?$acc_details[0]->bankbranch:""));
-            $objTpl->getActiveSheet()->setCellValue('H93', (isset($acc_details[0]->FirstName)?$acc_details[0]->FirstName:""));
-            $objTpl->getActiveSheet()->setCellValue('K91', (isset($acc_details[0]->AccNo)?$acc_details[0]->AccNo:""));
-            $objTpl->getActiveSheet()->setCellValue('AE54', (isset($getinvoicedetails[0]->user_id)?$getinvoicedetails[0]->user_id:""));
+            // $objTpl->getActiveSheet()->setCellValue('H90', (isset($acc_details[0]->bankname)?$acc_details[0]->bankname:""));
+            // $objTpl->getActiveSheet()->setCellValue('H91', $type);
+            // $objTpl->getActiveSheet()->setCellValue('H92', (isset($acc_details[0]->bankbranch)?$acc_details[0]->bankbranch:""));
+            // $objTpl->getActiveSheet()->setCellValue('H93', (isset($acc_details[0]->FirstName)?$acc_details[0]->FirstName:""));
+            // $objTpl->getActiveSheet()->setCellValue('K91', (isset($acc_details[0]->AccNo)?$acc_details[0]->AccNo:""));
+            // $objTpl->getActiveSheet()->setCellValue('AE54', (isset($getinvoicedetails[0]->user_id)?$getinvoicedetails[0]->user_id:""));
 
             $cellval = 19;
             $clientcellval = 70;
@@ -1548,22 +1548,22 @@ public static function addeditinv(Request $request) {
         }
         $objTpl->getActiveSheet()->setCellValue('AC' . ($cellval + $k), $remarksloop);
         //client excel
-        $objTpl->getActiveSheet()->setCellValue('C' . ($clientcellval + $k), $workloop);
-        $objTpl->getActiveSheet()->setCellValue('R' . ($clientcellval + $k), $quantityValue);
+        // $objTpl->getActiveSheet()->setCellValue('C' . ($clientcellval + $k), $workloop);
+        // $objTpl->getActiveSheet()->setCellValue('R' . ($clientcellval + $k), $quantityValue);
         
         if (!empty($unit_priceloop)) {
-            if ($unit_priceloop < 0) {
-                $objTpl->getActiveSheet()->setCellValue('U' . ($clientcellval + $k), $unit_priceloop)->getStyle('U' . ($clientcellval + $k))->getFont()->getColor()->setRGB('FF0000');
-            }
-            $objTpl->getActiveSheet()->setCellValue('U' . ($clientcellval + $k),$unit_priceloop);
+            // if ($unit_priceloop < 0) {
+            //     $objTpl->getActiveSheet()->setCellValue('U' . ($clientcellval + $k), $unit_priceloop)->getStyle('U' . ($clientcellval + $k))->getFont()->getColor()->setRGB('FF0000');
+            // }
+            // $objTpl->getActiveSheet()->setCellValue('U' . ($clientcellval + $k),$unit_priceloop);
         }
         if (!empty($amountloop)) {
             if ($amountloop < 0) {
-                $objTpl->getActiveSheet()->setCellValue('X' . ($clientcellval + $k), $amountloop)->getStyle('X' . ($clientcellval + $k))->getFont()->getColor()->setRGB('FF0000');
+                // $objTpl->getActiveSheet()->setCellValue('X' . ($clientcellval + $k), $amountloop)->getStyle('X' . ($clientcellval + $k))->getFont()->getColor()->setRGB('FF0000');
             }
-            $objTpl->getActiveSheet()->setCellValue('X' . ($clientcellval + $k), $amountloop);
+            // $objTpl->getActiveSheet()->setCellValue('X' . ($clientcellval + $k), $amountloop);
         }
-        $objTpl->getActiveSheet()->setCellValue('AC' . ($clientcellval + $k), $remarksloop);
+        // $objTpl->getActiveSheet()->setCellValue('AC' . ($clientcellval + $k), $remarksloop);
                 $k++;
             }
         $cellval = 45;
@@ -1578,7 +1578,7 @@ public static function addeditinv(Request $request) {
         for ($rccnt=0; $rccnt < count($arrval); $rccnt++) { 
             $objTpl->getActiveSheet()->setCellValue('E' . ($cellval + $rccnt+1), $arrval[$rccnt]);
             //client excel
-            $objTpl->getActiveSheet()->setCellValue('E' . ($clientcellval + $rccnt+1), $arrval[$rccnt]);
+            // $objTpl->getActiveSheet()->setCellValue('E' . ($clientcellval + $rccnt+1), $arrval[$rccnt]);
         }
         if(count($arrval) == 1) {
             $objTpl->getActiveSheet()->setCellValue('D' . ($cellval + $rccnt), $rccnt . ")");
@@ -1593,17 +1593,17 @@ public static function addeditinv(Request $request) {
             $objTpl->getActiveSheet()->mergeCells('E50:AB50');
             $objTpl->getActiveSheet()->unmergeCells('E50:AB50');
             //client excel
-            $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt), $rccnt . ")");
-            $objTpl->getActiveSheet()->setCellValue('E' . ($clientcellval + $rccnt+1), (isset($arrval[$rccnt])?$arrval[$rccnt]:""));
+            // $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt), $rccnt . ")");
+            // $objTpl->getActiveSheet()->setCellValue('E' . ($clientcellval + $rccnt+1), (isset($arrval[$rccnt])?$arrval[$rccnt]:""));
 
-            $objTpl->getActiveSheet()->mergeCells('E98:AB98');
-            $objTpl->getActiveSheet()->unmergeCells('E98:AB98');
-            $objTpl->getActiveSheet()->mergeCells('E99:AB99');
-            $objTpl->getActiveSheet()->unmergeCells('E99:AB99');
-            $objTpl->getActiveSheet()->mergeCells('E100:AB100');
-            $objTpl->getActiveSheet()->unmergeCells('E100:AB100');
-            $objTpl->getActiveSheet()->mergeCells('E101:AB101');
-            $objTpl->getActiveSheet()->unmergeCells('E101:AB101');
+            // $objTpl->getActiveSheet()->mergeCells('E98:AB98');
+            // $objTpl->getActiveSheet()->unmergeCells('E98:AB98');
+            // $objTpl->getActiveSheet()->mergeCells('E99:AB99');
+            // $objTpl->getActiveSheet()->unmergeCells('E99:AB99');
+            // $objTpl->getActiveSheet()->mergeCells('E100:AB100');
+            // $objTpl->getActiveSheet()->unmergeCells('E100:AB100');
+            // $objTpl->getActiveSheet()->mergeCells('E101:AB101');
+            // $objTpl->getActiveSheet()->unmergeCells('E101:AB101');
         } else if(count($arrval) == 2) {
             $objTpl->getActiveSheet()->setCellValue('D' . ($cellval + $rccnt-1), $rccnt-1 . ")");
             $objTpl->getActiveSheet()->setCellValue('D' . ($cellval + $rccnt), $rccnt . ")");
@@ -1616,16 +1616,16 @@ public static function addeditinv(Request $request) {
             $objTpl->getActiveSheet()->mergeCells('E50:AB50');
             $objTpl->getActiveSheet()->unmergeCells('E50:AB50');
             //client excel
-            $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt-1), $rccnt-1 . ")");
-            $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt), $rccnt . ")");
-            $objTpl->getActiveSheet()->setCellValue('E' . ($clientcellval + $rccnt+1), (isset($arrval[$rccnt])?$arrval[$rccnt]:""));
+            // $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt-1), $rccnt-1 . ")");
+            // $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt), $rccnt . ")");
+            // $objTpl->getActiveSheet()->setCellValue('E' . ($clientcellval + $rccnt+1), (isset($arrval[$rccnt])?$arrval[$rccnt]:""));
 
-            $objTpl->getActiveSheet()->mergeCells('E99:AB99');
-            $objTpl->getActiveSheet()->unmergeCells('E99:AB99');
-            $objTpl->getActiveSheet()->mergeCells('E100:AB100');
-            $objTpl->getActiveSheet()->unmergeCells('E100:AB100');
-            $objTpl->getActiveSheet()->mergeCells('E101:AB101');
-            $objTpl->getActiveSheet()->unmergeCells('E101:AB101');
+            // $objTpl->getActiveSheet()->mergeCells('E99:AB99');
+            // $objTpl->getActiveSheet()->unmergeCells('E99:AB99');
+            // $objTpl->getActiveSheet()->mergeCells('E100:AB100');
+            // $objTpl->getActiveSheet()->unmergeCells('E100:AB100');
+            // $objTpl->getActiveSheet()->mergeCells('E101:AB101');
+            // $objTpl->getActiveSheet()->unmergeCells('E101:AB101');
         } else if(count($arrval) == 3) {
             $objTpl->getActiveSheet()->setCellValue('D' . ($cellval + $rccnt-2), $rccnt-2 . ")");
             $objTpl->getActiveSheet()->setCellValue('D' . ($cellval + $rccnt-1), $rccnt-1 . ")");
@@ -1637,15 +1637,15 @@ public static function addeditinv(Request $request) {
             $objTpl->getActiveSheet()->mergeCells('E50:AB50');
             $objTpl->getActiveSheet()->unmergeCells('E50:AB50');
             //client excel
-            $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt-2), $rccnt-2 . ")");
-            $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt-1), $rccnt-1 . ")");
-            $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt), $rccnt . ")");
-            $objTpl->getActiveSheet()->setCellValue('E' . ($clientcellval + $rccnt+1), (isset($arrval[$rccnt])?$arrval[$rccnt]:""));
+            // $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt-2), $rccnt-2 . ")");
+            // $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt-1), $rccnt-1 . ")");
+            // $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt), $rccnt . ")");
+            // $objTpl->getActiveSheet()->setCellValue('E' . ($clientcellval + $rccnt+1), (isset($arrval[$rccnt])?$arrval[$rccnt]:""));
 
-            $objTpl->getActiveSheet()->mergeCells('E100:AB100');
-            $objTpl->getActiveSheet()->unmergeCells('E100:AB100');  
-            $objTpl->getActiveSheet()->mergeCells('E101:AB101');
-            $objTpl->getActiveSheet()->unmergeCells('E101:AB101');
+            // $objTpl->getActiveSheet()->mergeCells('E100:AB100');
+            // $objTpl->getActiveSheet()->unmergeCells('E100:AB100');  
+            // $objTpl->getActiveSheet()->mergeCells('E101:AB101');
+            // $objTpl->getActiveSheet()->unmergeCells('E101:AB101');
         } else if(count($arrval) == 4) {
             $objTpl->getActiveSheet()->setCellValue('D' . ($cellval + $rccnt-3), $rccnt-3 . ")");
             $objTpl->getActiveSheet()->setCellValue('D' . ($cellval + $rccnt-2), $rccnt-2 . ")");
@@ -1656,14 +1656,14 @@ public static function addeditinv(Request $request) {
             $objTpl->getActiveSheet()->mergeCells('E50:AB50');
             $objTpl->getActiveSheet()->unmergeCells('E50:AB50');
             //client excel
-            $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt-3), $rccnt-3 . ")");
-            $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt-2), $rccnt-2 . ")");
-            $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt-1), $rccnt-1 . ")");
-            $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt), $rccnt . ")");
-            $objTpl->getActiveSheet()->setCellValue('E' . ($clientcellval + $rccnt+1), (isset($arrval[$rccnt])?$arrval[$rccnt]:""));
+            // $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt-3), $rccnt-3 . ")");
+            // $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt-2), $rccnt-2 . ")");
+            // $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt-1), $rccnt-1 . ")");
+            // $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt), $rccnt . ")");
+            // $objTpl->getActiveSheet()->setCellValue('E' . ($clientcellval + $rccnt+1), (isset($arrval[$rccnt])?$arrval[$rccnt]:""));
 
-            $objTpl->getActiveSheet()->mergeCells('E101:AB101');
-            $objTpl->getActiveSheet()->unmergeCells('E101:AB101');
+            // $objTpl->getActiveSheet()->mergeCells('E101:AB101');
+            // $objTpl->getActiveSheet()->unmergeCells('E101:AB101');
         } else if(count($arrval) == 5) {
             $objTpl->getActiveSheet()->setCellValue('D' . ($cellval + $rccnt-4), $rccnt-4 . ")");
             $objTpl->getActiveSheet()->setCellValue('D' . ($cellval + $rccnt-3), $rccnt-3 . ")");
@@ -1672,12 +1672,12 @@ public static function addeditinv(Request $request) {
             $objTpl->getActiveSheet()->setCellValue('D' . ($cellval + $rccnt), $rccnt . ")");
             $objTpl->getActiveSheet()->setCellValue('E' . ($cellval + $rccnt+1), (isset($arrval[$rccnt])?$arrval[$rccnt]:""));
             //client excel
-            $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt-4), $rccnt-4 . ")");
-            $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt-3), $rccnt-3 . ")");
-            $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt-2), $rccnt-2 . ")");
-            $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt-1), $rccnt-1 . ")");
-            $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt), $rccnt . ")");
-            $objTpl->getActiveSheet()->setCellValue('E' . ($clientcellval + $rccnt+1), (isset($arrval[$rccnt])?$arrval[$rccnt]:""));
+            // $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt-4), $rccnt-4 . ")");
+            // $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt-3), $rccnt-3 . ")");
+            // $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt-2), $rccnt-2 . ")");
+            // $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt-1), $rccnt-1 . ")");
+            // $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt), $rccnt . ")");
+            // $objTpl->getActiveSheet()->setCellValue('E' . ($clientcellval + $rccnt+1), (isset($arrval[$rccnt])?$arrval[$rccnt]:""));
         } else {
             $objTpl->getActiveSheet()->setCellValue('D45', "");
             $objTpl->getActiveSheet()->mergeCells('E46:AB46');
@@ -1691,17 +1691,17 @@ public static function addeditinv(Request $request) {
             $objTpl->getActiveSheet()->mergeCells('E50:AB50');
             $objTpl->getActiveSheet()->unmergeCells('E50:AB50');
             //client excel
-            $objTpl->getActiveSheet()->setCellValue('D96', "");
-            $objTpl->getActiveSheet()->mergeCells('E97:AB97');
-            $objTpl->getActiveSheet()->unmergeCells('E97:AB97');
-            $objTpl->getActiveSheet()->mergeCells('E98:AB98');
-            $objTpl->getActiveSheet()->unmergeCells('E98:AB98');
-            $objTpl->getActiveSheet()->mergeCells('E99:AB99');
-            $objTpl->getActiveSheet()->unmergeCells('E99:AB99');
-            $objTpl->getActiveSheet()->mergeCells('E100:AB100');
-            $objTpl->getActiveSheet()->unmergeCells('E100:AB100');
-            $objTpl->getActiveSheet()->mergeCells('E101:AB101');
-            $objTpl->getActiveSheet()->unmergeCells('E101:AB101');
+            // $objTpl->getActiveSheet()->setCellValue('D96', "");
+            // $objTpl->getActiveSheet()->mergeCells('E97:AB97');
+            // $objTpl->getActiveSheet()->unmergeCells('E97:AB97');
+            // $objTpl->getActiveSheet()->mergeCells('E98:AB98');
+            // $objTpl->getActiveSheet()->unmergeCells('E98:AB98');
+            // $objTpl->getActiveSheet()->mergeCells('E99:AB99');
+            // $objTpl->getActiveSheet()->unmergeCells('E99:AB99');
+            // $objTpl->getActiveSheet()->mergeCells('E100:AB100');
+            // $objTpl->getActiveSheet()->unmergeCells('E100:AB100');
+            // $objTpl->getActiveSheet()->mergeCells('E101:AB101');
+            // $objTpl->getActiveSheet()->unmergeCells('E101:AB101');
         }
         $objTpl->getActiveSheet()->getStyle("AC19:AC38")->applyFromArray(
                 array(
@@ -1712,20 +1712,20 @@ public static function addeditinv(Request $request) {
                     )
                 )
             );
-        $objTpl->getActiveSheet()->getStyle("AC70:AC89")->applyFromArray(
-                array(
-                    'borders' => array(
-                        'right' => array(
-                            'style' => PHPExcel_Style_Border::BORDER_THIN
-                        )
-                    )
-                )
-            );
+        // $objTpl->getActiveSheet()->getStyle("AC70:AC89")->applyFromArray(
+        //         array(
+        //             'borders' => array(
+        //                 'right' => array(
+        //                     'style' => PHPExcel_Style_Border::BORDER_THIN
+        //                 )
+        //             )
+        //         )
+        //     );
         $objTpl->getActiveSheet()->getStyle('W13')->getBorders()->getRight()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
         $objTpl->getActiveSheet()->getStyle('C14')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
         $objTpl->getActiveSheet()->getStyle('H14')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-        $objTpl->getActiveSheet()->getStyle('C65')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-        $objTpl->getActiveSheet()->getStyle('H65')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        // $objTpl->getActiveSheet()->getStyle('C65')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+        // $objTpl->getActiveSheet()->getStyle('H65')->getBorders()->getBottom()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
             $objTpl->getActiveSheet()->setTitle($getinvoicedetails[0]->user_id);
             $objTpl->getActiveSheet(0)->setSelectedCells('B1');
             $objTpl->getActiveSheet(0)->setSelectedCells('A1');
@@ -3002,7 +3002,7 @@ public static function addeditinv(Request $request) {
             $in_amount_query = Invoice::fnGetAmountDetails($id);
             $data_count=count($in_amount_query);
 
-
+            // print_r($in_query);exit;
             $amount_array = array();
             $set_amount_array = array();
 
@@ -3062,7 +3062,7 @@ public static function addeditinv(Request $request) {
             $estimateid = $in_query[0]->estimate_id;
             $e_query = Invoice::fnGetEstDetail($estimateid);
             $get_data = Invoice::fnGetEstimateUserDataPDF($id);    
-            $get_customer_data = Invoice::fnGetCustomerDetailsView($in_query[0]->trading_destination_selection);     
+            $get_customer_data = Invoice::fnGetCustomerDetailsView($in_query[0]->trading_destination_selection);  
             $type = "";    
             $bankid = "";    
             $branchid = "";    
@@ -3164,23 +3164,23 @@ public static function addeditinv(Request $request) {
 
                 // Rajesh Add
                 $pdf->SetFont( 'MS-Mincho' ,'B',10); 
-                $pdf->SetXY(135, 65 );        
+                $pdf->SetXY(135, 45 );        
                 $pdf->Write(4, iconv('UTF-8', 'SJIS', $display ));
 
                 $pdf->SetFont( 'MS-Mincho' ,'B',10); 
-                $pdf->SetXY(135, 70 );        
+                $pdf->SetXY(135, 50 );        
                 $pdf->Write(4, iconv('UTF-8', 'SJIS', $display1 ));
 
                 $pdf->SetFont( 'MS-Mincho' ,'B',10); 
-                $pdf->SetXY(135, 75 );        
+                $pdf->SetXY(135, 55 );        
                 $pdf->Write(4, iconv('UTF-8', 'SJIS', $display2 ));
 
                 $pdf->SetFont( 'MS-Mincho' ,'B',10); 
-                $pdf->SetXY(135, 80 );        
+                $pdf->SetXY(135, 60 );        
                 $pdf->Write(4, iconv('UTF-8', 'SJIS', $display3 ));
 
                 $pdf->SetFont( 'MS-Mincho' ,'B',10); 
-                $pdf->SetXY(135, 85 );        
+                $pdf->SetXY(135, 65 );        
                 $pdf->Write(4, iconv('UTF-8', 'SJIS', $display4 ));
 
                 // $pdf->SetFont( 'MS-Mincho' ,'B',10); 
@@ -3213,6 +3213,13 @@ public static function addeditinv(Request $request) {
                 $pdf->SetXY(19, 37 );       
                 $pdf->Write(6, mb_convert_encoding( $in_query[0]->company_name."  御中", 'SJIS', 'UTF-8'));
 
+                // Added BY Rajesh Fro Customer Id Red Color
+
+                $pdf->SetTextColor(194,8,8);
+                $pdf->SetXY(19, 49 );      
+                $pdf->Write(6, mb_convert_encoding($get_customer_data[0]->customer_id, 'SJIS', 'UTF-8'));
+
+                $pdf->SetTextColor(0,0,0);
                 // CHANGED BY BABU
                 $pdf->SetXY(19, 41.6);
                 $pdf->Cell(60, 8, "", 0, 1, 'L', true);
@@ -3571,7 +3578,9 @@ public static function addeditinv(Request $request) {
                         $y=$y+5.5;
                         $exvalue=$exvalue-1;
                     }
-                }      
+                }
+                $pdf->SetXY(100 ,-10 );
+                $pdf->Write(6, iconv('UTF-8', 'SJIS', $m+1 .'/'.count($TotEstquery)));
             }
         }
 
