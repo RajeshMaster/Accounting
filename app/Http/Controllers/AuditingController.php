@@ -160,7 +160,7 @@ class AuditingController extends Controller {
 	} else {
 		$start = new Carbon\Carbon('first day of last month');
 		$start = $start->format('m');
-		if ($start > $account_close_mn && $start!=12) {
+		if (date('m') > $account_close_mn) {
 			$current_year = date('Y')+1;
 			$last_year = date('Y');
 		} else {
@@ -211,7 +211,7 @@ class AuditingController extends Controller {
 	if(!empty($dbprevious[$pre-1])) {
 		$split_vpre = explode("-", $dbprevious[$pre-1]);
 		if(isset($split_vpre)) {
-			if( $account_close_mn < $split_vpre[1] ) {
+			if( $account_close_mn <= $split_vpre[1] ) {
 				$pre_yr_mn = $split_vpre[0];
 				$nex_yr_mn = $split_vpre[0]+1;
 			} else {
