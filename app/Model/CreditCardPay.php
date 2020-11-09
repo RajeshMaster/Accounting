@@ -182,6 +182,8 @@ class CreditCardPay extends Model {
 		$query = $db->table('acc_creditcardpayment')
 						->SELECT('acc_creditcardpayment.selectedYearMonth')
 						->where('creditCardId','=',$request->creditCardVal)
+						// ->where('creditCardId','=',1)
+						->WHERE('selectedYearMonth', 'LIKE', '%'.date('Y').'%')
 						->orderBy('selectedYearMonth', 'ASC')
 						->get();
 		return $query;
