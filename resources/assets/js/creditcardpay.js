@@ -181,14 +181,23 @@ function addedit() {
 function getdate() {
 	$('#mainDate').val(dates);
 }
-function gotoindexpage() {
-	$('#creditCardPayaddedit').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
-	$("#creditCardPayaddedit").submit();
-}
-
-function gotoregister() {
-	$('#creditCardDtls').attr('action', 'addedit?mainmenu='+mainmenu+'&time='+datetime);
-	$("#creditCardDtls").submit();
+function gotoindexpage(page) {
+	var mainmenu= $('#mainmenu').val();
+	if (cancel_check == false) {
+		if (!confirm("Do You Want To Cancel the Page?")) {
+			return;
+		}
+	}
+	if (page == "addedit") {
+		$('#creditaddeditcancel').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+		$("#creditaddeditcancel").submit();
+	} else if(page == "addeditDetail") {
+		$('#detailsaddeditcancel').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+		$("#detailsaddeditcancel").submit();
+	} else {
+		$('#creditdetailscancel').attr('action', 'addedit?mainmenu='+mainmenu+'&time='+datetime);
+		$("#creditdetailscancel").submit();
+	}
 }
 
 function fileUpload(id) {
@@ -201,10 +210,6 @@ function editCreditCard(id) {
 	$('#id').val(id);
 	$('#creditCaredPayIndex').attr('action', 'detailsaddedit?mainmenu='+mainmenu+'&time='+datetime);
 	$("#creditCaredPayIndex").submit();
-}
-function backToindex() {
-	$('#creditdetailedit').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
-	$("#creditdetailedit").submit();
 }
 
 // For Year BAr Click
@@ -258,8 +263,25 @@ function fnGetInsertedValue(){
 }
 
 function clearRecords(crediCard,year,month) {
-	$('#creditCardId').val(crediCard);
-	$('#creditCaredPayIndex').attr('action', 'deleteRecords?mainmenu='+mainmenu+'&time='+datetime);
-	$("#creditCaredPayIndex").submit();
+	if ( confirm("Do You Want To Clear ?")) {
+		$('#creditCardId').val(crediCard);
+		$('#creditCaredPayIndex').attr('action', 'deleteRecords?mainmenu='+mainmenu+'&time='+datetime);
+		$("#creditCaredPayIndex").submit();
+	}
 
+}
+
+function pageClick(pageval) {
+	$('#page').val(pageval);
+	var mainmenu= $('#mainmenu').val();
+	$('#creditCaredPayIndex').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+	$("#creditCaredPayIndex").submit();
+}
+
+function pageLimitClick(pagelimitval) {
+	$('#page').val('');
+	$('#plimit').val(pagelimitval);
+	var mainmenu= $('#mainmenu').val();
+	$('#creditCaredPayIndex').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+	$("#creditCaredPayIndex").submit();
 }

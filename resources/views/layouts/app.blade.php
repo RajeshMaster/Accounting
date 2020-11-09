@@ -352,7 +352,7 @@
 			@endif
 			
 			@endif
-			@if(isset($request->mainmenu) && ($request->mainmenu == "Auditing" || $request->mainmenu == "salarycalcplus" || $request->mainmenu == "AuditingAccounting" || $request->mainmenu == "AudPayment"))
+			@if(isset($request->mainmenu) && ($request->mainmenu == "Auditing" || $request->mainmenu == "salarycalcplus" || $request->mainmenu == "AuditingAccounting" || $request->mainmenu == "AudPayment" || $request->mainmenu == "AuditingCreditCardPay"))
 				<div id="auditing_sub_1">
 					<a href="{{ url('Auditing/index?mainmenu=Auditing&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_invoice') }}</a>
 				</div>
@@ -365,6 +365,9 @@
 				</div>
 				<div id="auditing_sub_4">
 					<a href="{{ url('AudPayment/index?mainmenu=AudPayment&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_payment') }}</a>
+				</div>
+				<div id="auditing_sub_5">
+					<a href="{{ url('CreditCardPay/index?mainmenu=AuditingCreditCardPay&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_creditCard') }}</a>
 				</div>
 			@endif
 

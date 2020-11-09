@@ -43,11 +43,7 @@
 				<img class="pull-left box35 mt10" src="{{ URL::asset('resources/assets/images/expenses_icon.png') }}">
 				<h2 class="pull-left pl5 mt10">{{ trans('messages.lbl_creditCardPay') }}</h2>
 				<h2 class="pull-left mt10">・</h2>
-				@if($request->edit_flg == 1)
-					<h2 class="pull-left mt10 red">{{ trans('messages.lbl_edit') }}</h2>
-				@else
-					<h2 class="pull-left mt10 green">{{ trans('messages.lbl_register') }}</h2>
-				@endif
+				<h2 class="pull-left mt10 red">{{ trans('messages.lbl_edit') }}</h2>
 			</div>
 		</div>
 		
@@ -94,7 +90,6 @@
 				</div>
 				<div class="col-xs-9">
 					{{ $creditcardDetails[0]->creditCardDate }}
-
 					{{ Form::hidden('creditCardDate',(isset($creditcardDetails[0]->creditCardDate)) ? $creditcardDetails[0]->creditCardDate : '',
 								array('id'=>'creditCardDate',
 									'name' => 'creditCardDate',
@@ -104,8 +99,6 @@
 									'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
 									'data-label' => trans('messages.lbl_Date'),
 									'maxlength' => '10')) }}
-						<label class="fa fa-calendar fa-lg" for="creditCardDate" aria-hidden="true">
-						</label>
 				</div>
 			</div>
 
@@ -254,7 +247,7 @@
 						<i class="fa fa-edit" aria-hidden="true"></i> 
 						{{ trans('messages.lbl_update') }}
 					</button>&nbsp;
-					<a href="javascript:backToindex();" 
+					<a href="javascript:gotoindexpage('addeditDetail');" 
 						class="btn btn-danger box120 white">
 						<i class="fa fa-times" aria-hidden="true"></i> {{trans('messages.lbl_cancel')}}
 					</a>
@@ -266,8 +259,8 @@
 
 	{{ Form::close() }}
 
-	{{ Form::open(array('name'=>'transferaddeditcancel', 'id'=>'transferaddeditcancel', 
-						'url' => 'Accounting/tranferaddeditprocess?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
+	{{ Form::open(array('name'=>'detailsaddeditcancel', 'id'=>'detailsaddeditcancel', 
+						'url' => 'CreditCardPay/detailseditprocess?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
 						'files'=>true,'method' => 'POST')) }}
 
 		{{ Form::hidden('mainmenu', $request->mainmenu , array('id' => 'mainmenu')) }}

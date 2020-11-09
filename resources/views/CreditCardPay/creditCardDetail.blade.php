@@ -132,13 +132,20 @@
 			<button type="submit" class="btn btn-success mt10 mb10 creditcashprocess">
 				{{ trans('messages.lbl_submit') }}
 			</button>
-			<a href="javascript:gotoregister('Transfer','{{ $request->mainmenu }}');" 
+			<a href="javascript:gotoindexpage('Detail');" 
 				class="btn btn-danger box120 white">
 				<i class="fa fa-times" aria-hidden="true"></i> {{trans('messages.lbl_cancel')}}
 			</a>
 		</div>
 		<div class="col-xs-5"></div>
 	</div>
+	{{ Form::close() }}
+
+	{{ Form::open(array('name'=>'creditdetailscancel', 'id'=>'creditdetailscancel', 
+						'url' => 'CreditCardPay/creditCardAddDtls?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
+						'files'=>true,'method' => 'POST')) }}
+		{{ Form::hidden('mainmenu', $request->mainmenu , array('id' => 'mainmenu')) }}
+
 	{{ Form::close() }}
 	</article>
 	</div>

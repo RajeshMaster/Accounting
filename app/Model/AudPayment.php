@@ -304,10 +304,10 @@ class AudPayment extends Model {
 								AND `payment`.`del_flg` = 0 
 								WHERE `invoice`.`payment_date` 
 								BETWEEN '$intfrom' AND '$intto') as tb1 
-								order by `custid` asc, payidtotal asc) AS sub 
+								order by `custid` asc, invpaymentdate asc, invoicepaymentdate asc) AS sub 
 								$conditionAppend) as tb1"))
+						// ->orderBy('invpaymentdate', "ASC")
 						->get();
-						// ->orderBy('invpaymentdate', $request->sortOrder)
 						// ->toSql();
 						// print_r($result);exit;
 			return $result;
