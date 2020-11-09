@@ -48,8 +48,8 @@ class CreditCardPay extends Model {
 		$i = 1;
 		$insert = 0;
 		$sheetData = $request->sheetData;
-		$selectedYearMonth = date('Y').'-'.$request->selectedMonth.'-01';
-
+		$selectedYearMonth = $request->mainYear.'-'.$request->selectedMonth.'-01';
+		
 		$db = DB::connection('mysql');
 		if ($sheetData != 0) {
 			for ($i = 1; $i < $sheetData-1; $i++) { 
@@ -183,7 +183,7 @@ class CreditCardPay extends Model {
 						->SELECT('acc_creditcardpayment.selectedYearMonth')
 						->where('creditCardId','=',$request->creditCardVal)
 						// ->where('creditCardId','=',1)
-						->WHERE('selectedYearMonth', 'LIKE', '%'.date('Y').'%')
+						->WHERE('selectedYearMonth', 'LIKE', '%'.$request->mainYear.'%')
 						->orderBy('selectedYearMonth', 'ASC')
 						->get();
 		return $query;

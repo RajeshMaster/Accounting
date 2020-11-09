@@ -757,23 +757,23 @@ class AuditingController extends Controller {
 
                 // Rajesh Add
                 $pdf->SetFont( 'MS-Mincho' ,'B',10); 
-                $pdf->SetXY(135, 65 );        
+                $pdf->SetXY(135, 45 );        
                 $pdf->Write(4, iconv('UTF-8', 'SJIS', $display ));
 
                 $pdf->SetFont( 'MS-Mincho' ,'B',10); 
-                $pdf->SetXY(135, 70 );        
+                $pdf->SetXY(135, 50 );        
                 $pdf->Write(4, iconv('UTF-8', 'SJIS', $display1 ));
 
                 $pdf->SetFont( 'MS-Mincho' ,'B',10); 
-                $pdf->SetXY(135, 75 );        
+                $pdf->SetXY(135, 55 );        
                 $pdf->Write(4, iconv('UTF-8', 'SJIS', $display2 ));
 
                 $pdf->SetFont( 'MS-Mincho' ,'B',10); 
-                $pdf->SetXY(135, 80 );        
+                $pdf->SetXY(135, 60 );        
                 $pdf->Write(4, iconv('UTF-8', 'SJIS', $display3 ));
 
                 $pdf->SetFont( 'MS-Mincho' ,'B',10); 
-                $pdf->SetXY(135, 85 );        
+                $pdf->SetXY(135, 65 );        
                 $pdf->Write(4, iconv('UTF-8', 'SJIS', $display4 ));
 
                 // $pdf->SetFont( 'MS-Mincho' ,'B',10); 
@@ -805,6 +805,12 @@ class AuditingController extends Controller {
                 $pdf->SetFont( 'MS-Mincho' ,'B',11);      
                 $pdf->SetXY(19, 37 );       
                 $pdf->Write(6, mb_convert_encoding( $in_query[0]->company_name."  御中", 'SJIS', 'UTF-8'));
+
+                $pdf->SetTextColor(194,8,8);
+                $pdf->SetXY(19, 49 );      
+                $pdf->Write(6, mb_convert_encoding($get_customer_data[0]->customer_id, 'SJIS', 'UTF-8'));
+
+                $pdf->SetTextColor(0,0,0);
 
                 // CHANGED BY BABU
                 $pdf->SetXY(19, 41.6);
@@ -1164,7 +1170,9 @@ class AuditingController extends Controller {
                         $y=$y+5.5;
                         $exvalue=$exvalue-1;
                     }
-                }      
+                }
+                $pdf->SetXY(100 ,-10 );
+                $pdf->Write(6, iconv('UTF-8', 'SJIS', $m+1 .'/'.count($TotEstquery)));     
             }
         }
 
