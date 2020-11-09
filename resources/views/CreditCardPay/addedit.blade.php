@@ -86,7 +86,7 @@
 				</div>
 			</div>
 
-			<div class="col-xs-12 mt15">
+			<div class="col-xs-12 mt10">
 				<div class="col-xs-3 text-right clr_blue">
 					<label>{{ trans('messages.lbl_Date') }}<span class="fr ml2 red"> * </span></label>
 				</div>
@@ -108,7 +108,7 @@
 			
 			<div class="col-xs-12 mt5">
 				<div class="col-xs-3 text-right clr_blue">
-					<label><span class="fr ml2 red"> * </span>{{ trans('messages.lbl_expmonth') }}</label>
+					<label>{{ trans('messages.lbl_expmonth') }}<span class="fr ml2 red"> * </span></label>
 				</div>
 				<div class="col-xs-9">
 					@for($i = 1; $i <= 12; $i++)

@@ -30,7 +30,7 @@
 
 	<div class="row hline pm0">
 		<div class="col-xs-12">
-			<img class="pull-left box35 mt10" src="{{ URL::asset('resources/assets/images/bank_1.png') }}">
+			<img class="pull-left box35 mt10" src="{{ URL::asset('resources/assets/images/payment.png') }}">
 			<h2 class="pull-left pl5 mt10 CMN_mw150">
 				Data View
 			</h2>
@@ -78,7 +78,7 @@
 								{{ $data[1] }}</td>
 							<td align="right">
 								{{ Form::hidden('creditCardAmount'.$i, $data[2] , array('id' => 'creditCardAmount'.$i)) }}
-								{{ $data[2] }}</td>
+								{{ number_format($data[2]) }}</td>
 							<td class="tac">
 								<label style="font-weight: normal;display: inline-block;">
 									{{ Form::radio('rdoBill'.$i, '1',1, 

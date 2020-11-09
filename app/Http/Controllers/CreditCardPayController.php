@@ -316,4 +316,10 @@ class CreditCardPayController extends Controller {
 		echo $selectedArr;
 		exit();
 	}
+
+	public function deleteRecords(Request $request) {
+		$deletData = CreditCardPay::deletdRecorsForYM($request);
+
+		return Redirect::to('CreditCardPay/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
+	}
 }

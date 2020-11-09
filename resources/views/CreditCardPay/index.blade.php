@@ -33,6 +33,7 @@
 		{{ Form::hidden('plimit', $request->plimit , array('id' => 'plimit')) }}
 		{{ Form::hidden('page', $request->page , array('id' => 'page')) }}
 		{{ Form::hidden('id', '', array('id' => 'id')) }}
+		{{ Form::hidden('creditCardId', '', array('id' => 'creditCardId')) }}
 		
 		<!-- Year Bar Start -->
 		{{ Form::hidden('selMonth', $request->selMonth, array('id' => 'selMonth')) }}
@@ -46,7 +47,7 @@
 
 	<div class="row hline pm0">
 		<div class="col-xs-12">
-			<img class="pull-left box35 mt10" src="{{ URL::asset('resources/assets/images/bank_1.png') }}">
+			<img class="pull-left box35 mt10" src="{{ URL::asset('resources/assets/images/payment.png') }}">
 			<h2 class="pull-left pl5 mt10 CMN_mw150">
 					{{ trans('messages.lbl_creditCardPay') }}
 			</h2>
@@ -129,8 +130,13 @@
 					@endif
 					@if( $creditCradId != $data->creditCardId)
 						<tr style="background-color: lightgrey">
-							<td colspan="9" class="columnspan"> 
-								{{ $data->creditCardName }}     
+							<td colspan="8" class="columnspan"> 
+								{{ $data->creditCardName }}
+							</td>
+							<td align="right">
+								<a href="javascript:clearRecords('{{ $data->creditCardId }}','{{ $request->selYear }}','{{ $request->selMonth }}');">
+									{{ trans('messages.lbl_clear') }}
+								</a>
 							</td>
 						</tr>
 					@endif

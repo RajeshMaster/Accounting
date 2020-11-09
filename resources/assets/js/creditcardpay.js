@@ -254,3 +254,10 @@ function fnGetInsertedValue(){
 		});
 	}
 }
+
+function clearRecords(crediCard,year,month) {
+	$('#creditCardId').val(crediCard);
+	$('#creditCaredPayIndex').attr('action', 'deleteRecords?mainmenu='+mainmenu+'&time='+datetime);
+	$("#creditCaredPayIndex").submit();
+
+}

@@ -527,6 +527,7 @@ Route::group(['prefix'=>'CreditCardPay','middleware' => 'auth'], function() {
     Route::any('detailsaddedit', 'CreditCardPayController@detailsaddedit')->middleware('accessright:0,1,2,3,4');
     Route::any('detailseditprocess', 'CreditCardPayController@detailseditprocess')->middleware('accessright:0,1,2,3,4');
     Route::any('GetInsMonth_ajax', 'CreditCardPayController@GetInsMonth_ajax')->middleware('accessright:0,1,2,3,4');
+    Route::any('deleteRecords', 'CreditCardPayController@deleteRecords')->middleware('accessright:0,1,2,3,4');
 });
 
 // Auditing Process by Rajesh

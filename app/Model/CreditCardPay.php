@@ -151,7 +151,7 @@ class CreditCardPay extends Model {
 		$tbl_name = "acc_creditcardpayment";
 		$sql = "SELECT SUBSTRING(selectedYearMonth, 1, 7) AS date 
 				FROM $tbl_name 
-				WHERE (selectedYearMonth > '$from_date' AND selectedYearMonth <= '$to_date') 
+				WHERE (selectedYearMonth > '$from_date' AND selectedYearMonth < '$to_date') 
 				AND delFlg = '0'
 				ORDER BY creditCardDate ASC";
 		$cards = DB::select($sql);
@@ -184,6 +184,14 @@ class CreditCardPay extends Model {
 						->where('creditCardId','=',$request->creditCardVal)
 						->orderBy('selectedYearMonth', 'ASC')
 						->get();
+		return $query;
+	}
+
+	public static function deletdRecorsForYM($request) {
+		$query = DB::table('acc_creditcardpayment')
+						->WHERE('selectedYearMonth', 'LIKE', '%'.$request->selYear.'-'.$request->selMonth.'%')
+						->WHERE('creditCardId','=',$request->creditCardId)
+						->DELETE();
 		return $query;
 	}
 
