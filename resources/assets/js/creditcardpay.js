@@ -24,6 +24,7 @@ $(document).ready(function() {
 			rules: {
 				mainDate: {required: true, date: true,minlength:10,correctformatdate: true},
 				creditCard: {required: true},
+				mainYear: {required: true},
 				// transferBill : {extension: "csv", filesize : (2 * 1024 * 1024)},
 			},
 			submitHandler: function(form) { // for demo

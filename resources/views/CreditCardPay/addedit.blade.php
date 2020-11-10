@@ -115,7 +115,7 @@
 																	array('name' =>'mainYear',
 																	'id'=>'mainYear',
 																	'onchange'=>'fnGetInsertedValue();',
-																	'data-label' => trans('messages.lbl_creditCard'),
+																	'data-label' => trans('messages.lbl_year'),
 																	'class'=>'pl5 widthauto'))}}
 					@for($i = 1; $i <= 12; $i++)
 						{{ Form::checkbox('month',$i,'',['id' => 'month'.$i,
