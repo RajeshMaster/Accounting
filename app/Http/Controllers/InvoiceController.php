@@ -1492,33 +1492,7 @@ public static function addeditinv(Request $request) {
                 $unit_priceloop=$value->unit_price;
                 $amountloop=$value->amount;
                 $remarksloop=$value->remarks;
-                    // if(($k%2) == 0) {
-                    //     $objTpl->getActiveSheet()->getStyle('B' . ($cellval + $k))->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-                    //     $objTpl->getActiveSheet()->getStyle('B' . ($cellval + $k))->getFill()->getStartColor()->setRGB('DCDCDC');
-                    //     $objTpl->getActiveSheet()->getStyle('R' . ($cellval + $k))->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-                    //     $objTpl->getActiveSheet()->getStyle('R' . ($cellval + $k))->getFill()->getStartColor()->setRGB('DCDCDC');
-                    //     $objTpl->getActiveSheet()->getStyle('C' . ($cellval + $k))->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-                    //     $objTpl->getActiveSheet()->getStyle('C' . ($cellval + $k))->getFill()->getStartColor()->setRGB('DCDCDC');
-                    //     $objTpl->getActiveSheet()->getStyle('U' . ($cellval + $k))->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-                    //     $objTpl->getActiveSheet()->getStyle('U' . ($cellval + $k))->getFill()->getStartColor()->setRGB('DCDCDC');
-                    //     $objTpl->getActiveSheet()->getStyle('X' . ($cellval + $k))->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-                    //     $objTpl->getActiveSheet()->getStyle('X' . ($cellval + $k))->getFill()->getStartColor()->setRGB('DCDCDC');
-                    //     $objTpl->getActiveSheet()->getStyle('AC' . ($cellval + $k))->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-                    //     $objTpl->getActiveSheet()->getStyle('AC' . ($cellval + $k))->getFill()->getStartColor()->setRGB('DCDCDC');
-                    //     //client excel
-                    //     $objTpl->getActiveSheet()->getStyle('B' . ($clientcellval + $k))->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-                    //     $objTpl->getActiveSheet()->getStyle('B' . ($clientcellval + $k))->getFill()->getStartColor()->setRGB('DCDCDC');
-                    //     $objTpl->getActiveSheet()->getStyle('R' . ($clientcellval + $k))->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-                    //     $objTpl->getActiveSheet()->getStyle('R' . ($clientcellval + $k))->getFill()->getStartColor()->setRGB('DCDCDC');
-                    //     $objTpl->getActiveSheet()->getStyle('C' . ($clientcellval + $k))->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-                    //     $objTpl->getActiveSheet()->getStyle('C' . ($clientcellval + $k))->getFill()->getStartColor()->setRGB('DCDCDC');
-                    //     $objTpl->getActiveSheet()->getStyle('U' . ($clientcellval + $k))->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-                    //     $objTpl->getActiveSheet()->getStyle('U' . ($clientcellval + $k))->getFill()->getStartColor()->setRGB('DCDCDC');
-                    //     $objTpl->getActiveSheet()->getStyle('X' . ($clientcellval + $k))->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-                    //     $objTpl->getActiveSheet()->getStyle('X' . ($clientcellval + $k))->getFill()->getStartColor()->setRGB('DCDCDC');
-                    //     $objTpl->getActiveSheet()->getStyle('AC' . ($clientcellval + $k))->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-                    //     $objTpl->getActiveSheet()->getStyle('AC' . ($clientcellval + $k))->getFill()->getStartColor()->setRGB('DCDCDC');
-                    // }
+
                 
         $objTpl->getActiveSheet()->setCellValue('C' . ($cellval + $k),$workloop);
 
@@ -1593,17 +1567,7 @@ public static function addeditinv(Request $request) {
             $objTpl->getActiveSheet()->mergeCells('E50:AB50');
             $objTpl->getActiveSheet()->unmergeCells('E50:AB50');
             //client excel
-            // $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt), $rccnt . ")");
-            // $objTpl->getActiveSheet()->setCellValue('E' . ($clientcellval + $rccnt+1), (isset($arrval[$rccnt])?$arrval[$rccnt]:""));
-
-            // $objTpl->getActiveSheet()->mergeCells('E98:AB98');
-            // $objTpl->getActiveSheet()->unmergeCells('E98:AB98');
-            // $objTpl->getActiveSheet()->mergeCells('E99:AB99');
-            // $objTpl->getActiveSheet()->unmergeCells('E99:AB99');
-            // $objTpl->getActiveSheet()->mergeCells('E100:AB100');
-            // $objTpl->getActiveSheet()->unmergeCells('E100:AB100');
-            // $objTpl->getActiveSheet()->mergeCells('E101:AB101');
-            // $objTpl->getActiveSheet()->unmergeCells('E101:AB101');
+         
         } else if(count($arrval) == 2) {
             $objTpl->getActiveSheet()->setCellValue('D' . ($cellval + $rccnt-1), $rccnt-1 . ")");
             $objTpl->getActiveSheet()->setCellValue('D' . ($cellval + $rccnt), $rccnt . ")");
@@ -1616,16 +1580,7 @@ public static function addeditinv(Request $request) {
             $objTpl->getActiveSheet()->mergeCells('E50:AB50');
             $objTpl->getActiveSheet()->unmergeCells('E50:AB50');
             //client excel
-            // $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt-1), $rccnt-1 . ")");
-            // $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt), $rccnt . ")");
-            // $objTpl->getActiveSheet()->setCellValue('E' . ($clientcellval + $rccnt+1), (isset($arrval[$rccnt])?$arrval[$rccnt]:""));
-
-            // $objTpl->getActiveSheet()->mergeCells('E99:AB99');
-            // $objTpl->getActiveSheet()->unmergeCells('E99:AB99');
-            // $objTpl->getActiveSheet()->mergeCells('E100:AB100');
-            // $objTpl->getActiveSheet()->unmergeCells('E100:AB100');
-            // $objTpl->getActiveSheet()->mergeCells('E101:AB101');
-            // $objTpl->getActiveSheet()->unmergeCells('E101:AB101');
+           
         } else if(count($arrval) == 3) {
             $objTpl->getActiveSheet()->setCellValue('D' . ($cellval + $rccnt-2), $rccnt-2 . ")");
             $objTpl->getActiveSheet()->setCellValue('D' . ($cellval + $rccnt-1), $rccnt-1 . ")");
@@ -1637,15 +1592,7 @@ public static function addeditinv(Request $request) {
             $objTpl->getActiveSheet()->mergeCells('E50:AB50');
             $objTpl->getActiveSheet()->unmergeCells('E50:AB50');
             //client excel
-            // $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt-2), $rccnt-2 . ")");
-            // $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt-1), $rccnt-1 . ")");
-            // $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt), $rccnt . ")");
-            // $objTpl->getActiveSheet()->setCellValue('E' . ($clientcellval + $rccnt+1), (isset($arrval[$rccnt])?$arrval[$rccnt]:""));
-
-            // $objTpl->getActiveSheet()->mergeCells('E100:AB100');
-            // $objTpl->getActiveSheet()->unmergeCells('E100:AB100');  
-            // $objTpl->getActiveSheet()->mergeCells('E101:AB101');
-            // $objTpl->getActiveSheet()->unmergeCells('E101:AB101');
+          
         } else if(count($arrval) == 4) {
             $objTpl->getActiveSheet()->setCellValue('D' . ($cellval + $rccnt-3), $rccnt-3 . ")");
             $objTpl->getActiveSheet()->setCellValue('D' . ($cellval + $rccnt-2), $rccnt-2 . ")");
@@ -1656,14 +1603,7 @@ public static function addeditinv(Request $request) {
             $objTpl->getActiveSheet()->mergeCells('E50:AB50');
             $objTpl->getActiveSheet()->unmergeCells('E50:AB50');
             //client excel
-            // $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt-3), $rccnt-3 . ")");
-            // $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt-2), $rccnt-2 . ")");
-            // $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt-1), $rccnt-1 . ")");
-            // $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt), $rccnt . ")");
-            // $objTpl->getActiveSheet()->setCellValue('E' . ($clientcellval + $rccnt+1), (isset($arrval[$rccnt])?$arrval[$rccnt]:""));
-
-            // $objTpl->getActiveSheet()->mergeCells('E101:AB101');
-            // $objTpl->getActiveSheet()->unmergeCells('E101:AB101');
+          
         } else if(count($arrval) == 5) {
             $objTpl->getActiveSheet()->setCellValue('D' . ($cellval + $rccnt-4), $rccnt-4 . ")");
             $objTpl->getActiveSheet()->setCellValue('D' . ($cellval + $rccnt-3), $rccnt-3 . ")");
@@ -1672,12 +1612,7 @@ public static function addeditinv(Request $request) {
             $objTpl->getActiveSheet()->setCellValue('D' . ($cellval + $rccnt), $rccnt . ")");
             $objTpl->getActiveSheet()->setCellValue('E' . ($cellval + $rccnt+1), (isset($arrval[$rccnt])?$arrval[$rccnt]:""));
             //client excel
-            // $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt-4), $rccnt-4 . ")");
-            // $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt-3), $rccnt-3 . ")");
-            // $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt-2), $rccnt-2 . ")");
-            // $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt-1), $rccnt-1 . ")");
-            // $objTpl->getActiveSheet()->setCellValue('D' . ($clientcellval + $rccnt), $rccnt . ")");
-            // $objTpl->getActiveSheet()->setCellValue('E' . ($clientcellval + $rccnt+1), (isset($arrval[$rccnt])?$arrval[$rccnt]:""));
+         
         } else {
             $objTpl->getActiveSheet()->setCellValue('D45', "");
             $objTpl->getActiveSheet()->mergeCells('E46:AB46');
@@ -1691,17 +1626,7 @@ public static function addeditinv(Request $request) {
             $objTpl->getActiveSheet()->mergeCells('E50:AB50');
             $objTpl->getActiveSheet()->unmergeCells('E50:AB50');
             //client excel
-            // $objTpl->getActiveSheet()->setCellValue('D96', "");
-            // $objTpl->getActiveSheet()->mergeCells('E97:AB97');
-            // $objTpl->getActiveSheet()->unmergeCells('E97:AB97');
-            // $objTpl->getActiveSheet()->mergeCells('E98:AB98');
-            // $objTpl->getActiveSheet()->unmergeCells('E98:AB98');
-            // $objTpl->getActiveSheet()->mergeCells('E99:AB99');
-            // $objTpl->getActiveSheet()->unmergeCells('E99:AB99');
-            // $objTpl->getActiveSheet()->mergeCells('E100:AB100');
-            // $objTpl->getActiveSheet()->unmergeCells('E100:AB100');
-            // $objTpl->getActiveSheet()->mergeCells('E101:AB101');
-            // $objTpl->getActiveSheet()->unmergeCells('E101:AB101');
+         
         }
         $objTpl->getActiveSheet()->getStyle("AC19:AC38")->applyFromArray(
                 array(
@@ -1911,28 +1836,10 @@ public static function addeditinv(Request $request) {
 				$objTpl->getActiveSheet()->setCellValue('D' . ($cellval + $rccnt), $rccnt . ")");
 				$objTpl->getActiveSheet()->setCellValue('E' . ($cellval + $rccnt+1), (isset($arrval[$rccnt])?$arrval[$rccnt]:""));
 
-				//Datas is not showed in excel due to merge cells (20/02/19)
-				// $objTpl->getActiveSheet()->mergeCells('E47:AB47');
-				// $objTpl->getActiveSheet()->unmergeCells('E47:AB47');
-				// $objTpl->getActiveSheet()->mergeCells('E48:AB48');
-				// $objTpl->getActiveSheet()->unmergeCells('E48:AB48');
-				// $objTpl->getActiveSheet()->mergeCells('E49:AB49');
-				// $objTpl->getActiveSheet()->unmergeCells('E49:AB49');
-				// $objTpl->getActiveSheet()->mergeCells('E50:AB50');
-				// $objTpl->getActiveSheet()->unmergeCells('E50:AB50');
-
 			} else if(count($arrval) == 2) {
 				$objTpl->getActiveSheet()->setCellValue('D' . ($cellval + $rccnt-1), $rccnt-1 . ")");
 				$objTpl->getActiveSheet()->setCellValue('D' . ($cellval + $rccnt), $rccnt . ")");
 				$objTpl->getActiveSheet()->setCellValue('E' . ($cellval + $rccnt+1), (isset($arrval[$rccnt])?$arrval[$rccnt]:""));
-
-				//Datas is not showed in excel due to merge cells
-				// $objTpl->getActiveSheet()->mergeCells('E48:AB48');
-				// $objTpl->getActiveSheet()->unmergeCells('E48:AB48');
-				// $objTpl->getActiveSheet()->mergeCells('E49:AB49');
-				// $objTpl->getActiveSheet()->unmergeCells('E49:AB49');
-				// $objTpl->getActiveSheet()->mergeCells('E50:AB50');
-				// $objTpl->getActiveSheet()->unmergeCells('E50:AB50');
 
 			} else if(count($arrval) == 3) {
 				$objTpl->getActiveSheet()->setCellValue('D' . ($cellval + $rccnt-2), $rccnt-2 . ")");
@@ -1940,22 +1847,12 @@ public static function addeditinv(Request $request) {
 				$objTpl->getActiveSheet()->setCellValue('D' . ($cellval + $rccnt), $rccnt . ")");
 				$objTpl->getActiveSheet()->setCellValue('E' . ($cellval + $rccnt+1), (isset($arrval[$rccnt])?$arrval[$rccnt]:""));
 
-				//Datas is not showed in excel due to merge cells
-				// $objTpl->getActiveSheet()->mergeCells('E49:AB49');
-				// $objTpl->getActiveSheet()->unmergeCells('E49:AB49');    
-				// $objTpl->getActiveSheet()->mergeCells('E50:AB50');
-				// $objTpl->getActiveSheet()->unmergeCells('E50:AB50');
-
 			} else if(count($arrval) == 4) {
 				$objTpl->getActiveSheet()->setCellValue('D' . ($cellval + $rccnt-3), $rccnt-3 . ")");
 				$objTpl->getActiveSheet()->setCellValue('D' . ($cellval + $rccnt-2), $rccnt-2 . ")");
 				$objTpl->getActiveSheet()->setCellValue('D' . ($cellval + $rccnt-1), $rccnt-1 . ")");
 				$objTpl->getActiveSheet()->setCellValue('D' . ($cellval + $rccnt), $rccnt . ")");
 				$objTpl->getActiveSheet()->setCellValue('E' . ($cellval + $rccnt+1), (isset($arrval[$rccnt])?$arrval[$rccnt]:""));
-
-				//Datas is not showed in excel due to merge cells
-				// $objTpl->getActiveSheet()->mergeCells('E50:AB50');
-				// $objTpl->getActiveSheet()->unmergeCells('E50:AB50');
 
 			} else if(count($arrval) == 5) {
 				$objTpl->getActiveSheet()->setCellValue('D' . ($cellval + $rccnt-4), $rccnt-4 . ")");
@@ -1967,17 +1864,6 @@ public static function addeditinv(Request $request) {
 			} else {
 				$objTpl->getActiveSheet()->setCellValue('D45', "");
 				//Datas is not showed in excel due to merge cells
-				// $objTpl->getActiveSheet()->mergeCells('E46:AB46');
-				// $objTpl->getActiveSheet()->unmergeCells('E46:AB46');
-				// $objTpl->getActiveSheet()->mergeCells('E47:AB47');
-				// $objTpl->getActiveSheet()->unmergeCells('E47:AB47');
-				// $objTpl->getActiveSheet()->mergeCells('E48:AB48');
-				// $objTpl->getActiveSheet()->unmergeCells('E48:AB48');
-				// $objTpl->getActiveSheet()->mergeCells('E49:AB49');
-				// $objTpl->getActiveSheet()->unmergeCells('E49:AB49');
-				// $objTpl->getActiveSheet()->mergeCells('E50:AB50');
-				// $objTpl->getActiveSheet()->unmergeCells('E50:AB50');
-
 			}
 			if ($k>19) {
 				$cellval=19;

@@ -56,7 +56,11 @@
    		overflow-y: scroll !important;
 	}
 </style>
-<body class="check CMN_cursor_wait response" style="width: 1185px;min-height: 200px !important ;border: 1px solid white;max-width: 1350px !important">
+@if(isset($request->mainmenu) && $request->mainmenu == 'salarycalcplus')
+<body class="check CMN_cursor_wait response" style=";border: 1px solid white;">
+@else
+<body class="check CMN_cursor_wait response" style="width: 1185px;min-height: 200px !important ;border: 1px solid white;max-width: 1350px !important;">
+@endif
 	<div id="fixeddiv" class="CMN_menu_stretch" style="background-color: #F0F0F0 !important;">
 	<div class="se-pre-con" id="se-pre-con"></div>
 		<div class="CMN_header_wrap_wrap mb5">
