@@ -66,7 +66,7 @@
 	  width: auto;
 	  /*min-width: 1184px;*/
 	  /*max-width: 358px;*/
-	  /*max-width: 1184px;*/
+	  max-width: 1184px;
 	  overflow: hidden;
 	  border-collapse: collapse;
 	}
@@ -75,7 +75,7 @@
 	thead#multiadd_thead {
 	  position: relative;
 	  display: block; /*seperates the header from the body allowing it to be positioned*/
-	  /*width: 1184px;*/
+	  width: 1184px;
 	  max-width: 358px;
 	  overflow: visible;
 	}
@@ -91,7 +91,7 @@
 	  display: block; /*seperates the tbody from the header*/
 	  /*width: 1184px;*/
 	  min-width: 358px;
-	  /*max-width: 1184px;*/
+	  max-width: 1184px;
 	  min-height: 50px;
 	  /*max-height: 350px;*/
 	  max-height: 525px;
