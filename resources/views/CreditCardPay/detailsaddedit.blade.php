@@ -139,7 +139,7 @@
 				</div>
 				<div class="col-xs-9">
 
-					{{ $creditcardDetails[0]->creditCardAmount }}
+					{{ number_format($creditcardDetails[0]->creditCardAmount) }}
 
 					{{ Form::hidden('amount',(isset($creditcardDetails[0]->creditCardAmount)) ? number_format($creditcardDetails[0]->creditCardAmount) : 0,array('id'=>'amount', 
 															'name' => 'amount',

@@ -114,8 +114,8 @@
       <colgroup>
         <col width="10%">
         <!-- <col width="10%"> -->
-        <col width="25%">
-        <col width="20%">
+        <col width="10%">
+        <col width="30%">
         <col width="">
         <col width="17%">
       </colgroup>
@@ -159,8 +159,8 @@
     <table id="swaptable1" class="table table-striped table-bordered CMN_tblfixed">
       <col width="10%">
       <!-- <col width="10%"> -->
-      <col width="25%">
-      <col width="20%">
+      <col width="10%">
+      <col width="30%">
       <col width="">
       <col width="17%">
       <tbody class="box100per h35">
@@ -179,7 +179,10 @@
             </td>
 
             <td class="text-center pt7">{{ $i++ }}</td>
-            <td class="pl5 pt7" id="datanametd2{{$data->$selectfiled['0']}}">{{ $data->$selectfiled['1'] }}
+            <td class="pl5 pt7" id="datanametd2{{$data->$selectfiled['0']}}">
+              @if(isset($bankDetail[$data->$selectfiled['1']])) 
+                {{ $bankDetail[$data->$selectfiled['1']] }}
+              @endif
               <input type="hidden" name="hiddenselectvalue"  id="dataname1{{$data->$selectfiled['0']}}" value="{{ $data->$selectfiled['1'] }}">
             </td>
 
@@ -230,7 +233,8 @@
 
         <div class="ml15 pull-left box50per mb5">
           {{ Form::select('selectbox1',[null=>'']+$bankDetail,(isset($editData[0]->bankIdFrom)) ? 
-                            $editData[0]->bankIdFrom.'-'.$editData[0]->accountNumberFrom : '',            array('name' =>'bank',
+                            $editData[0]->bankIdFrom.'-'.$editData[0]->accountNumberFrom : '',
+                                   array('name' =>'bank',
                                   'id'=>'selectbox1',
                                   'data-label' => trans('messages.lbl_bank'),
                                   'class'=>'pl5 widthauto'))}}
