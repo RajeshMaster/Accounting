@@ -128,7 +128,7 @@
 
 			<div class="col-xs-12 mt5">
 				<div class="col-xs-3 text-right clr_blue">
-					<label>Csv File<span class="fr ml2 red"> &nbsp;&nbsp; </span></label>
+					<label>Csv File<span class="fr ml2 red"> * </span></label>
 				</div>
 				<div class="col-xs-9">
 				<input type="file" name="fileToUpload" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" id="fileToUpload">
@@ -178,7 +178,7 @@
 							{{ trans('messages.lbl_register') }}
 						</button>&nbsp;
 					@endif
-					<a href="javascript:gotoindexpage('Transfer','{{ $request->mainmenu }}');" 
+					<a href="javascript:gotoindexpage('addedit');" 
 						class="btn btn-danger box120 white">
 						<i class="fa fa-times" aria-hidden="true"></i> {{trans('messages.lbl_cancel')}}
 					</a>
@@ -190,10 +190,9 @@
 
 	{{ Form::close() }}
 
-	{{ Form::open(array('name'=>'transferaddeditcancel', 'id'=>'transferaddeditcancel', 
-						'url' => 'Accounting/tranferaddeditprocess?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
+	{{ Form::open(array('name'=>'creditaddeditcancel', 'id'=>'creditaddeditcancel', 
+						'url' => 'CreditCardPay/addeditprocess?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
 						'files'=>true,'method' => 'POST')) }}
-
 		{{ Form::hidden('mainmenu', $request->mainmenu , array('id' => 'mainmenu')) }}
 
 	{{ Form::close() }}
@@ -205,8 +204,6 @@
 			</div>
 		</div>
 	</div>
-
-	
 
 </article>
 </div>

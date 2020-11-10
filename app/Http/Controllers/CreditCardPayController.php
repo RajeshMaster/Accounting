@@ -226,6 +226,9 @@ class CreditCardPayController extends Controller {
 	}
 
 	public function addeditprocess(Request $request) {
+		if($request->fileToUpload == "") {
+			return Redirect::to('CreditCardPay/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
+		}
 		$sheetData = array();
 		$categoryName = CreditCardPay::fetchcategorynames();
 
@@ -260,7 +263,9 @@ class CreditCardPayController extends Controller {
 	}
 
 	public function detailsaddedit(Request $request) {
-
+		if(!$request->id){ 
+			return Redirect::to('CreditCardPay/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
+		}
 		$creditcardDetails = CreditCardPay::fetchcreditcardEdit($request);
 		$creditcard = CreditCardPay::fetchcreditCardnames();
 		$categoryName = CreditCardPay::fetchcategorynames();
@@ -288,7 +293,7 @@ class CreditCardPayController extends Controller {
 			}
 			$file->move($destinationPath,$fileName);
 		} else {
-			$fileName = $request->pdffiles;
+			$fileName = $request->imgfiles;
 		}
 
 		$updateProcess = CreditCardPay::updateDtls($request,$fileName);

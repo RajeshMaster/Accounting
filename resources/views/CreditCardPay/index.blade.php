@@ -10,22 +10,29 @@
 
 	var datetime = '<?php echo date('Ymdhis'); ?>';
 	var mainmenu = '<?php echo $request->mainmenu; ?>';
-	function pageClick(pageval) {
-		$('#page').val(pageval);
-			$("#creditCaredPayIndex").submit();
-	}
-	function pageLimitClick(pagelimitval) {
-		$('#page').val('');
-		$('#plimit').val(pagelimitval);
-		$("#creditCaredPayIndex").submit();
-	}
+	$(document).ready(function() {
+		if($('#hidAuth').val() == "5" || mainmenu == "AuditingCreditCardPay"){
+			$(".divdisplay").css("display", "none");
+			$(".cleardata").css("display", "none");
+			$('.columnspanpagination').attr('colspan','8');
+			$('.columnspan1').attr('colspan','4');
+  		}else{
+  			$(".divdisplay").css("");
+  			$(".cleardata").css("");
+  			$('.columnspanpagination').attr('colspan','9');
+			$('.columnspan1').attr('colspan','5');
+  		}
+	});
 </script>
 
 	<div class="CMN_display_block" id="main_contents">
 
 	<!-- article to select the main&sub menu -->
-
-	<article id="accounting" class="DEC_flex_wrapper " data-category="accounting accounting_sub_2">
+	@if($request->mainmenu =="AuditingCreditCardPay")
+		<article id="auditing" class="DEC_flex_wrapper " data-category="auditing auditing_sub_5">
+	@else
+		<article id="accounting" class="DEC_flex_wrapper " data-category="accounting accounting_sub_2">
+	@endif
 
 	{{ Form::open(array('name'=>'creditCaredPayIndex', 'id'=>'creditCaredPayIndex', 'url' => 'CreditCardPay/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),'files'=>true,
 		  'method' => 'POST')) }}
@@ -34,6 +41,7 @@
 		{{ Form::hidden('page', $request->page , array('id' => 'page')) }}
 		{{ Form::hidden('id', '', array('id' => 'id')) }}
 		{{ Form::hidden('creditCardId', '', array('id' => 'creditCardId')) }}
+		{{ Form::hidden('hidAuth', Auth::user()->userclassification, array('id' => 'hidAuth')) }}
 		
 		<!-- Year Bar Start -->
 		{{ Form::hidden('selMonth', $request->selMonth, array('id' => 'selMonth')) }}
@@ -91,7 +99,7 @@
 				<col width="15%">
 				<col width="22%">
 				<col width="4.5%">
-				<col width="6.5%">
+				<col width="6.5%" class="divdisplay">
 			</colgroup>
 
 			<thead class="CMN_tbltheadcolor">
@@ -105,7 +113,7 @@
 					<th class="vam">{{ trans('messages.lbl_categories') }}</th>
 					<th class="vam">{{ trans('messages.lbl_remarks') }}</th>
 					<th class="vam">{{ trans('messages.lbl_file') }}</th>
-					<th class="vam"></th>
+					<th class="vam divdisplay"></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -133,7 +141,7 @@
 							<td colspan="8" class="columnspan"> 
 								{{ $data->creditCardName }}
 							</td>
-							<td align="right">
+							<td align="right" class="cleardata">
 								<a href="javascript:clearRecords('{{ $data->creditCardId }}','{{ $request->selYear }}','{{ $request->selMonth }}');">
 									{{ trans('messages.lbl_clear') }}
 								</a>
@@ -141,7 +149,8 @@
 						</tr>
 					@endif
 					<tr>
-						<td align="center">{{ $key+1 }}</td>
+						<td align="center">{{ ($creditcardDetails->currentpage()-1) * $creditcardDetails->perpage() + $key + 1 }}</td>
+						<!-- <td align="center">{{ $key+1 }}</td> -->
 						<!-- <td align="center"> {{ $data->mainDate }} </td> -->
 						<td align="center">{{ $data->creditCardDate }}</td>
 						<td>{{ $data->creditCardContent }}</td>
@@ -156,7 +165,7 @@
 								class=" box20 viewPic3by2" src="{{ URL::asset('../../../../AccountingUpload/CreditCard').'/'.$data->file }}"></a>
 							@endif
 						</td>
-						<td align="center">
+						<td align="center" class="divdisplay">
 							<a href="javascript:fileUpload('{{ $data->id }}');">
 								<img class="vam ml12" src="{{ URL::asset('resources/assets/images/uploadFile.png') }}" width="20" height="20">
 							</a>
@@ -172,7 +181,7 @@
 					@endphp
 				@empty
 					<tr>
-						<td class="text-center columnspan" colspan="9" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
+						<td class="text-center columnspanpagination" colspan="9" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
 					</tr>
 				@endforelse
 
@@ -187,6 +196,17 @@
 			</tbody>
 		</table>
 
+	</div>
+	<div class="text-center pl14">
+		@if(!empty($creditcardDetails->total()))
+			<span class="pull-left mt24">
+				{{ $creditcardDetails->firstItem() }} ~ {{ $creditcardDetails->lastItem() }} / {{ $creditcardDetails->total() }}
+			</span>
+			{{ $creditcardDetails->links() }}
+			<div class="CMN_display_block flr pr14">
+				{{ $creditcardDetails->linkspagelimit() }}
+			</div>
+		@endif 
 	</div>
 	{{ Form::close() }}
 	</article>
