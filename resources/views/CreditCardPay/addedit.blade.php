@@ -131,9 +131,15 @@
 					<label>Csv File<span class="fr ml2 red"> * </span></label>
 				</div>
 				<div class="col-xs-9">
-				<input type="file" name="fileToUpload" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" id="fileToUpload">
+					{{ Form::file('fileToUpload',array(
+												'class' => 'pull-left box350',
+												'id' => 'fileToUpload',
+												'name' => 'fileToUpload',
+												'style' => 'height:23px;',
+												'accept' => '.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel',
+												'data-label' => trans('messages.lbl_bill'))) }}
+
 					<span>&nbsp;(Ex: Csv File Only)</span>
-		
 				</div>
 			</div>
 
