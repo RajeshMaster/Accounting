@@ -333,7 +333,7 @@ class AuditingController extends Controller {
 		$_POST['selYear'] = $selectedYear;
 		$_POST['selMonth'] = $selectedMonth;
 	}
-	if (empty($dbrecordvalue)) {
+	/*if (empty($dbrecordvalue)) {
 		if (!empty($dbpreviousYr)) {
 			$aryUnique = array_unique($dbpreviousYr);
 			$aryEnd = array_keys($aryUnique);
@@ -343,7 +343,7 @@ class AuditingController extends Controller {
 				unset($dbprevious[$z]);
 			}
 		}
-	}
+	}*/
 	$inv = array();
 	$i = 0;
 	$ckmail=array();
