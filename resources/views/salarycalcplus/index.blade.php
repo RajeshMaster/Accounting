@@ -61,12 +61,18 @@
 		padding: 3px;
 	}
 
+
+	thead th.multiadd_th {
+	  min-width: 120px;
+	  height: 32px;
+	}
+
 	table#multiadd_table {
 	  position: relative;
 	  width: auto;
 	  /*min-width: 1184px;*/
 	  /*max-width: 358px;*/
-	  max-width: 1184px;
+	  max-width: 1200px;
 	  overflow: hidden;
 	  border-collapse: collapse;
 	}
@@ -75,28 +81,41 @@
 	thead#multiadd_thead {
 	  position: relative;
 	  display: block; /*seperates the header from the body allowing it to be positioned*/
-	  width: 1184px;
+	  width: 1200px;
 	  max-width: 358px;
 	  overflow: visible;
 	}
 
-	thead th.multiadd_th {
-	  min-width: 120px;
-	  height: 32px;
+	@media(min-width: 1500px){
+		
+		tbody#multiadd_tbody {
+		  position: relative;
+		  display: block; /*seperates the tbody from the header*/
+		  /*width: 1184px;*/
+		  min-width: 358px;
+		  max-width: 1850px;
+		  min-height: 50px;
+		  /*max-height: 350px;*/
+		  max-height: 525px;
+		  overflow: auto;
+		}
 	}
 
-	/*tbody*/
-	tbody#multiadd_tbody {
-	  position: relative;
-	  display: block; /*seperates the tbody from the header*/
-	  /*width: 1184px;*/
-	  min-width: 358px;
-	  max-width: 1184px;
-	  min-height: 50px;
-	  /*max-height: 350px;*/
-	  max-height: 525px;
-	  overflow: auto;
+	@media(max-width: 1370px){
+
+		tbody#multiadd_tbody {
+		  position: relative;
+		  display: block; /*seperates the tbody from the header*/
+		  /*width: 1184px;*/
+		  min-width: 358px;
+		  max-width: 1320px;
+		  min-height: 50px;
+		  /*max-height: 350px;*/
+		  max-height: 525px;
+		  overflow: auto;
+		}
 	}
+	
 
 	tbody td.multiadd_td, thead th.multiadd_th 	{
 	  /*width: 120px;*/
@@ -180,7 +199,7 @@
 
 </style>
 
-<div class="CMN_display_block" id="main_contents" style="width: 100%;">
+<div class="CMN_display_block" id="main_contents" style="width: 100%;padding: 1% 1% 1% 1%">
 	<!-- article to select the main&sub menu -->
 	<article id="auditing" class="DEC_flex_wrapper " data-category="auditing auditing_sub_2">
 		{{ Form::open(array('name'=>'salarycalcindex',
