@@ -787,7 +787,7 @@ class Accounting extends Model {
     //                         });
 				// }
 				// END ACCESS RIGHTS
-			// $Estimate = $Estimate->whereNotIn('user_id', $invoiceArr)
+			$Estimate = $Estimate->whereNotIn('user_id', $invoiceArr);
 			$Estimate = $Estimate->orderByRaw("orderbysent ASC, user_id DESC")
 					  			->get();
 				// ->toSql();dd($Estimate);
