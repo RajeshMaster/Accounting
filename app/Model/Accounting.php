@@ -762,7 +762,6 @@ class Accounting extends Model {
 		// $invoiceArr = array('INSU0001','Insuv0002');
 		// print_r($invoiceArr);exit();
 		$date_month = substr($request->invoiceDate, 0, 7);
-		// print_r($date_month);exit();
 		$Estimate = $db->TABLE($db->raw("(SELECT main.quot_date,main.id,main.user_id,main.trading_destination_selection,dev_payment_registration.payment_date,main.del_flg,main.copyFlg,main.project_name,main.classification,
 		main.created_by,main.pdf_flg,main.project_type_selection,main.mailFlg, 
 		main.paid_date,main.paid_status,main.tax,main.estimate_id,main.company_name,main.bankid,main.bankbranchid,main.acc_no,mstbank.Bank_NickName,works.amount,
@@ -779,17 +778,17 @@ class Accounting extends Model {
 		GROUP BY user_id Order By user_id Asc,quot_date Asc) AS DDD "));
    				// ACCESS RIGHTS
 				// CONTRACT EMPLOYEE
-				if (Auth::user()->userclassification == 1) {
-					$accessDate = Auth::user()->accessDate;
-					$Estimate = $Estimate->WHERE(function($joincont) use($accessDate) {
-                           $joincont->WHERE('dev_invoices_registration.quot_date', '>', 
-                           						$accessDate)
-                            		->ORWHERE('accessFlg','=',1);
-                            });
-				}
+				// if (Auth::user()->userclassification == 1) {
+				// 	$accessDate = Auth::user()->accessDate;
+				// 	$Estimate = $Estimate->WHERE(function($joincont) use($accessDate) {
+    //                        $joincont->WHERE('dev_invoices_registration.quot_date', '>', 
+    //                        						$accessDate)
+    //                         		->ORWHERE('accessFlg','=',1);
+    //                         });
+				// }
 				// END ACCESS RIGHTS
-			$Estimate = $Estimate->whereNotIn('user_id', $invoiceArr)
-								->orderByRaw("orderbysent ASC, user_id DESC")
+			// $Estimate = $Estimate->whereNotIn('user_id', $invoiceArr)
+			$Estimate = $Estimate->orderByRaw("orderbysent ASC, user_id DESC")
 					  			->get();
 				// ->toSql();dd($Estimate);
 			return $Estimate;

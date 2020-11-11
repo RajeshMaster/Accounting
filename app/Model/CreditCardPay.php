@@ -77,7 +77,7 @@ class CreditCardPay extends Model {
 							'amount' => preg_replace("/,/", "",  $request->totalAmount),
 							'content' => 'Credit Card Payment',
 							'remarks' => '',
-							'pageFlg' => 1,
+							'pageFlg' => 999,
 							'createdBy' => $name,
 							'orderId' => $orderId,
 						]);
@@ -241,6 +241,11 @@ class CreditCardPay extends Model {
 	}
 
 	public static function deletdRecorsForYM($request) {
+		$query = DB::table('acc_cashregister')
+						->WHERE('date', 'LIKE', '%'.$request->clearCashDate.'%')
+						->WHERE('pageFlg','=',999)
+						->DELETE();
+
 		$query = DB::table('acc_creditcardpayment')
 						->WHERE('selectedYearMonth', 'LIKE', '%'.$request->selYear.'-'.$request->selMonth.'%')
 						->WHERE('creditCardId','=',$request->creditCardId)

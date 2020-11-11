@@ -153,7 +153,6 @@
 				<col width="15%">
 				<col width="22%">
 				<col width="4.5%">
-				<col width="6.5%" class="divdisplay">
 			</colgroup>
 
 			<thead class="CMN_tbltheadcolor">
@@ -166,8 +165,7 @@
 					<th class="vam ">{{ trans('messages.lbl_bill') }}</th>
 					<th class="vam">{{ trans('messages.lbl_categories') }}</th>
 					<th class="vam">{{ trans('messages.lbl_remarks') }}</th>
-					<th class="vam">{{ trans('messages.lbl_file') }}</th>
-					<th class="vam divdisplay"></th>
+					<th class="vam divdisplay">{{ trans('messages.lbl_file') }}</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -187,18 +185,13 @@
 								{{ number_format($balanceAmt) }}
 								@php $balanceAmt = 0; @endphp
 							</td>
-							<td colspan="5" class="columnspan1"></td>
+							<td colspan="4" class="columnspan1"></td>
 						</tr>
 					@endif
 					@if( $creditCradId != $data->creditCardId)
 						<tr style="background-color: lightgrey;font-weight: bold;font-size: 15px">
 							<td colspan="8" class="columnspan"> 
 								{{ $data->creditCardName }}
-							</td>
-							<td align="right" class="cleardata">
-								<a href="javascript:clearRecords('{{ $data->creditCardId }}','{{ $request->selYear }}','{{ $request->selMonth }}');">
-									{{ trans('messages.lbl_clear') }}
-								</a>
 							</td>
 						</tr>
 					@endif
@@ -223,14 +216,6 @@
 								class=" box20 viewPic3by2" src="{{ URL::asset('../../../../AccountingUpload/CreditCard').'/'.$data->file }}"></a>
 							@endif
 						</td>
-						<td align="center" class="divdisplay">
-							<a href="javascript:fileUpload('{{ $data->id }}');">
-								<img class="vam ml12" src="{{ URL::asset('resources/assets/images/uploadFile.png') }}" width="20" height="20">
-							</a>
-							<a href="javascript:editCreditCard('{{ $data->id }}');">
-								<img class="vam ml12" src="{{ URL::asset('resources/assets/images/edit.png') }}" width="20" height="20">
-							</a>	
-						</td>
 					</tr>
 					@php 
 						$creditCradId = $data->creditCardId;
@@ -239,7 +224,7 @@
 					@endphp
 				@empty
 					<tr>
-						<td class="text-center columnspanpagination" colspan="9" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
+						<td class="text-center columnspanpagination" colspan="8" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
 					</tr>
 				@endforelse
 
@@ -247,7 +232,7 @@
 					<tr style="background-color: #f1a2a2;font-weight: bold;font-size: 15px">
 						<td colspan="3" align="right">{{ trans('messages.lbl_total') }}</td>
 						<td colspan="1" align="right">{{ number_format($balanceAmt) }}</td>
-						<td colspan="5" class="columnspan1"></td>
+						<td colspan="4" class="columnspan1"></td>
 					</tr>
 				@endif
 

@@ -43,6 +43,7 @@
 		{{ Form::hidden('creditCardId', '', array('id' => 'creditCardId')) }}
 		{{ Form::hidden('hidAuth', Auth::user()->userclassification, array('id' => 'hidAuth')) }}
 		{{ Form::hidden('category', '', array('id' => 'category')) }}
+		{{ Form::hidden('clearCashDate', '', array('id' => 'clearCashDate')) }}
 		
 		<!-- Year Bar Start -->
 		{{ Form::hidden('selMonth', $request->selMonth, array('id' => 'selMonth')) }}
@@ -147,7 +148,7 @@
 								{{ $data->creditCardName }}
 							</td>
 							<td align="right" class="cleardata">
-								<a href="javascript:clearRecords('{{ $data->creditCardId }}','{{ $request->selYear }}','{{ $request->selMonth }}');">
+								<a href="javascript:clearRecords('{{ $data->creditCardId }}','{{ $request->selYear }}','{{ $request->selMonth }}','{{ $data->mainDate }}');">
 									{{ trans('messages.lbl_clear') }}
 								</a>
 							</td>

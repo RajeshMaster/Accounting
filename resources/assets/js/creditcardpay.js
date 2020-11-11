@@ -263,9 +263,10 @@ function fnGetInsertedValue(){
 	}
 }
 
-function clearRecords(crediCard,year,month) {
+function clearRecords(crediCard,year,month ,maindate) {
 	if ( confirm("Do You Want To Clear ?")) {
 		$('#creditCardId').val(crediCard);
+		$('#clearCashDate').val(maindate);
 		$('#creditCaredPayIndex').attr('action', 'deleteRecords?mainmenu='+mainmenu+'&time='+datetime);
 		$("#creditCaredPayIndex").submit();
 	}
