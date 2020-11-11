@@ -322,3 +322,8 @@ function setyearcategory(year) {
 	$("#categoryWiseCreditCard").submit();
 }
  
+
+function monthWise() {
+	$('#creditCaredPayIndex').attr('action', 'monthlywiseindex?mainmenu='+mainmenu+'&time='+datetime);
+	$("#creditCaredPayIndex").submit();
+}

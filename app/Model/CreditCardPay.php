@@ -283,4 +283,79 @@ class CreditCardPay extends Model {
 						->get();
 		return $query;
 	}
+
+	public static function fnGetcreditCardRecordMonthwise($from_date, $to_date, $request) {
+		if (isset($request->content) && $request->content!= "") {
+			$conditionAppend = "AND (categoryId = '$request->content')";
+		} else {
+			$conditionAppend = "AND (1 = 1)";
+		}
+		$tbl_name = "acc_creditcardpayment";
+		$sql = "SELECT SUBSTRING(creditCardDate, 1, 7) AS date 
+				FROM $tbl_name 
+				WHERE (creditCardDate > '$from_date' AND creditCardDate < '$to_date') 
+				AND delFlg = '0' $conditionAppend
+				ORDER BY creditCardDate ASC";
+		$cards = DB::select($sql);
+		return $cards;
+	}
+
+	public static function fnGetcreditCardRecordPreviousMonthwise($from_date, $request) {
+
+		$tbl_name = "acc_creditcardpayment";
+
+		if (isset($request->content) && $request->content!= "") {
+			$conditionAppend = "AND (categoryId = '$request->content')";
+		} else {
+			$conditionAppend = "AND (1 = 1) AND (delFlg = 0)";
+		}
+		
+		$sql = "SELECT SUBSTRING(creditCardDate, 1, 7) AS date FROM $tbl_name 
+			WHERE (creditCardDate <= '$from_date' $conditionAppend) ORDER BY creditCardDate ASC";
+		$cards = DB::select($sql);
+		return $cards;
+	}
+
+	public static function fnGetCreditCardRecordNextMonthwise($to_date, $request) {
+		if (isset($request->content) && $request->content!= "") {
+			$conditionAppend = "AND (categoryId = '$request->content') AND (delFlg = 0)";
+		} else {
+			$conditionAppend = "AND (1 = 1)";
+		}
+
+		$sql = "SELECT SUBSTRING(creditCardDate, 1, 7) AS date FROM acc_creditcardpayment 
+			WHERE (creditCardDate >= '$to_date') AND delFlg = '0' $conditionAppend ORDER BY creditCardDate ASC";
+		$cards = DB::select($sql);
+		return $cards;
+	}
+
+	public static function fetchcreditcarddetailsMonthwise($from_date, $to_date,$request) {
+		$db = DB::connection('mysql');
+		$query = $db->table('acc_creditcardpayment')
+						->SELECT('acc_creditcardpayment.*','acc_creditcard.creditCardName','acc_categorysetting.Category')
+						->leftJoin('acc_creditcard', 'acc_creditcard.id', '=', 'acc_creditcardpayment.creditCardId')
+						->leftJoin('acc_categorysetting', 'acc_categorysetting.id', '=', 'acc_creditcardpayment.categoryId')
+						->where('creditCardDate','>=',$from_date)
+						->where('creditCardDate','<=',$to_date);
+		if (isset($request->content) && $request->content!= "") {
+			$query = $query->where('categoryId','=',$request->content);
+		} 
+			$query = $query->orderBy('creditCardId', 'ASC')
+						->orderBy('creditCardDate', 'ASC')
+						->paginate($request->plimit);
+						// ->get();
+		return $query;
+	}
+
+	public static function fnGetcreditCardAllRecordMonthwise($request) {
+		if (isset($request->content) && $request->content!= "") {
+			$conditionAppend = "AND (categoryId = '$request->content')";
+		} else {
+			$conditionAppend = "AND (1 = 1)";
+		}
+		$sql = "SELECT SUBSTRING(creditCardDate, 1, 7) AS date FROM acc_creditcardpayment 
+				where (delFlg = '0' $conditionAppend) ORDER BY creditCardDate ASC";
+		$cards = DB::select($sql);
+		return $cards;
+	}
 }

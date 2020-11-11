@@ -439,4 +439,179 @@ class CreditCardPayController extends Controller {
 											'getNextCount' => $getNextCount,
 										]);
 	}
+
+	/**
+	*
+	* Get Creditcard Monthwise Process
+	* @author Sarath
+	* @return object to particular view page
+	* Created At 2020/11/11
+	*
+	*/
+	public function monthlywiseindex(Request $request) {
+
+		if(Session::get('selYear') !="") {
+			$request->selYear =  Session::get('selYear');
+			$request->selMonth =  Session::get('selMonth');
+		}
+		$from_date = "";
+		$to_date = "";
+		$previous_date = "";
+		$date_month = "";
+		$temp = "";
+		$g_accountperiod = CreditCardPay::fnGetAccountPeriodAcc();
+		$account_close_yr = $g_accountperiod[0]->Closingyear;
+		$account_close_mn = $g_accountperiod[0]->Closingmonth;
+		$account_period = intval($g_accountperiod[0]->Accountperiod);
+		$curDate= date('Y-m-d');
+		$db_year_month = array();
+		$expall_query = CreditCardPay::fnGetcreditCardAllRecordMonthwise($request);
+		$dballrecord = array();
+		foreach ($expall_query as $key => $value) {
+			array_push($dballrecord, $value->date);
+		}
+		$dballrecord = array_unique($dballrecord);
+		$inc=0;
+		foreach ($dballrecord AS $dbrecordallkey => $dbrecordallvalue) {
+			$split_val = explode("-", $dbrecordallvalue);
+			$loc=$split_val[0];
+			if ($loc != $temp) {
+				$inc=0;
+			}
+			$db_year_monthall[$split_val[0]][$inc] = intval($split_val[1]);
+			$temp=$loc;
+			$inc++;
+		}
+		$y=0;
+		$m=0;
+		if (!empty($db_year_monthall)) {
+			foreach ($db_year_monthall AS $dballkey => $dbllvalue) {
+				foreach ($dbllvalue AS $dballsubkey => $dbllsubvalue) {
+					$yearMonthCon = $dballkey."-".str_pad($dbllsubvalue, 2, 0, STR_PAD_LEFT);
+					$db_year_monthfullarray[$y] = $yearMonthCon;
+					if ($y!=0) {
+						$yearMnarray[$m] = $yearMonthCon;
+						$m++;
+					}
+					$y++;
+				}
+			}
+		}
+		if (!isset($request->selMonth)) {
+			$date_month=date('Y-m');
+		} else {
+			$date_month = $request->selYear . "-" . substr("0" . $request->selMonth , -2);
+		}
+		//Setting page limit
+		if ($request->plimit=="") {
+			$request->plimit = 100;
+		}
+		if ($request->selMonth == "") {
+			$request->selMonth = date('m');
+		}
+		if ($request->selYear == "") {
+			$request->selYear = date('Y');
+		}
+		$last=date('Y-m', strtotime('last month'));
+		$last1=date($date_month , strtotime($last . " last month"));
+		$lastdate=explode("-",$last1);
+		$lastyear=$lastdate[0];
+		$lastmonth=$lastdate[1];
+		if (!empty($request->previou_next_year)) {
+			$splityear = explode("-",$request->previou_next_year);
+			if (isset($splityear)) {
+				if (intval($splityear[1]) > $account_close_mn) {
+					$last_year = intval($splityear[0]);
+					$current_year = intval($splityear[0]) + 1;
+				} else {
+					$last_year = intval($splityear[0]) - 1;
+					$current_year = intval($splityear[0]);
+				}
+			}
+		} else if (isset($request->selYear)) {
+			if ($request->selMonth > $account_close_mn) {
+				$current_year = intval($request->selYear) + 1;
+				$last_year = intval($request->selYear);
+			} else {
+				$current_year = intval($request->selYear);
+				$last_year = intval($request->selYear) - 1;
+			}
+		} else {
+			if (date('m') > $account_close_mn) {
+			    $current_year = date('Y')+1;
+				$last_year = date('Y');
+			} else {
+			    $current_year = date('Y');
+				$last_year = date('Y') - 1;
+			}
+		}
+		$current_month=date('m');
+		$year_month=array();
+		if ($account_close_mn == 12) {
+			for ($i = 1; $i <= 12; $i++) {
+				$year_month[$current_year][$i] = $i;
+			} 
+		} else {
+			for ($i = ($account_close_mn + 1); $i <= 12; $i++) {
+				$year_month[$last_year][$i] = $i;
+			}
+			for ($i = 1; $i <= $account_close_mn; $i++) {
+				$year_month[$current_year][$i] = $i;
+			}
+		}
+		$year_month_day=$current_year . "-" . $account_close_mn . "-01";
+		$maxday=Common::fnGetMaximumDateofMonth($year_month_day);
+		$from_date=$last_year . "-" . substr("0" . $account_close_mn, -2). "-" . substr("0" . $maxday, -2);
+		$to_date=$current_year . "-" . substr("0" . ($account_close_mn + 1), -2) . "-01";
+		
+
+		$est_query=CreditCardPay::fnGetcreditCardRecordMonthwise($from_date, $to_date, $request);
+		$dbrecord = array();
+		foreach ($est_query as $key => $value) {
+			$dbrecord[]=$value->date;
+		}
+		$est_query1 = CreditCardPay::fnGetcreditCardRecordPreviousMonthwise($from_date, $request);
+		$dbprevious = array();
+		$dbpreviousYr = array();
+		$pre = 0;
+		foreach ($est_query1 as $key => $value) {
+			$dbpreviousYr[]=substr($value->date, 0, 4);
+			$dbprevious[]=$value->date;
+			$pre++;
+		}
+		$est_query2=CreditCardPay::fnGetCreditCardRecordNextMonthwise($to_date, $request);
+		$dbnext = array();
+		foreach ($est_query2 as $key => $value) {
+			$dbnext[]=$value->date;
+		}
+		$dbrecord = array_unique($dbrecord);
+		$account_val = Common::getAccountPeriod($year_month, $account_close_yr, $account_close_mn, $account_period);
+
+		foreach ($dbrecord AS $dbrecordkey => $dbrecordvalue) {
+			$split_val = explode("-",$dbrecordvalue);
+			$db_year_month[$split_val[0]][intval($split_val[1])] = intval($split_val[1]);
+		}
+
+		$start = $request->selYear .'-'.$request->selMonth.'-01';
+		$end = $request->selYear .'-'.$request->selMonth.'-'.Common::fnGetMaximumDateofMonth($start);
+
+		$creditcardDetails = CreditCardPay::fetchcreditcarddetailsMonthwise($start, $end, $request);
+		
+		return view('CreditCardPay.creditCardMonthwiseDetails',[ 'request' => $request,
+											'creditcardDetails' => $creditcardDetails,
+											'account_period' => $account_period,
+											'year_month' => $year_month,
+											'db_year_month' => $db_year_month,
+											'date_month' => $date_month,
+											'dbnext' => $dbnext,
+											'dbprevious' => $dbprevious,
+											'last_year' => $last_year,
+											'current_year' => $current_year,
+											'account_val' => $account_val,
+										]);
+	}
+
+
+
+
 }
