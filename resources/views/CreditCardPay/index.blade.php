@@ -42,6 +42,7 @@
 		{{ Form::hidden('id', '', array('id' => 'id')) }}
 		{{ Form::hidden('creditCardId', '', array('id' => 'creditCardId')) }}
 		{{ Form::hidden('hidAuth', Auth::user()->userclassification, array('id' => 'hidAuth')) }}
+		{{ Form::hidden('content', '', array('id' => 'content')) }}
 		
 		<!-- Year Bar Start -->
 		{{ Form::hidden('selMonth', $request->selMonth, array('id' => 'selMonth')) }}
@@ -84,6 +85,11 @@
 		<div class="col-xs-6  pm0 pull-left mt10 divdisplay">
 			<a href="javascript:addedit();" class="btn btn-success box100"><span class="fa fa-plus"></span> {{ trans('messages.lbl_register') }}</a>
 		</div>
+		<div class="col-xs-6  pm0 pull-left mt10 divdisplay" align="right">
+			<a href="javascript:yearWise();" class="btn btn-success box100"></span>Year Wise</a>
+			<a href="javascript:ccMonthWise();" class="btn btn-success box100"></span>CC month Wise</a>
+			<a href="javascript:monthWise();" class="btn btn-success box100"></span>MOnthly Wise</a>
+		</div>
 	</div>
 
 
@@ -106,7 +112,7 @@
 				<tr id="data">
 					<th class="vam">{{ trans('messages.lbl_sno') }}</th>
 					<!-- <th class="vam">{{ trans('messages.lbl_Date') }}</th> -->
-					<th class="vam">{{ trans('messages.lbl_CreditDate') }}</th>
+					<th class="vam">{{ trans('messages.lbl_Date') }}</th>
 					<th class="vam">{{ trans('messages.lbl_content') }}</th>
 					<th class="vam">{{ trans('messages.lbl_amount') }}</th>
 					<th class="vam ">{{ trans('messages.lbl_bill') }}</th>
@@ -125,7 +131,7 @@
 				@endphp
 				@forelse($creditcardDetails as $key => $data)
 					@if(($CreditCardCheck != 0 && $CreditCardCheck != $data->creditCardId))
-						<tr style="background-color: #f1a2a2">
+						<tr style="background-color: #f1a2a2;font-weight: bold;font-size: 15px">
 							<td colspan="3" align="right">
 								{{ trans('messages.lbl_total') }}
 							</td>
@@ -137,7 +143,7 @@
 						</tr>
 					@endif
 					@if( $creditCradId != $data->creditCardId)
-						<tr style="background-color: lightgrey">
+						<tr style="background-color: lightgrey;font-weight: bold;font-size: 15px">
 							<td colspan="8" class="columnspan"> 
 								{{ $data->creditCardName }}
 							</td>
@@ -153,7 +159,11 @@
 						<!-- <td align="center">{{ $key+1 }}</td> -->
 						<!-- <td align="center"> {{ $data->mainDate }} </td> -->
 						<td align="center">{{ $data->creditCardDate }}</td>
-						<td>{{ $data->creditCardContent }}</td>
+						<td>
+							<a href="javascript:contentView('{{ $data->creditCardContent }}');">
+								{{ $data->creditCardContent }}
+							</a>
+						</td>
 						<td align="right">{{ number_format($data->creditCardAmount) }}</td>
 						<td align="center">@if($data->rdoBill == "1")有@endif</td>
 						<td>{{ $data->Category }}</td>
@@ -186,7 +196,7 @@
 				@endforelse
 
 				@if(count($creditcardDetails) > 0)
-					<tr style="background-color: #f1a2a2">
+					<tr style="background-color: #f1a2a2;font-weight: bold;font-size: 15px">
 						<td colspan="3" align="right">{{ trans('messages.lbl_total') }}</td>
 						<td colspan="1" align="right">{{ number_format($balanceAmt) }}</td>
 						<td colspan="5" class="columnspan1"></td>

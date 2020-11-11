@@ -286,3 +286,9 @@ function pageLimitClick(pagelimitval) {
 	$('#creditCaredPayIndex').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
 	$("#creditCaredPayIndex").submit();
 }
+
+function contentView(contet) {
+	$('#content').val(contet);
+	$('#creditCaredPayIndex').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+	$("#creditCaredPayIndex").submit();
+}

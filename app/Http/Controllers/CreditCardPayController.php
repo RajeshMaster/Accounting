@@ -32,6 +32,7 @@ class CreditCardPayController extends Controller {
 			// $request->amount =  Session::get('amount');
 		}
 
+
 		$from_date = "";
 		$to_date = "";
 		$previous_date = "";
@@ -45,7 +46,7 @@ class CreditCardPayController extends Controller {
 		$curDate= date('Y-m-d');
 		$db_year_month = array();
 
-		$expall_query = CreditCardPay::fnGetcreditCardAllRecord();
+		$expall_query = CreditCardPay::fnGetcreditCardAllRecord($request);
 		$dballrecord = array();
 		foreach ($expall_query as $key => $value) {
 			array_push($dballrecord, $value->date);
@@ -155,14 +156,14 @@ class CreditCardPayController extends Controller {
 		$to_date=$current_year . "-" . substr("0" . ($account_close_mn + 1), -2) . "-01";
 		
 
-		$est_query=CreditCardPay::fnGetcreditCardRecord($from_date, $to_date);
+		$est_query=CreditCardPay::fnGetcreditCardRecord($from_date, $to_date, $request);
 		$dbrecord = array();
 		foreach ($est_query as $key => $value) {
 			$dbrecord[]=$value->date;
 		}
 
 
-		$est_query1 = CreditCardPay::fnGetcreditCardRecordPrevious($from_date);
+		$est_query1 = CreditCardPay::fnGetcreditCardRecordPrevious($from_date, $request);
 		$dbprevious = array();
 		$dbpreviousYr = array();
 		$pre = 0;
@@ -173,7 +174,7 @@ class CreditCardPayController extends Controller {
 		}
 
 
-		$est_query2=CreditCardPay::fnGetCreditCardRecordNext($to_date);
+		$est_query2=CreditCardPay::fnGetCreditCardRecordNext($to_date, $request);
 
 		$dbnext = array();
 		foreach ($est_query2 as $key => $value) {
@@ -242,6 +243,44 @@ class CreditCardPayController extends Controller {
 				$sheetData[] = $dat;
 			}
 			fclose($handle);
+		}
+
+		$errorFlg = 0;
+		$errorStatus = "";
+		for ($i=0; $i < count($sheetData); $i++) {
+			if ($i != 0 && $i != count($sheetData)-1) {
+				if (!isset($sheetData[$i][0]) || $sheetData[$i][0] == "") {
+					$errorFlg = 1;
+					$errorStatus = "Date";
+				} 
+
+				if (!isset($sheetData[$i][1]) ||$sheetData[$i][1] == "") {
+					$errorFlg = 1;
+					$errorStatus = "Content";
+				}
+
+				if (!isset($sheetData[$i][5]) || $sheetData[$i][5] == "") {
+					$errorFlg = 1;
+					$errorStatus = "Amount";
+				} elseif (!is_numeric($sheetData[$i][5])) {
+					$errorFlg = 1;
+					$errorStatus = "Amount";
+				}
+
+				if (!isset($sheetData[$i][6])) {
+					$errorFlg = 1;
+					$errorStatus = "Remarks";
+				}
+				if ($errorFlg) {
+					break;
+				}
+			}
+		}
+
+		if ($errorFlg) {
+			Session::flash('danger', 'Line No '.($i+1).' '.$errorStatus.' has Error!'); 
+			Session::flash('type', 'alert-danger');
+			return Redirect::to('CreditCardPay/addedit?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 		}
 		return view('CreditCardPay.creditCardDetail',[
 											'request' => $request,
@@ -331,7 +370,13 @@ class CreditCardPayController extends Controller {
 
 	public function deleteRecords(Request $request) {
 		$deletData = CreditCardPay::deletdRecorsForYM($request);
-
+		if($deletData) {
+			Session::flash('success', 'Cleared Sucessfully!'); 
+			Session::flash('type', 'alert-success'); 
+		} else {
+			Session::flash('type', 'Cleared Unsucessfully!'); 
+			Session::flash('type', 'alert-danger'); 
+		}
 		return Redirect::to('CreditCardPay/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 	}
 }

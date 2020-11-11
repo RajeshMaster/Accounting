@@ -85,8 +85,11 @@ class CreditCardPay extends Model {
 						->leftJoin('acc_creditcard', 'acc_creditcard.id', '=', 'acc_creditcardpayment.creditCardId')
 						->leftJoin('acc_categorysetting', 'acc_categorysetting.id', '=', 'acc_creditcardpayment.categoryId')
 						->where('selectedYearMonth','>=',$from_date)
-						->where('selectedYearMonth','<=',$to_date)
-						->orderBy('creditCardId', 'ASC')
+						->where('selectedYearMonth','<=',$to_date);
+		if (isset($request->content) && $request->content!= "") {
+			$query = $query->where('categoryId','=',$request->content);
+		} 
+			$query = $query->orderBy('creditCardId', 'ASC')
 						->orderBy('creditCardDate', 'ASC')
 						->paginate($request->plimit);
 						// ->get();
@@ -136,32 +139,44 @@ class CreditCardPay extends Model {
 	        return $accperiod;
 	}
 
-	public static function fnGetcreditCardAllRecord() {
-		
+	public static function fnGetcreditCardAllRecord($request) {
+		if (isset($request->content) && $request->content!= "") {
+			$conditionAppend = "AND (categoryId = '$request->content')";
+		} else {
+			$conditionAppend = "AND (1 = 1)";
+		}
 		$sql = "SELECT SUBSTRING(selectedYearMonth, 1, 7) AS date FROM acc_creditcardpayment 
-				where delFlg = '0'  ORDER BY selectedYearMonth ASC";
-
+				where (delFlg = '0' $conditionAppend) ORDER BY selectedYearMonth ASC";
 		$cards = DB::select($sql);
 		return $cards;
 	}
 
 
-	public static function fnGetcreditCardRecord($from_date, $to_date) {
-	
+	public static function fnGetcreditCardRecord($from_date, $to_date, $request) {
+		if (isset($request->content) && $request->content!= "") {
+			$conditionAppend = "AND (categoryId = '$request->content')";
+		} else {
+			$conditionAppend = "AND (1 = 1)";
+		}
 		$tbl_name = "acc_creditcardpayment";
 		$sql = "SELECT SUBSTRING(selectedYearMonth, 1, 7) AS date 
 				FROM $tbl_name 
 				WHERE (selectedYearMonth > '$from_date' AND selectedYearMonth < '$to_date') 
-				AND delFlg = '0'
+				AND delFlg = '0' $conditionAppend
 				ORDER BY creditCardDate ASC";
 		$cards = DB::select($sql);
 		return $cards;
 	}
 
-	public static function fnGetcreditCardRecordPrevious($from_date) {
+	public static function fnGetcreditCardRecordPrevious($from_date, $request) {
 
 		$tbl_name = "acc_creditcardpayment";
-		$conditionAppend = "AND (delFlg = 0)";
+
+		if (isset($request->content) && $request->content!= "") {
+			$conditionAppend = "AND (categoryId = '$request->content')";
+		} else {
+			$conditionAppend = "AND (1 = 1) AND (delFlg = 0)";
+		}
 		
 		$sql = "SELECT SUBSTRING(selectedYearMonth, 1, 7) AS date FROM $tbl_name 
 			WHERE (selectedYearMonth <= '$from_date' $conditionAppend) ORDER BY creditCardDate ASC";
@@ -169,10 +184,15 @@ class CreditCardPay extends Model {
 		return $cards;
 	}
 
-	public static function fnGetCreditCardRecordNext($to_date) {
-		
+	public static function fnGetCreditCardRecordNext($to_date, $request) {
+		if (isset($request->content) && $request->content!= "") {
+			$conditionAppend = "AND (categoryId = '$request->content') AND (delFlg = 0)";
+		} else {
+			$conditionAppend = "AND (1 = 1)";
+		}
+
 		$sql = "SELECT SUBSTRING(selectedYearMonth, 1, 7) AS date FROM acc_creditcardpayment 
-			WHERE (selectedYearMonth >= '$to_date') AND delFlg = '0' ORDER BY creditCardDate ASC";
+			WHERE (selectedYearMonth >= '$to_date') AND delFlg = '0' $conditionAppend ORDER BY creditCardDate ASC";
 		$cards = DB::select($sql);
 		return $cards;
 	}

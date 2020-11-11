@@ -26,6 +26,7 @@
 		{{ Form::hidden('selectedMonth', $request->selectedMonth , array('id' => 'selectedMonth')) }}
 		{{ Form::hidden('sheetData', count($sheetData) , array('id' => 'sheetData')) }}
 
+
 		
 	<!-- Start Heading -->
 
@@ -38,6 +39,7 @@
 		</div>
 	</div>
 	<!-- End Heading -->
+
 
 	<div class="minh300 mt10 mb10" style="padding:2px 2px 2px 2px">
 		<table class="tablealternate CMN_tblfixed mt10">
@@ -65,7 +67,9 @@
 			<tbody>
 				@php
 					$i = 1;
+					$balanceAmt = 0;
 				@endphp
+
 				@forelse($sheetData as $key => $data)
 					@if($key != 0 && $i != count($sheetData)-1)
 						<tr>
@@ -78,8 +82,8 @@
 								{{ Form::hidden('creditCardContent'.$i, $data[1] , array('id' => 'creditCardContent'.$i)) }}
 								{{ $data[1] }}</td>
 							<td align="right">
-								{{ Form::hidden('creditCardAmount'.$i, $data[2] , array('id' => 'creditCardAmount'.$i)) }}
-								{{ number_format($data[2]) }}</td>
+								{{ Form::hidden('creditCardAmount'.$i, $data[5] , array('id' => 'creditCardAmount'.$i)) }}
+								{{ number_format($data[5]) }}</td>
 							<td class="tac">
 								<label style="font-weight: normal;display: inline-block;">
 									{{ Form::radio('rdoBill'.$i, '1',1, 
@@ -116,7 +120,15 @@
 						</tr>
 						@php
 							$i++;
+							$balanceAmt += $data[5];
 						@endphp
+					@endif
+					@if($key == count($sheetData)-1)
+					<tr style="background-color: #f1a2a2;font-weight: bold;font-size: 15px">
+						<td colspan="3" align="right">{{ trans('messages.lbl_total') }}</td>
+						<td colspan="1" align="right">{{ number_format($balanceAmt) }}</td>
+						<td colspan="5" class="columnspan1"></td>
+					</tr>
 					@endif
 				@empty
 					<tr>

@@ -69,8 +69,25 @@
 				@endif
 			</div>
 		</div>
+
+
+	
 		
 		<div class="col-xs-12 pl5 pr5">
+
+		<div class="col-xs-12 pull-left pl10 pr10">
+			<!-- Session msg -->
+				@if(Session::has('danger'))
+					<div align="center" class="alertboxalign  mb5" role="alert">
+						<p class="alert {{ Session::get('alert', Session::get('type') ) }}">
+			            	{{ Session::get('danger') }}
+			          	</p>
+					</div>
+				@endif
+				@php Session::forget('danger'); @endphp
+				<!-- Session msg -->
+		</div>
+
 		<fieldset>
 			<div class="col-xs-12 mt5">
 				<div class="col-xs-3 text-right clr_blue">
