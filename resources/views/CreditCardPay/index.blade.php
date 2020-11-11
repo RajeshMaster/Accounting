@@ -42,7 +42,7 @@
 		{{ Form::hidden('id', '', array('id' => 'id')) }}
 		{{ Form::hidden('creditCardId', '', array('id' => 'creditCardId')) }}
 		{{ Form::hidden('hidAuth', Auth::user()->userclassification, array('id' => 'hidAuth')) }}
-		{{ Form::hidden('content', '', array('id' => 'content')) }}
+		{{ Form::hidden('category', '', array('id' => 'category')) }}
 		
 		<!-- Year Bar Start -->
 		{{ Form::hidden('selMonth', $request->selMonth, array('id' => 'selMonth')) }}
@@ -160,13 +160,15 @@
 						<!-- <td align="center"> {{ $data->mainDate }} </td> -->
 						<td align="center">{{ $data->creditCardDate }}</td>
 						<td>
-							<a href="javascript:contentView('{{ $data->creditCardContent }}');">
 								{{ $data->creditCardContent }}
-							</a>
 						</td>
 						<td align="right">{{ number_format($data->creditCardAmount) }}</td>
 						<td align="center">@if($data->rdoBill == "1")有@endif</td>
-						<td>{{ $data->Category }}</td>
+						<td>
+							<a href="javascript:contentView('{{ $data->categoryId }}');">
+								{{ $data->Category }}
+							</a>
+						</td>
 						<td>{{ $data->remarks }}</td>
 						<td align="center">
 							@if($data->file != "")

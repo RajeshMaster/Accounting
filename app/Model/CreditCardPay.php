@@ -86,8 +86,8 @@ class CreditCardPay extends Model {
 						->leftJoin('acc_categorysetting', 'acc_categorysetting.id', '=', 'acc_creditcardpayment.categoryId')
 						->where('selectedYearMonth','>=',$from_date)
 						->where('selectedYearMonth','<=',$to_date);
-		if (isset($request->content) && $request->content!= "") {
-			$query = $query->where('categoryId','=',$request->content);
+		if (isset($request->category) && $request->category!= "") {
+			$query = $query->where('categoryId','=',$request->category);
 		} 
 			$query = $query->orderBy('creditCardId', 'ASC')
 						->orderBy('creditCardDate', 'ASC')
@@ -140,8 +140,8 @@ class CreditCardPay extends Model {
 	}
 
 	public static function fnGetcreditCardAllRecord($request) {
-		if (isset($request->content) && $request->content!= "") {
-			$conditionAppend = "AND (categoryId = '$request->content')";
+		if (isset($request->category) && $request->category!= "") {
+			$conditionAppend = "AND (categoryId = '$request->category')";
 		} else {
 			$conditionAppend = "AND (1 = 1)";
 		}
@@ -153,8 +153,8 @@ class CreditCardPay extends Model {
 
 
 	public static function fnGetcreditCardRecord($from_date, $to_date, $request) {
-		if (isset($request->content) && $request->content!= "") {
-			$conditionAppend = "AND (categoryId = '$request->content')";
+		if (isset($request->category) && $request->category!= "") {
+			$conditionAppend = "AND (categoryId = '$request->category')";
 		} else {
 			$conditionAppend = "AND (1 = 1)";
 		}
@@ -172,8 +172,8 @@ class CreditCardPay extends Model {
 
 		$tbl_name = "acc_creditcardpayment";
 
-		if (isset($request->content) && $request->content!= "") {
-			$conditionAppend = "AND (categoryId = '$request->content')";
+		if (isset($request->category) && $request->category!= "") {
+			$conditionAppend = "AND (categoryId = '$request->category')";
 		} else {
 			$conditionAppend = "AND (1 = 1) AND (delFlg = 0)";
 		}
@@ -185,8 +185,8 @@ class CreditCardPay extends Model {
 	}
 
 	public static function fnGetCreditCardRecordNext($to_date, $request) {
-		if (isset($request->content) && $request->content!= "") {
-			$conditionAppend = "AND (categoryId = '$request->content') AND (delFlg = 0)";
+		if (isset($request->category) && $request->category!= "") {
+			$conditionAppend = "AND (categoryId = '$request->category') AND (delFlg = 0)";
 		} else {
 			$conditionAppend = "AND (1 = 1)";
 		}
