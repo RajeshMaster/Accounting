@@ -520,7 +520,7 @@ Route::group(['prefix'=>'AccBankDetail','middleware' => 'auth'], function() {
 
 Route::group(['prefix'=>'CreditCardPay','middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
-    Route::any('index', 'CreditCardPayController@index')->middleware('accessright:0,1,2,3,4');
+    Route::any('index', 'CreditCardPayController@index')->middleware('accessright:0,1,2,3,4,5');
     Route::any('addedit', 'CreditCardPayController@addedit')->middleware('accessright:0,1,2,3,4');
     Route::any('addeditprocess', 'CreditCardPayController@addeditprocess')->middleware('accessright:0,1,2,3,4');
     Route::any('creditCardAddDtls', 'CreditCardPayController@creditCardAddDtls')->middleware('accessright:0,1,2,3,4');
@@ -528,6 +528,7 @@ Route::group(['prefix'=>'CreditCardPay','middleware' => 'auth'], function() {
     Route::any('detailseditprocess', 'CreditCardPayController@detailseditprocess')->middleware('accessright:0,1,2,3,4');
     Route::any('GetInsMonth_ajax', 'CreditCardPayController@GetInsMonth_ajax')->middleware('accessright:0,1,2,3,4');
     Route::any('deleteRecords', 'CreditCardPayController@deleteRecords')->middleware('accessright:0,1,2,3,4');
+    Route::any('yearindex', 'CreditCardPayController@yearindex')->middleware('accessright:0,1,2,3,4');
 });
 
 // Auditing Process by Rajesh

@@ -292,3 +292,15 @@ function contentView(contet) {
 	$('#creditCaredPayIndex').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
 	$("#creditCaredPayIndex").submit();
 }
+
+function yearWise() {
+	$('#creditCaredPayIndex').attr('action', 'yearindex?mainmenu='+mainmenu+'&time='+datetime);
+	$("#creditCaredPayIndex").submit();
+}
+ 
+function setyear(year) {
+	$('#selYear').val(year);
+	$('#yearWiseCreditCard').attr('action', 'yearindex?mainmenu='+mainmenu+'&time='+datetime);
+	$("#yearWiseCreditCard").submit();
+}
+ 

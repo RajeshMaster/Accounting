@@ -86,9 +86,9 @@
 			<a href="javascript:addedit();" class="btn btn-success box100"><span class="fa fa-plus"></span> {{ trans('messages.lbl_register') }}</a>
 		</div>
 		<div class="col-xs-6  pm0 pull-left mt10 divdisplay" align="right">
-			<a href="javascript:yearWise();" class="btn btn-success box100"></span>Year Wise</a>
-			<a href="javascript:ccMonthWise();" class="btn btn-success box100"></span>CC month Wise</a>
-			<a href="javascript:monthWise();" class="btn btn-success box100"></span>MOnthly Wise</a>
+			<a href="javascript:yearWise();" class="btn btn-success "></span>Year Wise</a>
+			<a href="javascript:ccMonthWise();" class="btn btn-success "></span>CC month Wise</a>
+			<a href="javascript:monthWise();" class="btn btn-success "></span>Monthly Wise</a>
 		</div>
 	</div>
 

@@ -217,4 +217,28 @@ class CreditCardPay extends Model {
 		return $query;
 	}
 
+	public static function fetchAmountForYearlyWise($from_date, $to_date,$request) {
+
+		$db = DB::connection('mysql');
+		$query = $db->table('acc_creditcardpayment')
+						->SELECT(DB::RAW("SUM(creditCardAmount) as amount"),'selectedYearMonth')
+						// ->leftJoin('acc_creditcard', 'acc_creditcard.id', '=', 'acc_creditcardpayment.creditCardId')
+						// ->leftJoin('acc_categorysetting', 'acc_categorysetting.id', '=', 'acc_creditcardpayment.categoryId')
+						->where('selectedYearMonth','>=',$from_date)
+						->where('selectedYearMonth','<=',$to_date);
+			$query = $query->orderBy('selectedYearMonth', 'ASC')
+						->groupBy('selectedYearMonth')
+						->get();
+		return $query;
+	}
+
+	public static function fetchpreviousNextRecord($year) {
+		$db = DB::connection('mysql');
+		$query = $db->table('acc_creditcardpayment')
+						->SELECT(DB::RAW("COUNT(selectedYearMonth) as count"))
+						->WHERE('selectedYearMonth', 'LIKE', '%'.$year.'%')
+						->orderBy('selectedYearMonth', 'ASC')
+						->get();
+		return $query;
+	}
 }
