@@ -16,12 +16,12 @@
 			$(".cleardata").css("display", "none");
 			$('.columnspanpagination').attr('colspan','8');
 			$('.columnspan1').attr('colspan','4');
-  		}else{
-  			$(".divdisplay").css("");
-  			$(".cleardata").css("");
-  			$('.columnspanpagination').attr('colspan','9');
+		}else{
+			$(".divdisplay").css("");
+			$(".cleardata").css("");
+			$('.columnspanpagination').attr('colspan','9');
 			$('.columnspan1').attr('colspan','5');
-  		}
+		}
 	});
 </script>
 
@@ -34,13 +34,12 @@
 		<article id="accounting" class="DEC_flex_wrapper " data-category="accounting accounting_sub_2">
 	@endif
 
-	{{ Form::open(array('name'=>'creditCaredPayIndex', 'id'=>'creditCaredPayIndex', 'url' => 'CreditCardPay/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),'files'=>true,
+	{{ Form::open(array('name'=>'categoryWiseCreditCard', 'id'=>'categoryWiseCreditCard', 'url' => 'CreditCardPay/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),'files'=>true,
 		  'method' => 'POST')) }}
 		{{ Form::hidden('mainmenu', $request->mainmenu , array('id' => 'mainmenu')) }}
 		{{ Form::hidden('plimit', $request->plimit , array('id' => 'plimit')) }}
 		{{ Form::hidden('page', $request->page , array('id' => 'page')) }}
 		{{ Form::hidden('id', '', array('id' => 'id')) }}
-		{{ Form::hidden('creditCardId', '', array('id' => 'creditCardId')) }}
 		{{ Form::hidden('hidAuth', Auth::user()->userclassification, array('id' => 'hidAuth')) }}
 		{{ Form::hidden('category', '', array('id' => 'category')) }}
 		
@@ -49,7 +48,6 @@
 		{{ Form::hidden('selYear', $request->selYear, array('id' => 'selYear')) }}
 		{{ Form::hidden('prevcnt', $request->prevcnt, array('id' => 'prevcnt')) }}
 		{{ Form::hidden('nextcnt', $request->nextcnt, array('id' => 'nextcnt')) }}
-		{{ Form::hidden('account_val', $account_val, array('id' => 'account_val')) }}
 		<!-- Year Bar End -->
 
 	<!-- Start Heading -->
@@ -64,11 +62,6 @@
 	</div>
 	<!-- End Heading -->
 
-	<div class=" pr10 pl10 ">
-		<div class="mt10 ">
-			{{ Helpers::displayYear_MonthEst($account_period, $year_month, $db_year_month, $date_month, $dbnext, $dbprevious, $last_year, $current_year, $account_val) }}
-		</div>
-	</div>
 
 
 	<div class="col-xs-12 pull-left pl10 pr10">
@@ -76,25 +69,41 @@
 			@if(Session::has('success'))
 				<div align="center" class="alertboxalign" role="alert">
 					<p class="alert {{ Session::get('alert', Session::get('type') ) }}">
-		            	{{ Session::get('success') }}
-		          	</p>
+					{{ Session::get('success') }}
+					</p>
 				</div>
 			@endif
 			@php Session::forget('success'); @endphp
 			<!-- Session msg -->
-		
 		<div class="col-xs-6  pm0 pull-left mt10 divdisplay" >
-			<a href="javascript:yearWise();" class=""><span>Year Wise</a> |</span>
-			<span>CC month Wise</span> |
-			<a href="javascript:monthWise();" class=""><span>Monthly Wise</span></a>
 		</div>
+
 		<div class="col-xs-6  pm0 pull-left mt10 divdisplay" align="right">
-			<a href="javascript:addedit();" class="btn btn-success box100"><span class="fa fa-plus"></span> {{ trans('messages.lbl_register') }}</a>
+
+			@if(isset($getPreviousCount[0]->count) && $getPreviousCount[0]->count !="")
+				<a href="javascript:setyearcategory('{{ $request->selYear-1 }}');" >
+					<img style="vertical-align:middle;padding-bottom:3px;" src="{{ URL::asset('resources/assets/images/previousenab.png') }}" width="15" height="15" >
+				</a>
+			@else
+				<img style="vertical-align:middle;padding-bottom:3px;" src="{{ URL::asset('resources/assets/images/previousdisab.png') }}" width="15" height="15" >
+			@endif
+				{{ $request->selYear }}
+			@if(isset($getNextCount[0]->count) && $getNextCount[0]->count !="")
+				<a href="javascript:setyearcategory('{{ $request->selYear +1 }}');"  >
+					<img style="vertical-align:middle;padding-bottom:3px;" src="{{ URL::asset('resources/assets/images/nextenab.png') }}" width="15" height="15" >
+				</a>
+			@else
+				<img style="vertical-align:middle;padding-bottom:3px;" src="{{ URL::asset('resources/assets/images/nextdisab.png') }}" width="15" height="15" >
+			@endif
+			<!-- <a href="javascript:addedit();" class="btn btn-success box100"><span class="fa fa-plus"></span> {{ trans('messages.lbl_register') }}</a> -->
 		</div>
+	
 	</div>
+
+
 	<div class="pt43 minh300 pl10 pr10 " style="padding:3px 3px 20px">
 		<table class="tablealternate CMN_tblfixed mt10">
-			<colgroup>
+				<colgroup>
 				<col width="3%">
 				<!-- <col width="8%"> -->
 				<col width="8%">
@@ -143,14 +152,10 @@
 					@endif
 					@if( $creditCradId != $data->creditCardId)
 						<tr style="background-color: lightgrey;font-weight: bold;font-size: 15px">
-							<td colspan="8" class="columnspan"> 
+							<td colspan="9" class="columnspan"> 
 								{{ $data->creditCardName }}
 							</td>
-							<td align="right" class="cleardata">
-								<a href="javascript:clearRecords('{{ $data->creditCardId }}','{{ $request->selYear }}','{{ $request->selMonth }}');">
-									{{ trans('messages.lbl_clear') }}
-								</a>
-							</td>
+						
 						</tr>
 					@endif
 					<tr>
@@ -195,30 +200,11 @@
 						<td class="text-center columnspanpagination" colspan="9" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
 					</tr>
 				@endforelse
-
-				@if(count($creditcardDetails) > 0)
-					<tr style="background-color: #f1a2a2;font-weight: bold;font-size: 15px">
-						<td colspan="3" align="right">{{ trans('messages.lbl_total') }}</td>
-						<td colspan="1" align="right">{{ number_format($balanceAmt) }}</td>
-						<td colspan="5" class="columnspan1"></td>
-					</tr>
-				@endif
-
 			</tbody>
 		</table>
 
 	</div>
-	<div class="text-center pl14">
-		@if(!empty($creditcardDetails->total()))
-			<span class="pull-left mt24">
-				{{ $creditcardDetails->firstItem() }} ~ {{ $creditcardDetails->lastItem() }} / {{ $creditcardDetails->total() }}
-			</span>
-			{{ $creditcardDetails->links() }}
-			<div class="CMN_display_block flr pr14">
-				{{ $creditcardDetails->linkspagelimit() }}
-			</div>
-		@endif 
-	</div>
+
 	{{ Form::close() }}
 	</article>
 	</div>

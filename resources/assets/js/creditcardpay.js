@@ -289,7 +289,7 @@ function pageLimitClick(pagelimitval) {
 
 function contentView(contet) {
 	$('#category').val(contet);
-	$('#creditCaredPayIndex').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+	$('#creditCaredPayIndex').attr('action', 'categorySelect?mainmenu='+mainmenu+'&time='+datetime);
 	$("#creditCaredPayIndex").submit();
 }
 
@@ -302,5 +302,23 @@ function setyear(year) {
 	$('#selYear').val(year);
 	$('#yearWiseCreditCard').attr('action', 'yearindex?mainmenu='+mainmenu+'&time='+datetime);
 	$("#yearWiseCreditCard").submit();
+}
+
+function detailIndex(year ,month) {
+	$('#selYear').val(year);
+	$('#selMonth').val(month);
+	$('#yearWiseCreditCard').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+	$("#yearWiseCreditCard").submit();
+}
+
+function ccMonthWise() {
+	$('#yearWiseCreditCard').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+	$("#yearWiseCreditCard").submit();
+}
+
+function setyearcategory(year) {
+	$('#selYear').val(year);
+	$('#categoryWiseCreditCard').attr('action', 'categorySelect?mainmenu='+mainmenu+'&time='+datetime);
+	$("#categoryWiseCreditCard").submit();
 }
  

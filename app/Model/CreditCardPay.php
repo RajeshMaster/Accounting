@@ -186,7 +186,7 @@ class CreditCardPay extends Model {
 
 	public static function fnGetCreditCardRecordNext($to_date, $request) {
 		if (isset($request->category) && $request->category!= "") {
-			$conditionAppend = "AND (categoryId = '$request->category') AND (delFlg = 0)";
+			$conditionAppend = "AND (categoryId = '$request->category')";
 		} else {
 			$conditionAppend = "AND (1 = 1)";
 		}
@@ -237,6 +237,17 @@ class CreditCardPay extends Model {
 		$query = $db->table('acc_creditcardpayment')
 						->SELECT(DB::RAW("COUNT(selectedYearMonth) as count"))
 						->WHERE('selectedYearMonth', 'LIKE', '%'.$year.'%')
+						->orderBy('selectedYearMonth', 'ASC')
+						->get();
+		return $query;
+	}
+
+	public static function fetchpreviousNextRecordCategory($year ,$request) {
+		$db = DB::connection('mysql');
+		$query = $db->table('acc_creditcardpayment')
+						->SELECT(DB::RAW("COUNT(selectedYearMonth) as count"))
+						->WHERE('selectedYearMonth', 'LIKE', '%'.$year.'%')
+						->where('categoryId','=',$request->category)
 						->orderBy('selectedYearMonth', 'ASC')
 						->get();
 		return $query;

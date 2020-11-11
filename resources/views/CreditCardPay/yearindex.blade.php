@@ -40,9 +40,7 @@
 		{{ Form::hidden('plimit', $request->plimit , array('id' => 'plimit')) }}
 		{{ Form::hidden('page', $request->page , array('id' => 'page')) }}
 		{{ Form::hidden('id', '', array('id' => 'id')) }}
-		{{ Form::hidden('creditCardId', '', array('id' => 'creditCardId')) }}
 		{{ Form::hidden('hidAuth', Auth::user()->userclassification, array('id' => 'hidAuth')) }}
-		{{ Form::hidden('category', '', array('id' => 'category')) }}
 		
 		<!-- Year Bar Start -->
 		{{ Form::hidden('selMonth', $request->selMonth, array('id' => 'selMonth')) }}
@@ -76,7 +74,12 @@
 			@endif
 			@php Session::forget('success'); @endphp
 			<!-- Session msg -->
-		<div class="col-xs-6  pm0 pull-left mt10 divdisplay">
+		<div class="col-xs-6  pm0 pull-left mt10 divdisplay" >
+			<span>Year Wise</span>|
+			<a href="javascript:ccMonthWise();"></span>CC month Wise</a>|
+			<a href="javascript:monthWise();"></span>MOnthly Wise</a>
+		</div>
+		<div class="col-xs-6  pm0 pull-left mt10 divdisplay" align="right">
 			@if(isset($getPreviousCount[0]->count) && $getPreviousCount[0]->count !="")
 				<a href="javascript:setyear('{{ $request->selYear-1 }}');" >
 					<img style="vertical-align:middle;padding-bottom:3px;" src="{{ URL::asset('resources/assets/images/previousenab.png') }}" width="15" height="15" >
@@ -92,18 +95,9 @@
 			@else
 				<img style="vertical-align:middle;padding-bottom:3px;" src="{{ URL::asset('resources/assets/images/nextdisab.png') }}" width="15" height="15" >
 			@endif
-
-			
-
-
-			
 			<!-- <a href="javascript:addedit();" class="btn btn-success box100"><span class="fa fa-plus"></span> {{ trans('messages.lbl_register') }}</a> -->
 		</div>
-		<div class="col-xs-6  pm0 pull-left mt10 divdisplay" align="right">
-			<a href="javascript:yearWise();" class="btn btn-success disabled" ></span>Year Wise</a>
-			<a href="javascript:ccMonthWise();" class="btn btn-success "></span>CC month Wise</a>
-			<a href="javascript:monthWise();" class="btn btn-success "></span>MOnthly Wise</a>
-		</div>
+	
 	</div>
 
 
@@ -113,7 +107,7 @@
 				<col width="3%">
 				<!-- <col width="8%"> -->
 				<col width="8%">
-				<col width="20%">
+				<col width="10%">
 				<col width="8%">
 				<col width="4%">
 				<col width="15%">
@@ -127,6 +121,7 @@
 					<th class="vam">{{ trans('messages.lbl_sno') }}</th>
 					<th class="vam">{{ trans('messages.lbl_Date') }}</th>
 					<th class="vam">{{ trans('messages.lbl_amount') }}</th>
+					<th class="vam">{{ trans('messages.lbl_Details') }}</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -134,7 +129,11 @@
 				<tr>
 					<td>{{ $i+1 }}</td>
 					<td>{{ $creditcardDetails[$i]->selectedYearMonth }}</td>
-					<td>{{ number_format($creditcardDetails[$i]->amount) }}</td>
+					<td align="right">{{ number_format($creditcardDetails[$i]->amount) }}</td>
+					<?php $detaArr =explode('-', $creditcardDetails[$i]->selectedYearMonth) ?>
+					<td align="center">
+						<a href="javascript:detailIndex('{{ $detaArr[0] }}','{{ $detaArr[1] }}');"  >{{ trans('messages.lbl_Details') }}</a>
+					</td>
 				</tr>
 				@endfor
 			</tbody>

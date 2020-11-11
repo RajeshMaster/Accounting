@@ -389,7 +389,6 @@ class CreditCardPayController extends Controller {
 			// $request->amount =  Session::get('amount');
 		}
 
-
 		$from_date = "";
 		$to_date = "";
 		$previous_date = "";
@@ -405,6 +404,34 @@ class CreditCardPayController extends Controller {
 		$getNextCount = CreditCardPay::fetchpreviousNextRecord($request->selYear+1);
 
 		return view('CreditCardPay.yearindex',[ 'request' => $request,
+											'creditcardDetails' => $creditcardDetails,
+											'getPreviousCount' => $getPreviousCount,
+											'getNextCount' => $getNextCount,
+										]);
+	}
+
+	public function categorySelect(Request $request) {
+		if(Session::get('selYear') !="") {
+			$request->selYear =  Session::get('selYear');
+			$request->selMonth =  Session::get('selMonth');
+			// $request->date =  Session::get('date');
+			// $request->amount =  Session::get('amount');
+		}
+
+		$from_date = "";
+		$to_date = "";
+		$previous_date = "";
+		$date_month = "";
+		$temp = "";
+
+
+		$start = $request->selYear .'-01-01';
+		$end = $request->selYear .'-12-31';
+		$creditcardDetails = CreditCardPay::fetchcreditcarddetails($start, $end, $request);
+		$getPreviousCount = CreditCardPay::fetchpreviousNextRecordCategory($request->selYear-1,$request);
+		$getNextCount = CreditCardPay::fetchpreviousNextRecordCategory($request->selYear+1,$request);
+
+		return view('CreditCardPay.categorySelect',[ 'request' => $request,
 											'creditcardDetails' => $creditcardDetails,
 											'getPreviousCount' => $getPreviousCount,
 											'getNextCount' => $getNextCount,
