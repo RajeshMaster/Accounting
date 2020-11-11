@@ -23,6 +23,11 @@
 			$('.columnspan1').attr('colspan','5');
 		}
 	});
+
+	function monthWise() {
+		$('#yearWiseCreditCard').attr('action', 'monthlywiseindex?mainmenu='+mainmenu+'&time='+datetime);
+		$("#yearWiseCreditCard").submit();
+	}
 </script>
 
 	<div class="CMN_display_block" id="main_contents">
@@ -77,7 +82,7 @@
 		<div class="col-xs-6  pm0 pull-left mt10 divdisplay" >
 			<span>Year Wise</span>|
 			<a href="javascript:ccMonthWise();"></span>CC month Wise</a>|
-			<a href="javascript:monthWise();"></span>MOnthly Wise</a>
+			<a href="javascript:monthWise();"></span>Monthly Wise</a>
 		</div>
 		<div class="col-xs-6  pm0 pull-left mt10 divdisplay" align="right">
 			@if(isset($getPreviousCount[0]->count) && $getPreviousCount[0]->count !="")
@@ -107,9 +112,9 @@
 				<col width="3%">
 				<!-- <col width="8%"> -->
 				<col width="8%">
-				<col width="10%">
 				<col width="8%">
-				<col width="4%">
+				<col width="8%">
+				<col width="6%">
 				<col width="15%">
 				<col width="22%">
 				<col width="4.5%">
@@ -120,6 +125,7 @@
 				<tr id="data">
 					<th class="vam">{{ trans('messages.lbl_sno') }}</th>
 					<th class="vam">{{ trans('messages.lbl_Date') }}</th>
+					<th class="vam">{{ trans('messages.lbl_paymentdate') }}</th>
 					<th class="vam">{{ trans('messages.lbl_amount') }}</th>
 					<th class="vam">{{ trans('messages.lbl_Details') }}</th>
 				</tr>
@@ -127,8 +133,9 @@
 			<tbody>
 				@for($i=0;$i < count($creditcardDetails);$i++)
 				<tr>
-					<td>{{ $i+1 }}</td>
-					<td>{{ $creditcardDetails[$i]->selectedYearMonth }}</td>
+					<td align="center">{{ $i+1 }}</td>
+					<td align="center">{{ substr($creditcardDetails[$i]->selectedYearMonth, 0, 7) }}</td>
+					<td align="center">{{ $creditcardDetails[$i]->mainDate }}</td>
 					<td align="right">{{ number_format($creditcardDetails[$i]->amount) }}</td>
 					<?php $detaArr =explode('-', $creditcardDetails[$i]->selectedYearMonth) ?>
 					<td align="center">

@@ -252,7 +252,7 @@ class CreditCardPay extends Model {
 
 		$db = DB::connection('mysql');
 		$query = $db->table('acc_creditcardpayment')
-						->SELECT(DB::RAW("SUM(creditCardAmount) as amount"),'selectedYearMonth')
+						->SELECT(DB::RAW("SUM(creditCardAmount) as amount"),'selectedYearMonth','mainDate')
 						// ->leftJoin('acc_creditcard', 'acc_creditcard.id', '=', 'acc_creditcardpayment.creditCardId')
 						// ->leftJoin('acc_categorysetting', 'acc_categorysetting.id', '=', 'acc_creditcardpayment.categoryId')
 						->where('selectedYearMonth','>=',$from_date)
