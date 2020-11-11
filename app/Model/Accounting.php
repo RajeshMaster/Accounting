@@ -452,10 +452,7 @@ class Accounting extends Model {
 		$query = DB::table('emp_mstemployees')
 						->select('Emp_ID','FirstName','LastName','nickname','KanaFirstName','KanaLastName',DB::RAW("CONCAT(FirstName,' ', LastName) AS Empname"),DB::RAW("CONCAT(KanaFirstName,'　', KanaLastName) AS Kananame"))
 						->WHERE('delFlg', '=', 0)
-						->WHERE('resign_id', '=', 0)
-						->WHERE('Title', '=', 2)
-						->WHERE('Emp_ID', 'NOT LIKE', '%NST%')
-						->whereNotIn('Emp_ID', $empIdArr)
+						->whereIn('Emp_ID', $empIdArr)
 						->orderBy('Emp_ID', 'ASC')
 						->get();
 		return $query;
@@ -515,7 +512,7 @@ class Accounting extends Model {
 		$db = DB::connection('mysql_Salary');
 		$MnthYear = explode("-", $request->autoDebitDate);
 		$query = $db->table('ams_loan_details as loan')
-					->SELECT('loan.loanId','loan.loanName','loan.loanAmount','loanEMI.monthInterest','bank.bankName','bank.id')
+					->SELECT('loan.loanId','loan.loanName','loanEMI.monthPrinciple as loanAmount','loanEMI.monthInterest','bank.bankName','bank.id')
 					->leftJoin('ams_loan_emidetails as loanEMI','loan.loanId','=','loanEMI.loanId')
 					->leftJoin('ams_bankname_master as bank','loan.bank','=','bank.id')
 					->where('loan.activeFlg','=',0)
@@ -762,35 +759,48 @@ class Accounting extends Model {
 		// $invoiceArr = array('INSU0001','Insuv0002');
 		// print_r($invoiceArr);exit();
 		$date_month = substr($request->invoiceDate, 0, 7);
-		$Estimate = $db->TABLE($db->raw("(SELECT main.quot_date,main.id,main.user_id,main.trading_destination_selection,dev_payment_registration.payment_date,main.del_flg,main.copyFlg,main.project_name,main.classification,
-		main.created_by,main.pdf_flg,main.project_type_selection,main.mailFlg, 
-		main.paid_date,main.paid_status,main.tax,main.estimate_id,main.company_name,main.bankid,main.bankbranchid,main.acc_no,mstbank.Bank_NickName,works.amount,
-		works.work_specific,works.quantity,works.unit_price,works.remarks,works.emp_id,(CASE 
-		        WHEN main.classification = 2 THEN 3
-		        ELSE 0
-		    END) AS orderbysent,`dev_estimatesetting`.`ProjectType`,main.totalval 
-		FROM   tbl_work_amount_details works 
-		left join dev_invoices_registration main on works .invoice_id = main .user_id 
-		left join dev_estimatesetting on dev_estimatesetting.id = main.project_type_selection
-		left join dev_payment_registration on dev_payment_registration.invoice_id = main.id
-		left join mstbank on mstbank.AccNo = main.acc_no
-		WHERE main.del_flg = 0 AND main.paid_status = 1 AND SUBSTRING(main.quot_date,1,7) LIKE '%$date_month%'
-		GROUP BY user_id Order By user_id Asc,quot_date Asc) AS DDD "));
-   				// ACCESS RIGHTS
-				// CONTRACT EMPLOYEE
-				// if (Auth::user()->userclassification == 1) {
-				// 	$accessDate = Auth::user()->accessDate;
-				// 	$Estimate = $Estimate->WHERE(function($joincont) use($accessDate) {
-    //                        $joincont->WHERE('dev_invoices_registration.quot_date', '>', 
-    //                        						$accessDate)
-    //                         		->ORWHERE('accessFlg','=',1);
-    //                         });
-				// }
-				// END ACCESS RIGHTS
-			$Estimate = $Estimate->whereNotIn('user_id', $invoiceArr);
-			$Estimate = $Estimate->orderByRaw("orderbysent ASC, user_id DESC")
-					  			->get();
-				// ->toSql();dd($Estimate);
+
+
+		$Estimate = $db->table('dev_payment_registration')
+						->SELECT('dev_payment_registration.*','dev_invoices_registration.user_id')
+						->leftJoin('dev_invoices_registration', 'dev_invoices_registration.id', '=', 'dev_payment_registration.invoice_id')
+						->where('dev_payment_registration.payment_date','LIKE','%'.$date_month.'%');
+		$Estimate = $Estimate->whereNotIn('dev_invoices_registration.user_id', $invoiceArr);
+		$Estimate = $Estimate->orderByRaw("id ASC")
+						->orderBy('dev_payment_registration.id','ASC')
+						->get();
+
+
+
+		// $Estimate = $db->TABLE($db->raw("(SELECT main.quot_date,main.id,main.user_id,main.trading_destination_selection,dev_payment_registration.payment_date,main.del_flg,main.copyFlg,main.project_name,main.classification,
+		// main.created_by,main.pdf_flg,main.project_type_selection,main.mailFlg, 
+		// main.paid_date,main.paid_status,main.tax,main.estimate_id,main.company_name,main.bankid,main.bankbranchid,main.acc_no,mstbank.Bank_NickName,works.amount,
+		// works.work_specific,works.quantity,works.unit_price,works.remarks,works.emp_id,(CASE 
+		//         WHEN main.classification = 2 THEN 3
+		//         ELSE 0
+		//     END) AS orderbysent,`dev_estimatesetting`.`ProjectType`,main.totalval 
+		// FROM   tbl_work_amount_details works 
+		// left join dev_invoices_registration main on works .invoice_id = main .user_id 
+		// left join dev_estimatesetting on dev_estimatesetting.id = main.project_type_selection
+		// left join dev_payment_registration on dev_payment_registration.invoice_id = main.id
+		// left join mstbank on mstbank.AccNo = main.acc_no
+		// WHERE main.del_flg = 0 AND main.paid_status = 1 AND SUBSTRING(main.quot_date,1,7) LIKE '%$date_month%'
+		// GROUP BY user_id Order By user_id Asc,quot_date Asc) AS DDD "));
+		// 		// ACCESS RIGHTS
+		// 		// CONTRACT EMPLOYEE
+		// 		// if (Auth::user()->userclassification == 1) {
+		// 		// 	$accessDate = Auth::user()->accessDate;
+		// 		// 	$Estimate = $Estimate->WHERE(function($joincont) use($accessDate) {
+  //   //                        $joincont->WHERE('dev_invoices_registration.quot_date', '>', 
+  //   //                        						$accessDate)
+  //   //                         		->ORWHERE('accessFlg','=',1);
+  //   //                         });
+		// 		// }
+		// 		// END ACCESS RIGHTS
+		// 	$Estimate = $Estimate->whereNotIn('user_id', $invoiceArr);
+		// 	$Estimate = $Estimate->orderByRaw("id ASC")
+		// 			  			->get();
+		// 		// ->toSql();dd($Estimate);
 			return $Estimate;
 	}
 
@@ -835,7 +845,7 @@ class Accounting extends Model {
 									'loan_ID' => $invArr['1'], 
 									'loanName' => $invArr['0'], 
 									'date' => $request->accDate,
-									'transcationType' => 1,
+									'transcationType' => 2,
 									'bankIdFrom' => $bankAcc['0'],
 									'accountNumberFrom' => $bankAcc['1'],
 									'amount' => preg_replace("/,/", "", $invArr['2']),
@@ -850,4 +860,24 @@ class Accounting extends Model {
 		return $insert;
 	}
 
+
+	public static function AccBalance($request,$startDate,$prevDate) {
+		$curDate = date('Y-m-d');
+		$db = DB::connection('mysql');
+			$query = $db->table('acc_cashregister')
+						->SELECT('transcationType','amount','fee')
+						->where('bankIdFrom','=',$request->bankid)
+						->where('accountNumberFrom','=',$request->accno)
+						->where('transcationType','!=',9)
+						->where('delFlg','=','0');
+		
+			$query = $query->WHERERAW("date >= '$startDate'");
+			$query = $query->WHERERAW("date <= '$curDate'");
+		if ($prevDate != "") {
+			$query = $query->WHERERAW("SUBSTRING(date,1,7) <= '$prevDate'");
+		}			
+			$query = $query->get();
+
+		return $query;
+	}
 }

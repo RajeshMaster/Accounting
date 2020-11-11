@@ -16,11 +16,13 @@
   		}else{
   			$(".divdisplay").css("");
   			$(".chnageorder").css("");
-  			$('.columnspan').attr('colspan','9');
-  			$('.columnspan1').attr('colspan','2');
+  			$('.columnspan').attr('colspan','5');
+  			$('.columnspannodata').attr('colspan','9');
+  			$('.columnspan1').attr('colspan','3');
   		}
 	});
-		function mulclick(divid){
+
+	function mulclick(divid){
 	    if($('#'+divid).css('display') == 'block'){
 	      document.getElementById(divid).style.display = 'none';
 	    }else {
@@ -233,31 +235,41 @@
 					$creditAmt = 0;
 					$lastBankName = "";
 					$preBankName = "";
+					$baseamount = "";
+					$balancebyBank = "";
+					$realBalanceAmount = 0;
 				@endphp
 				@forelse($cashDetails as $key => $data)
 					@if($preBankName != $data['Bank_NickName'] && $preBankName !="")
 						<tr style="background-color: #f1a2a2">
-							<td colspan="6" align="right">
+							<td colspan="5" align="right">
 								{{ trans('messages.lbl_total') }}
 							</td>
 							<td colspan="1" align="right">
-								{{ $balanceAmt }}
+								{{ number_format($realBalanceAmount) }}
 								@php $balanceAmt = 0; @endphp
 							</td>
-							<td colspan="1" class="columnspan1"></td>
+							<td colspan="3" class="columnspan1"></td>
 						</tr>
 					@endif
 					@if($lastBankName != $data['Bank_NickName'])
 						<tr style="background-color: lightgrey">
-							<td colspan="9" class="columnspan"> 
+							<td class="columnspan"> 
 								{{ $data['Bank_NickName'] }}     
-
-								<div style="text-align: right;display: inline-block;float: right" class="chnageorder">
+							</td>
+							@if($data['baseAmt'])
+								<?php $realBalanceAmount =$data['baseAmt']; ?>
+							@else
+								<?php $realBalanceAmount =$data['baseAmt']; ?>
+							@endif
+								<?php  ?>
+							<td align="right">{{ number_format($data['baseAmt']) }}</td>
+							<td colspan="3" align="right">
+								<div style="text-align: right;display: inline-block;" class="chnageorder">
 									<a href="javascript:changeOrderpopUp('{{ $data['bankIdFrom'] }}','{{ $data['accNo'] }}');">
 										{{ trans('messages.lbl_changeOrder') }}
 									</a>
 								</div>
-
 							</td>
 						</tr>
 					@endif
@@ -266,7 +278,16 @@
 						<td align="center">
 							{{ $data['date'] }}
 						</td>
-						<td> {{ $data['subject'] }} </td>
+						<td> 
+							@if($data['content'] == 'Salary')
+								{{ $data['employeDetails'] }}
+							@elseif($data['content'] == 'Invoice')
+								{{ $data['invoiceDetails'] }}
+							@else
+								{{ $data['subject'] }} 
+							@endif
+
+						</td>
 						<td>{{ $data['content'] }}</td>
 						<td align="right">
 							@if($data['transcationType'] == 1)
@@ -302,25 +323,30 @@
 					</tr>
 					@if($data['transcationType'] == 1)
 						<?php $balanceAmt = $balanceAmt - $debitAmt ;?>
+						<?php $realBalanceAmount = $realBalanceAmount - $debitAmt ?>
 					@else
 						<?php $balanceAmt = $balanceAmt + $creditAmt ;?>
+						<?php $realBalanceAmount = $realBalanceAmount + $creditAmt ?>
 					@endif
 					@php
 						$lastBankName = $data['Bank_NickName'];
 						$preBankName = $data['Bank_NickName'];
+						$baseamount =$data['baseAmt'];
 						$i++ ;
 					@endphp 
 				@empty
 					<tr>
-						<td class="text-center columnspan" colspan="9" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
+						<td class="text-center columnspannodata"style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
 					</tr>
 				@endforelse
 
 				@if(count($cashDetails) > 0)
 					<tr style="background-color: #f1a2a2">
-						<td colspan="6" align="right">{{ trans('messages.lbl_total') }}</td>
-						<td colspan="1" align="right">{{ number_format($balanceAmt) }}</td>
-						<td colspan="1" class="columnspan1"></td>
+						<td colspan="5" align="right">{{ trans('messages.lbl_total') }}</td>
+						<td colspan="1" align="right">
+							{{ number_format($realBalanceAmount) }}
+						</td>
+						<td colspan="" class="columnspan1"></td>
 					</tr>
 				@endif
 				

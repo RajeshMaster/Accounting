@@ -186,6 +186,7 @@ class AccBankDetail extends Model {
 	}
 
 	public static function AccBalance($request,$startDate,$prevDate) {
+		print_r($prevDate);echo "<br?>";
 		$curDate = date('Y-m-d');
 		$db = DB::connection('mysql');
 			$query = $db->table('acc_cashregister')

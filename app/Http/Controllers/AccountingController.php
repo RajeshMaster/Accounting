@@ -199,6 +199,9 @@ class AccountingController extends Controller {
 		$cashDetailsIndex = Accounting::fetchcashRegister($start, $end, $request);
 		$cashDetails =array();
 		$i = 0;
+		$balanceAmtonDownTr = 0;
+
+
 		foreach ($cashDetailsIndex as $key => $value) {
 			$cashDetails[$i]['id'] = $value->id;
 			$cashDetails[$i]['date'] = $value->date;
@@ -218,6 +221,23 @@ class AccountingController extends Controller {
 			$baseAmt = Accounting::baseAmt($value->bankIdFrom,$value->accountNumberFrom);
 			$cashDetails[$i]['subId'] = $value->subjectId;
 			$cashDetails[$i]['subject'] = $value->Subject;
+			$cashDetails[$i]['employeDetails'] = "";
+			$cashDetails[$i]['invoiceDetails'] = "";
+			if ($cashDetails[$i]['content'] == 'Salary') {
+				$empIdArr[0] = $value->emp_ID;
+				$empname = Accounting::fnGetEmpDetails($request,$empIdArr);
+				if (isset($empname[0]->LastName)) {
+					$name = $empname[0]->LastName;
+				} else {
+					$name ="";
+				}
+				$cashDetails[$i]['employeDetails'] = $value->emp_ID.'-'.$name;
+			}
+
+			if ($cashDetails[$i]['content'] == 'Invoice') {
+				$empIdArr[0] = $value->loan_ID;
+				$cashDetails[$i]['invoiceDetails'] = $value->loan_ID.'-'.$value->loanName;
+			}
 
 			if (isset($baseAmt[0]->amount)) {
 				$cashDetails[$i]['baseAmt'] = $baseAmt[0]->amount;
@@ -812,7 +832,7 @@ class AccountingController extends Controller {
 		if ($request->invoiceDate != "") {
 			$getInvoicePaid = Accounting::getLoanPaid($request,2);
 
-			for ($i = 0; $i < count($getInvoicePaid) ; $i++) { 
+			for ($i = 0; $i < count($getInvoicePaid) ; $i++) {
 				$invoicePaidArr[$i] = $getInvoicePaid[$i]->loan_ID;
 			}
 
@@ -836,7 +856,7 @@ class AccountingController extends Controller {
 		}
 		$getBankDtls = Accounting::fetchbanknames($request);
 
-		// print_r($TotEstquery);echo "<br/>";		
+	
 		
 		return view('Accounting.invoicedetailspopup',['request' => $request,
 													'TotEstquery' => $TotEstquery,

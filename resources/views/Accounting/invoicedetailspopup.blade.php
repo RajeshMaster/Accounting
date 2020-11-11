@@ -43,7 +43,6 @@
 					<col width="12%">
 					<col width="15%">
 					<col width="13%">
-					<col width="13%">
 					<col width="18%">
 					<col width="13%">
 					<col width="8%">
@@ -53,7 +52,6 @@
 						<th class="tac">{{ trans('messages.lbl_sno') }}</th>
 						<th class="tac">{{ trans('messages.lbl_invoiceno') }}</th>
 						<th class="tac">{{ trans('messages.lbl_bank') }}</th>
-						<th class="tac">{{ trans('messages.lbl_dateofissue') }}</th>
 						<th class="tac">{{ trans('messages.lbl_paymentdate') }}</th>
 						<th class="tac">{{ trans('messages.lbl_custname') }}</th>
 						<th class="tac">{{ trans('messages.lbl_paidamt') }}</th>
@@ -68,7 +66,6 @@
 					@endphp
 					@forelse($TotEstquery as $key => $data)
 						<tr>
-
 							<td align="center">
 								{{ $i++ }}
 							</td>
@@ -101,109 +98,15 @@
 									@endif
 								</label>
 							</td>
-							
-							<td align="center">
-								{{ $data->quot_date }}
-							</td>
-
 							<td align="center">
 								{{ $data->payment_date }}
 							</td>
-
-							<td align="left">
-								<label class="blue">
-									{{$data->company_name}}
-								</label>
+							<td>
+								{{ $data->company_name }}
 							</td>
-
-							<td align="right">
-								<?php  $totalval += preg_replace('/,/', '', $data->totalval); ?>
-			   					{{--*/ $getTaxquery = Helpers::fnGetTaxDetails($data->quot_date); /*--}}
-								<?php 
-									if(!empty($data->totalval)) {
-										if($data->tax != 2) {
-											$totroundval = preg_replace("/,/", "", $data->totalval);
-											$dispval = (($totroundval * intval((isset($getTaxquery[0]->Tax)?$getTaxquery[0]->Tax:0)))/100);
-											$dispval1 = number_format($dispval);
-											$grandtotal = $totroundval + $dispval;
-										} else {
-											$totroundval = preg_replace("/,/", "", $data->totalval);
-											$dispval = 0;
-											$grandtotal = $totroundval + $dispval;
-											$dispval1 = $dispval;
-										}
-									}
-									
-									$grand_total = number_format($grandtotal);
-									$divtotal += str_replace(",", "",$grand_total);
-									if ($data->paid_status != 1) {
-										$grand_style = "style='font-weight:bold;color:red;'";
-									} else {
-										$grand_style = "style='font-weight:bold;color:green;'";
-									}
-									if($data->paid_status == 1) {
-										$pay_balance = str_replace(",", "",(isset($invoice_balance[$key][0]->totalval)?$invoice_balance[$key][0]->totalval:0));
-										$gr_total = number_format($grandtotal);
-										$grand_tot = str_replace(",", "",$gr_total);
-										$paid_amount += (isset($invoice_balance[$key][0]->deposit_amount)?$invoice_balance[$key][0]->deposit_amount:0);
-										$bal_amount = $divtotal - $paid_amount;
-									}
-
-									if($data->paid_status != 1) {
-										$gr_total = number_format($grandtotal);
-										$grand_tot = str_replace(",", "",$gr_total);
-										$bal_amount = $divtotal - $paid_amount;
-									}
-									if(isset($invbal[$key])) {
-										if($invbal[$key]['bal_amount'] > 0) {
-											$balance_style = "style='font-weight:bold;color:red;'";
-										} else {
-											$balance_style = "style='font-weight:bold;color:green;'";
-										}
-									} else {
-										$balance_style = "style='font-weight:bold;color:green;'";
-									}
-
-								?>
-
-								@if(isset($invbal[$key]))
-									@if($invbal[$key]['bal_amount'] > 0)
-										@if($invbal[$key]['bal_amount']==0)
-											@php $paidAmount = 0; @endphp 
-										@else
-											@php 
-												$paidAmount = $grandtotal - $invbal[$key]['bal_amount'] ;
-											@endphp
-										@endif
-									@else
-										@if($invbal[$key]['bal_amount'] == 0)
-											@php $paidAmount = $grandtotal; @endphp 
-										@else
-											@php 
-												$paidAmount = $grandtotal - $invbal[$key]['bal_amount'] ;
-											@endphp
-										@endif
-									@endif
-								@else
-									@php $paidAmount = 0; @endphp
-									<?php 
-										$findme = 'color:green';
-										$pos = strpos($balance_style, $findme);
-										$grand = strpos($grand_style, $findme);
-									?>
-
-									@if($pos == true && $grand == true)
-										@php $paidAmount = $grandtotal; @endphp
-									@else
-										@if($grand == true && $grand_style != "")
-											@php $paidAmount = $grandtotal; @endphp
-										@else
-											@php $paidAmount = 0; @endphp
-										@endif
-									@endif
-									
-								@endif
-
+							<td align="left">
+									<!-- {{$data->deposit_amount}} -->
+								<?php  $paidAmount = preg_replace('/,/', '', $data->deposit_amount); ?>
 
 								{{ Form::text('invoiceAmt'.$j,($paidAmount != 0) ? number_format($paidAmount) : 0,
 									array('id'=>'invoiceAmt'.$j,
@@ -218,19 +121,18 @@
 										'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
 										'data-label' => trans('messages.lbl_amount'))) }}
 							</td>
-
+							
 							<td align="center">
 								<input  type="checkbox" name="invoice[]" id="invoice[]" 
 									class="invoicechk" 
 									value="<?php  echo $data->company_name."$".$data->user_id."$".number_format($paidAmount)."$".$j."$".$data->bankid."$".$data->acc_no; ?>">
 							</td>
-
 						</tr>
 						@php $j++; @endphp
 					@empty
 
 						<tr>
-							<td class="text-center" colspan="8" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
+							<td class="text-center" colspan="7" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
 						</tr>
 
 					@endforelse
