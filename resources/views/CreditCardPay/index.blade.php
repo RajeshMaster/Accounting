@@ -84,9 +84,9 @@
 			<!-- Session msg -->
 		
 		<div class="col-xs-6  pm0 pull-left mt10 divdisplay" >
-			<a href="javascript:yearWise();" class=""><span>Year Wise</a> |</span>
-			<span>CC month Wise</span> |
-			<a href="javascript:monthWise();" class=""><span>Monthly Wise</span></a>
+			<a href="javascript:yearWise();" class=""><span>{{ trans('messages.lbl_yearly') }}</a> |</span>
+			<span>{{ trans('messages.lbl_ccMonthWise') }}</span> |
+			<a href="javascript:monthWise();" class=""><span>{{ trans('messages.lbl_MonthWise') }}</span></a>
 		</div>
 		<div class="col-xs-6  pm0 pull-left mt10 divdisplay" align="right">
 			<a href="javascript:addedit();" class="btn btn-success box100"><span class="fa fa-plus"></span> {{ trans('messages.lbl_register') }}</a>

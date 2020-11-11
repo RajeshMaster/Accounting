@@ -1397,4 +1397,7 @@ return [
 	'lbl_categories' => 'Categories',
 	'lbl_creditName' => 'Creditcard Name',
 	'lbl_CreditDate' => 'Credit Card Date',
+	'lbl_yearly' => 'Yearly Wise',
+	'lbl_ccMonthWise' => 'CC Month Wise',
+	'lbl_MonthWise' => 'Monthly Details',
 ];

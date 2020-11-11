@@ -80,9 +80,9 @@
 			@php Session::forget('success'); @endphp
 			<!-- Session msg -->
 		<div class="col-xs-6  pm0 pull-left mt10 divdisplay" >
-			<span>Year Wise</span>|
-			<a href="javascript:ccMonthWise();"></span>CC month Wise</a>|
-			<a href="javascript:monthWise();"></span>Monthly Wise</a>
+			<span>{{ trans('messages.lbl_yearly') }}</span>|
+			<a href="javascript:ccMonthWise();"><span>{{ trans('messages.lbl_ccMonthWise') }}</span></a>|
+			<a href="javascript:monthWise();"><span>{{ trans('messages.lbl_MonthWise') }}</span></a>
 		</div>
 		<div class="col-xs-6  pm0 pull-left mt10 divdisplay" align="right">
 			@if(isset($getPreviousCount[0]->count) && $getPreviousCount[0]->count !="")
