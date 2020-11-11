@@ -29,7 +29,6 @@
 
 		
 	<!-- Start Heading -->
-
 	<div class="row hline pm0">
 		<div class="col-xs-12">
 			<img class="pull-left box35 mt10" src="{{ URL::asset('resources/assets/images/payment.png') }}">
@@ -106,7 +105,7 @@
 								</label>
 							</td>
 							<td class="tac">
-								{{ Form::select('categoryId'.$i,[null=>'']+$categoryName,		array('name' =>'categoryId'.$i,
+								{{ Form::select('categoryId'.$i,[null=>'']+$categoryName,array('name' =>'categoryId'.$i,
 										'id'=>'categoryId'.$i,
 										'data-label' =>trans('messages.lbl_categories'),
 										'class'=>'pl10 widthauto'))}}	
@@ -125,6 +124,7 @@
 					@endif
 					@if($key == count($sheetData)-1)
 					<tr style="background-color: #f1a2a2;font-weight: bold;font-size: 15px">
+						{{ Form::hidden('totalAmount', $balanceAmt , array('id' => 'totalAmount')) }}
 						<td colspan="3" align="right">{{ trans('messages.lbl_total') }}</td>
 						<td colspan="1" align="right">{{ number_format($balanceAmt) }}</td>
 						<td colspan="5" class="columnspan1"></td>

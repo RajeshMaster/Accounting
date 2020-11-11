@@ -417,7 +417,9 @@ class CreditCardPayController extends Controller {
 			// $request->date =  Session::get('date');
 			// $request->amount =  Session::get('amount');
 		}
-
+		if ($request->plimit=="") {
+			$request->plimit = 50;
+		}
 		$from_date = "";
 		$to_date = "";
 		$previous_date = "";

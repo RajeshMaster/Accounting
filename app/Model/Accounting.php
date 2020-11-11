@@ -44,8 +44,6 @@ class Accounting extends Model {
 	}
 
 	public static function insCashDtls($request) {
-
-
 		$statement = DB::select("show table status like 'acc_cashregister'");
 		if (isset($statement[0]->Auto_increment)) {
 			$orderId = $statement[0]->Auto_increment;

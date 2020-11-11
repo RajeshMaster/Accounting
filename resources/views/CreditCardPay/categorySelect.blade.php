@@ -169,9 +169,7 @@
 						<td align="right">{{ number_format($data->creditCardAmount) }}</td>
 						<td align="center">@if($data->rdoBill == "1")有@endif</td>
 						<td>
-							<a href="javascript:contentView('{{ $data->categoryId }}');">
-								{{ $data->Category }}
-							</a>
+							{{ $data->Category }}
 						</td>
 						<td>{{ $data->remarks }}</td>
 						<td align="center">
@@ -200,6 +198,14 @@
 						<td class="text-center columnspanpagination" colspan="9" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
 					</tr>
 				@endforelse
+				
+				@if(count($creditcardDetails) > 0)
+					<tr style="background-color: #f1a2a2;font-weight: bold;font-size: 15px">
+						<td colspan="3" align="right">{{ trans('messages.lbl_total') }}</td>
+						<td colspan="1" align="right">{{ number_format($balanceAmt) }}</td>
+						<td colspan="5" class="columnspan1"></td>
+					</tr>
+				@endif
 			</tbody>
 		</table>
 

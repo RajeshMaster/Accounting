@@ -50,6 +50,38 @@ class CreditCardPay extends Model {
 		$sheetData = $request->sheetData;
 		$selectedYearMonth = $request->mainYear.'-'.$request->selectedMonth.'-01';
 		
+		$statement = DB::select("show table status like 'acc_cashregister'");
+		if (isset($statement[0]->Auto_increment)) {
+			$orderId = $statement[0]->Auto_increment;
+		} else {
+			$orderId = 1;
+		}
+
+
+		$db = DB::connection('mysql');
+		$query = $db->TABLE('acc_creditcard')
+						->SELECT('*')
+						->WHERE('id', '=', $request->creditCardId)
+						->get();
+						// ->toSql();
+		$bankacc = explode('-', $query[0]->bank);
+	
+		$insert = $db->table('acc_cashregister')
+					->insert([
+							'emp_ID' => "",
+							'date' => $request->mainDate,
+							'transcationType' => 1,
+							'bankIdFrom' => $bankacc[0],
+							'accountNumberFrom' => $bankacc[1],
+							'bankIdTo' => '',
+							'amount' => preg_replace("/,/", "",  $request->totalAmount),
+							'content' => 'Credit Card Payment',
+							'remarks' => '',
+							'pageFlg' => 1,
+							'createdBy' => $name,
+							'orderId' => $orderId,
+						]);
+
 		$db = DB::connection('mysql');
 		if ($sheetData != 0) {
 			for ($i = 1; $i < $sheetData-1; $i++) { 
@@ -78,7 +110,6 @@ class CreditCardPay extends Model {
 	}
 
 	public static function fetchcreditcarddetails($from_date, $to_date,$request) {
-
 		$db = DB::connection('mysql');
 		$query = $db->table('acc_creditcardpayment')
 						->SELECT('acc_creditcardpayment.*','acc_creditcard.creditCardName','acc_categorysetting.Category')

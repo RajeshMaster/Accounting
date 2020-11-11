@@ -319,7 +319,7 @@
 				@if(count($cashDetails) > 0)
 					<tr style="background-color: #f1a2a2">
 						<td colspan="6" align="right">{{ trans('messages.lbl_total') }}</td>
-						<td colspan="1" align="right">{{ $balanceAmt }}</td>
+						<td colspan="1" align="right">{{ number_format($balanceAmt) }}</td>
 						<td colspan="1" class="columnspan1"></td>
 					</tr>
 				@endif
