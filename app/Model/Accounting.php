@@ -862,6 +862,7 @@ class Accounting extends Model {
 
 
 	public static function AccBalance($bankId,$accNo,$startDate,$prevDate) {
+
 		$curDate = date('Y-m-d');
 		$db = DB::connection('mysql');
 			$query = $db->table('acc_cashregister')
@@ -877,13 +878,14 @@ class Accounting extends Model {
 			$query = $query->WHERERAW("SUBSTRING(date,1,7) <= '$prevDate'");
 		}			
 			$query = $query->get();
+			// $query = $query->toSql();dd($query);
 
 		return $query;
 	}
 
-	public static function fnGetRecordPreviousForAmountCheck($from_date) {
+	public static function fnGetRecordPreviousForAmountCheck($from_date,$bankId,$accNo) {
 		$tbl_name = "acc_cashregister";
-		$conditionAppend = "AND (transcationType != 9)";
+		$conditionAppend = "AND (transcationType != 9) AND bankIdFrom = $bankId AND accountNumberFrom = $accNo";
 		
 		$sql = "SELECT SUBSTRING(date, 1, 7) AS date FROM $tbl_name 
 			WHERE (date < '$from_date' $conditionAppend) ORDER BY date ASC";

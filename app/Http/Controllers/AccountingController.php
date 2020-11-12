@@ -201,7 +201,6 @@ class AccountingController extends Controller {
 		$cashDetails =array();
 		$i = 0;
 		$balanceAmtonDownTr = 0;
-		$checkPrevious = Accounting::fnGetRecordPreviousForAmountCheck(substr($start, 0, 7));
 		foreach ($cashDetailsIndex as $key => $value) {
 			$cashDetails[$i]['id'] = $value->id;
 			$cashDetails[$i]['date'] = $value->date;
@@ -244,19 +243,25 @@ class AccountingController extends Controller {
 			$cashDetails[$i]['balanceAmtonDownTr'] = 0;
 			$cashDetails[$i]['curBal'] = 0;
 
+			$checkPrevious = Accounting::fnGetRecordPreviousForAmountCheck(substr($start, 0, 7) ,$value->bankIdFrom,$value->accountNumberFrom);
+
+
 			if (isset($baseAmt[0]->amount)) {
 				$cashDetails[$i]['baseAmt'] = $baseAmt[0]->amount;
 
 				if ($bankNameforCheck != $value->Bank_NickName) {
 					$curBal = $baseAmt[0]->amount;
+
 					if (empty($checkPrevious)) {
+
 						if ($bankNameforCheck != $value->Bank_NickName) {
 							$curBal = $baseAmt[0]->amount;
 						}
 					} else {
-						$prYrMn = date("Y-m", strtotime("-1 months", strtotime($date_month)));
-						$prevBalanceAmt = Accounting::AccBalance($value->bankId,$value->AccNo,$baseAmt[0]->date,$prYrMn);
 
+						$prYrMn = date("Y-m", strtotime("-1 months", strtotime($date_month)));
+						$prevBalanceAmt = Accounting::AccBalance($value->bankIdFrom,$value->AccNo,$baseAmt[0]->date,$prYrMn);
+					
 						foreach ($prevBalanceAmt AS $prevBalKey => $prevBalVal) {
 							if ($prevBalVal->transcationType == 2 || $prevBalVal->transcationType == 4) {
 								$curBal += $prevBalVal->amount;
@@ -266,14 +271,12 @@ class AccountingController extends Controller {
 							$curBal -= $prevBalVal->fee;
 						} 
 					}
+
 				}
 				$cashDetails[$i]['curBal'] = $curBal;
 				$cashDetails[$i]['balanceAmtonDownTr'] = $curBal;
+
 			}
-
-
-
-			// print_r($curBal);echo "<br/>";
 
 
 			$bankNameforCheck = $value->Bank_NickName;

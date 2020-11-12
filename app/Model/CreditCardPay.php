@@ -120,8 +120,7 @@ class CreditCardPay extends Model {
 		if (isset($request->category) && $request->category!= "") {
 			$query = $query->where('categoryId','=',$request->category);
 		} 
-			$query = $query->orderBy('creditCardId', 'ASC')
-						->orderBy('creditCardDate', 'ASC')
+		$query = $query->orderBy('creditCardId', 'ASC')
 						->paginate($request->plimit);
 						// ->get();
 		return $query;
