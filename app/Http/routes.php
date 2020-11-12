@@ -318,7 +318,7 @@ Route::group(['prefix'=>'Mailcontent', 'middleware' => 'auth'], function() {
 
 // MAIL Signature
 Route::group(['prefix'=>'Mailsignature', 'middleware' => 'auth'], function() {
-	Route::get('changelanguage', 'AjaxController@index')->middleware('accessright:0,1,2,3,4');
+	Route::get('changelanguage', 'AjaxController@index');
 	Route::any('index', 'MailsignatureController@index')->middleware('accessright:0,1,2,3,4');
 	Route::any('addedit', 'MailsignatureController@addedit')->middleware('accessright:0,1,2,3,4');
 	Route::any('mailsignaturepopup', 'MailsignatureController@mailsignaturepopup')->middleware('accessright:0,1,2,3,4');
@@ -415,7 +415,7 @@ Route::group(['prefix'=>'ExpensesDetails', 'middleware' => 'auth'], function() {
 // Setting
 Route::group(['prefix'=>'Setting', 'middleware' => 'auth'], function() {
 Route::any('index', 'SettingController@index');
-Route::get('changelanguage', 'AjaxController@index')->middleware('accessright:0,1,2,3,4');
+Route::get('changelanguage', 'AjaxController@index');
 Route::get('singletextpopup', 'SettingController@singletextpopup')->middleware('accessright:0,1,2,3,4');
 Route::any('SingleFieldaddedit', 'SettingController@SingleFieldaddedit')->middleware('accessright:0,1,2,3,4');
 Route::get('twotextpopup', 'SettingController@twotextpopup')->middleware('accessright:0,1,2,3,4');
@@ -470,7 +470,7 @@ Route::group(['prefix'=>'Visarenew', 'middleware' => 'auth'], function() {
 
 // Tax Details Process
 Route::group(['prefix'=>'Tax','middleware' => 'auth'], function() {
-    Route::get('changelanguage', 'AjaxController@index')->middleware('accessright:0,1,2,3,4');
+    Route::get('changelanguage', 'AjaxController@index');
     Route::any('index', 'TaxController@index')->middleware('accessright:0,1,2,3,4');
     Route::any('taximportpopup', 'TaxController@taximportpopup')->middleware('accessright:0,1,2,3,4');
     Route::any('importprocess', 'TaxController@importprocess')->middleware('accessright:0,1,2,3,4');
@@ -483,7 +483,7 @@ Route::group(['prefix'=>'Tax','middleware' => 'auth'], function() {
 
 // Accounting Process by Rajesh
 Route::group(['prefix'=>'Accounting','middleware' => 'auth'], function() {
-    Route::get('changelanguage', 'AjaxController@index')->middleware('accessright:0,1,2,3,4');
+    Route::get('changelanguage', 'AjaxController@index');
     Route::any('index', 'AccountingController@index')->middleware('accessright:0,1,2,3,4,5');
     Route::any('getcashDetails', 'AccountingController@getcashDetails')->middleware('accessright:0,1,2,3,4');
     Route::any('commitProcess', 'AccountingController@commitProcess')->middleware('accessright:0,1,2,3,4');
