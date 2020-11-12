@@ -10,15 +10,15 @@
 		if($('#hidAuth').val() == "5" || mainmenu == "AuditingAccounting"){
 			$(".divdisplay").css("display", "none");
 			$(".chnageorder").css("display", "none");
-			$('.columnspan').attr('colspan','4');
+			$('.columnspan').attr('colspan','3');
 			$('.columnspannodata').attr('colspan','8');
-			$('.columnspan1').attr('colspan','2');
+			$('.columnspan1').attr('colspan','1');
   		} else {
   			$(".divdisplay").css("");
   			$(".chnageorder").css("");
-  			$('.columnspan').attr('colspan','5');
+  			$('.columnspan').attr('colspan','4');
   			$('.columnspannodata').attr('colspan','9');
-  			$('.columnspan1').attr('colspan','3');
+  			$('.columnspan1').attr('colspan','2');
   		}
 	});
 
@@ -209,8 +209,8 @@
 				<col width="8%">
 				<!-- <col width="8%"> -->
 				<col width="14%">
-				<col width="3%">
-				<col width="7%" class="divdisplay">
+				<col width="5%">
+				<col width="9%" class="divdisplay">
 			</colgroup>
 
 			<thead class="CMN_tbltheadcolor">
@@ -261,7 +261,7 @@
 								@php $balanceAmt = 0; @endphp
 								@php $realBalanceAmount = 0; @endphp
 							</td>
-							<td colspan="2" class=""></td>
+							<td class="columnspan1"></td>
 							<?php 
 								$debitToal = 0;
 								$creditToal = 0;
@@ -270,7 +270,7 @@
 					@endif
 					@if($lastBankName != $data['Bank_NickName'])
 						<tr style="background-color: lightgrey">
-							<td class="columnspan"> 
+							<td colspan="5"> 
 								{{ $data['Bank_NickName'] }}     
 							</td>
 							<td></td>
@@ -280,7 +280,7 @@
 								<?php $realBalanceAmount = $data['balanceAmtonDownTr']; ?>
 							@endif
 							<td align="right">{{ number_format($data['balanceAmtonDownTr']) }}</td>
-							<td colspan="2" align="right">
+							<td class="columnspan1" align="right">
 								<div style="text-align: right;display: inline-block;" class="chnageorder">
 									<a href="javascript:changeOrderpopUp('{{ $data['bankIdFrom'] }}','{{ $data['accNo'] }}');">
 										{{ trans('messages.lbl_changeOrder') }}
@@ -339,13 +339,13 @@
 							class=" box20 viewPic3by2" src="{{ URL::asset('../../../../AccountingUpload/Accounting').'/'.$data['fileDtl'] }}"></a>
 						@endif
 						</td>
-						<td class="divdisplay">
+						<td class="divdisplay" align="center">
 							@if($data['id'] != $data['transferId'])
 								<a href="javascript:editCashDtl('{{ $data['id'] }}','1','{{ $data['pageFlg'] }}');">
-									<img class="vam ml12" src="{{ URL::asset('resources/assets/images/edit.png') }}" width="20" height="20">
+									<img class="vam" src="{{ URL::asset('resources/assets/images/edit.png') }}" width="20" height="20">
 								</a>
 								<a href="javascript:editCashDtl('{{ $data['id'] }}','2','{{ $data['pageFlg'] }}');">
-									<img class="vam ml7" src="{{ URL::asset('resources/assets/images/copy.png') }}" width="20" height="20">
+									<img class="vam" src="{{ URL::asset('resources/assets/images/copy.png') }}" width="20" height="20">
 								</a>
 							@endif
 						</td>
@@ -356,12 +356,10 @@
 							<tr >
 								<td  colspan="4" align="right">{{ trans('messages.lbl_fee') }}</td>
 								<td colspan="" align="right"> {{ number_format($data['fee']) }}</td>
-								<td colspan="4"></td>
+								<td class="columnspan"></td>
 							</tr>
 						@endif
 					@endif
-
-
 
 					@if($data['transcationType'] == 1)
 						<!-- <?php $balanceAmt = $balanceAmt - $debitAmt ;?> -->
@@ -384,7 +382,9 @@
 
 				@if(count($cashDetails) > 0)
 					<tr style="background-color: #f1a2a2">
-						<td colspan="4" align="right">{{ trans('messages.lbl_total') }}</td>
+						<td colspan="4" align="right">
+							{{ trans('messages.lbl_total') }}
+						</td>
 						<td colspan="1" align="right">
 							{{ number_format($debitToal) }}
 						</td>
@@ -392,7 +392,7 @@
 							{{ number_format($creditToal) }}
 						</td>
 						<td align="right">{{ number_format($realBalanceAmount) }}</td>
-						<td colspan="2"></td>
+						<td class="columnspan1"></td>
 					</tr>
 				@endif
 				
