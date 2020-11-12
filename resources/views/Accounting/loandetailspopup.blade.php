@@ -65,7 +65,7 @@
 							@if(count($getLoanDtls) != 0)
 								<input  type="checkbox" name="loanAllCheck" 
 									id="loanAllCheck" class="loanAllCheck" 
-									onclick="loanAllCheck();">
+									onclick="loaAllCheck();">
 							@endif
 						</th>
 					</tr>

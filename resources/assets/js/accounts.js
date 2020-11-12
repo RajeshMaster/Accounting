@@ -1009,22 +1009,22 @@ function GetInvoicepopup() {
 	}
 }
 function salAllCheck() {
-	var salAllCheck = $('input[class=salAllCheck]:not(:checked)').val();
-	if (salAllCheck == undefined) {
+	var salaryAllCheck = $('input[class=salaryAllCheck]:not(:checked)').val();
+	if (salaryAllCheck == undefined) {
 		$('.salarychk').prop("checked",true);
 	} else {
 		$('.salarychk').prop("checked",false);
 	}
 }
 function invAllCheck() {
-	var invAllCheck = $('input[class=invAllCheck]:not(:checked)').val();
-	if (invAllCheck == undefined) {
+	var invoiceAllCheck = $('input[class=invoiceAllCheck]:not(:checked)').val();
+	if (invoiceAllCheck == undefined) {
 		$('.invoicechk').prop("checked",true);
 	} else {
 		$('.invoicechk').prop("checked",false);
 	}
 }
-function loanAllCheck() {
+function loaAllCheck() {
 	var loanAllCheck = $('input[class=loanAllCheck]:not(:checked)').val();
 	if (loanAllCheck == undefined) {
 		$('.loanchk').prop("checked",true);

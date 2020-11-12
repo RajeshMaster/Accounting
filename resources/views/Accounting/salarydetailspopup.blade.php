@@ -60,8 +60,8 @@
 						<th class="tac">
 							{{ trans('messages.lbl_notneed') }}
 							@if(count($getSalaryDtls) != 0)
-								<input  type="checkbox" name="salAllCheck" 
-									id="salAllCheck" class="salAllCheck" 
+								<input  type="checkbox" name="salaryAllCheck" 
+									id="salaryAllCheck" class="salaryAllCheck" 
 									onclick="salAllCheck();">
 							@endif
 						</th>

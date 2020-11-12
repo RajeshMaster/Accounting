@@ -58,8 +58,8 @@
 						<th class="tac">
 							{{ trans('messages.lbl_notneed') }}
 							@if(count($TotEstquery) != 0)
-								<input  type="checkbox" name="invAllCheck" 
-									id="invAllCheck" class="invAllCheck" 
+								<input  type="checkbox" name="invoiceAllCheck" 
+									id="invoiceAllCheck" class="invoiceAllCheck" 
 									onclick="invAllCheck();">
 							@endif
 						</th>
