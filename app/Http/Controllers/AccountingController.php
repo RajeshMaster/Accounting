@@ -403,6 +403,11 @@ class AccountingController extends Controller {
 			Session::flash('success', 'Inserted UnSucessfully!'); 
 			Session::flash('type', 'alert-success'); 
 		}
+		$accDate = explode("-", $request->accDate);
+		if (isset($accDate[0])) {
+			Session::flash('selYear', $accDate[0]); 
+			Session::flash('selMonth', $accDate[1]);
+		}
 		return Redirect::to('Accounting/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 
 	}
@@ -526,7 +531,11 @@ class AccountingController extends Controller {
 				Session::flash('type', 'Updated Unsucessfully!'); 
 				Session::flash('type', 'alert-danger'); 
 			}
-
+		}
+		$accDate = explode("-", $request->accDate);
+		if (isset($accDate[0])) {
+			Session::flash('selYear', $accDate[0]); 
+			Session::flash('selMonth', $accDate[1]);
 		}
 		return Redirect::to('Accounting/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 	}
@@ -779,6 +788,11 @@ class AccountingController extends Controller {
 				Session::flash('type', 'alert-danger'); 
 			}
 		}
+		$accDate = explode("-", $request->accDate);
+		if (isset($accDate[0])) {
+			Session::flash('selYear', $accDate[0]); 
+			Session::flash('selMonth', $accDate[1]);
+		}
 		return Redirect::to('Accounting/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 	}
 
@@ -924,6 +938,11 @@ class AccountingController extends Controller {
 		} else {
 			Session::flash('type', 'Inserted Unsucessfully!'); 
 			Session::flash('type', 'alert-danger'); 
+		}
+		$accDate = explode("-", $request->accDate);
+		if (isset($accDate[0])) {
+			Session::flash('selYear', $accDate[0]); 
+			Session::flash('selMonth', $accDate[1]);
 		}
 		
 		return Redirect::to('Accounting/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
