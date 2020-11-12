@@ -248,6 +248,7 @@
 							<td colspan="1" align="right">
 								{{ number_format($realBalanceAmount) }}
 								@php $balanceAmt = 0; @endphp
+								@php $realBalanceAmount = 0; @endphp
 							</td>
 							<td colspan="3" class="columnspan1"></td>
 						</tr>
@@ -258,12 +259,12 @@
 								{{ $data['Bank_NickName'] }}     
 							</td>
 							@if($data['baseAmt'])
-								<?php $realBalanceAmount =$data['baseAmt']; ?>
+								<?php $realBalanceAmount = $data['balanceAmtonDownTr']; ?>
 							@else
-								<?php $realBalanceAmount =$data['baseAmt']; ?>
+								<?php $realBalanceAmount = $data['balanceAmtonDownTr']; ?>
 							@endif
 								<?php  ?>
-							<td align="right">{{ number_format($data['baseAmt']) }}</td>
+							<td align="right">{{ number_format($data['balanceAmtonDownTr']) }}</td>
 							<td colspan="3" align="right">
 								<div style="text-align: right;display: inline-block;" class="chnageorder">
 									<a href="javascript:changeOrderpopUp('{{ $data['bankIdFrom'] }}','{{ $data['accNo'] }}');">
@@ -324,10 +325,10 @@
 						</td>
 					</tr>
 					@if($data['transcationType'] == 1)
-						<?php $balanceAmt = $balanceAmt - $debitAmt ;?>
+						<!-- <?php $balanceAmt = $balanceAmt - $debitAmt ;?> -->
 						<?php $realBalanceAmount = $realBalanceAmount - $debitAmt ?>
 					@else
-						<?php $balanceAmt = $balanceAmt + $creditAmt ;?>
+						<!-- <?php $balanceAmt = $balanceAmt + $creditAmt ;?> -->
 						<?php $realBalanceAmount = $realBalanceAmount + $creditAmt ?>
 					@endif
 					@php

@@ -46,6 +46,7 @@ class AccountingController extends Controller {
 		$previous_date = "";
 		$date_month = "";
 		$temp = "";
+		$bankNameforCheck ="";
 
 		$g_accountperiod = Accounting::fnGetAccountPeriodAcc();
 		$account_close_yr = $g_accountperiod[0]->Closingyear;
@@ -170,6 +171,7 @@ class AccountingController extends Controller {
 
 
 		$est_query1 = Accounting::fnGetCashExpenseRecordPrevious($from_date);
+
 		$dbprevious = array();
 		$dbpreviousYr = array();
 		$pre = 0;
@@ -233,21 +235,50 @@ class AccountingController extends Controller {
 					$name ="";
 				}
 				$cashDetails[$i]['employeDetails'] = $value->emp_ID.'-'.$name;
-			}
-
-			if ($cashDetails[$i]['content'] == 'Invoice') {
+			} elseif ($cashDetails[$i]['content'] == 'Invoice') {
 				$empIdArr[0] = $value->loan_ID;
 				$cashDetails[$i]['invoiceDetails'] = $value->loan_ID.'-'.$value->loanName;
-			}
-
-			if ($cashDetails[$i]['content'] == 'Loan') {
+			} elseif ($cashDetails[$i]['content'] == 'Loan') {
 				$empIdArr[0] = $value->loan_ID;
 				$cashDetails[$i]['loanDetails'] = $value->loanName;
 			}
 
+			$cashDetails[$i]['balanceAmtonDownTr'] = 0;
+			$cashDetails[$i]['curBal'] = 0;
+
 			if (isset($baseAmt[0]->amount)) {
 				$cashDetails[$i]['baseAmt'] = $baseAmt[0]->amount;
+
+				if ($bankNameforCheck != $value->Bank_NickName) {
+					$curBal = $baseAmt[0]->amount;
+					if (empty($est_query1)) {
+						if ($bankNameforCheck != $value->Bank_NickName) {
+							$curBal = $baseAmt[0]->amount;
+						}
+					} else {
+						$prYrMn = date("Y-m", strtotime("-1 months", strtotime($date_month)));
+						$prevBalanceAmt = Accounting::AccBalance($value->bankId,$value->AccNo,$baseAmt[0]->date,$prYrMn);
+
+						foreach ($prevBalanceAmt AS $prevBalKey => $prevBalVal) {
+							if ($prevBalVal->transcationType == 2 || $prevBalVal->transcationType == 4) {
+								$curBal += $prevBalVal->amount;
+							} else {
+								$curBal -= $prevBalVal->amount;
+							}
+							$curBal -= $prevBalVal->fee;
+						} 
+					}
+				}
+				$cashDetails[$i]['curBal'] = $curBal;
+				$cashDetails[$i]['balanceAmtonDownTr'] = $curBal;
 			}
+
+
+
+			// print_r($curBal);echo "<br/>";
+
+
+			$bankNameforCheck = $value->Bank_NickName;
 			$i++;
 		}
 		return view('Accounting.index',['request' => $request,

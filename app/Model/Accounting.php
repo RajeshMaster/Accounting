@@ -861,13 +861,13 @@ class Accounting extends Model {
 	}
 
 
-	public static function AccBalance($request,$startDate,$prevDate) {
+	public static function AccBalance($bankId,$accNo,$startDate,$prevDate) {
 		$curDate = date('Y-m-d');
 		$db = DB::connection('mysql');
 			$query = $db->table('acc_cashregister')
 						->SELECT('transcationType','amount','fee')
-						->where('bankIdFrom','=',$request->bankid)
-						->where('accountNumberFrom','=',$request->accno)
+						->where('bankIdFrom','=',$bankId)
+						->where('accountNumberFrom','=',$accNo)
 						->where('transcationType','!=',9)
 						->where('delFlg','=','0');
 		

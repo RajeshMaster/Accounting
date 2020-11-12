@@ -400,11 +400,32 @@ class CreditCardPayController extends Controller {
 		$end = $request->selYear .'-12-31';
 		$creditcardDetails = CreditCardPay::fetchAmountForYearlyWise($start, $end, $request);
 
+		$yearamountByMonth =  array();
+		$k =0;
+		if (isset($creditcardDetails[0]->creditCardDate)) {
+			$yMonth = substr($creditcardDetails[0]->creditCardDate, 0,7);
+		}
+		$newarray = array();
+		for ($j=1; $j <=12 ; $j++) { 
+			array_push($yearamountByMonth, $request->selYear.'-'.str_pad($j, 2, '0', STR_PAD_LEFT));
+		}
+		for ($k=0; $k < count($yearamountByMonth) ; $k++) { 
+			$yearamount = 0;
+			for ($i=0; $i <count($creditcardDetails) ; $i++) {
+				if (substr($creditcardDetails[$i]->creditCardDate, 0,7) == $yearamountByMonth[$k]) {
+					$yearamount += $creditcardDetails[$i]->amount;
+					$newarray[$yearamountByMonth[$k]] = $yearamount;
+				}
+			}
+		}
+	
 		$getPreviousCount = CreditCardPay::fetchpreviousNextRecord($request->selYear-1);
 		$getNextCount = CreditCardPay::fetchpreviousNextRecord($request->selYear+1);
 
 		return view('CreditCardPay.yearindex',[ 'request' => $request,
 											'creditcardDetails' => $creditcardDetails,
+											'yearamountByMonth' => $yearamountByMonth,
+											'newarray' => $newarray,
 											'getPreviousCount' => $getPreviousCount,
 											'getNextCount' => $getNextCount,
 										]);
@@ -596,7 +617,9 @@ class CreditCardPayController extends Controller {
 		$end = $request->selYear .'-'.$request->selMonth.'-'.Common::fnGetMaximumDateofMonth($start);
 
 		$creditcardDetails = CreditCardPay::fetchcreditcarddetailsMonthwise($start, $end, $request);
-		
+		// echo "<pre>";
+		// print_r($creditcardDetails);
+		// echo "<prev>";exit;
 		return view('CreditCardPay.creditCardMonthwiseDetails',[ 'request' => $request,
 											'creditcardDetails' => $creditcardDetails,
 											'account_period' => $account_period,

@@ -125,23 +125,29 @@
 				<tr id="data">
 					<th class="vam">{{ trans('messages.lbl_sno') }}</th>
 					<th class="vam">{{ trans('messages.lbl_Date') }}</th>
-					<th class="vam">{{ trans('messages.lbl_paymentdate') }}</th>
 					<th class="vam">{{ trans('messages.lbl_amount') }}</th>
 					<th class="vam">{{ trans('messages.lbl_Details') }}</th>
 				</tr>
 			</thead>
 			<tbody>
-				@for($i=0;$i < count($creditcardDetails);$i++)
-				<tr>
-					<td align="center">{{ $i+1 }}</td>
-					<td align="center">{{ substr($creditcardDetails[$i]->selectedYearMonth, 0, 7) }}</td>
-					<td align="center">{{ $creditcardDetails[$i]->mainDate }}</td>
-					<td align="right">{{ number_format($creditcardDetails[$i]->amount) }}</td>
-					<?php $detaArr =explode('-', $creditcardDetails[$i]->selectedYearMonth) ?>
-					<td align="center">
-						<a href="javascript:detailIndex('{{ $detaArr[0] }}','{{ $detaArr[1] }}');"  >{{ trans('messages.lbl_Details') }}</a>
-					</td>
-				</tr>
+				@for($i=0;$i < count($yearamountByMonth);$i++)
+					<tr>
+						<td align="center">{{ $i+1 }}</td>
+						<td align="center">{{ $yearamountByMonth[$i] }}</td>
+						<td align="center">
+							@if(isset($newarray[$yearamountByMonth[$i]]))
+								{{ number_format($newarray[$yearamountByMonth[$i]]) }}
+							@else
+								0
+							@endif
+						</td>
+						<td align="center">
+							@if(isset($newarray[$yearamountByMonth[$i]]))
+								<?php $detaArr =explode('-',$yearamountByMonth[$i]) ?>
+								<a href="javascript:detailIndex('{{ $detaArr[0] }}','{{ $detaArr[1] }}');"  >{{ trans('messages.lbl_Details') }}</a>
+							@endif
+						</td>
+					</tr>
 				@endfor
 			</tbody>
 		</table>

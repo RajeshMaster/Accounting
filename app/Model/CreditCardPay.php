@@ -257,13 +257,12 @@ class CreditCardPay extends Model {
 
 		$db = DB::connection('mysql');
 		$query = $db->table('acc_creditcardpayment')
-						->SELECT(DB::RAW("SUM(creditCardAmount) as amount"),'selectedYearMonth','mainDate')
+						->SELECT('creditCardAmount as amount','creditCardDate')
 						// ->leftJoin('acc_creditcard', 'acc_creditcard.id', '=', 'acc_creditcardpayment.creditCardId')
 						// ->leftJoin('acc_categorysetting', 'acc_categorysetting.id', '=', 'acc_creditcardpayment.categoryId')
-						->where('selectedYearMonth','>=',$from_date)
-						->where('selectedYearMonth','<=',$to_date);
-			$query = $query->orderBy('selectedYearMonth', 'ASC')
-						->groupBy('selectedYearMonth')
+						->where('creditCardDate','>=',$from_date)
+						->where('creditCardDate','<=',$to_date);
+			$query = $query->orderBy('creditCardDate', 'ASC')
 						->get();
 		return $query;
 	}
@@ -271,9 +270,9 @@ class CreditCardPay extends Model {
 	public static function fetchpreviousNextRecord($year) {
 		$db = DB::connection('mysql');
 		$query = $db->table('acc_creditcardpayment')
-						->SELECT(DB::RAW("COUNT(selectedYearMonth) as count"))
-						->WHERE('selectedYearMonth', 'LIKE', '%'.$year.'%')
-						->orderBy('selectedYearMonth', 'ASC')
+						->SELECT(DB::RAW("COUNT(creditCardDate) as count"))
+						->WHERE('creditCardDate', 'LIKE', '%'.$year.'%')
+						->orderBy('creditCardDate', 'ASC')
 						->get();
 		return $query;
 	}
@@ -335,6 +334,7 @@ class CreditCardPay extends Model {
 	}
 
 	public static function fetchcreditcarddetailsMonthwise($from_date, $to_date,$request) {
+		
 		$db = DB::connection('mysql');
 		$query = $db->table('acc_creditcardpayment')
 						->SELECT('acc_creditcardpayment.*','acc_creditcard.creditCardName','acc_categorysetting.Category')
@@ -342,9 +342,6 @@ class CreditCardPay extends Model {
 						->leftJoin('acc_categorysetting', 'acc_categorysetting.id', '=', 'acc_creditcardpayment.categoryId')
 						->where('creditCardDate','>=',$from_date)
 						->where('creditCardDate','<=',$to_date);
-		if (isset($request->content) && $request->content!= "") {
-			$query = $query->where('categoryId','=',$request->content);
-		} 
 			$query = $query->orderBy('creditCardId', 'ASC')
 						->orderBy('creditCardDate', 'ASC')
 						->paginate($request->plimit);

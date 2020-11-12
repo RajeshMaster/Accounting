@@ -308,7 +308,7 @@ function setyear(year) {
 function detailIndex(year ,month) {
 	$('#selYear').val(year);
 	$('#selMonth').val(month);
-	$('#yearWiseCreditCard').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+	$('#yearWiseCreditCard').attr('action', 'monthlywiseindex?mainmenu='+mainmenu+'&time='+datetime);
 	$("#yearWiseCreditCard").submit();
 }
 
