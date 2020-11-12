@@ -203,13 +203,13 @@
 			<colgroup>
 				<col width="4%">
 				<col width="9%">
-				<col width="14%">
 				<col width="16%">
+				<col width="">
 				<col width="8%">
 				<col width="8%">
 				<!-- <col width="8%"> -->
-				<col width="">
-				<col width="8%">
+				<col width="14%">
+				<col width="3%">
 				<col width="8%" class="divdisplay">
 			</colgroup>
 
@@ -217,8 +217,8 @@
 				<tr id="data">
 					<th class="vam">{{ trans('messages.lbl_sno') }}</th>
 					<th class="vam">{{ trans('messages.lbl_Date') }}</th>
-					<th class="vam">{{ trans('messages.lbl_subject') }}</th>
 					<th class="vam">{{ trans('messages.lbl_content') }}</th>
+					<th class="vam">{{ trans('messages.lbl_subject') }}</th>
 					<th class="vam">{{ trans('messages.lbl_debit') }}</th>
 					<th class="vam">{{ trans('messages.lbl_credit') }}</th>
 					<!-- <th class="vam">{{ trans('messages.lbl_balance') }}</th> -->
@@ -238,19 +238,34 @@
 					$baseamount = "";
 					$balancebyBank = "";
 					$realBalanceAmount = 0;
+					$backgroundColor ="#e5f4f9";
+
+					$debitToal = 0;
+					$creditToal = 0;
+
 				@endphp
 				@forelse($cashDetails as $key => $data)
 					@if($preBankName != $data['Bank_NickName'] && $preBankName !="")
 						<tr style="background-color: #f1a2a2">
-							<td colspan="5" align="right">
+							<td colspan="4" align="right">
 								{{ trans('messages.lbl_total') }}
 							</td>
 							<td colspan="1" align="right">
+								{{ number_format($debitToal) }}
+							</td>
+							<td align="right">
+								{{ number_format($creditToal) }}
+							</td>
+							<td align="right">
 								{{ number_format($realBalanceAmount) }}
 								@php $balanceAmt = 0; @endphp
 								@php $realBalanceAmount = 0; @endphp
 							</td>
-							<td colspan="3" class="columnspan1"></td>
+							<td colspan="2" class=""></td>
+							<?php 
+								$debitToal = 0;
+								$creditToal = 0;
+							?>
 						</tr>
 					@endif
 					@if($lastBankName != $data['Bank_NickName'])
@@ -258,14 +273,14 @@
 							<td class="columnspan"> 
 								{{ $data['Bank_NickName'] }}     
 							</td>
+							<td></td>
 							@if($data['baseAmt'])
 								<?php $realBalanceAmount = $data['balanceAmtonDownTr']; ?>
 							@else
 								<?php $realBalanceAmount = $data['balanceAmtonDownTr']; ?>
 							@endif
-								<?php  ?>
 							<td align="right">{{ number_format($data['balanceAmtonDownTr']) }}</td>
-							<td colspan="3" align="right">
+							<td colspan="2" align="right">
 								<div style="text-align: right;display: inline-block;" class="chnageorder">
 									<a href="javascript:changeOrderpopUp('{{ $data['bankIdFrom'] }}','{{ $data['accNo'] }}');">
 										{{ trans('messages.lbl_changeOrder') }}
@@ -274,11 +289,14 @@
 							</td>
 						</tr>
 					@endif
-					<tr style="background-color: #FCE1F0">
+
+				
+					<tr style="">
 						<td>{{ $i+1 }}</td>
 						<td align="center">
 							{{ $data['date'] }}
 						</td>
+						<td>{{ $data['content'] }}</td>
 						<td> 
 							@if($data['content'] == 'Salary')
 								{{ $data['employeDetails'] }}
@@ -291,26 +309,35 @@
 							@endif
 
 						</td>
-						<td>{{ $data['content'] }}</td>
 						<td align="right">
 							@if($data['transcationType'] == 1)
 								@php $debitAmt = $data['amount'] + $data['fee']; @endphp
-								{{ number_format($debitAmt) }}
+								<?php $debitToal = $debitAmt + $debitToal ?>
+
+								@if($data['content'] != 'Loan')
+									{{ number_format($data['amount']) }}
+								@else
+									{{ number_format($debitAmt) }}
+								@endif
 							@endif
+
+							<!-- <span style="background-color: red;"></span> <?php print_r($debitToal); ?> -->
 						</td>
 						<td align="right">
 							@if($data['transcationType'] == 2 || $data['transcationType'] == 4)
 								@php $creditAmt = $data['amount'] + $data['fee']; @endphp
-								{{ number_format($creditAmt) }}
+								<!-- {{ number_format($creditAmt) }} -->
+								{{ number_format($data['amount']) }}
+								<?php $creditToal = $creditAmt + $creditToal?>
 							@endif
 						</td>
 							
 						<td>{{ $data['remarks']}}</td>
-						<td>
+						<td align="center">
 						@if($data['fileDtl'] != "")
 							<a style="text-decoration:none" href="{{ URL::asset('../../../../AccountingUpload/Accounting').'/'.$data['fileDtl'] }}" data-lightbox="visa-img">
 							<img width="20" height="20" name="empimg" id="empimg" 
-							class="ml28 box20 viewPic3by2" src="{{ URL::asset('../../../../AccountingUpload/Accounting').'/'.$data['fileDtl'] }}"></a>
+							class=" box20 viewPic3by2" src="{{ URL::asset('../../../../AccountingUpload/Accounting').'/'.$data['fileDtl'] }}"></a>
 						@endif
 						</td>
 						<td class="divdisplay">
@@ -324,6 +351,19 @@
 							@endif
 						</td>
 					</tr>
+
+					@if($data['content'] != 'Loan')
+						@if($data['fee'] != "")
+							<tr >
+								<td  colspan="4"></td>
+								<td colspan="" align="right"> {{ number_format($data['fee']) }}</td>
+								<td colspan="4"></td>
+							</tr>
+						@endif
+					@endif
+
+
+
 					@if($data['transcationType'] == 1)
 						<!-- <?php $balanceAmt = $balanceAmt - $debitAmt ;?> -->
 						<?php $realBalanceAmount = $realBalanceAmount - $debitAmt ?>
@@ -345,11 +385,15 @@
 
 				@if(count($cashDetails) > 0)
 					<tr style="background-color: #f1a2a2">
-						<td colspan="5" align="right">{{ trans('messages.lbl_total') }}</td>
+						<td colspan="4" align="right">{{ trans('messages.lbl_total') }}</td>
 						<td colspan="1" align="right">
-							{{ number_format($realBalanceAmount) }}
+							{{ number_format($debitToal) }}
 						</td>
-						<td colspan="" class="columnspan1"></td>
+						<td align="right">
+							{{ number_format($creditToal) }}
+						</td>
+						<td align="right">{{ number_format($realBalanceAmount) }}</td>
+						<td colspan="2"></td>
 					</tr>
 				@endif
 				
