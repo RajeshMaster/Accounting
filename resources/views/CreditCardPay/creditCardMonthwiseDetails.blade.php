@@ -63,19 +63,6 @@
 		$('#creditCaredPayMonthwise').attr('action', 'categorySelect?mainmenu='+mainmenu+'&time='+datetime);
 		$("#creditCaredPayMonthwise").submit();
 	}
-	/*$(document).ready(function() {
-		if($('#hidAuth').val() == "5" || mainmenu == "AuditingCreditCardPay"){
-			$(".divdisplay").css("display", "none");
-			$(".cleardata").css("display", "none");
-			$('.columnspanpagination').attr('colspan','8');
-			$('.columnspan1').attr('colspan','4');
-  		}else{
-  			$(".divdisplay").css("");
-  			$(".cleardata").css("");
-  			$('.columnspanpagination').attr('colspan','9');
-			$('.columnspan1').attr('colspan','5');
-  		}
-	});*/
 </script>
 
 	<div class="CMN_display_block" id="main_contents">
@@ -138,12 +125,12 @@
 			@endif
 			@php Session::forget('success'); @endphp
 			<!-- Session msg -->
-		<div class="col-xs-6  pm0 pull-left mt10 divdisplay">
+		<div class="col-xs-6  pm0 pull-left mt10">
 			<a href="javascript:yearWise();" class=""><span>Year Wise</span></a> |
 			<a href="javascript:ccMonthWise();" class=""><span>CC month Wise</span></a> |
 			<span>Monthly Wise</span>
 		</div>
-		<div class="col-xs-6  pm0 pull-left mt10 divdisplay" align="right">
+		<div class="col-xs-6  pm0 pull-left mt10" align="right">
 		
 		</div>
 	</div>
@@ -173,7 +160,7 @@
 					<th class="vam ">{{ trans('messages.lbl_bill') }}</th>
 					<th class="vam">{{ trans('messages.lbl_categories') }}</th>
 					<th class="vam">{{ trans('messages.lbl_remarks') }}</th>
-					<th class="vam divdisplay">{{ trans('messages.lbl_file') }}</th>
+					<th class="vam">{{ trans('messages.lbl_file') }}</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -193,12 +180,12 @@
 								{{ number_format($balanceAmt) }}
 								@php $balanceAmt = 0; @endphp
 							</td>
-							<td colspan="4" class="columnspan1"></td>
+							<td colspan="4"></td>
 						</tr>
 					@endif
 					@if( $creditCradId != $data->creditCardId)
 						<tr style="background-color: lightgrey;font-weight: bold;font-size: 15px">
-							<td colspan="8" class="columnspan"> 
+							<td colspan="8"> 
 								{{ $data->creditCardName }}
 							</td>
 						</tr>
@@ -242,7 +229,7 @@
 					<tr style="background-color: #f1a2a2;font-weight: bold;font-size: 15px">
 						<td colspan="3" align="right">{{ trans('messages.lbl_total') }}</td>
 						<td colspan="1" align="right">{{ number_format($balanceAmt) }}</td>
-						<td colspan="4" class="columnspan1"></td>
+						<td colspan="4"></td>
 					</tr>
 				@endif
 

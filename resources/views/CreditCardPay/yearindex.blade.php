@@ -10,19 +10,6 @@
 
 	var datetime = '<?php echo date('Ymdhis'); ?>';
 	var mainmenu = '<?php echo $request->mainmenu; ?>';
-	$(document).ready(function() {
-		if($('#hidAuth').val() == "5" || mainmenu == "AuditingCreditCardPay"){
-			$(".divdisplay").css("display", "none");
-			$(".cleardata").css("display", "none");
-			$('.columnspanpagination').attr('colspan','8');
-			$('.columnspan1').attr('colspan','4');
-		}else{
-			$(".divdisplay").css("");
-			$(".cleardata").css("");
-			$('.columnspanpagination').attr('colspan','9');
-			$('.columnspan1').attr('colspan','5');
-		}
-	});
 
 	function monthWise() {
 		$('#yearWiseCreditCard').attr('action', 'monthlywiseindex?mainmenu='+mainmenu+'&time='+datetime);
@@ -79,12 +66,12 @@
 			@endif
 			@php Session::forget('success'); @endphp
 			<!-- Session msg -->
-		<div class="col-xs-6  pm0 pull-left mt10 divdisplay" >
+		<div class="col-xs-6  pm0 pull-left mt10" >
 			<span>{{ trans('messages.lbl_yearly') }}</span>|
 			<a href="javascript:ccMonthWise();"><span>{{ trans('messages.lbl_ccMonthWise') }}</span></a>|
 			<a href="javascript:monthWise();"><span>{{ trans('messages.lbl_MonthWise') }}</span></a>
 		</div>
-		<div class="col-xs-6  pm0 pull-left mt10 divdisplay" align="right">
+		<div class="col-xs-6  pm0 pull-left mt10" align="right">
 			@if(isset($getPreviousCount[0]->count) && $getPreviousCount[0]->count !="")
 				<a href="javascript:setyear('{{ $request->selYear-1 }}');" >
 					<img style="vertical-align:middle;padding-bottom:3px;" src="{{ URL::asset('resources/assets/images/previousenab.png') }}" width="15" height="15" >
@@ -118,7 +105,7 @@
 				<col width="15%">
 				<col width="22%">
 				<col width="4.5%">
-				<col width="6.5%" class="divdisplay">
+				<col width="6.5%">
 			</colgroup>
 
 			<thead class="CMN_tbltheadcolor">

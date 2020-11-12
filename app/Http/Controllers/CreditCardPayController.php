@@ -298,6 +298,11 @@ class CreditCardPayController extends Controller {
 			Session::flash('type', 'Inserted Unsucessfully!'); 
 			Session::flash('type', 'alert-danger'); 
 		}
+		$mainDate = explode("-", $request->mainDate);
+		if (isset($mainDate[0])) {
+			Session::flash('selYear', $mainDate[0]); 
+			Session::flash('selMonth', $mainDate[1]);
+		}
 		return Redirect::to('CreditCardPay/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 	}
 
@@ -343,6 +348,11 @@ class CreditCardPayController extends Controller {
 		} else {
 			Session::flash('type', 'Updated Unsucessfully!'); 
 			Session::flash('type', 'alert-danger'); 
+		}
+		$mainDate = explode("-", $request->mainDate);
+		if (isset($mainDate[0])) {
+			Session::flash('selYear', $mainDate[0]); 
+			Session::flash('selMonth', $mainDate[1]);
 		}
 		return Redirect::to('CreditCardPay/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 
@@ -432,6 +442,9 @@ class CreditCardPayController extends Controller {
 	}
 
 	public function categorySelect(Request $request) {
+		if(!$request->selYear){ 
+			return Redirect::to('CreditCardPay/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
+		}
 		if(Session::get('selYear') !="") {
 			$request->selYear =  Session::get('selYear');
 			$request->selMonth =  Session::get('selMonth');

@@ -10,19 +10,6 @@
 
 	var datetime = '<?php echo date('Ymdhis'); ?>';
 	var mainmenu = '<?php echo $request->mainmenu; ?>';
-	$(document).ready(function() {
-		if($('#hidAuth').val() == "5" || mainmenu == "AuditingCreditCardPay"){
-			$(".divdisplay").css("display", "none");
-			$(".cleardata").css("display", "none");
-			$('.columnspanpagination').attr('colspan','8');
-			$('.columnspan1').attr('colspan','4');
-		}else{
-			$(".divdisplay").css("");
-			$(".cleardata").css("");
-			$('.columnspanpagination').attr('colspan','9');
-			$('.columnspan1').attr('colspan','5');
-		}
-	});
 </script>
 
 	<div class="CMN_display_block" id="main_contents">
@@ -76,14 +63,14 @@
 			@endif
 			@php Session::forget('success'); @endphp
 			<!-- Session msg -->
-		<div class="col-xs-6  pm0 pull-left mt10 divdisplay" >
+		<div class="col-xs-6  pm0 pull-left mt10 " >
 			<a href="javascript:gotoindex('{{ $request->selYear }}','{{ $request->selMonth }}','{{ $request->mainmenu }}','{{ $request->plimit }}','{{ $request->page }}','{{ $request->flgs }}');" class="btn btn-info box80 pull-left">
 				<span class="fa fa-arrow-left"></span>
 				{{ trans('messages.lbl_back') }}
 			</a>
 		</div>
 
-		<div class="col-xs-6  pm0 pull-left mt10 divdisplay" align="right">
+		<div class="col-xs-6  pm0 pull-left mt10" align="right">
 
 			@if(isset($getPreviousCount[0]->count) && $getPreviousCount[0]->count !="")
 				<a href="javascript:setyearcategory('{{ $request->selYear-1 }}');" >
@@ -152,12 +139,12 @@
 								{{ number_format($balanceAmt) }}
 								@php $balanceAmt = 0; @endphp
 							</td>
-							<td colspan="5" class="columnspan1"></td>
+							<td colspan="5"></td>
 						</tr>
 					@endif
 					@if( $creditCradId != $data->creditCardId)
 						<tr style="background-color: lightgrey;font-weight: bold;font-size: 15px">
-							<td colspan="8" class="columnspan"> 
+							<td colspan="8"> 
 								{{ $data->creditCardName }}
 							</td>
 						
@@ -200,7 +187,7 @@
 					@endphp
 				@empty
 					<tr>
-						<td class="text-center columnspanpagination" colspan="8" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
+						<td class="text-center" colspan="8" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
 					</tr>
 				@endforelse
 				
