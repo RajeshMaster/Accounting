@@ -44,6 +44,7 @@
 		{{ Form::hidden('hidAuth', Auth::user()->userclassification, array('id' => 'hidAuth')) }}
 		{{ Form::hidden('category', '', array('id' => 'category')) }}
 		{{ Form::hidden('clearCashDate', '', array('id' => 'clearCashDate')) }}
+		{{ Form::hidden('flgs','', array('id' => 'flgs')) }}
 		
 		<!-- Year Bar Start -->
 		{{ Form::hidden('selMonth', $request->selMonth, array('id' => 'selMonth')) }}
@@ -165,7 +166,7 @@
 						<td align="right">{{ number_format($data->creditCardAmount) }}</td>
 						<td align="center">@if($data->rdoBill == "1")有@endif</td>
 						<td>
-							<a href="javascript:contentView('{{ $data->categoryId }}');">
+							<a href="javascript:contentView('{{ $data->categoryId }}',0);">
 								{{ $data->Category }}
 							</a>
 						</td>

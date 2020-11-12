@@ -5,15 +5,15 @@
 	var datetime = '<?php echo date('Ymdhis'); ?>';
 	var mainmenu = '<?php echo $request->mainmenu; ?>';
 	$(document).ready(function() {
-
 		setDatePicker("from_date");
 		setDatePicker("to_date");
 		if($('#hidAuth').val() == "5" || mainmenu == "AuditingAccounting"){
 			$(".divdisplay").css("display", "none");
 			$(".chnageorder").css("display", "none");
-			$('.columnspan').attr('colspan','8');
-			$('.columnspan1').attr('colspan','1');
-  		}else{
+			$('.columnspan').attr('colspan','4');
+			$('.columnspannodata').attr('colspan','8');
+			$('.columnspan1').attr('colspan','2');
+  		} else {
   			$(".divdisplay").css("");
   			$(".chnageorder").css("");
   			$('.columnspan').attr('colspan','5');

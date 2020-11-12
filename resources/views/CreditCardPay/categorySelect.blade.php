@@ -42,6 +42,7 @@
 		{{ Form::hidden('id', '', array('id' => 'id')) }}
 		{{ Form::hidden('hidAuth', Auth::user()->userclassification, array('id' => 'hidAuth')) }}
 		{{ Form::hidden('category', '', array('id' => 'category')) }}
+		{{ Form::hidden('flgs',$request->flgs, array('id' => 'flgs')) }}
 		
 		<!-- Year Bar Start -->
 		{{ Form::hidden('selMonth', $request->selMonth, array('id' => 'selMonth')) }}
@@ -76,6 +77,10 @@
 			@php Session::forget('success'); @endphp
 			<!-- Session msg -->
 		<div class="col-xs-6  pm0 pull-left mt10 divdisplay" >
+			<a href="javascript:gotoindex('{{ $request->selYear }}','{{ $request->selMonth }}','{{ $request->mainmenu }}','{{ $request->plimit }}','{{ $request->page }}','{{ $request->flgs }}');" class="btn btn-info box80 pull-left">
+				<span class="fa fa-arrow-left"></span>
+				{{ trans('messages.lbl_back') }}
+			</a>
 		</div>
 
 		<div class="col-xs-6  pm0 pull-left mt10 divdisplay" align="right">
@@ -113,7 +118,7 @@
 				<col width="15%">
 				<col width="22%">
 				<col width="4.5%">
-				<col width="6.5%" class="divdisplay">
+				<!-- <col width="6.5%" class="divdisplay"> -->
 			</colgroup>
 
 			<thead class="CMN_tbltheadcolor">
@@ -127,7 +132,7 @@
 					<th class="vam">{{ trans('messages.lbl_categories') }}</th>
 					<th class="vam">{{ trans('messages.lbl_remarks') }}</th>
 					<th class="vam">{{ trans('messages.lbl_file') }}</th>
-					<th class="vam divdisplay"></th>
+					<!-- <th class="vam divdisplay"></th> -->
 				</tr>
 			</thead>
 			<tbody>
@@ -152,7 +157,7 @@
 					@endif
 					@if( $creditCradId != $data->creditCardId)
 						<tr style="background-color: lightgrey;font-weight: bold;font-size: 15px">
-							<td colspan="9" class="columnspan"> 
+							<td colspan="8" class="columnspan"> 
 								{{ $data->creditCardName }}
 							</td>
 						
@@ -179,14 +184,14 @@
 								class=" box20 viewPic3by2" src="{{ URL::asset('../../../../AccountingUpload/CreditCard').'/'.$data->file }}"></a>
 							@endif
 						</td>
-						<td align="center" class="divdisplay">
+						<!-- <td align="center" class="divdisplay">
 							<a href="javascript:fileUpload('{{ $data->id }}');">
 								<img class="vam ml12" src="{{ URL::asset('resources/assets/images/uploadFile.png') }}" width="20" height="20">
 							</a>
 							<a href="javascript:editCreditCard('{{ $data->id }}');">
 								<img class="vam ml12" src="{{ URL::asset('resources/assets/images/edit.png') }}" width="20" height="20">
 							</a>	
-						</td>
+						</td> -->
 					</tr>
 					@php 
 						$creditCradId = $data->creditCardId;
@@ -195,7 +200,7 @@
 					@endphp
 				@empty
 					<tr>
-						<td class="text-center columnspanpagination" colspan="9" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
+						<td class="text-center columnspanpagination" colspan="8" style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
 					</tr>
 				@endforelse
 				
@@ -203,7 +208,7 @@
 					<tr style="background-color: #f1a2a2;font-weight: bold;font-size: 15px">
 						<td colspan="3" align="right">{{ trans('messages.lbl_total') }}</td>
 						<td colspan="1" align="right">{{ number_format($balanceAmt) }}</td>
-						<td colspan="5" class="columnspan1"></td>
+						<td colspan="4"></td>
 					</tr>
 				@endif
 			</tbody>

@@ -288,7 +288,8 @@ function pageLimitClick(pagelimitval) {
 	$("#creditCaredPayIndex").submit();
 }
 
-function contentView(contet) {
+function contentView(contet,flg) {
+	$('#flgs').val(flg);
 	$('#category').val(contet);
 	$('#creditCaredPayIndex').attr('action', 'categorySelect?mainmenu='+mainmenu+'&time='+datetime);
 	$("#creditCaredPayIndex").submit();
@@ -326,4 +327,23 @@ function setyearcategory(year) {
 function monthWise() {
 	$('#creditCaredPayIndex').attr('action', 'monthlywiseindex?mainmenu='+mainmenu+'&time='+datetime);
 	$("#creditCaredPayIndex").submit();
+}
+function gotoindex(yr,mnth,mainmenu,limit,page,flg) {
+	if(flg == "0") {
+		$('#category').val('');
+		$('#page').val('');
+		$('#plimit').val('');
+		$('#selMonth').val(mnth);
+		$('#selYear').val(yr);
+		$('#categoryWiseCreditCard').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+		$("#categoryWiseCreditCard").submit();
+	} else {
+		$('#category').val('');
+		$('#page').val('');
+		$('#plimit').val('');
+		$('#selMonth').val(mnth);
+		$('#selYear').val(yr);
+		$('#categoryWiseCreditCard').attr('action', 'monthlywiseindex?mainmenu='+mainmenu+'&time='+datetime);
+		$("#categoryWiseCreditCard").submit();
+	}
 }

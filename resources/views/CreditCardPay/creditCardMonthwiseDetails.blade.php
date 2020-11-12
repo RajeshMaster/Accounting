@@ -57,6 +57,12 @@
 		$('#creditCaredPayMonthwise').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
 		$("#creditCaredPayMonthwise").submit();
 	}
+	function contentView(contet,flg) {
+		$('#flgs').val(flg);
+		$('#category').val(contet);
+		$('#creditCaredPayMonthwise').attr('action', 'categorySelect?mainmenu='+mainmenu+'&time='+datetime);
+		$("#creditCaredPayMonthwise").submit();
+	}
 	/*$(document).ready(function() {
 		if($('#hidAuth').val() == "5" || mainmenu == "AuditingCreditCardPay"){
 			$(".divdisplay").css("display", "none");
@@ -91,6 +97,8 @@
 		{{ Form::hidden('creditCardId', '', array('id' => 'creditCardId')) }}
 		<!-- {{ Form::hidden('hidAuth', Auth::user()->userclassification, array('id' => 'hidAuth')) }} -->
 		{{ Form::hidden('content', '', array('id' => 'content')) }}
+		{{ Form::hidden('category', '', array('id' => 'category')) }}
+		{{ Form::hidden('flgs','', array('id' => 'flgs')) }}
 		
 		<!-- Year Bar Start -->
 		{{ Form::hidden('selMonth', $request->selMonth, array('id' => 'selMonth')) }}
@@ -201,13 +209,15 @@
 						<!-- <td align="center"> {{ $data->mainDate }} </td> -->
 						<td align="center">{{ $data->creditCardDate }}</td>
 						<td>
-							<a href="javascript:contentView('{{ $data->creditCardContent }}');">
-								{{ $data->creditCardContent }}
-							</a>
+							{{ $data->creditCardContent }}
 						</td>
 						<td align="right">{{ number_format($data->creditCardAmount) }}</td>
 						<td align="center">@if($data->rdoBill == "1")有@endif</td>
-						<td>{{ $data->Category }}</td>
+						<td>
+							<a href="javascript:contentView('{{ $data->categoryId }}','1');">
+								{{ $data->Category }}
+							</a>
+						</td>
 						<td>{{ $data->remarks }}</td>
 						<td align="center">
 							@if($data->file != "")
