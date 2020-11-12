@@ -335,7 +335,7 @@ class Accounting extends Model {
 								'bankIdTo' => $request->transfer,
 								'amount' => preg_replace("/,/", "", $request->transferAmount),
 								'fee' => preg_replace("/,/", "", $request->transferFee),
-								'content' => $request->transferContent,
+								// 'content' => $request->transferContent,
 								'remarks' => $request->transFerRemarks,
 								'fileDtl' => $fileName,
 								'pageFlg' => 2,
@@ -436,7 +436,7 @@ class Accounting extends Model {
 								'accountNumberFrom' => $bankacc[1],
 								'amount' => preg_replace("/,/", "", $request->autoDebitAmount),
 								'fee' => preg_replace("/,/", "", $request->autoDebitFee),
-								'content' => $request->autoDebitContent,
+								// 'content' => $request->autoDebitContent,
 								'remarks' => $request->autoDebitRemarks,
 								'fileDtl' => $fileName,
 								'pageFlg' => 3,
@@ -862,7 +862,6 @@ class Accounting extends Model {
 
 
 	public static function AccBalance($bankId,$accNo,$startDate,$prevDate) {
-
 		$curDate = date('Y-m-d');
 		$db = DB::connection('mysql');
 			$query = $db->table('acc_cashregister')
@@ -878,14 +877,13 @@ class Accounting extends Model {
 			$query = $query->WHERERAW("SUBSTRING(date,1,7) <= '$prevDate'");
 		}			
 			$query = $query->get();
-			// $query = $query->toSql();dd($query);
 
 		return $query;
 	}
 
-	public static function fnGetRecordPreviousForAmountCheck($from_date,$bankId,$accNo) {
+	public static function fnGetRecordPreviousForAmountCheck($from_date) {
 		$tbl_name = "acc_cashregister";
-		$conditionAppend = "AND (transcationType != 9) AND bankIdFrom = $bankId AND accountNumberFrom = $accNo";
+		$conditionAppend = "AND (transcationType != 9)";
 		
 		$sql = "SELECT SUBSTRING(date, 1, 7) AS date FROM $tbl_name 
 			WHERE (date < '$from_date' $conditionAppend) ORDER BY date ASC";

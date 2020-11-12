@@ -20,7 +20,7 @@
 		} else {
 			setDatePicker("dob");
 		}
-		if ($('#loanName').val() != "") {
+		if ($('#loanName').val() != "" || $('#edit_flg').val() == 1) {
 			$("#autoDebitContent").attr("disabled", "disabled");
 		} else {
 			$("#autoDebitContent").removeAttr("disabled");

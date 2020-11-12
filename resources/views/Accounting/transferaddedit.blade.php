@@ -21,7 +21,7 @@
 			$("#browseEmp").removeAttr("disabled");
 			$("#clearEmp").removeAttr("disabled");
 		}
-		if ($('#txt_empname').val() != "") {
+		if ($('#txt_empname').val() != "" || $('#edit_flg').val() == 1) {
 			$("#transferContent").attr("disabled", "disabled");
 		} else {
 			$("#transferContent").removeAttr("disabled");
