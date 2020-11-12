@@ -60,7 +60,14 @@
 						<th class="tac">{{ trans('messages.lbl_loanname') }}</th>
 						<th class="tac">{{ trans('messages.lbl_amount') }}</th>
 						<th class="tac">{{ trans('messages.lbl_interest') }}</th>
-						<th class="tac">{{ trans('messages.lbl_notneed') }}</th>
+						<th class="tac">
+							{{ trans('messages.lbl_notneed') }}
+							@if(count($getLoanDtls) != 0)
+								<input  type="checkbox" name="loanAllCheck" 
+									id="loanAllCheck" class="loanAllCheck" 
+									onclick="loanAllCheck();">
+							@endif
+						</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -130,7 +137,8 @@
 										'data-label' => trans('messages.lbl_fee'))) }}
 							</td>
 							<td align="center">
-								<input  type="checkbox" name="loan[]" id="loan[]" class="loanchk" 
+								<input  type="checkbox" name="loan[]" id="loan[]" 
+									class="loanchk" 
 									value="<?php  echo $loan->loanName."$".$loan->loanId."$".($loan->loanAmount * 10000)."$".$loan->monthInterest."$".$j; ?>">
 							</td>
 						</tr>

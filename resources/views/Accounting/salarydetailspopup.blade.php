@@ -57,7 +57,14 @@
 						<th class="tac">{{ trans('messages.lbl_empName') }}</th>
 						<th class="tac">{{ trans('messages.lbl_amount') }}</th>
 						<th class="tac">{{ trans('messages.lbl_fee') }}</th>
-						<th class="tac">{{ trans('messages.lbl_notneed') }}</th>
+						<th class="tac">
+							{{ trans('messages.lbl_notneed') }}
+							@if(count($getSalaryDtls) != 0)
+								<input  type="checkbox" name="salAllCheck" 
+									id="salAllCheck" class="salAllCheck" 
+									onclick="salAllCheck();">
+							@endif
+						</th>
 					</tr>
 				</thead>
 				<tbody>

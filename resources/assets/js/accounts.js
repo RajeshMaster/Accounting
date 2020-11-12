@@ -178,7 +178,7 @@ $(document).ready(function() {
 			} else {
 				$('#'+"loanBank"+res[4]).attr("style", "background-color:none");
 			}
-			if ($('#'+"loanAmt"+res[4]).val() == "" || $('#'+"loanAmt"+res[4]).val() == 0) {
+			if ($('#'+"loanAmt"+res[4]).val() == "") {
 				$('#'+"loanAmt"+res[4]).attr("style", "background-color: #E88F8F;text-align:right;");
 				loanerr = 1;
 				return false;
@@ -1007,5 +1007,28 @@ function GetInvoicepopup() {
 	} else {
 		alert("Please select Date field");
 	}
-
+}
+function salAllCheck() {
+	var salAllCheck = $('input[class=salAllCheck]:not(:checked)').val();
+	if (salAllCheck == undefined) {
+		$('.salarychk').prop("checked",true);
+	} else {
+		$('.salarychk').prop("checked",false);
+	}
+}
+function invAllCheck() {
+	var invAllCheck = $('input[class=invAllCheck]:not(:checked)').val();
+	if (invAllCheck == undefined) {
+		$('.invoicechk').prop("checked",true);
+	} else {
+		$('.invoicechk').prop("checked",false);
+	}
+}
+function loanAllCheck() {
+	var loanAllCheck = $('input[class=loanAllCheck]:not(:checked)').val();
+	if (loanAllCheck == undefined) {
+		$('.loanchk').prop("checked",true);
+	} else {
+		$('.loanchk').prop("checked",false);
+	}
 }

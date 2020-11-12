@@ -55,7 +55,14 @@
 						<th class="tac">{{ trans('messages.lbl_paymentdate') }}</th>
 						<th class="tac">{{ trans('messages.lbl_custname') }}</th>
 						<th class="tac">{{ trans('messages.lbl_paidamt') }}</th>
-						<th class="tac">{{ trans('messages.lbl_notneed') }}</th>
+						<th class="tac">
+							{{ trans('messages.lbl_notneed') }}
+							@if(count($TotEstquery) != 0)
+								<input  type="checkbox" name="invAllCheck" 
+									id="invAllCheck" class="invAllCheck" 
+									onclick="invAllCheck();">
+							@endif
+						</th>
 					</tr>
 				</thead>
 				<tbody>
