@@ -880,4 +880,14 @@ class Accounting extends Model {
 
 		return $query;
 	}
+
+	public static function fnGetRecordPreviousForAmountCheck($from_date) {
+		$tbl_name = "acc_cashregister";
+		$conditionAppend = "AND (transcationType != 9)";
+		
+		$sql = "SELECT SUBSTRING(date, 1, 7) AS date FROM $tbl_name 
+			WHERE (date < '$from_date' $conditionAppend) ORDER BY date ASC";
+		$cards = DB::select($sql);
+		return $cards;
+	}
 }

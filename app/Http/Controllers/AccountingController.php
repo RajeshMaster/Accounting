@@ -169,7 +169,6 @@ class AccountingController extends Controller {
 			$dbrecord[]=$value->date;
 		}
 
-
 		$est_query1 = Accounting::fnGetCashExpenseRecordPrevious($from_date);
 
 		$dbprevious = array();
@@ -202,8 +201,7 @@ class AccountingController extends Controller {
 		$cashDetails =array();
 		$i = 0;
 		$balanceAmtonDownTr = 0;
-
-
+		$checkPrevious = Accounting::fnGetRecordPreviousForAmountCheck(substr($start, 0, 7));
 		foreach ($cashDetailsIndex as $key => $value) {
 			$cashDetails[$i]['id'] = $value->id;
 			$cashDetails[$i]['date'] = $value->date;
@@ -251,7 +249,7 @@ class AccountingController extends Controller {
 
 				if ($bankNameforCheck != $value->Bank_NickName) {
 					$curBal = $baseAmt[0]->amount;
-					if (empty($est_query1)) {
+					if (empty($checkPrevious)) {
 						if ($bankNameforCheck != $value->Bank_NickName) {
 							$curBal = $baseAmt[0]->amount;
 						}
