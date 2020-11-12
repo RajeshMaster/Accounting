@@ -203,14 +203,14 @@
 			<colgroup>
 				<col width="4%">
 				<col width="9%">
-				<col width="16%">
+				<col width="11%">
 				<col width="">
 				<col width="8%">
 				<col width="8%">
 				<!-- <col width="8%"> -->
 				<col width="14%">
 				<col width="3%">
-				<col width="8%" class="divdisplay">
+				<col width="7%" class="divdisplay">
 			</colgroup>
 
 			<thead class="CMN_tbltheadcolor">
@@ -320,7 +320,6 @@
 									{{ number_format($debitAmt) }}
 								@endif
 							@endif
-
 							<!-- <span style="background-color: red;"></span> <?php print_r($debitToal); ?> -->
 						</td>
 						<td align="right">
@@ -355,7 +354,7 @@
 					@if($data['content'] != 'Loan')
 						@if($data['fee'] != "")
 							<tr >
-								<td  colspan="4"></td>
+								<td  colspan="4" align="right">{{ trans('messages.lbl_fee') }}</td>
 								<td colspan="" align="right"> {{ number_format($data['fee']) }}</td>
 								<td colspan="4"></td>
 							</tr>

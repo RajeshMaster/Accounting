@@ -275,9 +275,7 @@ class AccountingController extends Controller {
 				}
 				$cashDetails[$i]['curBal'] = $curBal;
 				$cashDetails[$i]['balanceAmtonDownTr'] = $curBal;
-
 			}
-
 
 			$bankNameforCheck = $value->Bank_NickName;
 			$i++;
