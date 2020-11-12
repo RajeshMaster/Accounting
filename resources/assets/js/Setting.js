@@ -525,6 +525,14 @@ function fnaddedittwofield(location,mainmenu,tablename,flag) {
 
 						   if (data != "") {
 
+						   		var res = $.parseJSON(data);
+
+						   		var orderid=res.orderid;
+
+								var totalid=res.totalid;
+
+								var data=orderid;
+
 								// $('#swaptable1 tr:last').remove();
 
 								$('#textbox1').val('');
@@ -862,6 +870,14 @@ function fnaddeditthreefield(mainmenu,tablename,flag) {
 							// alert(data);
 
 							if (data != "") {
+
+								var res = $.parseJSON(data);
+
+								var orderid=res.orderid;
+
+								var totalid=res.totalid;
+
+								var data=orderid;
 
 								 $('#selectbox1').val('');
 

@@ -72,7 +72,7 @@ class SettingController extends Controller {
 	 		echo json_encode($orderidarray);
 		} else {
 			$orderidval = Setting::Orderidgenerate($tbl_name);
-	 		$orderidarray['orderid'] = $orderidval+1;
+	 		$orderidarray['orderid'] = $orderidval;
 	 		$ins_query=Setting::insertquery($tbl_name,$request);
 	 		$location="";
 	 		$orderidval = Setting::Orderidgenerateforbranchtotal($location,$tbl_name);
@@ -120,8 +120,12 @@ class SettingController extends Controller {
 
 		$tbl_name = $request->tablename;
 		$orderidval = Setting::Orderidgenerate($tbl_name);
-	 	echo $orderid = $orderidval;
-	 	$ins_query=Setting::insertquerytwofield($tbl_name,$request,$orderid);
+		$orderidarray['orderid'] = $orderidval;
+	 	$ins_query=Setting::insertquerytwofield($tbl_name,$request,$orderidval);
+	 	$location="";
+ 		$orderidval = Setting::Orderidgenerateforbranchtotal($location,$tbl_name);
+ 		$orderidarray['totalid'] = $orderidval;
+ 		echo json_encode($orderidarray);
 	}
 
 	function selectthreefieldDatas(Request $request) {
@@ -249,12 +253,13 @@ class SettingController extends Controller {
 		} 
 
 		$tbl_name = $request->tablename;
-
-			$orderidval = Setting::Orderidgenerate($tbl_name);
-
-	 		echo $orderid = $orderidval+1;
-
-	 		$ins_query=Setting::insertqueryforbranch($tbl_name,$request);
+		$orderidval = Setting::Orderidgenerate($tbl_name);
+		$orderidarray['orderid'] = $orderidval;
+	 	$ins_query=Setting::insertqueryforbranch($tbl_name,$request);
+	 	$location="";
+ 		$orderidval = Setting::Orderidgenerateforbranchtotal($location,$tbl_name);
+ 		$orderidarray['totalid'] = $orderidval;
+ 		echo json_encode($orderidarray);
 
 	}
 

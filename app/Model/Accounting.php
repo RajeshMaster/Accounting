@@ -452,7 +452,8 @@ class Accounting extends Model {
 		$query = DB::table('emp_mstemployees')
 						->select('Emp_ID','FirstName','LastName','nickname','KanaFirstName','KanaLastName',DB::RAW("CONCAT(FirstName,' ', LastName) AS Empname"),DB::RAW("CONCAT(KanaFirstName,'　', KanaLastName) AS Kananame"))
 						->WHERE('delFlg', '=', 0)
-						->whereIn('Emp_ID', $empIdArr)
+						->WHERE('Emp_ID', 'NOT LIKE', '%NST%')
+						->whereNotIn('Emp_ID', $empIdArr)
 						->orderBy('Emp_ID', 'ASC')
 						->get();
 		return $query;
