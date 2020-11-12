@@ -172,7 +172,7 @@
 			
 			<div class="col-xs-12 mt5">
 				<div class="col-xs-3 text-right clr_blue">
-					<label>{{ trans('messages.lbl_mainsubject') }}<span class="fr ml2 red"> * </span></label>
+					<label>{{ trans('messages.lbl_mainsubject') }}<span class="fr ml2 red" style="visibility: hidden"> * </span></label>
 				</div>
 				<div class="col-xs-9">
 					{{ Form::select('autoDebitMainExp',[null=>'']+$mainExpDetail,(isset($autodebitEdit[0]->subjectId)) ? $autodebitEdit[0]->subjectId : '',

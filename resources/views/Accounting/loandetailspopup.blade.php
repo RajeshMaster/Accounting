@@ -101,7 +101,7 @@
 								{{ $loan->loanName}}
 							</td>
 							<td align="right">
-								{{ Form::text('loanAmt'.$j,(isset($loan->loanAmount)) ? number_format($loan->loanAmount * 10000) : 0,
+								{{ Form::text('loanAmt'.$j,(isset($loan->loanAmount)) ? number_format($loan->loanAmount) : 0,
 								array('id'=>'loanAmt'.$j,
 										'name' => 'loanAmt'.$j,
 										'style'=>'text-align:right;padding-right:4px;',
@@ -113,8 +113,7 @@
 										'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
 										'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
 										'data-label' => trans('messages.lbl_amount'))) }}
-										<br/>
-								<!-- {{ $loan->loanAmount * 10000 }} -->
+								<br/>
 							</td>
 							<td align="right">
 								{{ Form::text('loanFee'.$j,(isset($loan->monthInterest)) ? number_format($loan->monthInterest) : 0,

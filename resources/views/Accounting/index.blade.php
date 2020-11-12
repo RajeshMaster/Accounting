@@ -283,6 +283,8 @@
 								{{ $data['employeDetails'] }}
 							@elseif($data['content'] == 'Invoice')
 								{{ $data['invoiceDetails'] }}
+							@elseif($data['content'] == 'Loan')
+								{{ $data['loanDetails'] }}
 							@else
 								{{ $data['subject'] }} 
 							@endif

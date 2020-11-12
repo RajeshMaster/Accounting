@@ -76,7 +76,7 @@ $(document).ready(function() {
 			},
 			rules: {
 				accDate: {required: true, date: true,minlength:10,correctformatdate: true},
-				transferMainExp: {required: true},
+				// transferMainExp: {required: true},
 				transferBank: {required: true},
 				transferAmount: {requiredWithZero: true},
 				txt_empname: {Anyonerequired: "#transferContent"},
@@ -130,7 +130,7 @@ $(document).ready(function() {
 			rules: {
 				accDate: {required: true, date: true,minlength:10,correctformatdate: true},
 				autoDebitBank: {required: true},
-				autoDebitMainExp: {required: true},
+				// autoDebitMainExp: {required: true},
 				autoDebitAmount: {requiredWithZero: true},
 				loanName: {Anyonerequired: "#autoDebitContent"},
 				autoDebitContent: {Anyonerequired: "#loanName"},

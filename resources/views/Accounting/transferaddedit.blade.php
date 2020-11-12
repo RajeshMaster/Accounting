@@ -170,7 +170,7 @@
 
 			<div class="col-xs-12 mt5">
 				<div class="col-xs-3 text-right clr_blue">
-					<label>{{ trans('messages.lbl_mainsubject') }}<span class="fr ml2 red"> * </span></label>
+					<label>{{ trans('messages.lbl_mainsubject') }}<span class="fr ml2 red" style="visibility: hidden"> * </span></label>
 				</div>
 				<div class="col-xs-9">
 					{{ Form::select('transferMainExp',[null=>''] + $mainExpDetail,(isset($transferEdit[0]->subjectId)) ? $transferEdit[0]->subjectId : '',
