@@ -249,7 +249,16 @@
 					</label>
 				</div>
 				<div class="col-xs-9 CMN_display_block">
-					{{ Form::text('autoDebitAmount',(isset($autodebitEdit[0]->amount)) ? number_format($autodebitEdit[0]->amount) : 0,
+					@if(isset($autodebitEdit[0]->content))
+						@if($autodebitEdit[0]->content != "Loan")
+							@php $loanAmount = $autodebitEdit[0]->amount; @endphp
+						@else
+							@php $loanAmount = $autodebitEdit[0]->amount + $autodebitEdit[0]->fee ; @endphp
+						@endif
+					@else
+						@php $loanAmount = 0; @endphp
+					@endif
+					{{ Form::text('autoDebitAmount',(isset($loanAmount)) ? number_format($loanAmount) : 0,
 							array('id'=>'autoDebitAmount',
 									'name' => 'autoDebitAmount',
 									'style'=>'text-align:right;padding-right:4px;',
@@ -261,19 +270,39 @@
 									'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
 									'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
 									'data-label' => trans('messages.lbl_amount'))) }}
-					<span class=" ml7 black" style=" font-weight: bold;font-size: 17px;"> / </span>
-					{{ Form::text('autoDebitFee',(isset($autodebitEdit[0]->fee)) ? number_format($autodebitEdit[0]->fee) : 0,
-							array('id'=>'autoDebitFee',
-									'name' => 'autoDebitFee',
-									'style'=>'text-align:right;padding-right:4px;',
-									'autocomplete' =>'off',
-									'class'=>'box7per ime_mode_disable ml7',
-									'onblur' => 'return fnSetZero11(this.id);',
-									'onfocus' => 'return fnRemoveZero(this.id);',
-									'onclick' => 'return fnRemoveZero(this.id);',
-									'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
-									'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
-									'data-label' => trans('messages.lbl_fee'))) }}
+					
+					@if(isset($autodebitEdit[0]->content))
+						@if($autodebitEdit[0]->content != "Loan")
+							<span class=" ml7 black" style=" font-weight: bold;font-size: 17px;"> / </span>
+							{{ Form::text('autoDebitFee',(isset($autodebitEdit[0]->fee)) ? number_format($autodebitEdit[0]->fee) : 0,
+								array('id'=>'autoDebitFee',
+										'name' => 'autoDebitFee',
+										'style'=>'text-align:right;padding-right:4px;',
+										'autocomplete' =>'off',
+										'class'=>'box7per ime_mode_disable ml7',
+										'onblur' => 'return fnSetZero11(this.id);',
+										'onfocus' => 'return fnRemoveZero(this.id);',
+										'onclick' => 'return fnRemoveZero(this.id);',
+										'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
+										'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
+										'data-label' => trans('messages.lbl_fee'))) }}
+						@else
+						@endif
+					@else
+						<span class=" ml7 black" style=" font-weight: bold;font-size: 17px;"> / </span>
+						{{ Form::text('autoDebitFee',(isset($autodebitEdit[0]->fee)) ? number_format($autodebitEdit[0]->fee) : 0,
+								array('id'=>'autoDebitFee',
+										'name' => 'autoDebitFee',
+										'style'=>'text-align:right;padding-right:4px;',
+										'autocomplete' =>'off',
+										'class'=>'box7per ime_mode_disable ml7',
+										'onblur' => 'return fnSetZero11(this.id);',
+										'onfocus' => 'return fnRemoveZero(this.id);',
+										'onclick' => 'return fnRemoveZero(this.id);',
+										'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
+										'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
+										'data-label' => trans('messages.lbl_fee'))) }}
+					@endif
 				</div>
 			</div>
 
