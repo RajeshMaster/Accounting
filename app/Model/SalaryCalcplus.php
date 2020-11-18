@@ -71,10 +71,10 @@ class SalaryCalcplus extends Model{
 	public static function fnGetmnthRecordNext($to_date) {
 		$db = DB::connection('mysql_Salary');
 		$query = $db->table('inv_salaryplus_main')
-					->SELECT(DB::raw("SUBSTRING(year_mon, 1, 7) AS date"))
+					->SELECT(DB::raw("SUBSTRING(date, 1, 7) AS date"))
 					->WHERE('delFlg','=',0)
-					->WHERE('year_mon','>=',$to_date)
-					->ORDERBY('year_mon', 'ASC')
+					->WHERE('date','>=',$to_date)
+					->ORDERBY('date', 'ASC')
 	 	 			->GET();
 	 	return $query;
 	}
