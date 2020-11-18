@@ -2050,7 +2050,8 @@ Class SalarycalcplusController extends Controller {
 				$salArr[$value]['LastName'] = $empName[0]->LastName;
 				$salArr[$value]['KanaFirstName'] = $empName[0]->KanaFirstName;
 				$salArr[$value]['KanaLastName'] = $empName[0]->KanaLastName;
-
+				$salArr[$value]['resign_id'] = $empName[0]->resign_id;
+				$salArr[$value]['resigndate'] = $empName[0]->resigndate;
 				$salArr[$value]['totSalary'] = $tot_salary_amt;
 				$salArr[$value]['salDetTotal'] = $salDetalilsTotal;
 				$salArr[$value]['dedDetTotal'] = $dedDetalilsTotal;

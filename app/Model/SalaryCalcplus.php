@@ -132,11 +132,9 @@ class SalaryCalcplus extends Model{
 
 		$db_mb = DB::connection('mysql_MB');
 		$employees = $db_mb->TABLE('emp_mstemployees')
-							->SELECT('Emp_ID',
-									 'FirstName',
-									 'LastName')
+							->SELECT('Emp_ID','FirstName','LastName','resign_id','resigndate')
 							->WHERE('delFLg', '=', 0)
-							->WHERE('resign_id', '=', 0)
+							// ->WHERE('resign_id', '=', 0)
 							->WHERE('Title', '=', 2)
 							->where('Emp_ID', 'NOT LIKE', '%NST%');
 			if ($flg == 0) {
@@ -341,7 +339,7 @@ class SalaryCalcplus extends Model{
 	public static function fnGetEmpName($Emp_ID){
 		$db = DB::connection('mysql_MB');
 		$query = $db->table('emp_mstemployees')
-					->select('FirstName','LastName','KanaFirstName','KanaLastName')
+					->select('FirstName','LastName','KanaFirstName','KanaLastName','resign_id','resigndate')
 					->where('Emp_ID','=',$Emp_ID)
 					->get();
 		return $query;

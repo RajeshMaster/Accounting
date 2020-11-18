@@ -423,6 +423,11 @@
 					@php $sNo = 1 @endphp
 					@foreach($salArr as $key => $sal)
 						@if(isset($sal['LastName']))
+						@php 
+		                  $resignYear = substr($sal['resigndate'], 0,4);
+		                  $resignMnth = substr($sal['resigndate'], 5,2);
+                		@endphp
+                		@if($sal['resign_id'] == 0 || $resignYear > $request->selYear || ($resignYear == $request->selYear && $resignMnth >= $request->selMonth))
 						<tr>
 							<td class="text-center sticky w_1 multiadd_td">
 	                    		{{ $sNo }}
@@ -530,6 +535,7 @@
 				   			</td>
 
 			   			</tr>
+			   			@endif
 			   			@endif
 			   		@php $sNo++ @endphp
 					@endforeach
