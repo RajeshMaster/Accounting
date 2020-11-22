@@ -217,8 +217,8 @@
 				<tr id="data">
 					<th class="vam">{{ trans('messages.lbl_sno') }}</th>
 					<th class="vam">{{ trans('messages.lbl_Date') }}</th>
-					<th class="vam">{{ trans('messages.lbl_content') }}</th>
 					<th class="vam">{{ trans('messages.lbl_subject') }}</th>
+					<th class="vam">{{ trans('messages.lbl_content') }}</th>
 					<th class="vam">{{ trans('messages.lbl_debit') }}</th>
 					<th class="vam">{{ trans('messages.lbl_credit') }}</th>
 					<!-- <th class="vam">{{ trans('messages.lbl_balance') }}</th> -->
@@ -296,7 +296,14 @@
 						<td align="center">
 							{{ $data['date'] }}
 						</td>
-						<td>{{ $data['content'] }}</td>
+						<td>
+							@if($data['pageFlg'] != 1)
+								{{ $data['content'] }}
+							@elseif($data['pageFlg'] == 1)
+								{{ $data['pagecashSubject'] }}
+							@else
+							@endif
+						</td>
 						<td> 
 							@if($data['content'] == 'Salary')
 								{{ $data['employeDetails'] }}
@@ -308,6 +315,9 @@
 								{{ $data['subject'] }} 
 							@endif
 
+							@if( $data['pageFlg'] == 1)
+								{{ $data['content'] }} 
+							@endif
 						</td>
 						<td align="right">
 							@if($data['transcationType'] == 1)

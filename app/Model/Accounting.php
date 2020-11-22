@@ -44,13 +44,22 @@ class Accounting extends Model {
 	}
 
 	public static function insCashDtls($request) {
+		// print_r($request->all());exit;
+
 		$statement = DB::select("show table status like 'acc_cashregister'");
 		if (isset($statement[0]->Auto_increment)) {
 			$orderId = $statement[0]->Auto_increment;
 		} else {
 			$orderId = 1;
 		}
-
+		$subject = "";
+		if ($request->transtype == 1) {
+			$subject = "Debit";
+		} elseif ($request->transtype == 2) {
+			$subject = "Credit";
+		} elseif ($request->transtype == 4) {
+			$subject = "Income";
+		}
 		$name = Session::get('FirstName').' '.Session::get('LastName');
 		$bankacc = explode('-', $request->bank);
 		$db = DB::connection('mysql');
@@ -66,6 +75,7 @@ class Accounting extends Model {
 							'amount' => preg_replace("/,/", "", $request->amount),
 							'fee' => preg_replace("/,/", "", $request->fee),
 							'content' => $request->content,
+							'loanName' => $subject,
 							'remarks' => $request->remarks,
 							'pageFlg' => 1,
 							'createdBy' => $name,
@@ -75,7 +85,14 @@ class Accounting extends Model {
 	}
 
 	public static function updCashDtls($request) {
-
+		$subject = "";
+		if ($request->transtype == 1) {
+			$subject = "Debit";
+		} elseif ($request->transtype == 2) {
+			$subject = "Credit";
+		} elseif ($request->transtype == 4) {
+			$subject = "Income";
+		}
 		$name = Session::get('FirstName').' '.Session::get('LastName');
 		$bankacc = explode('-', $request->bank);
 		$update=DB::table('acc_cashregister')
@@ -92,6 +109,7 @@ class Accounting extends Model {
 								'fee' => preg_replace("/,/", "", $request->fee),
 								'content' => $request->content,
 								'remarks' => $request->remarks,
+								'loanName' => $subject,
 								'pageFlg' => 1,
 								'transferId' => '',
 								'UpdatedBy' => $name
@@ -102,8 +120,8 @@ class Accounting extends Model {
 
 
 	public static function insCashreduction($request, $type, $maxID) {
-
 		$name = Session::get('FirstName').' '.Session::get('LastName');
+		$subject = "Transfer";
 		if($type == 1){
 			$bankacc = explode('-', $request->bank);
 			$transfer = explode('-', $request->transfer);
@@ -144,6 +162,7 @@ class Accounting extends Model {
 							'remarks' => $request->remarks,
 							'transferId' => $maxID,
 							'pageFlg' => 1,
+							'loanName' => $subject,
 							'orderId' => $orderId,
 							'createdBy' => $name,
 						]);
