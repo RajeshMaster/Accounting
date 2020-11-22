@@ -301,22 +301,25 @@
 								{{ $data['content'] }}
 							@elseif($data['pageFlg'] == 1)
 								{{ $data['pagecashSubject'] }}
-							@else
 							@endif
 						</td>
 						<td> 
-							@if($data['content'] == 'Salary')
-								{{ $data['employeDetails'] }}
-							@elseif($data['content'] == 'Invoice')
-								{{ $data['invoiceDetails'] }}
-							@elseif($data['content'] == 'Loan')
-								{{ $data['loanDetails'] }}
+							@if($data['pageFlg'] == '999')
+								{{ $data['pagecashSubject'] }}
 							@else
-								{{ $data['subject'] }} 
-							@endif
+							@if($data['content'] == 'Salary')
+									{{ $data['employeDetails'] }}
+								@elseif($data['content'] == 'Invoice')
+									{{ $data['invoiceDetails'] }}
+								@elseif($data['content'] == 'Loan')
+									{{ $data['loanDetails'] }}
+								@else
+									{{ $data['subject'] }} 
+								@endif
 
-							@if( $data['pageFlg'] == 1)
-								{{ $data['content'] }} 
+								@if( $data['pageFlg'] == 1)
+									{{ $data['content'] }} 
+								@endif
 							@endif
 						</td>
 						<td align="right">
@@ -350,7 +353,7 @@
 						@endif
 						</td>
 						<td class="divdisplay" align="center">
-							@if($data['id'] != $data['transferId'])
+							@if($data['id'] != $data['transferId'] && $data['pageFlg'] != '999')
 								<a href="javascript:editCashDtl('{{ $data['id'] }}','1','{{ $data['pageFlg'] }}');">
 									<img class="vam" src="{{ URL::asset('resources/assets/images/edit.png') }}" width="20" height="20">
 								</a>
