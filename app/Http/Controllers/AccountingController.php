@@ -223,6 +223,11 @@ class AccountingController extends Controller {
 			$cashDetails[$i]['employeDetails'] = "";
 			$cashDetails[$i]['invoiceDetails'] = "";
 			$cashDetails[$i]['loanDetails'] = "";
+			$cashDetails[$i]['pagecashSubject'] = "";
+			if($cashDetails[$i]['pageFlg'] == 1 || $cashDetails[$i]['pageFlg'] == 999) {
+				$cashDetails[$i]['pagecashSubject'] = $value->loanName;;
+			}
+
 			if ($cashDetails[$i]['content'] == 'Salary') {
 				$empIdArr[0] = $value->emp_ID;
 				$empname = Accounting::fnGetEmpDetails($request,$empIdArr);

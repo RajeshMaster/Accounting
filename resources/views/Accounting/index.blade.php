@@ -217,8 +217,8 @@
 				<tr id="data">
 					<th class="vam">{{ trans('messages.lbl_sno') }}</th>
 					<th class="vam">{{ trans('messages.lbl_Date') }}</th>
-					<th class="vam">{{ trans('messages.lbl_content') }}</th>
 					<th class="vam">{{ trans('messages.lbl_subject') }}</th>
+					<th class="vam">{{ trans('messages.lbl_content') }}</th>
 					<th class="vam">{{ trans('messages.lbl_debit') }}</th>
 					<th class="vam">{{ trans('messages.lbl_credit') }}</th>
 					<!-- <th class="vam">{{ trans('messages.lbl_balance') }}</th> -->
@@ -296,18 +296,31 @@
 						<td align="center">
 							{{ $data['date'] }}
 						</td>
-						<td>{{ $data['content'] }}</td>
-						<td> 
-							@if($data['content'] == 'Salary')
-								{{ $data['employeDetails'] }}
-							@elseif($data['content'] == 'Invoice')
-								{{ $data['invoiceDetails'] }}
-							@elseif($data['content'] == 'Loan')
-								{{ $data['loanDetails'] }}
-							@else
-								{{ $data['subject'] }} 
+						<td>
+							@if($data['pageFlg'] != 1)
+								{{ $data['content'] }}
+							@elseif($data['pageFlg'] == 1)
+								{{ $data['pagecashSubject'] }}
 							@endif
+						</td>
+						<td> 
+							@if($data['pageFlg'] == '999')
+								{{ $data['pagecashSubject'] }}
+							@else
+							@if($data['content'] == 'Salary')
+									{{ $data['employeDetails'] }}
+								@elseif($data['content'] == 'Invoice')
+									{{ $data['invoiceDetails'] }}
+								@elseif($data['content'] == 'Loan')
+									{{ $data['loanDetails'] }}
+								@else
+									{{ $data['subject'] }} 
+								@endif
 
+								@if( $data['pageFlg'] == 1)
+									{{ $data['content'] }} 
+								@endif
+							@endif
 						</td>
 						<td align="right">
 							@if($data['transcationType'] == 1)
@@ -340,7 +353,7 @@
 						@endif
 						</td>
 						<td class="divdisplay" align="center">
-							@if($data['id'] != $data['transferId'])
+							@if($data['id'] != $data['transferId'] && $data['pageFlg'] != '999')
 								<a href="javascript:editCashDtl('{{ $data['id'] }}','1','{{ $data['pageFlg'] }}');">
 									<img class="vam" src="{{ URL::asset('resources/assets/images/edit.png') }}" width="20" height="20">
 								</a>

@@ -1369,7 +1369,7 @@ return [
 	'lbl_auditing' => 'Auditing',
 	'lbl_autodebit' => 'Auto Debit',
 	'lbl_income' => '収入',
-	'lbl_fee' => '料金',
+	'lbl_fee' => '手数料',
 	'lbl_getsalary' => 'Get Salary Details',
 	'lbl_getloan' => 'Get Loan Details',
 	'lbl_notneed' => 'Not Needed',

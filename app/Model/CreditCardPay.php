@@ -49,6 +49,7 @@ class CreditCardPay extends Model {
 		$insert = 0;
 		$sheetData = $request->sheetData;
 		$selectedYearMonth = $request->mainYear.'-'.$request->selectedMonth.'-01';
+		$selectedYearMonthforAcc = $request->mainYear.'-'.$request->selectedMonth;
 		
 		$statement = DB::select("show table status like 'acc_cashregister'");
 		if (isset($statement[0]->Auto_increment)) {
@@ -75,7 +76,8 @@ class CreditCardPay extends Model {
 							'accountNumberFrom' => $bankacc[1],
 							'bankIdTo' => '',
 							'amount' => preg_replace("/,/", "",  $request->totalAmount),
-							'content' => 'Credit Card Payment',
+							'content' => 'C C Pay',
+							'loanName' => 'Credit Card Payment for '.$selectedYearMonthforAcc,
 							'remarks' => '',
 							'pageFlg' => 999,
 							'createdBy' => $name,
