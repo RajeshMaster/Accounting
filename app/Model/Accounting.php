@@ -840,6 +840,7 @@ class Accounting extends Model {
 
 		$name = Session::get('FirstName').' '.Session::get('LastName');
 		$invId = "";
+		$PaidInvId = "";
 		$insert = 1;
 
 		$db = DB::connection('mysql');
@@ -860,6 +861,17 @@ class Accounting extends Model {
 
 				$invArr = explode(":", $value);
 				$bankAcc = explode("-", $invArr['3']);
+				if (isset($invArr['4'])) {
+					$hidInvArr = explode(",", $invArr['4']);
+					foreach ($hidInvArr as $hidInvkey => $hidInvvalue) {
+						$invoiceId = $db->table('dev_invoices_registration')
+									->SELECT('dev_invoices_registration.*')
+									->where('id','=',$hidInvvalue)
+									->get();
+						$PaidInvId = $PaidInvId.$invoiceId[0]->user_id.",";
+					}
+					$PaidInvId = rtrim($PaidInvId,",");
+				}
 				$insert = $db->table('acc_cashregister')
 							->insert([
 									'loan_ID' => $invArr['1'], 
@@ -870,6 +882,7 @@ class Accounting extends Model {
 									'accountNumberFrom' => $bankAcc['1'],
 									'amount' => preg_replace("/,/", "", $invArr['2']),
 									'content' => "Invoice",
+									'remarks' => $PaidInvId,
 									'orderId' => $orderId,
 									'createdBy' => $name,
 									'pageFlg' => 4,

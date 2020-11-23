@@ -353,9 +353,9 @@ $(document).ready(function() {
 				var res = $(this).val().split("$"); 
 				if (getchecked == 1) {
 					getchecked = 2;
-					$('#hidInvid').val(res[0] + ":" + res[1] + ":" + $('#'+"invoiceAmt"+res[3]).val() + ":" + $('#'+"loanBank"+res[3]).val());
+					$('#hidInvid').val(res[0] + ":" + res[1] + ":" + $('#'+"invoiceAmt"+res[3]).val() + ":" + $('#'+"loanBank"+res[3]).val() + ":" + $('#'+"hidInvPaidId"+res[3]).val());
 				} else {
-					$('#hidInvid').val($('#hidInvid').val() + ";" + res[0] + ":" + res[1] + ":" + $('#'+"invoiceAmt"+res[3]).val() + ":" + $('#'+"loanBank"+res[3]).val());
+					$('#hidInvid').val($('#hidInvid').val() + ";" + res[0] + ":" + res[1] + ":" + $('#'+"invoiceAmt"+res[3]).val() + ":" + $('#'+"loanBank"+res[3]).val() + ":" + $('#'+"hidInvPaidId"+res[3]).val());
 				}
 			});
 			pageload();

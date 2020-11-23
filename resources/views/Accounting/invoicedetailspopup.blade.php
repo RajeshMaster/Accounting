@@ -127,6 +127,7 @@
 										'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
 										'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
 										'data-label' => trans('messages.lbl_amount'))) }}
+							{{ Form::hidden('hidInvPaidId'.$j, ($data->paid_id) ? $data->paid_id : '', array('id' => 'hidInvPaidId'.$j)) }}
 							</td>
 							
 							<td align="center">
