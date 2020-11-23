@@ -458,6 +458,9 @@ class AccountingController extends Controller {
 			$transferEdit[0]->date = "";
 			$transferEdit[0]->fileDtl = "";
 			$transferEdit[0]->Empname = "";
+			if ($transferEdit[0]->content == 'Salary') {
+				$transferEdit[0]->subjectId = "";
+			}
 		}
 		$bankDetail = Accounting::fetchbanknames();
 		$mainExpDetail = Accounting::getMainExpName();
@@ -725,6 +728,11 @@ class AccountingController extends Controller {
 			$autodebitEdit[0]->loan_ID = "";
 			$autodebitEdit[0]->loanName = "";
 			$autodebitEdit[0]->fileDtl = "";
+			$autodebitEdit[0]->remarks = "";
+			/*if ($autodebitEdit[0]->content == 'Invoice' || 
+				$autodebitEdit[0]->content == 'Loan') {
+				$autodebitEdit[0]->subjectId = "";
+			}*/
 		}
 		$bankDetail = Accounting::fetchbanknames();
 		$mainExpDetail = Accounting::getMainExpName();

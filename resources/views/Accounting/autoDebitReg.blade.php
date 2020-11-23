@@ -175,14 +175,24 @@
 					<label>{{ trans('messages.lbl_mainsubject') }}<span class="fr ml2 red" style="visibility: hidden"> * </span></label>
 				</div>
 				<div class="col-xs-9">
-					{{ Form::select('autoDebitMainExp',[null=>'']+$mainExpDetail,(isset($autodebitEdit[0]->subjectId)) ? $autodebitEdit[0]->subjectId : '',
-							array('name' =>'autoDebitMainExp',
-										'id'=>'autoDebitMainExp',
+					@if((isset($autodebitEdit[0]->content)) && ($autodebitEdit[0]->content == 'Invoice' || $autodebitEdit[0]->content == 'Loan') && ($request->edit_flg == 1))
+						{{ Form::text('autoDebitMainExpName',$autodebitEdit[0]->Subject,
+									array('id'=>'autoDebitMainExpName', 
+										'name' => 'autoDebitMainExpName',
+										'readonly' => 'true',
 										'data-label' => trans('messages.lbl_mainsubject'),
-										'class'=>'pl5 widthauto'))}}
+										'class'=>'pl5 widthauto disabled')) }}
+						{{ Form::hidden('autoDebitMainExp', $autodebitEdit[0]->subjectId , array('id' =>'autoDebitMainExp','name' =>'autoDebitMainExp')) }}
+					@else
+						{{ Form::select('autoDebitMainExp',[null=>'']+$mainExpDetail,(isset($autodebitEdit[0]->subjectId)) ? $autodebitEdit[0]->subjectId : '',
+								array('name' =>'autoDebitMainExp',
+											'id'=>'autoDebitMainExp',
+											'data-label' => trans('messages.lbl_mainsubject'),
+											'class'=>'pl5 widthauto'))}}
+
+					@endif
 				</div>
 			</div>
-			
 
 			<div class="col-xs-12 mt5">
 				<div class="col-xs-3 text-right clr_blue">
@@ -368,12 +378,22 @@
 					<label>{{ trans('messages.lbl_remarks') }}<span class="fr ml2 red" style="visibility: hidden;"> * </span></label>
 				</div>
 				<div class="col-xs-9">
-					{{ Form::textarea('autoDebitRemarks',(isset($autodebitEdit[0]->remarks)) ? $autodebitEdit[0]->remarks : '', 
+					@if(isset($autodebitEdit[0]->content) && $autodebitEdit[0]->content == 'Invoice' && $request->edit_flg == 1)
+						{{ Form::textarea('autoDebitRemarks',(isset($autodebitEdit[0]->remarks)) ? $autodebitEdit[0]->remarks : '', 
 									array('name' => 'autoDebitRemarks',
 											'id'=>'autoDebitRemarks', 
 											'autocomplete' =>'off',
-											'class' => 'box40per form-control',
+											'readonly' => 'true',
+											'class' => 'box40per form-control disabled',
 											'size' => '30x4')) }}
+					@else
+						{{ Form::textarea('autoDebitRemarks',(isset($autodebitEdit[0]->remarks)) ? $autodebitEdit[0]->remarks : '', 
+										array('name' => 'autoDebitRemarks',
+												'id'=>'autoDebitRemarks', 
+												'autocomplete' =>'off',
+												'class' => 'box40per form-control',
+												'size' => '30x4')) }}
+					@endif
 				</div>
 			</div>
 		

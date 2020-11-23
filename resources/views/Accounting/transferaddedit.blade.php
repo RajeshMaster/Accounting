@@ -173,13 +173,23 @@
 					<label>{{ trans('messages.lbl_mainsubject') }}<span class="fr ml2 red" style="visibility: hidden"> * </span></label>
 				</div>
 				<div class="col-xs-9">
-					{{ Form::select('transferMainExp',[null=>''] + $mainExpDetail,(isset($transferEdit[0]->subjectId)) ? $transferEdit[0]->subjectId : '',
-							array('id'=>'transferMainExp',
-									'name' => 'transferMainExp',
-									'class'=>'widthauto ime_mode_active',
-									'maxlength' => 10,
-									'onchange'=>'javascript:fngetsubsubject(this.value);',
-									'data-label' => trans('messages.lbl_mainsubject'))) }}
+					@if((isset($transferEdit[0]->content)) && ($transferEdit[0]->content == 'Salary') && ($request->edit_flg == 1))
+						{{ Form::text('transferMainExpName',$transferEdit[0]->Subject,
+									array('id'=>'transferMainExpName', 
+										'name' => 'transferMainExpName',
+										'readonly' => 'true',
+										'data-label' => trans('messages.lbl_mainsubject'),
+										'class'=>'pl5 widthauto disabled')) }}
+						{{ Form::hidden('transferMainExp', $transferEdit[0]->subjectId , array('id' =>'transferMainExp','name' =>'transferMainExp')) }}
+					@else
+						{{ Form::select('transferMainExp',[null=>''] + $mainExpDetail,(isset($transferEdit[0]->subjectId)) ? $transferEdit[0]->subjectId : '',
+								array('id'=>'transferMainExp',
+										'name' => 'transferMainExp',
+										'class'=>'widthauto ime_mode_active',
+										'maxlength' => 10,
+										'onchange'=>'javascript:fngetsubsubject(this.value);',
+										'data-label' => trans('messages.lbl_mainsubject'))) }}
+					@endif
 				</div>
 			</div>
 
