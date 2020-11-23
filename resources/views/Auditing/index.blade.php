@@ -331,27 +331,31 @@
    									@if($invbal[$key]['bal_amount'] > 0)
    										@if($invbal[$key]['bal_amount']==0)
 	   										@php 
-				   								$paidAmount = 0;
+				   								$difftot = $invbankcharge[$key]['bank_charge'] + $invbal[$key]['bal_amount'];
+	   											$paidAmount = $grandtotal - $difftot ;
 				   							@endphp 
-	   										 {{ 0 }} 
+	   										 {{ number_format($paidAmount) }} 
    										@else
 	   										@php 
-	   											$paidAmount = $grandtotal - $invbal[$key]['bal_amount'] ;
+	   											$difftot = $invbankcharge[$key]['bank_charge'] + $invbal[$key]['bal_amount'];
+	   											$paidAmount = $grandtotal - $difftot ;
 	   										@endphp
-	   											{{ number_format($paidAmount) }}
-	   										@endif
+	   										{{ number_format($paidAmount) }}
+	   									@endif
    									@else
    										@if($invbal[$key]['bal_amount']==0)
 	   										@php 
-				   								$paidAmount = $grandtotal;
+				   								$difftot = $invbankcharge[$key]['bank_charge'] + $invbal[$key]['bal_amount'];
+	   											$paidAmount = $grandtotal - $difftot ;
 				   							@endphp 
-	   										{{ number_format($grandtotal) }}
+	   										{{ number_format($paidAmount) }}
    										@else
 	   										@php 
-	   											$paidAmount = $grandtotal - $invbal[$key]['bal_amount'] 
+	   											$difftot = $invbankcharge[$key]['bank_charge'] + $invbal[$key]['bal_amount'];
+	   											$paidAmount = $grandtotal - $difftot ;
 	   										@endphp
-   											{{ number_format($paidAmount ) }}
-   										@endif
+	   										{{ number_format($paidAmount) }}
+	   									@endif
    									@endif
 	   							@else
 
@@ -390,29 +394,28 @@
 	   									@if($invbal[$key]['bal_amount'] > 0)
 	   										@if($invbal[$key]['bal_amount']==0)
 	   										@php  
-												$difftot = 0;
+												$difftot = $invbankcharge[$key]['bank_charge'];
 	   										@endphp
-	   											{{ 0 }}
+	   											{{ number_format($difftot) }}
 	   										@else
-	   										<span class="vat font-s15">△</span>
+	   											<span class="vat font-s15">△</span>
 												@php  
-													$difftot = $invbal[$key]['bal_amount'];
+													$difftot = $invbankcharge[$key]['bank_charge'] + $invbal[$key]['bal_amount'];
 	   											@endphp
-
-	   										{{ number_format($invbal[$key]['bal_amount']) }}
+	   											{{ number_format($difftot) }}
 	   										@endif
 	   									@else
 	   										@if($invbal[$key]['bal_amount']==0)
 												@php  
-													$difftot = 0;
+													$difftot = $invbankcharge[$key]['bank_charge'];
 		   										@endphp
-	   											{{ 0 }}
+	   											{{ number_format($difftot) }}
 	   										@else
-	   										<span class="font-s20">●</span>
+	   											<span class="font-s20">●</span>
 		   										@php  
-													$difftot = $invbal[$key]['bal_amount'];
-		   										@endphp
-	   										{{ number_format($invbal[$key]['bal_amount']) }}
+													$difftot = $invbankcharge[$key]['bank_charge'] + $invbal[$key]['bal_amount'];
+	   											@endphp
+	   											{{ number_format($difftot) }}
 	   										@endif
 	   									@endif
 	   									@else

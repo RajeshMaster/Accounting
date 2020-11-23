@@ -201,4 +201,15 @@ class Auditing extends Model {
 						);
 		return $update;
 	}
+
+	public static function fnGetBankChargeDetails($invid) {
+		$db=DB::connection('mysql');
+		$query=$db->TABLE($db->raw("(SELECT invoice_id,id,totalval,paid_id,
+						(SELECT SUM(replace(bank_charge, ',', '')) 
+						FROM dev_payment_registration WHERE invoice_id = $invid) 
+						as bank_charge FROM dev_payment_registration 
+						WHERE invoice_id = $invid ORDER BY id DESC) as tb1"))
+					->get();
+		return $query;
+	}
 }

@@ -369,6 +369,18 @@ class AuditingController extends Controller {
 			}
 		}
 	}
+	$invbankcharge=array();
+	for ($k=0; $k < count($inv); $k++) { 
+		$query = Auditing::fnGetBankChargeDetails($inv[$k]['id']);
+		if(!empty($query)) {
+			$split = explode(",", $query[0]->paid_id);
+			for ($y=0; $y < count($inv); $y++) {
+				if (end($split) == (isset($inv[$y]['id']) ? $inv[$y]['id'] : "") ) {
+					$invbankcharge[$y]['bank_charge'] = str_replace(",", "",$query[0]->bank_charge);
+				}
+			}
+		}
+	}
 	if($dbprevious == "" || $dbnext == "" || $db_year_month == "" || $year_month == "") {
 		$dbnext = array();
 		$dbprevious = array();
@@ -439,6 +451,7 @@ class AuditingController extends Controller {
 								'selectboxtext' => $selectboxtext,
 								'ckmail' => $ckmail,
 								'othersArray' => $othersArray,
+								'invbankcharge' => $invbankcharge,
 								'request' => $request]);
 	}
 
