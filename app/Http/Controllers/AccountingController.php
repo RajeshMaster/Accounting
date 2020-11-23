@@ -586,6 +586,7 @@ class AccountingController extends Controller {
 
 		$getBankDtls = array();
 		$salPaid = array();
+		$mainSub = Accounting::subjectName('Salary');
 		if ($request->transferDate != "") {
 			$getBankDtls = Accounting::fetchbanknames($request);
 			$salPaid = Accounting::getsalaryPaid($request->transferDate);
@@ -677,9 +678,10 @@ class AccountingController extends Controller {
 			}
 		}
 		return view('Accounting.salarydetailspopup',['request' => $request,
-														'getBankDtls' => $getBankDtls,
-														'getSalaryDtls' => $getSalaryDtls,
-														'SalaryDtls' => $SalaryDtls
+													'mainSub' => $mainSub,
+													'getBankDtls' => $getBankDtls,
+													'getSalaryDtls' => $getSalaryDtls,
+													'SalaryDtls' => $SalaryDtls
 													]);
 	}
 
@@ -816,6 +818,7 @@ class AccountingController extends Controller {
 		$getBankDtls = array();
 		$loanBankId = array();
 		$loanPaidArr = array();
+		$mainSub = Accounting::subjectName('Loan');
 		$getUserDtls = Accounting::getUserDtls($request);
 		// print_r($request->all());exit();
 		if ($request->autoDebitDate != "" && $request->userId != "") {
@@ -834,6 +837,7 @@ class AccountingController extends Controller {
 			}
 		}
 		return view('Accounting.loandetailspopup',['request' => $request,
+													'mainSub' => $mainSub,
 													'getUserDtls' => $getUserDtls,
 													'getLoanDtls' => $getLoanDtls,
 													'getBankDtls' => $getBankDtls,
@@ -882,7 +886,7 @@ class AccountingController extends Controller {
 		$bal_amount = 0;
         $balance_style = "";
         $grand_style = "";
-
+		$mainSub = Accounting::subjectName('Invoice');
 
 		if ($request->invoiceDate != "") {
 			$getInvoicePaid = Accounting::getLoanPaid($request,2);
@@ -914,6 +918,7 @@ class AccountingController extends Controller {
 	
 		
 		return view('Accounting.invoicedetailspopup',['request' => $request,
+													'mainSub' => $mainSub,
 													'TotEstquery' => $TotEstquery,
 													'invbal' => $invbal,
 													'grandtotal' => $grandtotal,

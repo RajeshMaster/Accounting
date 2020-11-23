@@ -225,6 +225,17 @@ class Accounting extends Model {
 		
 	}
 
+	public static function subjectName($subName) {
+
+		$db = DB::connection('mysql');
+		$query = $db->table('dev_expensesetting')
+						->SELECT('id','Subject','Subject_jp')
+						->where('Subject','=',$subName)
+						->orderBy('id','ASC')
+						->lists('Subject','id');
+		return $query;
+	}
+
 	public static function insTransferDtls($request,$fileName) {
 
 		$name = Session::get('FirstName').' '.Session::get('LastName');
@@ -264,7 +275,7 @@ class Accounting extends Model {
 									'amount' => preg_replace("/,/", "", $empArr['2']),
 									'fee' => preg_replace("/,/", "", $empArr['3']),
 									'content' => "Salary",
-									// 'subjectId' => $request->transferMainExp,
+									'subjectId' => $request->salarySub,
 									// 'remarks' => $request->transFerRemarks,
 									// 'fileDtl' => $fileName,
 									'orderId' => $orderId,
@@ -399,7 +410,7 @@ class Accounting extends Model {
 									'amount' => preg_replace("/,/", "", $loanArr['2']),
 									'fee' => preg_replace("/,/", "", $loanArr['3']),
 									'content' => "Loan",
-									// 'subjectId' => $request->autoDebitMainExp,
+									'subjectId' => $request->loanSub,
 									// 'remarks' => $request->autoDebitRemarks,
 									// 'fileDtl' => $fileName,
 									'orderId' => $orderId,
@@ -882,6 +893,7 @@ class Accounting extends Model {
 									'accountNumberFrom' => $bankAcc['1'],
 									'amount' => preg_replace("/,/", "", $invArr['2']),
 									'content' => "Invoice",
+									'subjectId' => $request->invSub,
 									'remarks' => $PaidInvId,
 									'orderId' => $orderId,
 									'createdBy' => $name,

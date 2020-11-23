@@ -297,17 +297,19 @@
 							{{ $data['date'] }}
 						</td>
 						<td>
-							@if($data['pageFlg'] != 1)
-								{{ $data['content'] }}
-							@elseif($data['pageFlg'] == 1)
+							@if($data['pageFlg'] == 1)
 								{{ $data['pagecashSubject'] }}
+							@elseif($data['subject'] != "")
+								{{ $data['subject'] }}
+							@else
+								{{ $data['content'] }}
 							@endif
 						</td>
 						<td> 
 							@if($data['pageFlg'] == '999')
 								{{ $data['pagecashSubject'] }}
 							@else
-							@if($data['content'] == 'Salary')
+								@if($data['content'] == 'Salary')
 									{{ $data['employeDetails'] }}
 								@elseif($data['content'] == 'Invoice')
 									{{ $data['invoiceDetails'] }}

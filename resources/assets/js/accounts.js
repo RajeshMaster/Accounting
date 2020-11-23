@@ -163,11 +163,19 @@ $(document).ready(function() {
 	$('.selectloan').click(function(){
 
 		var loanerr = 0;
+		var loansuberr = 0;
 		// document.getElementById("autoDebitContent").value = "";
 		var lengthOfUnchecked = $('input[class=loanchk]:not(:checked)').length;
 		if(lengthOfUnchecked == 0){
 			alert("Please select data");
 			return false;
+		}
+		if ($('#loanSub').val() == "") {
+			$('#loanSub').attr("style", "background-color: #E88F8F");
+			loansuberr = 1;
+			return false;
+		} else {
+			$('#loanSub').attr("style", "background-color:none");
 		}
 		$('input[class=loanchk]:not(:checked)').each(function(){
 			var res = $(this).val().split("$"); 
@@ -187,6 +195,9 @@ $(document).ready(function() {
 			}
 		});
 		if (loanerr) {
+			return false;
+		}
+		if (loansuberr) {
 			return false;
 		}
 
@@ -239,6 +250,7 @@ $(document).ready(function() {
 			return false;
 		}
 		var salerr = 0;
+		var salsuberr = 0;
 		// $('#txt_empname').val("");
 		// document.getElementById("empid").value = "";
 		// document.getElementById("transferContent").value = "";
@@ -248,6 +260,13 @@ $(document).ready(function() {
 			return false;
 		} else {
 			$('#salaryBank').attr("style", "background-color:none");
+		}
+		if ($('#salarySub').val() == "") {
+			$('#salarySub').attr("style", "background-color: #E88F8F");
+			salsuberr = 1;
+			return false;
+		} else {
+			$('#salarySub').attr("style", "background-color:none");
 		}
 		$('input[class=salarychk]:not(:checked)').each(function(){
 			var res = $(this).val().split("$"); 
@@ -260,7 +279,7 @@ $(document).ready(function() {
 				$('#'+"salAmt"+res[4]).attr("style", "background-color:none;text-align:right;");
 			}
 		});
-		if (salerr) {
+		if (salsuberr) {
 			return false;
 		}
 		
@@ -311,11 +330,19 @@ $(document).ready(function() {
 	$('.selectinvoice').click(function(){
 
 		var invoiceerr = 0;
+		var invSuberr = 0;
 		// document.getElementById("autoDebitContent").value = "";
 		var lengthOfUnchecked = $('input[class=invoicechk]:not(:checked)').length;
 		if(lengthOfUnchecked == 0){
 			alert("Please select data");
 			return false;
+		}
+		if ($('#invSub').val() == "") {
+			$('#invSub').attr("style", "background-color: #E88F8F");
+			invSuberr = 1;
+			return false;
+		} else {
+			$('#invSub').attr("style", "background-color:none");
 		}
 		$('input[class=invoicechk]:checked').each(function(){
 			var res = $(this).val().split("$"); 
@@ -343,6 +370,9 @@ $(document).ready(function() {
 			}
 		});
 		if (invoiceerr) {
+			return false;
+		}
+		if (invSuberr) {
 			return false;
 		}
 		var confirmgroup = confirm("Do You Want To Select Invoice?");

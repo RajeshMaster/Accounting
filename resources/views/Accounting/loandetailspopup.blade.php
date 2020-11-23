@@ -25,12 +25,22 @@
 			 <h3 class="modal-title custom_align"><B>{{ trans('messages.lbl_loandetail') }}</B></h3>
 		</div>
 		<div class="col-xs-12 mt5">
-			<div class="col-xs-5 clr_black text-left mt10">
+			<div class="col-xs-3 clr_black text-left mt10">
 				<label>
 					{{ trans('messages.lbl_date') }} : {{ $request->autoDebitDate }}
 				</label>
 			</div>
-			<div class="col-xs-6 clr_black text-right mt10">
+			<div class="col-xs-4 clr_black text-right mt10">
+				<label>
+					{{ trans('messages.lbl_subject') }} : 
+					{{ Form::select('loanSub',[null=>'']+$mainSub,'',				
+								array('name' =>'loanSub',
+											'id'=>'loanSub',
+											'data-label' => trans('messages.lbl_subject'),
+											'class'=>'pl5 box50per' ))}}
+				</label>
+			</div>
+			<div class="col-xs-4 clr_black text-right mt10">
 				<label>
 					{{ trans('messages.lbl_usernamesign') }} : 
 					{{ Form::select('assetsUser',[null=>'']+$getUserDtls,$request->userId,
