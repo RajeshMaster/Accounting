@@ -36,7 +36,7 @@
 			<div class="col-xs-4 clr_black text-right mt10">
 				<label>
 					{{ trans('messages.lbl_subject') }} : 
-					{{ Form::select('loanSub',$mainSub,				
+					{{ Form::select('loanSub',[null=>'']+$mainSub,($SubIdVal != "") ? $SubIdVal : '',				
 								array('name' =>'loanSub',
 											'id'=>'loanSub',
 											'data-label' => trans('messages.lbl_subject'),

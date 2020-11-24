@@ -595,6 +595,11 @@ class AccountingController extends Controller {
 		} else {
 			$mainSub = Accounting::subjectName('給料',2);
 		}
+		$SubIdVal = "";
+		if ($mainSub != array()) {
+			$SubId = array_keys($mainSub);
+			$SubIdVal = $SubId[0];
+		}
 		if ($request->transferDate != "") {
 			$getBankDtls = Accounting::fetchbanknames($request);
 			$salPaid = Accounting::getsalaryPaid($request->transferDate);
@@ -687,6 +692,7 @@ class AccountingController extends Controller {
 		}
 		return view('Accounting.salarydetailspopup',['request' => $request,
 													'mainSub' => $mainSub,
+													'SubIdVal' => $SubIdVal,
 													'getBankDtls' => $getBankDtls,
 													'getSalaryDtls' => $getSalaryDtls,
 													'SalaryDtls' => $SalaryDtls
@@ -836,6 +842,11 @@ class AccountingController extends Controller {
 		} else {
 			$mainSub = Accounting::subjectName('ローン',2);
 		}
+		$SubIdVal = "";
+		if ($mainSub != array()) {
+			$SubId = array_keys($mainSub);
+			$SubIdVal = $SubId[0];
+		}
 		$getUserDtls = Accounting::getUserDtls($request);
 		// print_r($request->all());exit();
 		if ($request->autoDebitDate != "" && $request->userId != "") {
@@ -855,6 +866,7 @@ class AccountingController extends Controller {
 		}
 		return view('Accounting.loandetailspopup',['request' => $request,
 													'mainSub' => $mainSub,
+													'SubIdVal' => $SubIdVal,
 													'getUserDtls' => $getUserDtls,
 													'getLoanDtls' => $getLoanDtls,
 													'getBankDtls' => $getBankDtls,
@@ -908,6 +920,11 @@ class AccountingController extends Controller {
 		} else {
 			$mainSub = Accounting::subjectName('請求書',2);
 		}
+        $SubIdVal = "";
+		if ($mainSub != array()) {
+			$SubId = array_keys($mainSub);
+			$SubIdVal = $SubId[0];
+		}
 		if ($request->invoiceDate != "") {
 			$getInvoicePaid = Accounting::getLoanPaid($request,2);
 
@@ -939,6 +956,7 @@ class AccountingController extends Controller {
 		
 		return view('Accounting.invoicedetailspopup',['request' => $request,
 													'mainSub' => $mainSub,
+													'SubIdVal' => $SubIdVal,
 													'TotEstquery' => $TotEstquery,
 													'invbal' => $invbal,
 													'grandtotal' => $grandtotal,
