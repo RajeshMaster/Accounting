@@ -135,10 +135,12 @@
 							{{ trans('messages.lbl_accounting') }}</a>
 						</li>
 						@endif
-						<li class="btn_auditing jop_btn">
-							<a href="{{ url('Auditing/index?mainmenu=Auditing&time='.date('Ymdhis')) }}">
-							{{ trans('messages.lbl_auditing') }}</a>
-						</li>
+						@if(Session::get('userclassification') == 4 || Session::get('userclassification') == 5)
+							<li class="btn_auditing jop_btn">
+								<a href="{{ url('Auditing/index?mainmenu=Auditing&time='.date('Ymdhis')) }}">
+								{{ trans('messages.lbl_auditing') }}</a>
+							</li>
+						@endif
 						@if(Session::get('userclassification') != 5)
 						@if(Session::get('userclassification') == 4 || Session::get('userclassification') == 1)
 						<li class="btn_setting jop_btn">
@@ -356,23 +358,25 @@
 			@endif
 			
 			@endif
-			@if(isset($request->mainmenu) && ($request->mainmenu == "Auditing" || $request->mainmenu == "salarycalcplus" || $request->mainmenu == "AuditingAccounting" || $request->mainmenu == "AudPayment" || $request->mainmenu == "AuditingCreditCardPay"))
-				<div id="auditing_sub_1">
-					<a href="{{ url('Auditing/index?mainmenu=Auditing&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_invoice') }}</a>
-				</div>
+			@if(Session::get('userclassification') == 4 || Session::get('userclassification') == 5)
+				@if(isset($request->mainmenu) && ($request->mainmenu == "Auditing" || $request->mainmenu == "salarycalcplus" || $request->mainmenu == "AuditingAccounting" || $request->mainmenu == "AudPayment" || $request->mainmenu == "AuditingCreditCardPay"))
+					<div id="auditing_sub_1">
+						<a href="{{ url('Auditing/index?mainmenu=Auditing&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_invoice') }}</a>
+					</div>
 
-				<div id="auditing_sub_2">
-					<a href="{{ url('salarycalcplus/index?mainmenu=salarycalcplus&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_salary_det') }}</a>
-				</div>
-				<div id="auditing_sub_3">
-					<a href="{{ url('Accounting/index?mainmenu=AuditingAccounting&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_accounting') }}</a>
-				</div>
-				<div id="auditing_sub_4">
-					<a href="{{ url('AudPayment/index?mainmenu=AudPayment&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_payment') }}</a>
-				</div>
-				<div id="auditing_sub_5">
-					<a href="{{ url('CreditCardPay/index?mainmenu=AuditingCreditCardPay&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_creditCard') }}</a>
-				</div>
+					<div id="auditing_sub_2">
+						<a href="{{ url('salarycalcplus/index?mainmenu=salarycalcplus&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_salary_det') }}</a>
+					</div>
+					<div id="auditing_sub_3">
+						<a href="{{ url('Accounting/index?mainmenu=AuditingAccounting&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_accounting') }}</a>
+					</div>
+					<div id="auditing_sub_4">
+						<a href="{{ url('AudPayment/index?mainmenu=AudPayment&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_payment') }}</a>
+					</div>
+					<div id="auditing_sub_5">
+						<a href="{{ url('CreditCardPay/index?mainmenu=AuditingCreditCardPay&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_creditCard') }}</a>
+					</div>
+				@endif
 			@endif
 
 			@if(Session::get('userclassification') != 5)

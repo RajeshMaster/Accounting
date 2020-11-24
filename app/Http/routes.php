@@ -536,67 +536,33 @@ Route::group(['prefix'=>'CreditCardPay','middleware' => 'auth'], function() {
 // Auditing Process by Rajesh
 Route::group(['prefix'=>'Auditing','middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
-    Route::any('index', 'AuditingController@index')->middleware('accessright:0,1,2,3,4,5');
-    Route::any('auditingexldwnldprocess', 'AuditingController@auditingexldwnldprocess')->middleware('accessright:0,1,2,3,4,5');
-    Route::any('invoiceallPdfdownloadAudit', 'AuditingController@invoiceallPdfdownloadAudit')->middleware('accessright:0,1,2,3,4,5');
-    Route::any('confirmProcess_ajax', 'AuditingController@confirmProcess_ajax')->middleware('accessright:0,1,2,3,4,5');
+    Route::any('index', 'AuditingController@index')->middleware('accessright:4,5');
+    Route::any('auditingexldwnldprocess', 'AuditingController@auditingexldwnldprocess')->middleware('accessright:4,5');
+    Route::any('invoiceallPdfdownloadAudit', 'AuditingController@invoiceallPdfdownloadAudit')->middleware('accessright:4,5');
+    Route::any('confirmProcess_ajax', 'AuditingController@confirmProcess_ajax')->middleware('accessright:4,5');
     
-});
-
-// Salary Calculation Process By Sastha
-Route::group(['prefix'=>'salarycalc','middleware' => 'auth'], function() {
-    Route::get('changelanguage', 'AjaxController@index')->middleware('accessright:0,1,2,3,4');
-    Route::any('index', 'SalarycalcController@index')->middleware('accessright:0,1,2,3,4');
-    Route::any('view', 'SalarycalcController@view')->middleware('accessright:0,1,2,3,4');
-    Route::any('edit', 'SalarycalcController@edit')->middleware('accessright:0,1,2,3,4');
-    Route::any('addedit', 'SalarycalcController@addedit')->middleware('accessright:0,1,2,3,4');
-    Route::any('addeditprocess', 'SalarycalcController@addeditprocess')->middleware('accessright:0,1,2,3,4');
-    Route::any('multieditprocess', 'SalarycalcController@multieditprocess')->middleware('accessright:0,1,2,3,4');
-    Route::any('multiregister', 'SalarycalcController@multiregister')->middleware('accessright:0,1,2,3,4');
-    Route::any('salarypopup', 'SalarycalcController@salarypopup')->middleware('accessright:0,1,2,3,4');
-    Route::any('empselectprocess', 'SalarycalcController@empselectprocess')->middleware('accessright:0,1,2,3,4');
-    Route::any('mailsendprocess', 'SalarycalcController@mailsendprocess')->middleware('accessright:0,1,2,3,4');
-    Route::any('salarydownload', 'SalarycalcController@salarydownload')->middleware('accessright:0,1,2,3,4');
-    Route::any('history', 'SalarycalcController@history')->middleware('accessright:0,1,2,3,4');
-    Route::any('getdataExists', 'SalarycalcController@getdataExists')->middleware('accessright:0,1,2,3,4');
-    Route::any('dataReg', 'SalarycalcController@dataReg')->middleware('accessright:0,1,2,3,4');
-    Route::get('getlastmonthdet', 'SalarycalcController@getlastmonthdet')->middleware('accessright:0,1,2,3,4');
 });
 
 // Salary Calculation Plus Process By Sastha
 Route::group(['prefix'=>'salarycalcplus','middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
-    Route::any('index', 'SalarycalcplusController@index');
-    Route::any('view', 'SalarycalcplusController@view');
-    Route::any('edit', 'SalarycalcplusController@edit');
-    Route::any('addedit', 'SalarycalcplusController@addedit');
-    Route::any('addeditprocess', 'SalarycalcplusController@addeditprocess');
-    Route::any('multieditprocess', 'SalarycalcplusController@multieditprocess');
-    Route::any('multiregister', 'SalarycalcplusController@multiregister');
-    Route::any('salarypopup', 'SalarycalcplusController@salarypopup');
-    Route::any('empselectprocess', 'SalarycalcplusController@empselectprocess');
-    Route::any('mailsendprocess', 'SalarycalcplusController@mailsendprocess');
-    Route::any('history', 'SalarycalcplusController@history');
-    Route::any('getdataExists', 'SalarycalcplusController@getdataExists');
-    Route::any('dataReg', 'SalarycalcplusController@dataReg');
-    Route::get('getsalamount', 'SalarycalcplusController@getajaxtotamt');
-    Route::get('getlastmonthdet', 'SalarycalcplusController@getlastmonthdet');
-    Route::any('salarydownloadprocess', 'SalarycalcplusController@salarydownloadprocess');
-    Route::any('transferdetailsdownload', 'SalarycalcplusController@transferdetailsdownload');
-    Route::any('salaryplusPayrollSingleDownload', 'SalarycalcplusController@salaryplusPayrollSingleDownload');
-    Route::any('gensenDownload', 'SalarycalcplusController@gensenDownload');
-    Route::any('getTransferedAmount', 'SalarycalcplusController@getTransferedAmount');
+    Route::any('index', 'SalarycalcplusController@index')->middleware('accessright:4,5');
+    Route::any('view', 'SalarycalcplusController@view')->middleware('accessright:4,5');
+    Route::any('history', 'SalarycalcplusController@history')->middleware('accessright:4,5');
+    Route::any('salarydownloadprocess', 'SalarycalcplusController@salarydownloadprocess')->middleware('accessright:4,5');
+    Route::any('salaryplusPayrollSingleDownload', 'SalarycalcplusController@salaryplusPayrollSingleDownload')->middleware('accessright:4,5');
+    Route::any('gensenDownload', 'SalarycalcplusController@gensenDownload')->middleware('accessright:4,5');
     // Start Madasamy Code 22/05/20
-    Route::any('historyTotal', 'SalarycalcplusController@historyTotal');
+    Route::any('historyTotal', 'SalarycalcplusController@historyTotal')->middleware('accessright:4,5');
     // End Madasamy Code 22/05/20
-    Route::any('salarypluspdfdownload', 'SalarycalcplusController@salarypluspdfdownload');
+    Route::any('salarypluspdfdownload', 'SalarycalcplusController@salarypluspdfdownload')->middleware('accessright:4,5');
 
 });
 
 // Audit Payment Screen Process by Rajesh
 Route::group(['prefix'=>'AudPayment','middleware' => 'auth'], function() {
     Route::get('changelanguage', 'AjaxController@index');
-    Route::any('index', 'AudPaymentController@index')->middleware('accessright:0,1,2,3,4,5');
-    Route::any('customerspecification', 'AudPaymentController@specificationview')->middleware('accessright:0,1,2,3,4,5');
-    Route::any('customerview', 'AudPaymentController@customerview')->middleware('accessright:0,1,2,3,4,5');
+    Route::any('index', 'AudPaymentController@index')->middleware('accessright:4,5');
+    Route::any('customerspecification', 'AudPaymentController@specificationview')->middleware('accessright:4,5');
+    Route::any('customerview', 'AudPaymentController@customerview')->middleware('accessright:4,5');
 });
