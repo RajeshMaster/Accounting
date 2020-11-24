@@ -157,6 +157,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Anouar\Fpdf\FpdfServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
     ],
     /*
     |--------------------------------------------------------------------------
@@ -205,6 +206,7 @@ return [
         'HTML' => Collective\Html\HtmlFacade::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Fpdf' => Anouar\Fpdf\Facades\Fpdf::class ,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 
 ];
