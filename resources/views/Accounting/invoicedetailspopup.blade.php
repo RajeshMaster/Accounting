@@ -1,4 +1,5 @@
 {{ HTML::script('resources/assets/js/accounts.js') }}
+{{ HTML::script('resources/assets/js/common.js') }}
 @php use App\Http\Helpers; @endphp
 <style>
 	.highlight { background-color: #428eab !important; }
@@ -128,7 +129,7 @@
 										'name' => 'invoiceAmt'.$j,
 										'style'=>'text-align:right;padding-right:4px;',
 										'autocomplete' =>'off',
-										'class'=>'box96per ime_mode_disable ml7',
+										'class'=>'box96per ime_mode_disable ml7 numonly',
 										'onblur' => 'return fnSetZero11(this.id);',
 										'onfocus' => 'return fnRemoveZero(this.id);',
 										'onclick' => 'return fnRemoveZero(this.id);',
