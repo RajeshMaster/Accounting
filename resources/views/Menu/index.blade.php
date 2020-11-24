@@ -276,10 +276,10 @@
 				</div>
 				@endif
 			</div>
-				@if(Auth::user()->userclassification == 4)
+			@if(Auth::user()->userclassification == 4)
 			<div class="col-xs-3" style="padding-left: 88px;">
 			@else
-			<div class="col-xs-3" style="padding-left: 150px;">
+			<div class="col-xs-3" style="padding-left: 130px;">
 			@endif
 				<div class="image_b div_inline mb15 mr120">
 					{{ trans('messages.lbl_accounting') }}</div>

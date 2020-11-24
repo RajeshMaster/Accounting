@@ -43,7 +43,7 @@
 											'class'=>'pl5 widthauto' ))}}
 				</label>
 			</div>
-			<div class="col-xs-4 clr_black text-right mt10">
+			<div class="col-xs-5 clr_black text-right mt10">
 				<label>
 					{{ trans('messages.lbl_usernamesign') }} : 
 					{{ Form::select('assetsUser',[null=>'']+$getUserDtls,$request->userId,
