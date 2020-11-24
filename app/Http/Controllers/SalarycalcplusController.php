@@ -22,6 +22,7 @@ use PHPExcel_Cell;
 use PHPExcel_Style_Conditional;
 use PHPExcel_Style_Color;
 use Maatwebsite\Excel\Facades\Excel;
+use PDF;
 
 
 Class SalarycalcplusController extends Controller {
@@ -2131,344 +2132,46 @@ Class SalarycalcplusController extends Controller {
 		return $salPlus;
 	}
 
-	// Used For MonthWise and YearWise payroll excel download 
-	public function salaryplusdownload(Request $request) {
-
-    	$hdn_empid = explode(',', $request->hdn_empid_arr);
-    	$template_name = 'resources/assets/uploadandtemplates/templates/salary_details_plus_index.xls';
-    	if (!isset($request->payrollExcel)) {
-    		// for historyTotal page payroll
-        	$excel_name='Salary+_'.$request->selYear;
-    	} else {
-    		// for index page payroll
-    		if ($request->get_prev_yr == 1) {
+	public function salarypluspdfdownload(Request $request) {
+		// Get salary Details
+		$hdn_empid = explode(',', $request->hdn_empid_arr);
+		if (!isset($request->payrollPdf)) {
+			// for historyTotal page payroll
+			$pdfName = 'Salary+_'.$request->selYear.urlencode('分給料明細');
+		} else {
+			// for index page payroll
+			if ($request->get_prev_yr == 1) {
 				$prev_month_ts = strtotime($request->selYear.'-'.$request->selMonth.' -1 month');
 				$date_month = date('Y-m', $prev_month_ts);
 				$date_month = explode('-', $date_month);
 				$request->selYear = $date_month[0];
 				$request->selMonth = $date_month[1];
 			}
-    		$excel_name='Salary+_'.$request->selYear.'_'.$request->selMonth;
-    	}
-		Excel::load($template_name, function($objTpl) use($request, $hdn_empid) {
-			
-			// Get salary Details
-			if (!isset($request->payrollExcel)) {
-				$salPlus = self::getSalaryDetailsTotal($hdn_empid,$request->selYear);
-			} else {
-				$salPlus = self::getSalaryDetailsTotal($hdn_empid,$request->selYear,$request->selMonth);
-			}
-			$salArr = $salPlus['salArr'];
-			$salArrTot = $salPlus['salArrTot'];
+			$pdfName = 'Salary+_'.$request->selYear.'_'.$request->selMonth.urlencode('分給料明細');
+		}
+		if (!isset($request->payrollPdf)) {
+			$salPlus = self::getSalaryDetailsTotal($hdn_empid,$request->selYear);
+		} else {
+			$salPlus = self::getSalaryDetailsTotal($hdn_empid,$request->selYear,$request->selMonth);
+		}
+		
+		$salArr = $salPlus['salArr'];
+		$temp_salaryDetails = $salPlus['salArrTot']['temp_salaryDetails'];
+		$temp_salaryDetails_DD = $salPlus['salArrTot']['temp_salaryDetails_DD'];
+		$tot_travel_amt = $salPlus['salArrTot']['tot_travel_amt'];
+		$salresult = $salPlus['salArrTot']['salresult'];
+		$dedresult = $salPlus['salArrTot']['dedresult'];
 
-			$objTpl->setActiveSheetIndex(0);
-        	$objTpl->getActiveSheet(0)->setSelectedCells('A1');
+		$salary_det = SalaryCalcplus::getsalaryDetails($request,'1');
+		$salary_ded = SalaryCalcplus::getsalaryDetails($request,'2');
 
-			$salary_det=SalaryCalcplus::getsalaryDetails($request,'1');
-			$salary_ded=SalaryCalcplus::getsalaryDetails($request,'2');
-			$k = 5;
-			$i = 1;
-			$fixed_column_1 = 4;
-			$fixed_column_2 = 4;
-			// For Salary Details
-			if (count($salary_det) != "") {
- 				for ($a = 0; $a < count($salary_det); $a++) {
- 					$record = self::num_to_letters($fixed_column_1);
- 					self::commonHeaders($objTpl,$record,$fixed_column_2,$salary_det[$a]->Name,'C0C0C0', 12);
-					$fixed_column_1++;
- 				}
- 				// For Total Payment
- 				$record = self::num_to_letters($fixed_column_1);
- 				self::commonHeaders($objTpl,$record,$fixed_column_2,'支給合計','FFC107', 14);
- 				$fixed_column_1 = $fixed_column_1 + 1;
+		$customPaper = array(0,0,820,1540);
+		$pdf = PDF::loadView('salarycalcplus.PdfView',
+			compact('request','salPlus','salArr','salary_det','salresult',
+					'temp_salaryDetails','dedresult','temp_salaryDetails_DD',
+					'salary_ded','tot_travel_amt'))->setPaper($customPaper);
+		return $pdf->download($pdfName.'.pdf');
 
- 			}
-			// For Salary Deduction
-			if (count($salary_ded) != "") {
- 				for ($b = 0; $b < count($salary_ded); $b++) {
- 					$record = self::num_to_letters($fixed_column_1);
- 					self::commonHeaders($objTpl,$record,$fixed_column_2,$salary_ded[$b]->Name,'C0C0C0', 12);
-					$fixed_column_1++;
- 				}
- 				// For Total Payment
- 				$record = self::num_to_letters($fixed_column_1);
- 				self::commonHeaders($objTpl,$record,$fixed_column_2,'控除合計','FFC107', 14);
- 				$fixed_column_1 = $fixed_column_1 + 1;
-
- 			}
- 			// For Travel Amount
- 			$record = self::num_to_letters($fixed_column_1);
-			self::commonHeaders($objTpl,$record,$fixed_column_2,'Travel','C0C0C0', 12);
-			$fixed_column_1 = $fixed_column_1 + 1;
-			// For Total Travel Amount
-			$record = self::num_to_letters($fixed_column_1);
-			self::commonHeaders($objTpl,$record,$fixed_column_2,'合計','FFC107', 14);
-			$fixed_column_1 = $fixed_column_1 + 1;
-			// For Total Amount
-			$record = self::num_to_letters($fixed_column_1);
-			self::commonHeaders($objTpl,$record,$fixed_column_2,'合計 金額','A3CECA', 14);
-
-			$travel_tot = '';
-			foreach ($salArr as $key => $value) {
-				$fullname = $value['FirstName'] . " " . $value['LastName']."\n";
-           		$kananame = $value['KanaFirstName'] . " " . $value['KanaLastName'];
-        		$objTpl->getActiveSheet()->getRowDimension($k)->setRowHeight(40);
-				$objTpl->getActiveSheet()->setCellValue('A'.$k, $i);
-				$objTpl->getActiveSheet()->getStyle('A'.$k)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-
-				$objTpl->getActiveSheet()->setCellValue('B'.$k, $value['Emp_ID']);
-				$objTpl->getActiveSheet()->getStyle('B'.$k)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-
-				// $objTpl->getActiveSheet()->setCellValue('C'.$k, ucwords(strtolower($value['LastName']))
-				// 	. ".".ucwords(mb_substr($value['FirstName'], 0, 1, 'utf-8')));
-				$objTpl->getActiveSheet()->setCellValue('C'.$k, stripslashes(strtoupper($fullname)).$kananame);
-				$objTpl->getActiveSheet()->getStyle('C'.$k)->getAlignment()->setWrapText(true);
-				$objTpl->getActiveSheet()->getStyle('C'.$k)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-
-				$l = 4;
-				$amt_sal = '';
-				foreach ($salary_det as $key_sal => $value_sal) {
-					$record = self::num_to_letters($l);
-					$amt_sal += (!empty($value['salDetTotal'][$value_sal->Salarayid]) && $value['salDetTotal'][$value_sal->Salarayid] != 0) ? $value['salDetTotal'][$value_sal->Salarayid]:'';
-					$objTpl->getActiveSheet()->setCellValue($record.$k, (!empty($value['salDetTotal'][$value_sal->Salarayid]) && $value['salDetTotal'][$value_sal->Salarayid] != 0)?number_format($value['salDetTotal'][$value_sal->Salarayid]):'');
-					$objTpl->getActiveSheet()->getStyle($record.$k)->getAlignment()->applyFromArray(
-										array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,)
-									);
-					$objTpl->getActiveSheet()->getStyle($record.$k)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-					$l++;
-				}
-				// For Total Payment Amount
-				$record = self::num_to_letters($l);
-				$objTpl->getActiveSheet()->setCellValue($record.$k, (!empty($amt_sal) && $amt_sal != 0)?number_format($amt_sal):'');
-				self::commonTotal($objTpl,$record,$k,'FFC107');
-				$l = $l + 1;
-
-				$amt_ded = '';
-				foreach ($salary_ded as $key_sal => $value_ded) {
-					$record = self::num_to_letters($l);
-					$amt_ded += (!empty($value['dedDetTotal'][$value_ded->Salarayid]) && $value['dedDetTotal'][$value_ded->Salarayid] != 0)?$value['dedDetTotal'][$value_ded->Salarayid]:'';
-					$objTpl->getActiveSheet()->setCellValue($record.$k, (!empty($value['dedDetTotal'][$value_ded->Salarayid]) && $value['dedDetTotal'][$value_ded->Salarayid] != 0)?number_format($value['dedDetTotal'][$value_ded->Salarayid]):'');
-					$objTpl->getActiveSheet()->getStyle($record.$k)->getAlignment()->applyFromArray(
-										array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,)
-									);
-					$objTpl->getActiveSheet()->getStyle($record.$k)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-					$l++;
-				}
-				// For Total Deduction Amount
-				$record = self::num_to_letters($l);
-				$objTpl->getActiveSheet()->setCellValue($record.$k, (!empty($amt_ded) && $amt_ded != 0)?number_format($amt_ded):'');
-				self::commonTotal($objTpl,$record,$k,'FFC107');
-				$l = $l + 1;
-
-				// For Travel
-				$record = self::num_to_letters($l);
-				$objTpl->getActiveSheet()->setCellValue($record.$k, (!empty($value['totTravel']) && $value['totTravel'] != 0)?number_format($value['totTravel']):'');
-				$objTpl->getActiveSheet()->getStyle($record.$k)->getAlignment()->applyFromArray(
-										array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,)
-									);
-				$objTpl->getActiveSheet()->getStyle($record.$k)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-				$l = $l + 1;
-				// For Travel Total Amount
-				$travel_tot += $value['totTravel'];
-				$record = self::num_to_letters($l);
-				$objTpl->getActiveSheet()->setCellValue($record.$k, (!empty($value['totTravel']) && $value['totTravel'] != 0)?number_format($value['totTravel']):'');
-				self::commonTotal($objTpl,$record,$k,'FFC107');
-				$l = $l + 1;
-
-				// For Total Amount
-				$tot_amt_fnl = '';
-				$tot_amt_fnl = $amt_sal + $amt_ded + $value['totTravel'];
-				$record = self::num_to_letters($l);
-				$objTpl->getActiveSheet()->setCellValue($record.$k, (!empty($tot_amt_fnl) && $tot_amt_fnl != 0)?number_format($tot_amt_fnl):'');
-				self::commonTotal($objTpl,$record,$k,'A3CECA');
-
-				$k++;
-				$i++;
-			}
-
-			// For Overall Total Process
-			$objTpl->getActiveSheet()->getRowDimension($k)->setRowHeight(22.5);
-			$objTpl->getActiveSheet()->mergeCells('A'.$k.':C'.$k);
-			$objTpl->getActiveSheet()->getStyle('A'.$k)->applyFromArray(
-							array(
-								'fill' => array(
-									'type' => PHPExcel_Style_Fill::FILL_SOLID,
-									'color' => array('rgb' => 'C0C0C0')
-								)
-							)
-						);
-			$objTpl->getActiveSheet()->getStyle('A'.$k)->getFont()->setBold( true );
-			$objTpl->getActiveSheet()->getStyle('A'.$k)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-			$objTpl->getActiveSheet()->setCellValue('A'.$k, '合計');
-			$fixed_column = 4;
-
-			// For Salary Details Total Amount ColumnWise
-			$tot_sub_det = '';
-			if (count($salary_det) != "") {
-				for ($i = 0; $i < count($salary_det); $i++) {
-					$record = self::num_to_letters($fixed_column);
-					if (isset($salArrTot['temp_salaryDetails'][$salary_det[$i]->Salarayid]) && $salArrTot['temp_salaryDetails'][$salary_det[$i]->Salarayid] != '') {
-						$tot_sub_det += $salArrTot['temp_salaryDetails'][$salary_det[$i]->Salarayid];
-						$objTpl->getActiveSheet()->setCellValue($record.$k, number_format($salArrTot['temp_salaryDetails'][$salary_det[$i]->Salarayid]));
-					} else {
-						$objTpl->getActiveSheet()->setCellValue($record.$k, '');
-					}
-					$objTpl->getActiveSheet()->getStyle($record.$k)->getAlignment()->applyFromArray(
-										array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,)
-									);
-					$objTpl->getActiveSheet()->getStyle($record.$k)->getFont()->setBold( true );
-					$objTpl->getActiveSheet()->getStyle($record.$k)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-					$objTpl->getActiveSheet()->getStyle($record.$k)->applyFromArray(
-							array(
-								'fill' => array(
-									'type' => PHPExcel_Style_Fill::FILL_SOLID,
-									'color' => array('rgb' => 'C0C0C0')
-								)
-							)
-						);
-					$fixed_column++;
-				}
-			}
-			// For Salary Details Amount
-			$record = self::num_to_letters($fixed_column);
-			$objTpl->getActiveSheet()->setCellValue($record.$k, (isset($tot_sub_det) && $tot_sub_det != '')?number_format($tot_sub_det):'');
-			$objTpl->getActiveSheet()->getStyle($record.$k)->getAlignment()->applyFromArray(
-								array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,)
-							);
-			$objTpl->getActiveSheet()->getStyle($record.$k)->getFont()->setBold( true );
-			$objTpl->getActiveSheet()->getStyle($record.$k)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-			$objTpl->getActiveSheet()->getStyle($record.$k)->applyFromArray(
-					array(
-						'fill' => array(
-							'type' => PHPExcel_Style_Fill::FILL_SOLID,
-							'color' => array('rgb' => 'FFC107')
-						)
-					)
-				);
-			$fixed_column = $fixed_column + 1;
-
-			// For Salary Deduction Total Amount ColumnWise
-			$tot_sub_ded = '';
-			if (count($salary_ded) != "") {
-				for ($j = 0; $j < count($salary_ded); $j++) {
-					$record = self::num_to_letters($fixed_column);
-					if (isset($salArrTot['temp_salaryDetails_DD'][$salary_ded[$j]->Salarayid]) && $salArrTot['temp_salaryDetails_DD'][$salary_ded[$j]->Salarayid] != '') {
-						$tot_sub_ded += $salArrTot['temp_salaryDetails_DD'][$salary_ded[$j]->Salarayid];
-						$objTpl->getActiveSheet()->setCellValue($record.$k, number_format($salArrTot['temp_salaryDetails_DD'][$salary_ded[$j]->Salarayid]));
-					} else {
-						$objTpl->getActiveSheet()->setCellValue($record.$k, '');
-					}
-					$objTpl->getActiveSheet()->getStyle($record.$k)->getAlignment()->applyFromArray(
-										array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,)
-									);
-					$objTpl->getActiveSheet()->getStyle($record.$k)->getFont()->setBold( true );
-					$objTpl->getActiveSheet()->getStyle($record.$k)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-					$objTpl->getActiveSheet()->getStyle($record.$k)->applyFromArray(
-							array(
-								'fill' => array(
-									'type' => PHPExcel_Style_Fill::FILL_SOLID,
-									'color' => array('rgb' => 'C0C0C0')
-								)
-							)
-						);
-					$fixed_column++;
-				}
-			}
-			// For Salary Details Amount
-			$record = self::num_to_letters($fixed_column);
-			$objTpl->getActiveSheet()->setCellValue($record.$k, (isset($tot_sub_ded) && $tot_sub_ded != '')?number_format($tot_sub_ded):'');
-			$objTpl->getActiveSheet()->getStyle($record.$k)->getAlignment()->applyFromArray(
-								array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,)
-							);
-			$objTpl->getActiveSheet()->getStyle($record.$k)->getFont()->setBold( true );
-			$objTpl->getActiveSheet()->getStyle($record.$k)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-			$objTpl->getActiveSheet()->getStyle($record.$k)->applyFromArray(
-					array(
-						'fill' => array(
-							'type' => PHPExcel_Style_Fill::FILL_SOLID,
-							'color' => array('rgb' => 'FFC107')
-						)
-					)
-				);
-			$fixed_column = $fixed_column + 1;
-
-			// For Travel Amount
-			$record = self::num_to_letters($fixed_column);
-			$objTpl->getActiveSheet()->setCellValue($record.$k, (isset($travel_tot) && $travel_tot != '')?number_format($travel_tot):'');
-			$objTpl->getActiveSheet()->getStyle($record.$k)->getAlignment()->applyFromArray(
-								array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,)
-							);
-			$objTpl->getActiveSheet()->getStyle($record.$k)->getFont()->setBold( true );
-			$objTpl->getActiveSheet()->getStyle($record.$k)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-			$objTpl->getActiveSheet()->getStyle($record.$k)->applyFromArray(
-					array(
-						'fill' => array(
-							'type' => PHPExcel_Style_Fill::FILL_SOLID,
-							'color' => array('rgb' => 'C0C0C0')
-						)
-					)
-				);
-			$fixed_column = $fixed_column + 1;
-
-			$record = self::num_to_letters($fixed_column);
-			$objTpl->getActiveSheet()->setCellValue($record.$k, (isset($travel_tot) && $travel_tot != '')?number_format($travel_tot):'');
-			$objTpl->getActiveSheet()->getStyle($record.$k)->getAlignment()->applyFromArray(
-								array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,)
-							);
-			$objTpl->getActiveSheet()->getStyle($record.$k)->getFont()->setBold( true );
-			$objTpl->getActiveSheet()->getStyle($record.$k)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-			$objTpl->getActiveSheet()->getStyle($record.$k)->applyFromArray(
-					array(
-						'fill' => array(
-							'type' => PHPExcel_Style_Fill::FILL_SOLID,
-							'color' => array('rgb' => 'FFC107')
-						)
-					)
-				);
-			$fixed_column = $fixed_column + 1;
-
-			// For Grand Total
-			$grand_total = '';
-			$grand_total = $tot_sub_det + $tot_sub_ded + $travel_tot;
-			$record = self::num_to_letters($fixed_column);
-			$objTpl->getActiveSheet()->setCellValue($record.$k, (isset($grand_total) && $grand_total != '')?number_format($grand_total):'');
-			$objTpl->getActiveSheet()->getStyle($record.$k)->getAlignment()->applyFromArray(
-								array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_RIGHT,)
-							);
-			$objTpl->getActiveSheet()->getStyle($record.$k)->getFont()->setBold( true );
-			$objTpl->getActiveSheet()->getStyle($record.$k)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-			$objTpl->getActiveSheet()->getStyle($record.$k)->applyFromArray(
-					array(
-						'fill' => array(
-							'type' => PHPExcel_Style_Fill::FILL_SOLID,
-							'color' => array('rgb' => 'A3CECA')
-						)
-					)
-				);
-
-			$objTpl->getActiveSheet()->freezePane('A5');
-			$objTpl->getActiveSheet()->freezePane('B5');
-			$objTpl->getActiveSheet()->freezePane('C5');
-			$objTpl->getActiveSheet()->freezePane('D5');
-			if (!isset($request->payrollExcel)) {
-				$objTpl->getActiveSheet()->setCellValue('C2', $request->selYear.'年分   給与一覧');
-			} else {
-				$objTpl->getActiveSheet()->setCellValue('C2', $request->selYear.'年 '.$request->selMonth.'月分   給与一覧');
-			}
-			$objTpl->setActiveSheetIndex(0);
-        	$objTpl->getActiveSheet(0)->setSelectedCells('A1');
-        	if (!isset($request->payrollExcel)) {
-				$objTpl->getActiveSheet()->setTitle('Salary_'.$request->selYear);
-			} else {
-				$objTpl->getActiveSheet()->setTitle('Salary_'.$request->selYear.'_'.$request->selMonth);
-			}
-        	$flpath='.xls';
-        	header('Content-Type: application/vnd.ms-excel');
-        	header('Content-Disposition: attachment;filename="'.$flpath.'"');
-        	header('Cache-Control: max-age=0');
-        	
-        })->setFilename($excel_name)->download('xls');
-    }
-	// End Madasamy 31/07/2020
+	}
 
 }

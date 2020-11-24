@@ -1400,4 +1400,6 @@ return [
 	'lbl_yearly' => 'Yearly Wise',
 	'lbl_ccMonthWise' => 'CC Month Wise',
 	'lbl_MonthWise' => 'Monthly Details',
+	'lbl_pdfdownload' => 'Payroll PDF Download',
+
 ];

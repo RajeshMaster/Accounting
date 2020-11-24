@@ -583,13 +583,14 @@ Route::group(['prefix'=>'salarycalcplus','middleware' => 'auth'], function() {
     Route::get('getlastmonthdet', 'SalarycalcplusController@getlastmonthdet');
     Route::any('salarydownloadprocess', 'SalarycalcplusController@salarydownloadprocess');
     Route::any('transferdetailsdownload', 'SalarycalcplusController@transferdetailsdownload');
-    Route::any('salaryplusdownload', 'SalarycalcplusController@salaryplusdownload');
     Route::any('salaryplusPayrollSingleDownload', 'SalarycalcplusController@salaryplusPayrollSingleDownload');
     Route::any('gensenDownload', 'SalarycalcplusController@gensenDownload');
     Route::any('getTransferedAmount', 'SalarycalcplusController@getTransferedAmount');
     // Start Madasamy Code 22/05/20
     Route::any('historyTotal', 'SalarycalcplusController@historyTotal');
     // End Madasamy Code 22/05/20
+    Route::any('salarypluspdfdownload', 'SalarycalcplusController@salarypluspdfdownload');
+
 });
 
 // Audit Payment Screen Process by Rajesh

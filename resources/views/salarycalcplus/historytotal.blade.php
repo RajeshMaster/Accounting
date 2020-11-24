@@ -48,7 +48,8 @@
 
 	function getData(selYear,time) {
 	    $('#selYear').val(selYear);
-	    $("#salarycalchistoryTotal").submit();
+	    $('#salarycalchistoryTotal').attr('action', 'historyTotal?mainmenu='+mainmenu+'&time='+datetime);
+		$("#salarycalchistoryTotal").submit();
 	}
 
 </script>
@@ -120,7 +121,7 @@
 	}
 
 	tbody td.multiadd_td, thead th.multiadd_th 	{
-	  width: 120px;
+	  /*width: 120px;*/
 	  min-width: 90px;
 	}
 
@@ -230,9 +231,10 @@
 				class="btn btn-info box80 pull-left">
 				<span class="fa fa-arrow-left"></span>{{ trans('messages.lbl_back') }}
 			</a>
-
-			<a href="javascript:salaryplusdownload('{{ $request->mainmenu }}');" class="btn btn-primary pull-right" title="Download" style="color: white;">
-				<span class="fa fa-download"></span>{{ trans('messages.lbl_salledger') }}
+			<a href="javascript:salarypluspdfdownload('{{ $request->mainmenu }}');" 
+				class="btn btn-primary pull-right" title="Download" 
+				style="color: white;"><span class="fa fa-download"></span>
+					{{ trans('messages.lbl_pdfdownload') }}
 			</a>
 		</div>
 		<br>
@@ -285,7 +287,7 @@
  						<th rowspan="2" colspan="1" class="vam multiadd_th">{{ trans('messages.lbl_travel_exp') }}</th>
  						<th rowspan="2" colspan="1" class="vam multiadd_th" style="min-width: 110px;background-color: #f39c1280 !important">{{ trans('messages.lbl_total') }}</th>
 					@endif
-					<th rowspan="2" colspan="1" class="vam multiadd_th" style="min-width: 110px;background-color: #00a65a45 !important;">{{ trans('messages.lbl_grandtot') }}</th>
+					<th rowspan="2" colspan="1" class="vam multiadd_th" style="min-width: 120px;background-color: #00a65a45 !important;">{{ trans('messages.lbl_grandtot') }}</th>
 				</tr>
 				<tr>
 					@if(count($salary_det)!="")
@@ -405,14 +407,14 @@
 				   				@endif
 				   				@php($x++)
 				   			@endforeach
-
+				   			@if($sal_det_cnt != '')
 				   			<td class="text-right pr10 multiadd_td" style="min-width: 110px;background-color: #f39c1280 !important">
 					   			@if($sal['totSalary'] != "" && $sal['salExist'])
 					   				{{ number_format($sal['totSalary'])}}
 					   			@else
 				   				@endif
 				   			</td>
-
+				   			@endif
 			   				@php($y = 0)
 			   				@foreach ($dedresult as $key2 => $value2)
 				   				@if(isset($temp_salaryDetails_DD[$key2]) && $temp_salaryDetails_DD[$key2] != '0')
@@ -430,26 +432,32 @@
 				   			@endforeach
 					   	
 
-				   			<td class="text-right pr10 multiadd_td" style="min-width: 110px;color: red;background-color: #f39c1280 !important;">
-					   			@if($sal['totDetuct'] != "" && $sal['salExist'])
-					   					{{ number_format($sal['totDetuct'])}}
-					   			@else
-				   				@endif
-				   			</td>
+				   			@if($sal_ded_cnt != '')
+					   			<td class="text-right pr10 multiadd_td" style="min-width: 110px;color: red;background-color: #f39c1280 !important;">
+						   			@if($sal['totDetuct'] != "" && $sal['salExist'])
+						   					{{ number_format($sal['totDetuct'])}}
+						   			@else
+					   				@endif
+					   			</td>
+					   		@endif
 
-				   			<td class="text-right pr10 multiadd_td">
-				   				@if($sal['totTravel'] != "" && $sal['salExist'])
-				   					{{ number_format($sal['totTravel'])}}
-					   			@else
-				   				@endif
-			   				</td>
+					   		@if($tot_travel_amt != '')
+					   			<td class="text-right pr10 multiadd_td">
+					   				@if($sal['totTravel'] != "" && $sal['salExist'])
+					   					{{ number_format($sal['totTravel'])}}
+						   			@elseif($sal['totTravel'] == "" && $sal['salExist'])
+						   				0
+					   				@endif
+				   				</td>
 
-			   				<td class="text-right pr10 multiadd_td" style="min-width: 110px;background-color: #f39c1280 !important">
-				   				@if($sal['totTravel'] != "" && $sal['salExist'])
-					   					{{ number_format($sal['totTravel']) }}
-					   			@else
-				   				@endif
-			   				</td>
+				   				<td class="text-right pr10 multiadd_td" style="min-width: 110px;background-color: #f39c1280 !important">
+					   				@if($sal['totTravel'] != "" && $sal['salExist'])
+						   					{{ number_format($sal['totTravel']) }}
+						   			@elseif($sal['totTravel'] == "" && $sal['salExist'])
+						   				0
+					   				@endif
+				   				</td>
+				   			@endif
 
 				   			<td class="text-right pr10 multiadd_td" style="min-width: 110px;background-color: #00a65a45 !important;">
 			   					@if($sal['grandTotal'] != "" && $sal['salExist'])
@@ -467,7 +475,7 @@
 		@else
 			<div class="text-center fr">{{ trans('messages.lbl_nodatafound') }}</div>
 		@endif
-
+		{{ Form::close() }}
 	</article>
 </div>
 @endsection
