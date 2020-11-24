@@ -134,6 +134,10 @@ $(document).ready(function(){
               || (Number(value) <= Number($(params).val())); 
       },'Please Select Date Less Than '+$('#DOB').val());
     // End Birth Validation
+
+    $(".numonly").on('input', function (e) {
+      $(this).val($(this).val().replace(/[^0-9]/g, ''));
+    });
 });
 $(document).on('keyup keypress', 'form input[type="text"]', function(e) {
   if(e.keyCode == 13) {

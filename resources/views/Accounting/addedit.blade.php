@@ -238,7 +238,7 @@
 														'onclick' => 'return fnRemoveZero(this.id);',
 														'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
 														'data-label' => trans('messages.lbl_amount'),
-														'class'=>'box15per form-control pl5 ime_mode_disable')) }}
+														'class'=>'box15per form-control pl5 ime_mode_disable numonly')) }}
 
 				<span class="feeclass"> / </span>
 				{{ Form::text('fee',(isset($editData[0]->fee)) ? number_format($editData[0]->fee) : 0,array('id'=>'fee', 
@@ -253,7 +253,7 @@
 														'onclick' => 'return fnRemoveZero(this.id);',
 														'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
 														'data-label' => trans('messages.lbl_fee'),
-														'class'=>'box7per form-control pl5 ime_mode_disable feeclass')) }}
+														'class'=>'box7per form-control pl5 ime_mode_disable feeclass numonly')) }}
 			</div>
 		</div>
 		

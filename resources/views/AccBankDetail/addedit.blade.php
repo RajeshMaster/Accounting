@@ -130,7 +130,7 @@
 										'style'=>'text-align:right;padding-right:4px;',
 										'onkeypress' => 'return isNumberKey(event)',
 										'onkeyup'=>'return fnMoneyFormat(this.id,"jp")',
-										'class'=>'box25per ime_mode_disable',
+										'class'=>'box25per ime_mode_disable numonly',
 										'data-label' => trans('messages.lbl_amount'))) }}
 				@else
 
@@ -141,7 +141,7 @@
 										'style'=>'text-align:right;padding-right:4px;',
 										'onkeypress' => 'return isNumberKey(event)',
 										'onkeyup'=>'return fnMoneyFormat(this.id,"jp")',
-										'class'=>'box25per ime_mode_disable',
+										'class'=>'box25per ime_mode_disable numonly',
 										'data-label' => trans('messages.lbl_amount'))) }}
 				@endif
 			</div>
