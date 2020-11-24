@@ -220,6 +220,7 @@ class AccountingController extends Controller {
 			$baseAmt = Accounting::baseAmt($value->bankIdFrom,$value->accountNumberFrom);
 			$cashDetails[$i]['subId'] = $value->subjectId;
 			$cashDetails[$i]['subject'] = $value->Subject;
+			$cashDetails[$i]['Subject_jp'] = $value->Subject_jp;
 			$cashDetails[$i]['employeDetails'] = "";
 			$cashDetails[$i]['invoiceDetails'] = "";
 			$cashDetails[$i]['loanDetails'] = "";
@@ -589,7 +590,11 @@ class AccountingController extends Controller {
 
 		$getBankDtls = array();
 		$salPaid = array();
-		$mainSub = Accounting::subjectName('Salary');
+		if(Session::get('languageval') == "en") {
+			$mainSub = Accounting::subjectName('Salary',1);
+		} else {
+			$mainSub = Accounting::subjectName('給料',2);
+		}
 		if ($request->transferDate != "") {
 			$getBankDtls = Accounting::fetchbanknames($request);
 			$salPaid = Accounting::getsalaryPaid($request->transferDate);
@@ -826,7 +831,11 @@ class AccountingController extends Controller {
 		$getBankDtls = array();
 		$loanBankId = array();
 		$loanPaidArr = array();
-		$mainSub = Accounting::subjectName('Loan');
+		if(Session::get('languageval') == "en") {
+			$mainSub = Accounting::subjectName('Loan',1);
+		} else {
+			$mainSub = Accounting::subjectName('ローン',2);
+		}
 		$getUserDtls = Accounting::getUserDtls($request);
 		// print_r($request->all());exit();
 		if ($request->autoDebitDate != "" && $request->userId != "") {
@@ -894,8 +903,11 @@ class AccountingController extends Controller {
 		$bal_amount = 0;
         $balance_style = "";
         $grand_style = "";
-		$mainSub = Accounting::subjectName('Invoice');
-
+        if(Session::get('languageval') == "en") {
+			$mainSub = Accounting::subjectName('Invoice',1);
+		} else {
+			$mainSub = Accounting::subjectName('請求書',2);
+		}
 		if ($request->invoiceDate != "") {
 			$getInvoicePaid = Accounting::getLoanPaid($request,2);
 

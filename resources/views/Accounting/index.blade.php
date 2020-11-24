@@ -299,8 +299,10 @@
 						<td>
 							@if($data['pageFlg'] == 1)
 								{{ $data['pagecashSubject'] }}
-							@elseif($data['subject'] != "")
+							@elseif($data['subject'] != "" && Session::get('languageval') == "en")
 								{{ $data['subject'] }}
+							@elseif($data['Subject_jp'] != "" && Session::get('languageval') == "jp")
+								{{ $data['Subject_jp'] }}
 							@else
 								{{ $data['content'] }}
 							@endif

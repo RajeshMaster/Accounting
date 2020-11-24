@@ -225,14 +225,21 @@ class Accounting extends Model {
 		
 	}
 
-	public static function subjectName($subName) {
+	public static function subjectName($subName,$flg) {
 
 		$db = DB::connection('mysql');
 		$query = $db->table('dev_expensesetting')
-						->SELECT('id','Subject','Subject_jp')
-						->where('Subject','=',$subName)
-						->orderBy('id','ASC')
-						->lists('Subject','id');
+						->SELECT('id','Subject','Subject_jp');
+		if ($flg == 1) {
+			$query = $query->where('Subject','=',$subName)
+							->orderBy('id','ASC')
+							->lists('Subject','id');
+		} else {
+			$query = $query->where('Subject_jp','=',$subName)
+							->orderBy('id','ASC')
+							->lists('Subject_jp','id');
+		}
+						
 		return $query;
 	}
 

@@ -32,11 +32,11 @@
 			<div class="col-xs-4 clr_black text-right mt10">
 				<label>
 					{{ trans('messages.lbl_subject') }} : 
-					{{ Form::select('salarySub',[null=>'']+$mainSub,'',
+					{{ Form::select('salarySub',$mainSub,
 									array('name' =>'salarySub',
 											'id'=>'salarySub',
 											'data-label' => trans('messages.lbl_subject'),
-											'class'=>'pl5 box40per' ))}}
+											'class'=>'pl5 widthauto' ))}}
 				</label>
 			</div>
 			<div class="col-xs-4 clr_black text-right mt10">
