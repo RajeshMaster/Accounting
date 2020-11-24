@@ -238,7 +238,7 @@
 			{{ Form::hidden('sal_ded_count', count($salary_ded) , array('id' => 'sal_ded_count')) }}
 			{{ Form::hidden('get_prev_yr', '' , array('id' => 'get_prev_yr')) }}
 			<!-- used for common excel dwld -->
-			{{ Form::hidden('payrollExcel', '' , array('id' => 'payrollExcel')) }}
+			{{ Form::hidden('payrollPdf', '' , array('id' => 'payrollPdf')) }}
 			<!-- used for common excel dwld -->
 
 		<!-- Start Heading -->

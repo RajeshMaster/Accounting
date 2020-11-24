@@ -1,12 +1,15 @@
 {{ HTML::script('resources/assets/js/accounts.js') }}
 <style>
 	.highlight { background-color: #428eab !important; }
-	 .modal {
+	.modal {
 			position: fixed;
 			top: 50% !important;
 			left: 50%;
 			transform: translate(-50%, -50%);
-	 }
+	}
+	select{
+		min-width: 100px;
+	}
 	 
 </style>
 {{ Form::open(array('name'=>'salaryDtlsPopup', 'id'=>'salaryDtlsPopup',

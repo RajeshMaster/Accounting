@@ -2,12 +2,15 @@
 @php use App\Http\Helpers; @endphp
 <style>
 	.highlight { background-color: #428eab !important; }
-	 .modal {
-			position: fixed;
-			top: 50% !important;
-			left: 50%;
-			transform: translate(-50%, -50%);
-	 }
+	.modal {
+		position: fixed;
+		top: 50% !important;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+	select{
+		min-width: 100px;
+	}
 	 
 </style>
 {{ Form::open(array('name'=>'invoiceDtlsPopup', 'id'=>'invoiceDtlsPopup',

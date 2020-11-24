@@ -170,7 +170,7 @@ $(document).ready(function() {
 			alert("Please select data");
 			return false;
 		}
-		if ($('#loanSub').val() == "") {
+		if ($('#loanSub').val() == "undefined" || $('#loanSub').val() == "") {
 			$('#loanSub').attr("style", "background-color: #E88F8F");
 			loansuberr = 1;
 			return false;
@@ -261,7 +261,7 @@ $(document).ready(function() {
 		} else {
 			$('#salaryBank').attr("style", "background-color:none");
 		}
-		if ($('#salarySub').val() == "") {
+		if ($('#salarySub').val() == "undefined" || $('#salarySub').val() == "") {
 			$('#salarySub').attr("style", "background-color: #E88F8F");
 			salsuberr = 1;
 			return false;
@@ -337,7 +337,7 @@ $(document).ready(function() {
 			alert("Please select data");
 			return false;
 		}
-		if ($('#invSub').val() == "") {
+		if ($('#invSub').val() == "undefined" || $('#invSub').val() == "") {
 			$('#invSub').attr("style", "background-color: #E88F8F");
 			invSuberr = 1;
 			return false;
