@@ -582,7 +582,7 @@
                                                         'ondragstart'=>'return false',
                                                         'ondrop'=>'return false',
                                                         "onkeyup" => "return fnCalculateAmount('$i', this.name, this.value,$a)",
-                                                        'class'=>'box99per form-control pl5 mt3 tar')) }}
+                                                        'class'=>'box99per form-control pl5 mt3 tar numonly')) }}
                                     {{ Form::hidden('unit_price_hdn'.$i,isset($invoicedata[$i]->$unit_priceloop) ? ($invoicedata[$i]->$unit_priceloop) : '',array('id'=>'unit_price_hdn'.$i,
                                                         'name' => 'unit_price_hdn'.$i)) }}
                             </div>

@@ -233,7 +233,7 @@
 														'data-label' => trans('messages.lbl_amount'),
 														'onkeyup'=>'javascript:fnMoneyFormat(this.id,"jp");javascript:fnMoneyFormatcashadd(this.name, this.value);',
 														'onkeypress'=>'return isNumberFormat(event);',
-														'class'=>'box15per form-control pl5 ime_mode_disable')) }}
+														'class'=>'box15per form-control pl5 ime_mode_disable numonly')) }}
 			</div>
 		</div>
 		<div class="col-xs-12 mt5">

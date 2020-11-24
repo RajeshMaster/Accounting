@@ -374,7 +374,7 @@
 										  				"onkeyup" => "return fnCalculateAmount('$i', this.name, this.value,$a)",
 										  				"onfocus" => "return fnControlAddOrRemove('$i')",
 										  				"onblur" => "return fnControlAddOrRemove('$i')",
-														'class'=>'box99per form-control pl5 mt3 tar')) }}
+														'class'=>'box99per form-control pl5 mt3 tar numonly')) }}
 							</div>
 						</td>
 						<td>

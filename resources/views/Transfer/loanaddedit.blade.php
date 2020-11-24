@@ -180,7 +180,7 @@
 															'name' => 'amount',
 															'maxlength' => '14',
 															'style'=>'text-align:right;padding-right:4px;',
-															'class'=>'box15per ime_mode_disable',
+															'class'=>'box15per ime_mode_disable numonly',
 															'onkeypress' => 'return isNumberKey(event)',
 															'onkeyup'=>'return fnMoneyFormat(this.id,"jp")',
 															'data-label' => trans('messages.lbl_amount'))) }}
