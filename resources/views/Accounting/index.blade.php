@@ -246,7 +246,7 @@
 				@endphp
 				@forelse($cashDetails as $key => $data)
 					@if($preBankName != $data['Bank_NickName'] && $preBankName !="")
-						<tr style="background-color: #f1a2a2">
+						<tr style="background-color: lightgrey">
 							<td colspan="4" align="right">
 								{{ trans('messages.lbl_total') }}
 							</td>
@@ -269,7 +269,7 @@
 						</tr>
 					@endif
 					@if($lastBankName != $data['Bank_NickName'])
-						<tr style="background-color: lightgrey">
+						<tr style="background-color: #f1a2a2">
 							<td colspan="5"> 
 								{{ $data['Bank_NickName'] }}     
 							</td>
@@ -398,7 +398,7 @@
 				@endforelse
 
 				@if(count($cashDetails) > 0)
-					<tr style="background-color: #f1a2a2">
+					<tr style="background-color: lightgrey">
 						<td colspan="4" align="right">
 							{{ trans('messages.lbl_total') }}
 						</td>

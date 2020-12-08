@@ -207,7 +207,7 @@ class AccountingController extends Controller {
 			$cashDetails[$i]['content'] = $value->content;
 			$cashDetails[$i]['amount'] = $value->amount;
 			$cashDetails[$i]['fee'] = $value->fee;
-			$cashDetails[$i]['Bank_NickName'] = $value->Bank_NickName;
+			$cashDetails[$i]['Bank_NickName'] = $value->FirstName;
 			$cashDetails[$i]['transcationType'] = $value->transcationType;
 			$cashDetails[$i]['remarks'] = $value->remarks;
 			$cashDetails[$i]['baseAmt'] = 0;
@@ -231,7 +231,7 @@ class AccountingController extends Controller {
 
 			if ($cashDetails[$i]['content'] == 'Salary') {
 				$empIdArr[0] = $value->emp_ID;
-				$empname = Accounting::fnGetEmpDetails($request,$empIdArr);
+				$empname = Accounting::fnGetEmpName($value->emp_ID);
 				if (isset($empname[0]->LastName)) {
 					$name = $empname[0]->LastName;
 				} else {
