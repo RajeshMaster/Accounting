@@ -641,6 +641,15 @@ class Accounting extends Model {
 		return $query;
 	}
 
+	public static function getBelongsToDtls(){
+
+		$db = DB::connection('mysql_Salary');
+		$query = $db->table('ams_family_master')
+					->select('id','familyName','nickName')
+					->lists('familyName','id');
+		return $query;
+	}
+
 	public static function fnGetAccountPeriodAcc() {
 		$accperiod=DB::table('dev_kessandetails')
 						->SELECT('*')

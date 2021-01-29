@@ -178,7 +178,7 @@ class CreditCardPay extends Model {
 			$conditionAppend = "AND (1 = 1)";
 		}
 		$sql = "SELECT SUBSTRING(selectedYearMonth, 1, 7) AS date FROM acc_creditcardpayment 
-				where (delFlg = '0' $conditionAppend) ORDER BY selectedYearMonth ASC";
+				where (delFlg = '0' $conditionAppend) ORDER BY id ASC";
 		$cards = DB::select($sql);
 		return $cards;
 	}

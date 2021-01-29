@@ -849,6 +849,7 @@ class AccountingController extends Controller {
 			$SubIdVal = $SubId[0];
 		}
 		$getUserDtls = Accounting::getUserDtls($request);
+		$getBelongsToDtls = Accounting::getBelongsToDtls($request);
 		// print_r($request->all());exit();
 		if ($request->autoDebitDate != "" && $request->userId != "") {
 			$getBankDtls = Accounting::fetchbanknames($request);
@@ -869,6 +870,7 @@ class AccountingController extends Controller {
 													'mainSub' => $mainSub,
 													'SubIdVal' => $SubIdVal,
 													'getUserDtls' => $getUserDtls,
+													'getBelongsToDtls' => $getBelongsToDtls,
 													'getLoanDtls' => $getLoanDtls,
 													'getBankDtls' => $getBankDtls,
 													'loanBankId' => $loanBankId
@@ -953,7 +955,7 @@ class AccountingController extends Controller {
 		}
 		$getBankDtls = Accounting::fetchbanknames($request);
 
-	
+		
 		
 		return view('Accounting.invoicedetailspopup',['request' => $request,
 													'mainSub' => $mainSub,
