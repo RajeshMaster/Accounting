@@ -207,7 +207,8 @@ class AccountingController extends Controller {
 			$cashDetails[$i]['content'] = $value->content;
 			$cashDetails[$i]['amount'] = $value->amount;
 			$cashDetails[$i]['fee'] = $value->fee;
-			$cashDetails[$i]['Bank_NickName'] = $value->FirstName;
+			$cashDetails[$i]['FirstName'] = $value->FirstName;
+			$cashDetails[$i]['Bank_NickName'] = $value->Bank_NickName;
 			$cashDetails[$i]['transcationType'] = $value->transcationType;
 			$cashDetails[$i]['remarks'] = $value->remarks;
 			$cashDetails[$i]['baseAmt'] = 0;
@@ -255,12 +256,12 @@ class AccountingController extends Controller {
 			if (isset($baseAmt[0]->amount)) {
 				$cashDetails[$i]['baseAmt'] = $baseAmt[0]->amount;
 
-				if ($bankNameforCheck != $value->Bank_NickName) {
+				if ($bankNameforCheck != $value->FirstName) {
 					$curBal = $baseAmt[0]->amount;
 
 					if (empty($checkPrevious)) {
 
-						if ($bankNameforCheck != $value->Bank_NickName) {
+						if ($bankNameforCheck != $value->FirstName) {
 							$curBal = $baseAmt[0]->amount;
 						}
 					} else {
@@ -283,7 +284,7 @@ class AccountingController extends Controller {
 				$cashDetails[$i]['balanceAmtonDownTr'] = $curBal;
 			}
 
-			$bankNameforCheck = $value->Bank_NickName;
+			$bankNameforCheck = $value->FirstName;
 			$i++;
 		}
 		return view('Accounting.index',['request' => $request,
