@@ -524,6 +524,7 @@ class Accounting extends Model {
 						->where('date','>=',$from_date)
 						->where('date','<=',$to_date)
 						->orderBy('bankIdFrom','ASC')
+						->orderBy('accountNumberFrom','ASC')
 						->orderBy('acc_cashregister.orderId','ASC')
 						->paginate($request->plimit);
 

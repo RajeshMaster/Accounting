@@ -122,7 +122,7 @@ class CreditCardPay extends Model {
 		if (isset($request->category) && $request->category!= "") {
 			$query = $query->where('categoryId','=',$request->category);
 		} 
-		$query = $query->orderBy('creditCardId', 'ASC')
+		$query = $query->orderBy('id', 'ASC')
 						->paginate($request->plimit);
 						// ->get();
 		return $query;
@@ -178,7 +178,7 @@ class CreditCardPay extends Model {
 			$conditionAppend = "AND (1 = 1)";
 		}
 		$sql = "SELECT SUBSTRING(selectedYearMonth, 1, 7) AS date FROM acc_creditcardpayment 
-				where (delFlg = '0' $conditionAppend) ORDER BY id ASC";
+				where (delFlg = '0' $conditionAppend) ORDER BY selectedYearMonth ASC";
 		$cards = DB::select($sql);
 		return $cards;
 	}

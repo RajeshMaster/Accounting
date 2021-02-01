@@ -245,7 +245,7 @@
 
 				@endphp
 				@forelse($cashDetails as $key => $data)
-					@if($preBankName != $data['FirstName'] && $preBankName !="")
+					@if($preBankName != $data['Bank_NickName'] && $preBankName !="")
 						<tr style="background-color: lightgrey">
 							<td colspan="4" align="right">
 								{{ trans('messages.lbl_total') }}
@@ -268,7 +268,7 @@
 							?>
 						</tr>
 					@endif
-					@if($lastBankName != $data['FirstName'])
+					@if($lastBankName != $data['Bank_NickName'])
 						<tr style="background-color: #f1a2a2">
 							<td colspan="5"> 
 								{{ $data['Bank_NickName'] }}     
@@ -386,8 +386,8 @@
 						<?php $realBalanceAmount = $realBalanceAmount + $creditAmt ?>
 					@endif
 					@php
-						$lastBankName = $data['FirstName'];
-						$preBankName = $data['FirstName'];
+						$lastBankName = $data['Bank_NickName'];
+						$preBankName = $data['Bank_NickName'];
 						$baseamount =$data['baseAmt'];
 						$i++ ;
 					@endphp 
