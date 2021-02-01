@@ -233,7 +233,9 @@
 					$balanceAmt = 0;
 					$debitAmt = 0;
 					$creditAmt = 0;
+					$lastBankAccno = "";
 					$lastBankName = "";
+					$preBankAccno = "";
 					$preBankName = "";
 					$baseamount = "";
 					$balancebyBank = "";
@@ -245,7 +247,8 @@
 
 				@endphp
 				@forelse($cashDetails as $key => $data)
-					@if($preBankName != $data['Bank_NickName'] && $preBankName !="")
+					@if($preBankName !="")
+					@if($preBankAccno != $data['accNo'] ||  $preBankName != $data['Bank_NickName'])
 						<tr style="background-color: lightgrey">
 							<td colspan="4" align="right">
 								{{ trans('messages.lbl_total') }}
@@ -268,10 +271,11 @@
 							?>
 						</tr>
 					@endif
-					@if($lastBankName != $data['Bank_NickName'])
+					@endif
+					@if($lastBankAccno != $data['accNo'] || $lastBankName != $data['Bank_NickName'])
 						<tr style="background-color: #f1a2a2">
 							<td colspan="5"> 
-								{{ $data['Bank_NickName'] }}     
+								{{ $data['Bank_NickName'] }} - {{ $data['accNo'] }}  
 							</td>
 							<td></td>
 							@if($data['baseAmt'])
@@ -386,6 +390,8 @@
 						<?php $realBalanceAmount = $realBalanceAmount + $creditAmt ?>
 					@endif
 					@php
+						$lastBankAccno = $data['accNo'];
+						$preBankAccno = $data['accNo'];
 						$lastBankName = $data['Bank_NickName'];
 						$preBankName = $data['Bank_NickName'];
 						$baseamount =$data['baseAmt'];

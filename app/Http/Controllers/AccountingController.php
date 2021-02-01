@@ -46,6 +46,7 @@ class AccountingController extends Controller {
 		$previous_date = "";
 		$date_month = "";
 		$temp = "";
+		$bankAcconoforCheck = "";
 		$bankNameforCheck ="";
 
 		$g_accountperiod = Accounting::fnGetAccountPeriodAcc();
@@ -256,12 +257,12 @@ class AccountingController extends Controller {
 			if (isset($baseAmt[0]->amount)) {
 				$cashDetails[$i]['baseAmt'] = $baseAmt[0]->amount;
 
-				if ($bankNameforCheck != $value->FirstName) {
+				if ($bankAcconoforCheck != $value->accountNumberFrom || $bankNameforCheck != $value->Bank_NickName) {
 					$curBal = $baseAmt[0]->amount;
 
 					if (empty($checkPrevious)) {
 
-						if ($bankNameforCheck != $value->FirstName) {
+						if ($bankAcconoforCheck != $value->accountNumberFrom || $bankNameforCheck != $value->Bank_NickName) {
 							$curBal = $baseAmt[0]->amount;
 						}
 					} else {
@@ -284,7 +285,8 @@ class AccountingController extends Controller {
 				$cashDetails[$i]['balanceAmtonDownTr'] = $curBal;
 			}
 
-			$bankNameforCheck = $value->FirstName;
+			$bankAcconoforCheck = $value->accountNumberFrom;
+			$bankNameforCheck = $value->Bank_NickName;
 			$i++;
 		}
 		return view('Accounting.index',['request' => $request,

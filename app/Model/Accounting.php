@@ -523,8 +523,9 @@ class Accounting extends Model {
 						->where('transcationType','!=',9)
 						->where('date','>=',$from_date)
 						->where('date','<=',$to_date)
-						->orderBy('bankIdFrom','ASC')
-						->orderBy('accountNumberFrom','ASC')
+						->orderBy('acc_cashregister.bankIdFrom','ASC')
+						->orderBy('acc_cashregister.accountNumberFrom','ASC')
+						->orderBy('bank.Bank_NickName','ASC')
 						->orderBy('acc_cashregister.orderId','ASC')
 						->paginate($request->plimit);
 
