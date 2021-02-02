@@ -284,12 +284,16 @@
 					@if($lastBankAccno != $data['accNo'] || $lastBankName != $data['Bank_NickName'])
 						<tr style="background-color: #f1a2a2">
 							<td colspan="5"> 
-								@if($data['baseAmt'])
-									<a href="javascript:bankViewlist('{{ $data['banknm'] }}','{{ $data['brnchnm'] }}','{{ $data['accNo'] }}','{{ $data['startDate'] }}','{{ $data['bankIdFrom'] }}','{{ $data['brnchid'] }}')" class="anchorstyle">
-										{{ $data['Bank_NickName'] }} - {{ $data['accNo'] }}  
-									</a>
-								@else
+								@if(Auth::user()->userclassification == 5 || $request->mainmenu == "AuditingAccounting")
 									{{ $data['Bank_NickName'] }} - {{ $data['accNo'] }}  
+								@else
+									@if($data['baseAmt'])
+										<a href="javascript:bankViewlist('{{ $data['banknm'] }}','{{ $data['brnchnm'] }}','{{ $data['accNo'] }}','{{ $data['startDate'] }}','{{ $data['bankIdFrom'] }}','{{ $data['brnchid'] }}')" class="anchorstyle">
+											{{ $data['Bank_NickName'] }} - {{ $data['accNo'] }}  
+										</a>
+									@else
+										{{ $data['Bank_NickName'] }} - {{ $data['accNo'] }}  
+									@endif
 								@endif
 							</td>
 							<td></td>
