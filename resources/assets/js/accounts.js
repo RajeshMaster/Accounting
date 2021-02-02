@@ -721,12 +721,12 @@ function Getsalarypopup() {
 	}
 }
 
-function Getloanpopup(userId) {
+function Getloanpopup(userId,belongsTo) {
 	var mainmenu = $('#mainmenu').val();
 	var autoDebitDate = $('#accDate').val();
 	if (autoDebitDate != "") {
 		popupopenclose(1);
-		$('#getloanpopup').load('../Accounting/getloanpopup?mainmenu='+mainmenu+'&time='+datetime+'&autoDebitDate='+encodeURIComponent(autoDebitDate)+'&userId='+userId);
+		$('#getloanpopup').load('../Accounting/getloanpopup?mainmenu='+mainmenu+'&time='+datetime+'&autoDebitDate='+encodeURIComponent(autoDebitDate)+'&userId='+userId+'&belongsTo='+belongsTo);
 		$("#getloanpopup").modal({
 			backdrop: 'static',
 			keyboard: false
@@ -798,7 +798,13 @@ function disabledloan(){
 }
 
 function fnGetLoanDtls(userId){
-	Getloanpopup(userId);
+	var belongsTo = "";
+	Getloanpopup(userId,belongsTo);
+}
+
+function fnGetBelongsToDtls(belongsTo){
+	var userId = $('#assetsUser').val();
+	Getloanpopup(userId,belongsTo);
 }
 
 function getData(month, year, flg, prevcnt, nextcnt, account_period, lastyear, currentyear, account_val) {
@@ -1061,4 +1067,17 @@ function loaAllCheck() {
 	} else {
 		$('.loanchk').prop("checked",false);
 	}
+}
+function bankViewlist(bnkname,branchname,accno,startdate,bank_id,branchid) {
+	pageload();
+	$('#accNo').val(accno);
+	$('#bankid').val(bank_id);
+	$('#bankname').val(bnkname);
+	$('#branchname').val(branchname);
+	$('#accno').val(accno);
+	$('#startdate').val(startdate);
+	$('#bankids').val(bankid);
+	$('#branchids').val(branchid);
+	$('#frmaccountingindex').attr('action', '../AccBankDetail/Viewlist?mainmenu='+mainmenu+'&time='+datetime);
+	$("#frmaccountingindex").submit();
 }

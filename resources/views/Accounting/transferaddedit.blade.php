@@ -106,17 +106,17 @@
 				@endif
 				@if($request->edit_flg != 1)
 				<button type="button" id="salarybutton" style="background-color: purple; color: #fff;" 
-					onclick="return Getsalarypopup('');"  
+					onclick="return Getsalarypopup();"  
 					class="btn box24per pt9 pb8 ml2">
 					{{ trans('messages.lbl_getsalary') }}
 				</button> 
 				<button type="button" id="loanbutton" style="background-color: purple; color: #fff;" 
-					onclick="return Getloanpopup('');"
+					onclick="return Getloanpopup('','');"
 					class="btn box23per pt9 pb8 ml2">
 					{{ trans('messages.lbl_getloan') }}
 				</button> 
 				<button type="button" id="invoicebutton" style="background-color: purple; color: #fff;" 
-					onclick="return GetInvoicepopup('');"
+					onclick="return GetInvoicepopup();"
 					class="btn box24per pt9 pb8 ml2">
 					{{ trans('messages.lbl_getinvoiceDtl') }}
 				</button> 

@@ -214,6 +214,9 @@ class AccountingController extends Controller {
 			$cashDetails[$i]['remarks'] = $value->remarks;
 			$cashDetails[$i]['baseAmt'] = 0;
 			$cashDetails[$i]['bankId'] = $value->bankId;
+			$cashDetails[$i]['banknm'] = $value->banknm;
+			$cashDetails[$i]['brnchnm'] = $value->brnchnm;
+			$cashDetails[$i]['brnchid'] = $value->brnchid;
 			$cashDetails[$i]['bankIdFrom'] = $value->bankIdFrom;
 			$cashDetails[$i]['fileDtl'] = $value->fileDtl;
 			$cashDetails[$i]['transferId'] = $value->transferId;
@@ -255,6 +258,7 @@ class AccountingController extends Controller {
 
 
 			if (isset($baseAmt[0]->amount)) {
+				$cashDetails[$i]['startDate'] = $baseAmt[0]->date;
 				$cashDetails[$i]['baseAmt'] = $baseAmt[0]->amount;
 
 				if ($bankAcconoforCheck != $value->accountNumberFrom || $bankNameforCheck != $value->Bank_NickName) {

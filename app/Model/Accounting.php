@@ -513,11 +513,17 @@ class Accounting extends Model {
 
 		$db = DB::connection('mysql');
 		$query = $db->table('acc_cashregister')
-						->SELECT('acc_cashregister.*','bank.id As bankId','bank.AccNo','bank.FirstName','bank.LastName','bank.BankName','bank.Bank_NickName','dev_expensesetting.Subject','dev_expensesetting.Subject_jp')
+						->SELECT('acc_cashregister.*','bank.id As bankId','bank.AccNo','bank.FirstName','bank.LastName','bank.BankName','bank.Bank_NickName','dev_expensesetting.Subject','dev_expensesetting.Subject_jp','banname.BankName AS banknm','brncname.id AS brnchid','brncname.BranchName AS brnchnm')
 						->leftJoin('mstbank AS bank', function($join)
 							{
 								$join->on('acc_cashregister.bankIdFrom', '=', 'bank.BankName');
 								$join->on('acc_cashregister.accountNumberFrom', '=', 'bank.AccNo');
+							})
+						->leftJoin('mstbanks AS banname', 'banname.id', '=', 'bank.BankName')
+						->leftJoin('mstbankbranch AS brncname', function($join)
+							{
+								$join->on('brncname.BankId', '=', 'bank.BankName');
+								$join->on('brncname.id', '=', 'bank.BranchName');
 							})
 						->leftJoin('dev_expensesetting', 'dev_expensesetting.id', '=', 'acc_cashregister.subjectId')
 						->where('transcationType','!=',9)
@@ -560,6 +566,9 @@ class Accounting extends Model {
 					->whereNotIn('loan.loanId', $loanIdArr);
 		if ($request->userId != "") {
 			$query = $query->where('loan.userId','=', $request->userId);
+		}
+		if ($request->belongsTo != "" && $request->userId != "") {
+			$query = $query->where('loan.belongsTo','=', $request->belongsTo);
 		}
 		$query = $query->WHERE(DB::raw("SUBSTRING(loanEMI.emiDate, 1, 4)"),'=', $MnthYear[0]);
 		$query = $query->WHERE(DB::raw("SUBSTRING(loanEMI.emiDate, 6, 2)"),'=', $MnthYear[1])

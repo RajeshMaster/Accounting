@@ -161,7 +161,6 @@
 		{{ Form::hidden('accNo', '', array('id' => 'accNo')) }}
 		{{ Form::hidden('hidAuth', Auth::user()->userclassification, array('id' => 'hidAuth')) }}
 
-
 		<!-- Year Bar Start -->
 		{{ Form::hidden('selMonth', $request->selMonth, array('id' => 'selMonth')) }}
 		{{ Form::hidden('selYear', $request->selYear, array('id' => 'selYear')) }}
@@ -169,7 +168,17 @@
 		{{ Form::hidden('nextcnt', $request->nextcnt, array('id' => 'nextcnt')) }}
 		{{ Form::hidden('account_val', $account_val, array('id' => 'account_val')) }}
 		<!-- Year Bar End -->
-<!-- Start Heading -->
+
+		{{ Form::hidden('bankid', '' , array('id' => 'bankid')) }}
+		{{ Form::hidden('bankname', '' , array('id' => 'bankname')) }}
+		{{ Form::hidden('branchname', '' , array('id' => 'branchname')) }}
+		{{ Form::hidden('accno', '' , array('id' => 'accno')) }}
+		{{ Form::hidden('startdate', '' , array('id' => 'startdate')) }}
+		{{ Form::hidden('bankids', '' , array('id' => 'bankids')) }}
+		{{ Form::hidden('branchids', '' , array('id' => 'branchids')) }}
+
+
+	<!-- Start Heading -->
 	<div class="row hline" >
 		<div class="col-xs-12">
 			<img class="pull-left box35 mt10" src="{{ URL::asset('resources/assets/images/pettycash.jpg') }}">
@@ -275,7 +284,13 @@
 					@if($lastBankAccno != $data['accNo'] || $lastBankName != $data['Bank_NickName'])
 						<tr style="background-color: #f1a2a2">
 							<td colspan="5"> 
-								{{ $data['Bank_NickName'] }} - {{ $data['accNo'] }}  
+								@if($data['baseAmt'])
+									<a href="javascript:bankViewlist('{{ $data['banknm'] }}','{{ $data['brnchnm'] }}','{{ $data['accNo'] }}','{{ $data['startDate'] }}','{{ $data['bankIdFrom'] }}','{{ $data['brnchid'] }}')" class="anchorstyle">
+										{{ $data['Bank_NickName'] }} - {{ $data['accNo'] }}  
+									</a>
+								@else
+									{{ $data['Bank_NickName'] }} - {{ $data['accNo'] }}  
+								@endif
 							</td>
 							<td></td>
 							@if($data['baseAmt'])
