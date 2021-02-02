@@ -13,6 +13,7 @@ class Accounting extends Model {
 		$query = $db->TABLE('mstbank')
 						->SELECT(DB::RAW("CONCAT(mstbank.Bank_NickName,'-',mstbank.AccNo) AS BANKNAME"),DB::RAW("CONCAT(mstbank.BankName,'-',mstbank.AccNo) AS ID"),'mstbank.id')
 						// ->leftJoin('mstbanks', 'mstbanks.id', '=', 'mstbank.BankName')
+						->where('mstbank.delflg','=','0')
 						->orderBy('mstbank.id','ASC')
 						->lists('BANKNAME','ID');
 						// ->toSql();
@@ -25,6 +26,7 @@ class Accounting extends Model {
 						->SELECT(DB::RAW("CONCAT(mstbank.Bank_NickName,'-',mstbank.AccNo) AS BANKNAME"),DB::RAW("CONCAT(mstbank.BankName,'-',mstbank.AccNo) AS ID"),'mstbank.id')
 						// ->leftJoin('mstbanks', 'mstbanks.id', '=', 'mstbank.BankName')
 						->WHERE('AccNo', '!=', $accNo)
+						->where('mstbank.delflg','=','0')
 						->orderBy('mstbank.id','ASC')
 						->get();
 						// ->toSql();
@@ -338,6 +340,7 @@ class Accounting extends Model {
 						->leftJoin('dev_expensesetting', 'dev_expensesetting.id', '=', 'acc_cashregister.subjectId')
 						->leftJoin('emp_mstemployees', 'emp_mstemployees.Emp_ID', '=', 'acc_cashregister.Emp_ID')
 						->where('acc_cashregister.id','=',$request->editId)
+						->where('bank.delflg','=','0')
 						->orderBy('bankIdFrom','ASC')
 						->orderBy('acc_cashregister.orderId','ASC')
 						->get();
@@ -529,6 +532,7 @@ class Accounting extends Model {
 						->where('transcationType','!=',9)
 						->where('date','>=',$from_date)
 						->where('date','<=',$to_date)
+						->where('bank.delflg','=','0')
 						->orderBy('acc_cashregister.bankIdFrom','ASC')
 						->orderBy('acc_cashregister.accountNumberFrom','ASC')
 						->orderBy('bank.Bank_NickName','ASC')
@@ -625,6 +629,7 @@ class Accounting extends Model {
 						->leftJoin('dev_expensesetting', 'dev_expensesetting.id', '=', 'acc_cashregister.subjectId')
 						->where('transcationType','!=',9)
 						->where('acc_cashregister.id','=',$request->editId)
+						->where('bank.delflg','=','0')
 						->orderBy('bankIdFrom','ASC')
 						->orderBy('acc_cashregister.orderId','ASC')
 						->get();
@@ -720,6 +725,7 @@ class Accounting extends Model {
 							$join->on('cashreg.bankIdFrom', '=', 'bank.BankName');
 							$join->on('cashreg.accountNumberFrom', '=', 'bank.AccNo');
 						})
+					->where('bank.delflg','=','0')
 					->where('cashreg.emp_ID','=', $request->userId)
 					->where('cashreg.loan_ID','=', $loanId)
 					->where('cashreg.pageFlg','=', 3)
@@ -780,6 +786,7 @@ class Accounting extends Model {
 						->where('transcationType','!=',9)
 						->where('date','>=',$from_date)
 						->where('date','<=',$to_date)
+						->where('bank.delflg','=','0')
 						->where('bankIdFrom','=',$request->bankId)
 						->where('accountNumberFrom','=',$request->AccNo)
 						->orderBy('bankIdFrom','ASC')
