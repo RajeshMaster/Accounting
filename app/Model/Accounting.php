@@ -14,7 +14,7 @@ class Accounting extends Model {
 						->SELECT(DB::RAW("CONCAT(mstbank.Bank_NickName,'-',mstbank.AccNo) AS BANKNAME"),DB::RAW("CONCAT(mstbank.BankName,'-',mstbank.AccNo) AS ID"),'mstbank.id')
 						// ->leftJoin('mstbanks', 'mstbanks.id', '=', 'mstbank.BankName')
 						->where('mstbank.delflg','=','0')
-						->orderBy('mstbank.id','ASC')
+						->orderBy('mstbank.Bank_NickName','ASC')
 						->lists('BANKNAME','ID');
 						// ->toSql();
 		return $query;

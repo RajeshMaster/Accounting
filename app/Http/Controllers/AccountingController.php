@@ -855,6 +855,10 @@ class AccountingController extends Controller {
 			$SubIdVal = $SubId[0];
 		}
 		$getUserDtls = Accounting::getUserDtls($request);
+		if (count($getUserDtls) == 1) {
+			$userId = array_keys($getUserDtls);
+			$request->userId = $userId[0];
+		}
 		$getBelongsToDtls = Accounting::getBelongsToDtls($request);
 		// print_r($request->all());exit();
 		if ($request->autoDebitDate != "" && $request->userId != "") {

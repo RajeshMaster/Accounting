@@ -1081,3 +1081,23 @@ function bankViewlist(bnkname,branchname,accno,startdate,bank_id,branchid) {
 	$('#frmaccountingindex').attr('action', '../AccBankDetail/Viewlist?mainmenu='+mainmenu+'&time='+datetime);
 	$("#frmaccountingindex").submit();
 }
+function fngetValue(val,flg,loopVal) {
+	var loopVal = loopVal.charAt(loopVal.length-1);
+	if (flg == 1) {
+		var loanAmt = val;
+		var loanFee = $('#loanFee'+loopVal).val();
+	} else {
+		var loanAmt = $('#loanAmt'+loopVal).val();
+		var loanFee = val;
+	}
+	var amount = loanAmt.replace(",","");
+	var fee = loanFee.replace(",","");
+	if (amount == "") {
+		amount = 0;
+	}
+	if (fee == "") {
+		fee = 0;
+	}
+	var total =  parseInt(amount) + parseInt(fee);
+	$('#totalAmt'+loopVal).val(total);
+}

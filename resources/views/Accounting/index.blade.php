@@ -353,19 +353,12 @@
 							@if($data['transcationType'] == 1)
 								@php $debitAmt = $data['amount'] + $data['fee']; @endphp
 								<?php $debitToal = $debitAmt + $debitToal ?>
-
-								@if($data['content'] != 'Loan')
-									{{ number_format($data['amount']) }}
-								@else
-									{{ number_format($debitAmt) }}
-								@endif
+								{{ number_format($data['amount']) }}
 							@endif
-							<!-- <span style="background-color: red;"></span> <?php print_r($debitToal); ?> -->
 						</td>
 						<td align="right">
 							@if($data['transcationType'] == 2 || $data['transcationType'] == 4)
 								@php $creditAmt = $data['amount'] + $data['fee']; @endphp
-								<!-- {{ number_format($creditAmt) }} -->
 								{{ number_format($data['amount']) }}
 								<?php $creditToal = $creditAmt + $creditToal?>
 							@endif
@@ -391,15 +384,21 @@
 						</td>
 					</tr>
 
-					@if($data['content'] != 'Loan')
-						@if($data['fee'] != "")
-							<tr >
-								<td  colspan="4" align="right">{{ trans('messages.lbl_fee') }}</td>
-								<td colspan="" align="right"> {{ number_format($data['fee']) }}</td>
-								<td class="columnspan"></td>
-							</tr>
-						@endif
+					
+					@if($data['fee'] != "")
+						<tr >
+							<td  colspan="4" align="right">
+								@if($data['content'] == 'Loan')
+									{{ trans('messages.lbl_interest') }}
+								@else
+									{{ trans('messages.lbl_fee') }}
+								@endif
+							</td>
+							<td colspan="" align="right"> {{ number_format($data['fee']) }}</td>
+							<td class="columnspan"></td>
+						</tr>
 					@endif
+					
 
 					@if($data['transcationType'] == 1)
 						<!-- <?php $balanceAmt = $balanceAmt - $debitAmt ;?> -->

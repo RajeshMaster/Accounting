@@ -73,21 +73,21 @@
 			 <table id="data" class="tablealternate box100per" style="height: 40px;">
 				<colgroup>
 					<col width="6%">
-					<col width="13%">
 					<col width="25%">
 					<col width="25%">
 					<col width="15%">
 					<col width="10%">
+					<col width="13%">
 					<col width="6%">
 				</colgroup>
 				<thead class="CMN_tbltheadcolor">
 					<tr class="tableheader fwb tac"> 
 						<th class="tac">{{ trans('messages.lbl_sno') }}</th>
-						<th class="tac">{{ trans('messages.lbl_loanno') }}</th>
 						<th class="tac">{{ trans('messages.lbl_bank') }}</th>
 						<th class="tac">{{ trans('messages.lbl_loanname') }}</th>
 						<th class="tac">{{ trans('messages.lbl_amount') }}</th>
 						<th class="tac">{{ trans('messages.lbl_interest') }}</th>
+						<th class="tac">{{ trans('messages.lbl_totamt') }}</th>
 						<th class="tac">
 							{{ trans('messages.lbl_notneed') }}
 							@if(count($getLoanDtls) != 0)
@@ -109,9 +109,6 @@
 						<tr>
 							<td align="center">
 								{{ $i++ }}
-							</td>
-							<td align="center">
-								{{ $loan->loanId }}
 							</td>
 							<td>
 							@if(isset($loanBankId[$loan->loanId]['bankName']))
@@ -137,7 +134,7 @@
 							</td>
 							<td align="right">
 								{{ Form::text('loanAmt'.$j,(isset($loan->loanAmount)) ? number_format($loan->loanAmount) : 0,
-								array('id'=>'loanAmt'.$j,
+									array('id'=>'loanAmt'.$j,
 										'name' => 'loanAmt'.$j,
 										'style'=>'text-align:right;padding-right:4px;',
 										'autocomplete' =>'off',
@@ -145,12 +142,13 @@
 										'onblur' => 'return fnSetZero11(this.id);',
 										'onfocus' => 'return fnRemoveZero(this.id);',
 										'onclick' => 'return fnRemoveZero(this.id);',
-										'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
+										'onkeyup'=>'return fngetValue(this.value,1,this.id);return fnMoneyFormat(this.id,"jp"); ',
 										'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
 										'data-label' => trans('messages.lbl_amount'))) }}
 								<br/>
 							</td>
 							<td align="right">
+
 								{{ Form::text('loanFee'.$j,(isset($loan->monthInterest)) ? number_format($loan->monthInterest) : 0,
 								array('id'=>'loanFee'.$j,
 										'name' => 'loanFee'.$j,
@@ -160,9 +158,32 @@
 										'onblur' => 'return fnSetZero11(this.id);',
 										'onfocus' => 'return fnRemoveZero(this.id);',
 										'onclick' => 'return fnRemoveZero(this.id);',
-										'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
+										'onkeyup'=>'return fngetValue(this.value,2,this.id);return fnMoneyFormat(this.id,"jp");',
 										'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
 										'data-label' => trans('messages.lbl_fee'))) }}
+
+							</td>
+							<td align="center">
+								@if(isset($loan->monthInterest) && isset($loan->loanAmount))
+									@php $totalAmt = $loan->loanAmount + $loan->monthInterest; 
+									@endphp
+								@else
+									@php $totalAmt = 0; @endphp
+								@endif
+								{{ Form::text('totalAmt'.$j,(isset($totalAmt)) ? number_format(
+								$totalAmt) : 0,
+								array('id'=>'totalAmt'.$j,
+										'name' => 'totalAmt'.$j,
+										'style'=>'text-align:right;padding-right:4px;',
+										'autocomplete' =>'off',
+										'class'=>'box96per ime_mode_disable ml7 numonly',
+										'onblur' => 'return fnSetZero11(this.id);',
+										'onfocus' => 'return fnRemoveZero(this.id);',
+										'onclick' => 'return fnRemoveZero(this.id);',
+										'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
+										'readonly'=>'true',
+										'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
+										'data-label' => trans('messages.lbl_totamt'))) }}
 							</td>
 							<td align="center">
 								<input  type="checkbox" name="loan[]" id="loan[]" 
