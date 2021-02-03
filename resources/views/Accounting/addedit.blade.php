@@ -223,7 +223,12 @@
 
 		<div class="col-xs-12 mt5">
 			<div class="col-xs-3 text-right clr_blue">
-				<label>{{ trans('messages.lbl_amount') }}<span class="fr ml2 red"> * </span></label>
+				<label>
+					{{ trans('messages.lbl_amount') }}
+					<span class="black ml2">&#47;</span>
+					{{ trans('messages.lbl_fee') }}
+					<span class="fr ml2 red"> * </span>
+				</label>
 			</div>
 			<div class="col-xs-9">
 				{{ Form::text('amount',(isset($editData[0]->amount)) ? number_format($editData[0]->amount) : 0,array('id'=>'amount', 
