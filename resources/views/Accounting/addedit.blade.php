@@ -71,7 +71,8 @@
 				</button> 
 			</div>
 			<div class="col-xs-6 pull-right" style="text-align: right;padding: 0px;">
-				{{ Form::text('accDate',(isset($editData[0]->date)) ? $editData[0]->date : '',
+				@if($request->edit_flg != 1)
+					{{ Form::text('accDate',(isset($editData[0]->date)) ? $editData[0]->date : '',
 							array('id'=>'accDate', 
 								'name' => 'accDate',
 								'data-label' => trans('messages.lbl_Date'),
@@ -82,6 +83,15 @@
 					<a href="javascript:getdate();" class="anchorstyle">
 						<img title="Current Date" class="box15" 
 							src="{{ URL::asset('resources/assets/images/add_date.png') }}"></a>
+				@else
+					{{ Form::text('accDate',(isset($editData[0]->date)) ? $editData[0]->date : '',
+							array('id'=>'accDate', 
+								'name' => 'accDate',
+								'readonly' => 'true',
+								'data-label' => trans('messages.lbl_Date'),
+								'autocomplete' =>'off',
+								'class'=>' box18per form-control disabled')) }}
+				@endif
 				@if($request->edit_flg != 1)
 				<button type="button" id="salarybutton" style="background-color: purple; color: #fff;" 
 					onclick="return Getsalarypopup();"  
