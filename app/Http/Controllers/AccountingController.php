@@ -341,8 +341,10 @@ class AccountingController extends Controller {
 			return Redirect::to('Accounting/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 		}
 		$editData = Accounting::fetchEditData($request);
-		$bankDetail = Accounting::fetchbanknames();
-		if ($request->edit_flg == 2) {
+		if ($request->edit_flg == 1) {
+			$bankDetail = Accounting::fetchEditbanknames($request);
+		} else {
+			$bankDetail = Accounting::fetchbanknames();
 			$editData[0]->date = "";
 		}
 		return view('Accounting.addedit',['request' => $request,
@@ -461,8 +463,10 @@ class AccountingController extends Controller {
 			return Redirect::to('Accounting/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 		}
 		$transferEdit = array();
-		$transferEdit = Accounting::tranferEditData($request);
-		if ($request->edit_flg == 2) {
+		if ($request->edit_flg == 1) {
+			$bankDetail = Accounting::fetchEditbanknames($request);
+		} else {
+			$bankDetail = Accounting::fetchbanknames();
 			$transferEdit[0]->date = "";
 			$transferEdit[0]->fileDtl = "";
 			$transferEdit[0]->Empname = "";
@@ -470,7 +474,7 @@ class AccountingController extends Controller {
 				$transferEdit[0]->subjectId = "";
 			}
 		}
-		$bankDetail = Accounting::fetchbanknames();
+		
 		$mainExpDetail = Accounting::getMainExpName();
 		return view('Accounting.transferaddedit',[ 'request' => $request,
 													'mainExpDetail' => $mainExpDetail,
@@ -741,7 +745,10 @@ class AccountingController extends Controller {
 		}
 		$autodebitEdit = array();
 		$autodebitEdit = Accounting::fetchEditData($request);
-		if ($request->edit_flg == 2) {
+		if ($request->edit_flg == 1) {
+			$bankDetail = Accounting::fetchEditbanknames($request);
+		} else {
+			$bankDetail = Accounting::fetchbanknames();
 			$autodebitEdit[0]->date = "";
 			$autodebitEdit[0]->loan_ID = "";
 			$autodebitEdit[0]->loanName = "";
@@ -752,7 +759,6 @@ class AccountingController extends Controller {
 				$autodebitEdit[0]->subjectId = "";
 			}*/
 		}
-		$bankDetail = Accounting::fetchbanknames();
 		$mainExpDetail = Accounting::getMainExpName();
 		return view('Accounting.autoDebitReg',[ 'request' => $request,
 													'mainExpDetail' => $mainExpDetail,

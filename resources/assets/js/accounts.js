@@ -573,7 +573,8 @@ function fnGetbankDetails() {
 		}
 	});
 }
-function editCashDtl(id, editflg, pgFlg) {
+function editCashDtl(id, editflg, pgFlg, bankId) {
+	$('#bank_Id').val(bankId);
 	$('#edit_flg').val(editflg);
 	$('#editId').val(id);
 	if(pgFlg == 2) {

@@ -157,6 +157,7 @@
 		{{ Form::hidden('searchmethod', $request->searchmethod, array('id' => 'searchmethod')) }}
 		{{ Form::hidden('edit_flg', '', array('id' => 'edit_flg')) }}
 		{{ Form::hidden('editId', '', array('id' => 'editId')) }}
+		{{ Form::hidden('bank_Id', '', array('id' => 'bank_Id')) }}
 		{{ Form::hidden('bankNo', '', array('id' => 'bankNo')) }}
 		{{ Form::hidden('accNo', '', array('id' => 'accNo')) }}
 		{{ Form::hidden('hidAuth', Auth::user()->userclassification, array('id' => 'hidAuth')) }}
@@ -374,10 +375,10 @@
 						</td>
 						<td class="divdisplay" align="center">
 							@if($data['id'] != $data['transferId'] && $data['pageFlg'] != '999')
-								<a href="javascript:editCashDtl('{{ $data['id'] }}','1','{{ $data['pageFlg'] }}');">
+								<a href="javascript:editCashDtl('{{ $data['id'] }}','1','{{ $data['pageFlg'] }}','{{ $data['bankId'] }}');">
 									<img class="vam" src="{{ URL::asset('resources/assets/images/edit.png') }}" width="20" height="20">
 								</a>
-								<a href="javascript:editCashDtl('{{ $data['id'] }}','2','{{ $data['pageFlg'] }}');">
+								<a href="javascript:editCashDtl('{{ $data['id'] }}','2','{{ $data['pageFlg'] }}','{{ $data['bankId'] }}');">
 									<img class="vam" src="{{ URL::asset('resources/assets/images/copy.png') }}" width="20" height="20">
 								</a>
 							@endif
