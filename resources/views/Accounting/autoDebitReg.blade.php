@@ -278,6 +278,7 @@
 									'onclick' => 'return fnRemoveZero(this.id);',
 									'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
 									'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
+									($request->edit_flg == 1 && isset($autodebitEdit[0]->completedFlg) && ($autodebitEdit[0]->completedFlg != 0)?'readonly':''), 
 									'data-label' => trans('messages.lbl_amount'))) }}
 					
 					<span class=" ml7 black" style=" font-weight: bold;font-size: 17px;"> / </span>
@@ -292,6 +293,7 @@
 								'onclick' => 'return fnRemoveZero(this.id);',
 								'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
 								'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
+								($request->edit_flg == 1 && isset($autodebitEdit[0]->completedFlg) && ($autodebitEdit[0]->completedFlg != 0)?'readonly':''), 
 								'data-label' => trans('messages.lbl_fee'))) }}
 					
 				</div>

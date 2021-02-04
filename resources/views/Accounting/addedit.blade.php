@@ -231,34 +231,38 @@
 				</label>
 			</div>
 			<div class="col-xs-9">
-				{{ Form::text('amount',(isset($editData[0]->amount)) ? number_format($editData[0]->amount) : 0,array('id'=>'amount', 
-														'name' => 'amount',
-														'style'=>'text-align:right;',
-														'maxlength' => 10,
-														'autocomplete' =>'off',
-														'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
-														'onchange'=>'return fnCancel_check();',
-														'onblur' => 'return fnSetZero11(this.id);',
-														'onfocus' => 'return fnRemoveZero(this.id);',
-														'onclick' => 'return fnRemoveZero(this.id);',
-														'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
-														'data-label' => trans('messages.lbl_amount'),
-														'class'=>'box15per form-control pl5 ime_mode_disable numonly')) }}
+				{{ Form::text('amount',(isset($editData[0]->amount)) ? number_format($editData[0]->amount) : 0,
+						array('id'=>'amount', 
+							'name' => 'amount',
+							'style'=>'text-align:right;',
+							'maxlength' => 10,
+							'autocomplete' =>'off',
+							'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
+							'onchange'=>'return fnCancel_check();',
+							'onblur' => 'return fnSetZero11(this.id);',
+							'onfocus' => 'return fnRemoveZero(this.id);',
+							'onclick' => 'return fnRemoveZero(this.id);',
+							'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
+							($request->edit_flg == 1 && isset($editData[0]->completedFlg) && ($editData[0]->completedFlg != 0)?'readonly':''), 
+							'data-label' => trans('messages.lbl_amount'),
+							'class'=>'box15per form-control pl5 ime_mode_disable numonly')) }}
 
 				<span class="feeclass"> / </span>
-				{{ Form::text('fee',(isset($editData[0]->fee)) ? number_format($editData[0]->fee) : 0,array('id'=>'fee', 
-														'name' => 'fee',
-														'style'=>'text-align:right;',
-														'maxlength' => 10,
-														'autocomplete' =>'off',
-														'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
-														'onchange'=>'return fnCancel_check();',
-														'onblur' => 'return fnSetZero11(this.id);',
-														'onfocus' => 'return fnRemoveZero(this.id);',
-														'onclick' => 'return fnRemoveZero(this.id);',
-														'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
-														'data-label' => trans('messages.lbl_fee'),
-														'class'=>'box7per form-control pl5 ime_mode_disable feeclass numonly')) }}
+				{{ Form::text('fee',(isset($editData[0]->fee)) ? number_format($editData[0]->fee) : 0,
+						array('id'=>'fee', 
+							'name' => 'fee',
+							'style'=>'text-align:right;',
+							'maxlength' => 10,
+							'autocomplete' =>'off',
+							'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
+							'onchange'=>'return fnCancel_check();',
+							'onblur' => 'return fnSetZero11(this.id);',
+							'onfocus' => 'return fnRemoveZero(this.id);',
+							'onclick' => 'return fnRemoveZero(this.id);',
+							'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
+							($request->edit_flg == 1 && isset($editData[0]->completedFlg) && ($editData[0]->completedFlg != 0)?'readonly':''), 
+							'data-label' => trans('messages.lbl_fee'),
+							'class'=>'box7per form-control pl5 ime_mode_disable feeclass numonly')) }}
 			</div>
 		</div>
 		
