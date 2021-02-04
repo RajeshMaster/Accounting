@@ -507,6 +507,7 @@ Route::group(['prefix'=>'Accounting','middleware' => 'auth'], function() {
      // Invoice // Sastha
     Route::any('invoiceaddeditprocess', 'AccountingController@invoiceaddeditprocess')->middleware('accessright:0,1,2,3,4');
     Route::any('completedflg', 'AccountingController@completedflg')->middleware('accessright:0,1,2,3,4');
+    Route::any('dateBankExists', 'AccountingController@dateBankExists')->middleware('accessright:0,1,2,3,4');
 });
 
 

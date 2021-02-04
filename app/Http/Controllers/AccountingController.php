@@ -1020,4 +1020,14 @@ class AccountingController extends Controller {
 		Session::flash('selMonth', $request->selMonth);
 		return Redirect::to('Accounting/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 	}
+
+	public function dateBankExists(Request $request){
+		$dateBankExists = Accounting::fnGetdateBankExists($request);
+		if (isset($dateBankExists[0])) {
+			print_r("1");exit;
+		} else {
+			print_r("0");exit;
+		}
+		
+	}
 }

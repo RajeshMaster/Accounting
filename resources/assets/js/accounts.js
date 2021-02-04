@@ -30,16 +30,52 @@ $(document).ready(function() {
 				amount: {requiredWithZero: true},
 			},
 			submitHandler: function(form) {
-				if($('#edit_flg').val() == "" || $('#edit_flg').val() == 2) {
-					var confirmprocess = confirm("Do You Want To Register?");
+				if($('#edit_flg').val() != 1) { 
+					var accDate = $('#accDate').val();
+					var bank =  $('#bank').val().split("-");
+					var bankIdFrom = bank[0];
+					var accountNumberFrom = bank[1];
+					$.ajax({
+						type: 'GET',
+						url: 'dateBankExists',
+						data: {	"accDate": accDate,
+								"bankIdFrom": bankIdFrom,
+								"accountNumberFrom": accountNumberFrom
+							},
+						success: function(resp) {
+							if (resp != 0) {
+								document.getElementById('errorSectiondisplay').innerHTML = "";
+								err_invalidcer = "After the Completed Month";
+								var error='<div align="center" style="padding: 0px;" id="inform">';
+								error+='<table cellspacing="0" class="statusBg1" cellpadding="0" border="0">';
+								error+='<tbody><tr><td style="padding: 4px 10px" align="center"><span class="innerBg" id="mc_msg_txt">'+err_invalidcer+'</span></td>';
+								error+='<td width="20" valign="top" style="padding-top: 4px; _padding-top: 2px;"><span>';
+								error+='<a href="javascript:intdisplaymessage();" class="fa fa-times" style="color:white;"/>';
+								error+='</span></td>';
+								error+='</tr></tbody></table></div>';
+								document.getElementById('errorSectiondisplay').style.display = 'block';
+								document.getElementById('errorSectiondisplay').innerHTML = error;
+								$("#accDate").focus();
+								return false;
+							} else {
+								var confirmprocess = confirm("Do You Want To Register?");
+								if(confirmprocess) {
+									pageload();
+									return true;
+								} else {
+									return false
+								}
+							}
+						},
+					});
 				} else {
 					var confirmprocess = confirm("Do You Want To Update?");
-				}
-				if(confirmprocess) {
-					pageload();
-					return true;
-				} else {
-					return false
+					if(confirmprocess) {
+						pageload();
+						return true;
+					} else {
+						return false
+					}
 				}
 			}
 		});
@@ -84,16 +120,52 @@ $(document).ready(function() {
 				transferBill : {extension: "jpg,jpeg,png,JPG,JPEG,PNG", filesize : (2 * 1024 * 1024)},
 			},
 			submitHandler: function(form) { // for demo
-				if($('#edit_flg').val() == "" || $('#edit_flg').val() == 2) {
-					var confirmprocess = confirm("Do You Want To Register?");
+				if($('#edit_flg').val() != 1) { 
+					var accDate = $('#accDate').val();
+					var bank =  $('#transferBank').val().split("-");
+					var bankIdFrom = bank[0];
+					var accountNumberFrom = bank[1];
+					$.ajax({
+						type: 'GET',
+						url: 'dateBankExists',
+						data: {	"accDate": accDate,
+								"bankIdFrom": bankIdFrom,
+								"accountNumberFrom": accountNumberFrom
+							},
+						success: function(resp) {
+							if (resp != 0) {
+								document.getElementById('errorSectiondisplay').innerHTML = "";
+								err_invalidcer = "After the Completed Month";
+								var error='<div align="center" style="padding: 0px;" id="inform">';
+								error+='<table cellspacing="0" class="statusBg1" cellpadding="0" border="0">';
+								error+='<tbody><tr><td style="padding: 4px 10px" align="center"><span class="innerBg" id="mc_msg_txt">'+err_invalidcer+'</span></td>';
+								error+='<td width="20" valign="top" style="padding-top: 4px; _padding-top: 2px;"><span>';
+								error+='<a href="javascript:intdisplaymessage();" class="fa fa-times" style="color:white;"/>';
+								error+='</span></td>';
+								error+='</tr></tbody></table></div>';
+								document.getElementById('errorSectiondisplay').style.display = 'block';
+								document.getElementById('errorSectiondisplay').innerHTML = error;
+								$("#accDate").focus();
+								return false;
+							} else {
+								var confirmprocess = confirm("Do You Want To Register?");
+								if(confirmprocess) {
+									pageload();
+									return true;
+								} else {
+									return false
+								}
+							}
+						},
+					});
 				} else {
 					var confirmprocess = confirm("Do You Want To Update?");
-				}
-				if(confirmprocess) {
-					pageload();
-					return true;
-				} else {
-					return false;
+					if(confirmprocess) {
+						pageload();
+						return true;
+					} else {
+						return false
+					}
 				}
 			}
 		});
@@ -137,16 +209,52 @@ $(document).ready(function() {
 				autoDebitBill : {extension: "jpg,jpeg,png,JPG,JPEG,PNG", filesize : (2 * 1024 * 1024)},
 			},
 			submitHandler: function(form) { // for demo
-				if($('#edit_flg').val() == "" || $('#edit_flg').val() == 2) {
-					var confirmprocess = confirm("Do You Want To Register?");
+				if($('#edit_flg').val() != 1) { 
+					var accDate = $('#accDate').val();
+					var bank =  $('#autoDebitBank').val().split("-");
+					var bankIdFrom = bank[0];
+					var accountNumberFrom = bank[1];
+					$.ajax({
+						type: 'GET',
+						url: 'dateBankExists',
+						data: {	"accDate": accDate,
+								"bankIdFrom": bankIdFrom,
+								"accountNumberFrom": accountNumberFrom
+							},
+						success: function(resp) {
+							if (resp != 0) {
+								document.getElementById('errorSectiondisplay').innerHTML = "";
+								err_invalidcer = "After the Completed Month";
+								var error='<div align="center" style="padding: 0px;" id="inform">';
+								error+='<table cellspacing="0" class="statusBg1" cellpadding="0" border="0">';
+								error+='<tbody><tr><td style="padding: 4px 10px" align="center"><span class="innerBg" id="mc_msg_txt">'+err_invalidcer+'</span></td>';
+								error+='<td width="20" valign="top" style="padding-top: 4px; _padding-top: 2px;"><span>';
+								error+='<a href="javascript:intdisplaymessage();" class="fa fa-times" style="color:white;"/>';
+								error+='</span></td>';
+								error+='</tr></tbody></table></div>';
+								document.getElementById('errorSectiondisplay').style.display = 'block';
+								document.getElementById('errorSectiondisplay').innerHTML = error;
+								$("#accDate").focus();
+								return false;
+							} else {
+								var confirmprocess = confirm("Do You Want To Register?");
+								if(confirmprocess) {
+									pageload();
+									return true;
+								} else {
+									return false
+								}
+							}
+						},
+					});
 				} else {
 					var confirmprocess = confirm("Do You Want To Update?");
-				}
-				if(confirmprocess) {
-					pageload();
-					return true;
-				} else {
-					return false;
+					if(confirmprocess) {
+						pageload();
+						return true;
+					} else {
+						return false
+					}
 				}
 			}
 		});
@@ -404,6 +512,10 @@ function resetErrors() {
 	$('form input, form select, form radio').removeClass('inputTxtError');
 	$('label.error').remove();
 }    
+
+function intdisplaymessage() {
+	document.getElementById('errorSectiondisplay').style.display='none';
+}
 
 function addedit(page,mainmenu) {
 	$('#edit_flg').val('');

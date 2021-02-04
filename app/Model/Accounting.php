@@ -974,26 +974,18 @@ class Accounting extends Model {
 		return $cards;
 	}
 
-	 public static function completedflg($request){
+	public static function completedflg($request){
 
 		if ($request->completedFlg == 0) {
-
 			$completedFlg = 1;
-
 		} else { 
-
 			$completedFlg = 0;
-
 		}
-
 		$date = $request->selYear."-".$request->selMonth;
 
 		$db = DB::connection('mysql');
-
 		$query = $db->table('acc_cashregister')
-
 					->where('bankIdFrom','=',$request->bankNo)
-
 					->where('accountNumberFrom','=',$request->accNo);
 
 		if ($completedFlg == 1) {
@@ -1001,12 +993,26 @@ class Accounting extends Model {
 		} else {
 			$query = $query->WHERE(DB::raw("SUBSTRING(date, 1, 7)"), '=', $date);
 		}
-
 		// $query = $query->toSql();dd($query);
 		$query = $query->update(['completedFlg' => $completedFlg]);
 
 		return $query;
+	}
 
+	public static function fnGetdateBankExists($request) {
+		$date = explode("-", $request->accDate);
+		$date = $date[0]."-".$date[1];
+		$db = DB::connection('mysql');
+		$query = $db->table('acc_cashregister')
+					->SELECT('*')
+					->where('bankIdFrom','=',$request->bankIdFrom)
+					->where('accountNumberFrom','=',$request->accountNumberFrom)
+					->where('completedFlg','=',1);
+		$query = $query->WHERE(DB::raw("SUBSTRING(date, 1, 7)"), '=', $date);
+		$query = $query->get();		
+		// $query = $query->toSql();dd($query);
+
+		return $query;
 
 	}
 }

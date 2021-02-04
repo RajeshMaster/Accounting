@@ -125,7 +125,7 @@
 		<div class="col-xs-12 pl5 pr5" ondragstart="return false;" ondrop="return false;">
 
 		<fieldset>
-	
+		<div id="errorSectiondisplay" align="center" class="box100per"></div>
 			<!-- <div class="col-xs-12 mt10">
 				<div class="col-xs-3 text-right clr_blue">
 					<label>{{ trans('messages.lbl_Date') }}<span class="fr ml2 red"> * </span></label>
