@@ -82,10 +82,13 @@ class Bank extends Model {
 						  }
 
 
-						$query= $query->orderBy('mainFlg','DESC')
+						$query= $query->orderBy('delflg','ASC')
 
 
-                                      ->orderBy('FirstName','ASC')
+                                        ->orderBy('mainFlg','DESC')
+
+
+                                        ->orderBy('FirstName','ASC')
 
 
 							  ->paginate($request->plimit);
