@@ -413,6 +413,8 @@
 						'files'=>true,'method' => 'POST')) }}
 
 		{{ Form::hidden('mainmenu', $request->mainmenu , array('id' => 'mainmenu')) }}
+		{{ Form::hidden('selMonth', $request->selMonth, array('id' => 'selMonth')) }}
+		{{ Form::hidden('selYear', $request->selYear, array('id' => 'selYear')) }}
 
 	{{ Form::close() }}
 

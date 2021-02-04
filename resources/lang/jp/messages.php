@@ -803,6 +803,8 @@ return [
 
 	'lbl_completed' => '契約完了',
 
+	'lbl_notcompleted' => 'Not Completed',
+
 	'lbl_contractList' => '社員契約一覧',
 
 	'lbl_periodofWork' => '仕事の期間',

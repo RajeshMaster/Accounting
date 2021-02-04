@@ -973,4 +973,40 @@ class Accounting extends Model {
 		$cards = DB::select($sql);
 		return $cards;
 	}
+
+	 public static function completedflg($request){
+
+		if ($request->completedFlg == 0) {
+
+			$completedFlg = 1;
+
+		} else { 
+
+			$completedFlg = 0;
+
+		}
+
+		$date = $request->selYear."-".$request->selMonth;
+
+		$db = DB::connection('mysql');
+
+		$query = $db->table('acc_cashregister')
+
+					->where('bankIdFrom','=',$request->bankNo)
+
+					->where('accountNumberFrom','=',$request->accNo);
+
+		if ($completedFlg == 1) {
+			$query = $query->WHERE(DB::raw("SUBSTRING(date, 1, 7)"), '<=' , $date);
+		} else {
+			$query = $query->WHERE(DB::raw("SUBSTRING(date, 1, 7)"), '=', $date);
+		}
+
+		// $query = $query->toSql();dd($query);
+		$query = $query->update(['completedFlg' => $completedFlg]);
+
+		return $query;
+
+
+	}
 }

@@ -711,6 +711,7 @@ return [
 	'lbl_TotalAmt' => 'Total Amt',
 	'lbl_Caldone' => 'Cl.done',
 	'lbl_completed' => 'Completed',
+	'lbl_notcompleted' => 'Not Completed',
 	'lbl_contractList' => 'Staff Contract List',
 	'lbl_periodofWork' => 'Period Of Work',
 	'lbl_cdate' => 'C.Date',

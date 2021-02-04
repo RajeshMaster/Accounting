@@ -1102,3 +1102,12 @@ function fngetValue(val,flg,loopVal) {
 	var total =  parseInt(amount) + parseInt(fee);
 	$('#totalAmt'+loopVal).val(total);
 }
+function completedflg(bankId,AccNo,completedFlg){
+	if(confirm("Do You Want to Change the Flg?")) {
+		$('#bankNo').val(bankId);
+		$('#accNo').val(AccNo);
+		$('#completedFlg').val(completedFlg);
+		$('#frmaccountingindex').attr('action', 'completedflg?mainmenu='+mainmenu+'&time='+datetime);
+		$("#frmaccountingindex").submit();
+	}
+}

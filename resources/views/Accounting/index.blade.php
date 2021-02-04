@@ -160,6 +160,7 @@
 		{{ Form::hidden('bank_Id', '', array('id' => 'bank_Id')) }}
 		{{ Form::hidden('bankNo', '', array('id' => 'bankNo')) }}
 		{{ Form::hidden('accNo', '', array('id' => 'accNo')) }}
+		{{ Form::hidden('completedFlg', '', array('id' => 'completedFlg')) }}
 		{{ Form::hidden('hidAuth', Auth::user()->userclassification, array('id' => 'hidAuth')) }}
 
 		<!-- Year Bar Start -->
@@ -259,22 +260,33 @@
 				@forelse($cashDetails as $key => $data)
 					@if($preBankName !="")
 					@if($preBankAccno != $data['accNo'] ||  $preBankName != $data['Bank_NickName'])
-						<tr style="background-color: lightgrey">
-							<td colspan="4" align="right">
+						<tr style="background-color: lightgrey;">
+							<td colspan="4" align="right" <?php if ($preCompletedFlg != 0) { ?> style = "font-weight: bold;"<?php } ?>>
 								{{ trans('messages.lbl_total') }}
 							</td>
-							<td colspan="1" align="right">
+							<td colspan="1" align="right" <?php if ($preCompletedFlg != 0) { ?> style = "font-weight: bold;"<?php } ?>>
 								{{ number_format($debitToal) }}
 							</td>
-							<td align="right">
+							<td align="right" <?php if ($preCompletedFlg != 0) { ?>style = "font-weight: bold;"<?php } ?>>
 								{{ number_format($creditToal) }}
 							</td>
-							<td align="right">
+							<td align="right" <?php if ($preCompletedFlg != 0) { ?> style = "font-weight: bold;"<?php } ?>>
 								{{ number_format($realBalanceAmount) }}
 								@php $balanceAmt = 0; @endphp
 								@php $realBalanceAmount = 0; @endphp
 							</td>
-							<td class="columnspan1"></td>
+							<td class="columnspan1" align="right" <?php if ($preCompletedFlg != 0) { ?> style = "font-weight: bold;"<?php } ?>>
+								<div style="text-align: right;display: inline-block;" 
+										class="chnageorder">
+									<a href="javascript:completedflg('{{ $preBankIdFrom }}','{{ $preBankAccno }}','{{ $preCompletedFlg }}');">
+										@if($preCompletedFlg == 0)
+											{{ trans('messages.lbl_notcompleted') }}
+										@else
+											{{ trans('messages.lbl_completed') }}
+										@endif
+									</a>
+								</div>
+							</td>
 							<?php 
 								$debitToal = 0;
 								$creditToal = 0;
@@ -413,6 +425,8 @@
 						$preBankAccno = $data['accNo'];
 						$lastBankName = $data['Bank_NickName'];
 						$preBankName = $data['Bank_NickName'];
+						$preBankIdFrom = $data['bankIdFrom'];
+						$preCompletedFlg = $data['completedFlg'];
 						$baseamount =$data['baseAmt'];
 						$i++ ;
 					@endphp 
@@ -424,17 +438,30 @@
 
 				@if(count($cashDetails) > 0)
 					<tr style="background-color: lightgrey">
-						<td colspan="4" align="right">
+						<td colspan="4" align="right" <?php if ($data['completedFlg'] != 0) { ?> style = "font-weight: bold;"<?php } ?>>
 							{{ trans('messages.lbl_total') }}
 						</td>
-						<td colspan="1" align="right">
+						<td colspan="1" align="right" <?php if ($data['completedFlg'] != 0) { ?> style = "font-weight: bold;"<?php } ?>>
 							{{ number_format($debitToal) }}
 						</td>
-						<td align="right">
+						<td align="right" <?php if ($data['completedFlg'] != 0) { ?> style = "font-weight: bold;"<?php } ?>>
 							{{ number_format($creditToal) }}
 						</td>
-						<td align="right">{{ number_format($realBalanceAmount) }}</td>
-						<td class="columnspan1"></td>
+						<td align="right" <?php if ($data['completedFlg'] != 0) { ?> style = "font-weight: bold;"<?php } ?>>
+							{{ number_format($realBalanceAmount) }}
+						</td>
+						<td class="columnspan1" align="right" <?php if ($data['completedFlg'] != 0) { ?> style = "font-weight: bold;"<?php } ?>>
+							<div style="text-align: right;display: inline-block;" 
+									class="chnageorder">
+								<a href="javascript:completedflg('{{ $data['bankIdFrom'] }}','{{ $data['accNo'] }}','{{ $data['completedFlg'] }}');">
+									@if($data['completedFlg'] == 0)
+										{{ trans('messages.lbl_notcompleted') }}
+									@else
+										{{ trans('messages.lbl_completed') }}
+									@endif
+								</a>
+							</div>
+						</td>
 					</tr>
 				@endif
 				

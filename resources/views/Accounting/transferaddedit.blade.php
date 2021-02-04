@@ -327,7 +327,7 @@
 											'accept' => 'image/x-png,image/gif,image/jpeg',
 											'data-label' => trans('messages.lbl_bill'))) }}
 					<span>&nbsp;(Ex: Image File Only)</span>
-					@if(isset($transferEdit) && $request->edit_flg == 1)
+					@if(isset($transferEdit[0]) && $request->edit_flg == 1)
 					<?php $file_url = '../AccountingUpload/Accounting/' . $transferEdit[0]->fileDtl; ?>
 					@if(isset($transferEdit[0]->fileDtl) && file_exists($file_url))
 						<!-- <a style="text-decoration:none" href="{{ URL::asset('../../../../AccountingUpload/Accounting').'/'.$transferEdit[0]->fileDtl }}" data-lightbox="visa-img"></a> -->
@@ -388,6 +388,8 @@
 						'files'=>true,'method' => 'POST')) }}
 
 		{{ Form::hidden('mainmenu', $request->mainmenu , array('id' => 'mainmenu')) }}
+		{{ Form::hidden('selMonth', $request->selMonth, array('id' => 'selMonth')) }}
+		{{ Form::hidden('selYear', $request->selYear, array('id' => 'selYear')) }}
 
 	{{ Form::close() }}
 

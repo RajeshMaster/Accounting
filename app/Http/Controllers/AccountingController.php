@@ -221,6 +221,7 @@ class AccountingController extends Controller {
 			$cashDetails[$i]['fileDtl'] = $value->fileDtl;
 			$cashDetails[$i]['transferId'] = $value->transferId;
 			$cashDetails[$i]['pageFlg'] = $value->pageFlg;
+			$cashDetails[$i]['completedFlg'] = $value->completedFlg;
 			$cashDetails[$i]['accNo'] = $value->accountNumberFrom;
 			$baseAmt = Accounting::baseAmt($value->bankIdFrom,$value->accountNumberFrom);
 			$cashDetails[$i]['subId'] = $value->subjectId;
@@ -463,6 +464,7 @@ class AccountingController extends Controller {
 			return Redirect::to('Accounting/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 		}
 		$transferEdit = array();
+		$transferEdit = Accounting::tranferEditData($request);
 		if ($request->edit_flg == 1) {
 			$bankDetail = Accounting::fetchEditbanknames($request);
 		} else {
@@ -754,10 +756,6 @@ class AccountingController extends Controller {
 			$autodebitEdit[0]->loanName = "";
 			$autodebitEdit[0]->fileDtl = "";
 			$autodebitEdit[0]->remarks = "";
-			/*if ($autodebitEdit[0]->content == 'Invoice' || 
-				$autodebitEdit[0]->content == 'Loan') {
-				$autodebitEdit[0]->subjectId = "";
-			}*/
 		}
 		$mainExpDetail = Accounting::getMainExpName();
 		return view('Accounting.autoDebitReg',[ 'request' => $request,
@@ -1013,6 +1011,13 @@ class AccountingController extends Controller {
 			Session::flash('selMonth', $accDate[1]);
 		}
 		
+		return Redirect::to('Accounting/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
+	}
+
+	public function completedflg(Request $request) {
+		$completedflg = Accounting::completedflg($request);
+		Session::flash('selYear', $request->selYear); 
+		Session::flash('selMonth', $request->selMonth);
 		return Redirect::to('Accounting/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 	}
 }
