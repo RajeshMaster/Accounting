@@ -276,6 +276,10 @@
 								@php $realBalanceAmount = 0; @endphp
 							</td>
 							<td class="columnspan1" align="right" <?php if ($preCompletedFlg != 0) { ?> style = "font-weight: bold;"<?php } ?>>
+								<?php $currentYearMonth = date('Y-m');
+								$previousYearMonth = date("Y-m",strtotime("-1 months", strtotime(date('Y-m'))));
+								$selectedYearMonth = $request->selYear."-".$request->selMonth; ?>
+								@if($currentYearMonth == $selectedYearMonth || $previousYearMonth == $selectedYearMonth)
 								<div style="text-align: right;display: inline-block;" 
 										class="chnageorder">
 									<a href="javascript:completedflg('{{ $preBankIdFrom }}','{{ $preBankAccno }}','{{ $preCompletedFlg }}');">
@@ -286,6 +290,7 @@
 										@endif
 									</a>
 								</div>
+								@endif
 							</td>
 							<?php 
 								$debitToal = 0;
@@ -451,6 +456,10 @@
 							{{ number_format($realBalanceAmount) }}
 						</td>
 						<td class="columnspan1" align="right" <?php if ($data['completedFlg'] != 0) { ?> style = "font-weight: bold;"<?php } ?>>
+							<?php $currentYearMonth = date('Y-m');
+								$previousYearMonth = date("Y-m",strtotime("-1 months", strtotime(date('Y-m'))));
+							$selectedYearMonth = $request->selYear."-".$request->selMonth; ?>
+							@if($currentYearMonth == $selectedYearMonth || $previousYearMonth == $selectedYearMonth)
 							<div style="text-align: right;display: inline-block;" 
 									class="chnageorder">
 								<a href="javascript:completedflg('{{ $data['bankIdFrom'] }}','{{ $data['accNo'] }}','{{ $data['completedFlg'] }}');">
@@ -461,6 +470,7 @@
 									@endif
 								</a>
 							</div>
+							@endif
 						</td>
 					</tr>
 				@endif

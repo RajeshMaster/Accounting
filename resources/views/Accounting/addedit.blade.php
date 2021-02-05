@@ -134,23 +134,41 @@
 				<label>{{ trans('messages.lbl_bank') }}<span class="fr ml2 red"> * </span></label>
 			</div>
 			<div class="col-xs-9">
-				{{ Form::select('bank',[null=>'']+$bankDetail,(isset($editData[0]->bankIdFrom)) ? 
-														$editData[0]->bankIdFrom.'-'.$editData[0]->accountNumberFrom : '',						array('name' =>'bank',
-																	'id'=>'bank',
-																	'data-label' => trans('messages.lbl_bank'),
-																	'onchange'=>'fnGetbankDetails();',
-																	'class'=>'pl5 widthauto'))}}
+				@if($request->edit_flg == 1 && $editData[0]->completedFlg == 1)
+					{{ Form::text('bankName',$editData[0]->Bank_NickName.'-'.$editData[0]->accountNumberFrom, array('id'=>'bankName', 
+										'name' => 'bankName',
+										'readonly' => 'true',
+										'data-label' => trans('messages.lbl_bank'),
+										'class'=>'pl5 widthauto disabled')) }}
+					{{ Form::hidden('bank', $editData[0]->bankIdFrom.'-'.$editData[0]->accountNumberFrom , array('id' =>'bank','name' =>'bank')) }}
+				@else
+					{{ Form::select('bank',[null=>'']+$bankDetail,(isset($editData[0]->bankIdFrom)) ? $editData[0]->bankIdFrom.'-'.$editData[0]->accountNumberFrom : '',
+						array('name' =>'bank',
+								'id'=>'bank',
+								'data-label' => trans('messages.lbl_bank'),
+								'onchange'=>'fnGetbankDetails();',
+								'class'=>'pl5 widthauto'))}}
+				@endif
 				<?php $style = "style='display:none'";
 					if (isset($editData[0]) && $editData[0]->transferId != "" && $editData[0]->transcationType == 1) {
 						$style = "style=''";
 				}?>
 
-				{{ Form::select('transfer',[null=>'']+$bankDetail,(isset($editData[0]->bankIdTo)) ? 
-														$editData[0]->bankIdTo.'-'.$editData[0]->accountNumberTo : '', array('name' =>'transfer',
-																	'id'=>'transfer',
-																	'data-label' =>  trans('messages.lbl_bank'),
-																	$style,
-																	'class'=>'pl5 widthauto'))}}
+				@if($request->edit_flg == 1 && $editData[0]->completedFlg == 1)
+					{{ Form::text('transferName',$editData[0]->Bank_NickName.'-'.$editData[0]->accountNumberTo, 
+								array('id'=>'transferName', 
+										'name' => 'transferName',
+										'readonly' => 'true',
+										'data-label' => trans('messages.lbl_bank'),
+										'class'=>'pl5 widthauto disabled')) }}
+					{{ Form::hidden('transfer', $editData[0]->bankIdTo.'-'.$editData[0]->accountNumberTo , array('id' =>'transfer','name' =>'transfer')) }}
+				@else
+					{{ Form::select('transfer',[null=>'']+$bankDetail,(isset($editData[0]->bankIdTo)) ? $editData[0]->bankIdTo.'-'.$editData[0]->accountNumberTo : '',
+							array('name' =>'transfer',
+									'id'=>'transfer',
+									'data-label' =>  trans('messages.lbl_bank'),$style,
+									'class'=>'pl5 widthauto'))}}
+				@endif
 			</div>
 		</div>
 
@@ -159,55 +177,69 @@
 				<label>{{ trans('messages.lbl_transaction') }}<span class="fr ml2 red"> * </span></label>
 			</div>
 			<div class="col-xs-9">
-				<label style="font-weight: normal;">
 				<?php $disableRadio = "";
 					if (isset($editData[0]) && $editData[0]->transferId != "" && $editData[0]->transcationType == 1) {
 						$editData[0]->transcationType = 3; 
-				}?>
-					{{ Form::radio('transtype', '1', (isset($editData[0]->transcationType) && ($editData[0]->transcationType)=="1") ? $editData[0]->transcationType : '', array('id' =>'transtype',
-																'name' => 'transtype',
-																$disableRadio,
-																'onkeypress'=>'return numberonly(event)',
-																'style' => 'margin-bottom:5px;',
-																'data-label' => trans('messages.lbl_transaction'),
-																'onchange' => 'debitAmount()',
-																'checked' => 'true',
-																'class' => '')) }}
+					} 
+				?>
+				@if($request->edit_flg == 1 && $editData[0]->completedFlg != 0)
+					@if($editData[0]->transcationType == 1)
+						{{ trans('messages.lbl_debit') }}
+					@elseif($editData[0]->transcationType == 2)
+						{{ trans('messages.lbl_credit') }}
+					@elseif($editData[0]->transcationType == 3)
+						{{ trans('messages.lbl_transfer') }}
+					@else
+						{{ trans('messages.lbl_income') }}
+					@endif
+				@else
+				<label style="font-weight: normal;">
+					{{ Form::radio('transtype', '1', (isset($editData[0]->transcationType) && ($editData[0]->transcationType)=="1") ? $editData[0]->transcationType : '', 
+							array('id' =>'transtype',
+									'name' => 'transtype',
+									$disableRadio,
+									'onkeypress'=>'return numberonly(event)',
+									'style' => 'margin-bottom:5px;',
+									'data-label' => trans('messages.lbl_transaction'),
+									'onchange' => 'debitAmount()',
+									'checked' => 'true',
+									'class' => '')) }}
 					&nbsp {{ trans('messages.lbl_debit') }} &nbsp
 				</label>
 				<label style="font-weight: normal;">
-					{{ Form::radio('transtype', '2', (isset($editData[0]->transcationType) && ($editData[0]->transcationType)=="2") ? $editData[0]->transcationType : '', array('id' =>'transtype1',
-																'name' => 'transtype',
-																$disableRadio,
-																'style' => 'margin-bottom:5px;',
-																'data-label' => trans('messages.lbl_transaction'),
-																'onchange' => 'creditAmount()',
-																'class' => 'transtype1')) }}
+					{{ Form::radio('transtype', '2', (isset($editData[0]->transcationType) && ($editData[0]->transcationType)=="2") ? $editData[0]->transcationType : '', 
+							array('id' =>'transtype1',
+									'name' => 'transtype',
+									$disableRadio,
+									'style' => 'margin-bottom:5px;',
+									'data-label' => trans('messages.lbl_transaction'),
+									'onchange' => 'creditAmount()',
+									'class' => 'transtype1')) }}
 					&nbsp {{ trans('messages.lbl_credit') }} &nbsp
 				</label>
 				<label style="font-weight: normal;">
-					{{ Form::radio('transtype', '3', (isset($editData[0]->transcationType) && ($editData[0]->transcationType)=="3") ? $editData[0]->transcationType : '', array('id' =>'transtype2',
-																'name' => 'transtype',
-																$disableRadio,
-																'style' => 'margin-bottom:5px;',
-																'data-label' => trans('messages.lbl_transaction'),
-																'onchange' => 'banktransferselect()',
-																'class' => '')) }}
+					{{ Form::radio('transtype', '3', (isset($editData[0]->transcationType) && ($editData[0]->transcationType)=="3") ? $editData[0]->transcationType : '', 
+							array('id' =>'transtype2',
+									'name' => 'transtype',
+									$disableRadio,
+									'style' => 'margin-bottom:5px;',
+									'data-label' => trans('messages.lbl_transaction'),
+									'onchange' => 'banktransferselect()',
+									'class' => '')) }}
 					&nbsp {{ trans('messages.lbl_transfer') }} &nbsp
 				</label>
-
 				<label style="font-weight: normal;">
 					{{ Form::radio('transtype', '4', (isset($editData[0]->transcationType) && ($editData[0]->transcationType)=="4") ? $editData[0]->transcationType : '', 
 								array('id' =>'transtype3',
-																'name' => 'transtype',
-																$disableRadio,
-																'style' => 'margin-bottom:5px;',
-																'data-label' => trans('messages.lbl_income'),
-																'onchange' => 'creditAmount()',
-																'class' => '')) }}
+										'name' => 'transtype',
+										$disableRadio,
+										'style' => 'margin-bottom:5px;',
+										'data-label' => trans('messages.lbl_income'),
+										'onchange' => 'creditAmount()',
+										'class' => '')) }}
 					&nbsp {{ trans('messages.lbl_income') }} &nbsp
 				</label>
-
+				@endif
 				@if(isset($editData[0]))
 					{{ Form::hidden('oldTransType', $editData[0]->transcationType, array('id' => 'oldTransType')) }}
 					{{ Form::hidden('oldTransferId', $editData[0]->transferId, array('id' => 'oldTransferId')) }}
@@ -220,12 +252,11 @@
 				<label>{{ trans('messages.lbl_content') }}<span class="fr ml2 red"> * </span></label>
 			</div>
 			<div class="col-xs-9">
-				{{ Form::text('content',(isset($editData[0]->content)) ? $editData[0]->content : '',
-									array('id'=>'content', 
-															'name' => 'content',
-															'autocomplete' =>'off',
-															'data-label' => trans('messages.lbl_content'),
-															'class'=>'box31per form-control pl5')) }}
+				{{ Form::text('content',(isset($editData[0]->content)) ? $editData[0]->content : '',array('id'=>'content', 
+									'name' => 'content',
+									'autocomplete' =>'off',
+									'data-label' => trans('messages.lbl_content'),
+									'class'=>'box31per form-control pl5')) }}
 			</div>
 		</div>
 
@@ -241,36 +272,36 @@
 			<div class="col-xs-9">
 				{{ Form::text('amount',(isset($editData[0]->amount)) ? number_format($editData[0]->amount) : 0,
 						array('id'=>'amount', 
-							'name' => 'amount',
-							'style'=>'text-align:right;',
-							'maxlength' => 10,
-							'autocomplete' =>'off',
-							'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
-							'onchange'=>'return fnCancel_check();',
-							'onblur' => 'return fnSetZero11(this.id);',
-							'onfocus' => 'return fnRemoveZero(this.id);',
-							'onclick' => 'return fnRemoveZero(this.id);',
-							'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
-							($request->edit_flg == 1 && isset($editData[0]->completedFlg) && ($editData[0]->completedFlg != 0)?'readonly':''), 
-							'data-label' => trans('messages.lbl_amount'),
-							'class'=>'box15per form-control pl5 ime_mode_disable numonly')) }}
+								'name' => 'amount',
+								'style'=>'text-align:right;',
+								'maxlength' => 10,
+								'autocomplete' =>'off',
+								'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
+								'onchange'=>'return fnCancel_check();',
+								'onblur' => 'return fnSetZero11(this.id);',
+								'onfocus' => 'return fnRemoveZero(this.id);',
+								'onclick' => 'return fnRemoveZero(this.id);',
+								'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
+								($request->edit_flg == 1 && isset($editData[0]->completedFlg) && ($editData[0]->completedFlg != 0)?'readonly':''), 
+								'data-label' => trans('messages.lbl_amount'),
+								'class'=>'box15per form-control pl5 ime_mode_disable numonly')) }}
 
 				<span class="feeclass"> / </span>
 				{{ Form::text('fee',(isset($editData[0]->fee)) ? number_format($editData[0]->fee) : 0,
 						array('id'=>'fee', 
-							'name' => 'fee',
-							'style'=>'text-align:right;',
-							'maxlength' => 10,
-							'autocomplete' =>'off',
-							'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
-							'onchange'=>'return fnCancel_check();',
-							'onblur' => 'return fnSetZero11(this.id);',
-							'onfocus' => 'return fnRemoveZero(this.id);',
-							'onclick' => 'return fnRemoveZero(this.id);',
-							'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
-							($request->edit_flg == 1 && isset($editData[0]->completedFlg) && ($editData[0]->completedFlg != 0)?'readonly':''), 
-							'data-label' => trans('messages.lbl_fee'),
-							'class'=>'box7per form-control pl5 ime_mode_disable feeclass numonly')) }}
+								'name' => 'fee',
+								'style'=>'text-align:right;',
+								'maxlength' => 10,
+								'autocomplete' =>'off',
+								'onkeypress'=>'return event.charCode >=6 && event.charCode <=58',
+								'onchange'=>'return fnCancel_check();',
+								'onblur' => 'return fnSetZero11(this.id);',
+								'onfocus' => 'return fnRemoveZero(this.id);',
+								'onclick' => 'return fnRemoveZero(this.id);',
+								'onkeyup'=>'return fnMoneyFormat(this.id,"jp");',
+								($request->edit_flg == 1 && isset($editData[0]->completedFlg) && ($editData[0]->completedFlg != 0)?'readonly':''), 
+								'data-label' => trans('messages.lbl_fee'),
+								'class'=>'box7per form-control pl5 ime_mode_disable feeclass numonly')) }}
 			</div>
 		</div>
 		
@@ -282,7 +313,8 @@
 				{{ Form::textarea('remarks',(isset($editData[0]->remarks)) ? $editData[0]->remarks : '', 
 						array('name' => 'remarks',
 								'autocomplete' =>'off',
-							  'class' => 'box40per form-control','size' => '30x4')) }}
+							  	'class' => 'box40per form-control',
+							  	'size' => '30x4')) }}
 			</div>
 		</div>
 		

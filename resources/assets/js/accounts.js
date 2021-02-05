@@ -61,12 +61,16 @@ $(document).ready(function() {
 								var confirmprocess = confirm("Do You Want To Register?");
 								if(confirmprocess) {
 									pageload();
+									form.submit();
 									return true;
 								} else {
 									return false
 								}
 							}
 						},
+						error: function(data) {
+							// alert(data);
+						}
 					});
 				} else {
 					var confirmprocess = confirm("Do You Want To Update?");
@@ -151,12 +155,16 @@ $(document).ready(function() {
 								var confirmprocess = confirm("Do You Want To Register?");
 								if(confirmprocess) {
 									pageload();
+									form.submit();
 									return true;
 								} else {
 									return false
 								}
 							}
 						},
+						error: function(data) {
+							// alert(data);
+						}
 					});
 				} else {
 					var confirmprocess = confirm("Do You Want To Update?");
@@ -240,12 +248,16 @@ $(document).ready(function() {
 								var confirmprocess = confirm("Do You Want To Register?");
 								if(confirmprocess) {
 									pageload();
+									form.submit();
 									return true;
 								} else {
 									return false
 								}
 							}
 						},
+						error: function(data) {
+							// alert(data);
+						}
 					});
 				} else {
 					var confirmprocess = confirm("Do You Want To Update?");

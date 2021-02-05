@@ -152,7 +152,7 @@
 					<label>{{ trans('messages.lbl_bank') }}<span class="fr ml2 red"> * </span></label>
 				</div>
 				<div class="col-xs-9">
-					@if(isset($autodebitEdit[0]->loanName) && $request->edit_flg == 1)
+					@if($request->edit_flg == 1 && (isset($autodebitEdit[0]->loanName) || $autodebitEdit[0]->completedFlg == 1))
 						{{ Form::text('autoDebitBankName',$autodebitEdit[0]->Bank_NickName.'-'.$autodebitEdit[0]->AccNo,
 									array('id'=>'autoDebitBankName', 
 										'name' => 'autoDebitBankName',
