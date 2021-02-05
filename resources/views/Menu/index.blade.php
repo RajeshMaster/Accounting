@@ -300,6 +300,12 @@
 						{{ trans('messages.lbl_creditCardPay') }}
 					</a>
 				</div>
+
+				<div class="alinkEng ml20 mt5 tal">
+					<a class="pageload csrp btn-link" href="{{ url('LoanView/index?mainmenu=LoanView&time='.date('Ymdhis')) }}" style="color:blue;font-size: 13px;">
+						{{ trans('messages.lbl_loandetail') }}
+					</a>
+				</div>
 			</div>
 			@if(Auth::user()->userclassification == 4)
 			<div class="col-xs-3" style="padding-left: 53px;">
@@ -328,6 +334,12 @@
 				<a class="pageload csrp btn-link" href="{{ url('CreditCardPay/index?mainmenu=AuditingCreditCardPay&time='.date('Ymdhis')) }}" 
 				style="color:blue;font-size: 13px;">
 						{{ trans('messages.lbl_creditCard') }}
+					</a>
+				</div>
+				<div class="alinkEng ml20 mt5 tal">
+				<a class="pageload csrp btn-link" href="{{ url('LoanView/index?mainmenu=AuditingLoanView&time='.date('Ymdhis')) }}" 
+				style="color:blue;font-size: 13px;">
+						{{ trans('messages.lbl_loandetail') }}
 					</a>
 				</div>
 			</div>
