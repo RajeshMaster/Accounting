@@ -343,14 +343,21 @@ class AccountingController extends Controller {
 		}
 		$editData = Accounting::fetchEditData($request);
 		if ($request->edit_flg == 1) {
-			$bankDetail = Accounting::fetchEditbanknames($request);
+			if ($editData[0]->bankIdTo != "" && $editData[0]->bankIdTo != NULL) {
+				$editDataTo = Accounting::fetchEditDataTo($request);
+				$bankDetail = Accounting::fetchEditbanknames($request,$editDataTo[0]->bankId);
+			} else {
+				$bankDetail = Accounting::fetchEditbanknames($request);
+			}
+			
 		} else {
 			$bankDetail = Accounting::fetchbanknames();
 			$editData[0]->date = "";
 		}
 		return view('Accounting.addedit',['request' => $request,
 											'bankDetail' => $bankDetail,
-											'editData' => $editData
+											'editData' => $editData,
+											'editDataTo' => $editDataTo
 										]);
 	}
 

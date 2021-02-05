@@ -19,15 +19,18 @@ class Accounting extends Model {
 		return $query;
 	}
 
-	public static function fetchEditbanknames($request) {
+	public static function fetchEditbanknames($request,$bankIdTo=null) {
 		$db = DB::connection('mysql');
 		$query = $db->TABLE('mstbank')
 						->SELECT(DB::RAW("CONCAT(mstbank.Bank_NickName,'-',mstbank.AccNo) AS BANKNAME"),DB::RAW("CONCAT(mstbank.BankName,'-',mstbank.AccNo) AS ID"),'mstbank.id')
 						->orwhere('mstbank.delflg','=','0')
-						->orwhere('mstbank.id','=',$request->bank_Id)
-						->orderBy('mstbank.Bank_NickName','ASC')
-						->lists('BANKNAME','ID');
-						// ->toSql();dd($query);
+						->orwhere('mstbank.id','=',$request->bank_Id);
+		if ($bankIdTo != null) {
+			$query = $query->orwhere('mstbank.id','=',$bankIdTo);
+		}
+			$query = $query->orderBy('mstbank.Bank_NickName','ASC')
+							->lists('BANKNAME','ID');
+							// ->toSql();dd($query);
 		return $query;
 	}
 
@@ -636,6 +639,26 @@ class Accounting extends Model {
 						->where('transcationType','!=',9)
 						->where('acc_cashregister.id','=',$request->editId)
 						->orderBy('bankIdFrom','ASC')
+						->orderBy('acc_cashregister.orderId','ASC')
+						->get();
+						// ->toSql();
+						// dd($query);
+		return $query;
+	}
+
+	public static function fetchEditDataTo($request) {
+		$db = DB::connection('mysql');
+		$query = $db->table('acc_cashregister')
+						->SELECT('acc_cashregister.*','bank.id As bankId','bank.AccNo','bank.FirstName','bank.LastName','bank.BankName','bank.Bank_NickName','dev_expensesetting.Subject','dev_expensesetting.Subject_jp')
+						->leftJoin('mstbank AS bank', function($join)
+							{
+								$join->on('acc_cashregister.bankIdTo', '=', 'bank.BankName');
+								$join->on('acc_cashregister.accountNumberTo', '=', 'bank.AccNo');
+							})
+						->leftJoin('dev_expensesetting', 'dev_expensesetting.id', '=', 'acc_cashregister.subjectId')
+						->where('transcationType','!=',9)
+						->where('acc_cashregister.id','=',$request->editId)
+						->orderBy('bankIdTo','ASC')
 						->orderBy('acc_cashregister.orderId','ASC')
 						->get();
 						// ->toSql();

@@ -155,7 +155,7 @@
 				}?>
 
 				@if($request->edit_flg == 1 && $editData[0]->completedFlg == 1)
-					{{ Form::text('transferName',$editData[0]->Bank_NickName.'-'.$editData[0]->accountNumberTo, 
+					{{ Form::text('transferName',$editDataTo[0]->Bank_NickName.'-'.$editData[0]->accountNumberTo, 
 								array('id'=>'transferName', 
 										'name' => 'transferName',
 										'readonly' => 'true',
@@ -184,12 +184,16 @@
 				?>
 				@if($request->edit_flg == 1 && $editData[0]->completedFlg != 0)
 					@if($editData[0]->transcationType == 1)
+						{{ Form::hidden('transtype', $editData[0]->transcationType, array('id' =>'transtype','name' =>'transtype')) }}
 						{{ trans('messages.lbl_debit') }}
 					@elseif($editData[0]->transcationType == 2)
+						{{ Form::hidden('transtype', $editData[0]->transcationType, array('id' =>'transtype','name' =>'transtype')) }}
 						{{ trans('messages.lbl_credit') }}
 					@elseif($editData[0]->transcationType == 3)
+						{{ Form::hidden('transtype', $editData[0]->transcationType, array('id' =>'transtype','name' =>'transtype')) }}
 						{{ trans('messages.lbl_transfer') }}
 					@else
+						{{ Form::hidden('transtype', $editData[0]->transcationType, array('id' =>'transtype','name' =>'transtype')) }}
 						{{ trans('messages.lbl_income') }}
 					@endif
 				@else
