@@ -155,10 +155,10 @@
 				}?>
 
 				@if($request->edit_flg == 1 && $editData[0]->completedFlg == 1)
-					{{ Form::text('transferName',$editDataTo[0]->Bank_NickName.'-'.$editData[0]->accountNumberTo, 
+					{{ Form::text('transferName', (isset($editDataTo[0]->Bank_NickName)) ? $editDataTo[0]->Bank_NickName.'-'.$editData[0]->accountNumberTo : '', 
 								array('id'=>'transferName', 
 										'name' => 'transferName',
-										'readonly' => 'true',
+										'readonly' => 'true',$style,
 										'data-label' => trans('messages.lbl_bank'),
 										'class'=>'pl5 widthauto disabled')) }}
 					{{ Form::hidden('transfer', $editData[0]->bankIdTo.'-'.$editData[0]->accountNumberTo , array('id' =>'transfer','name' =>'transfer')) }}

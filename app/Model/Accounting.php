@@ -1031,8 +1031,9 @@ class Accounting extends Model {
 					->where('bankIdFrom','=',$request->bankIdFrom)
 					->where('accountNumberFrom','=',$request->accountNumberFrom)
 					->where('completedFlg','=',1);
-		$query = $query->WHERE(DB::raw("SUBSTRING(date, 1, 7)"), '=', $date);
-		$query = $query->get();		
+		$query = $query->WHERE(DB::raw("SUBSTRING(date, 1, 7)"), '>=', $date);
+		$query = $query->orderBy(DB::raw("SUBSTRING(date, 1, 7)"), "DESC")
+						->get();	
 		// $query = $query->toSql();dd($query);
 
 		return $query;

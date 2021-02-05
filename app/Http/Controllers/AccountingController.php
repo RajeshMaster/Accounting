@@ -342,6 +342,7 @@ class AccountingController extends Controller {
 			return Redirect::to('Accounting/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 		}
 		$editData = Accounting::fetchEditData($request);
+		$editDataTo = array();
 		if ($request->edit_flg == 1) {
 			if ($editData[0]->bankIdTo != "" && $editData[0]->bankIdTo != NULL) {
 				$editDataTo = Accounting::fetchEditDataTo($request);
