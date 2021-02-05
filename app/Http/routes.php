@@ -568,3 +568,11 @@ Route::group(['prefix'=>'AudPayment','middleware' => 'auth'], function() {
     Route::any('customerspecification', 'AudPaymentController@specificationview')->middleware('accessright:4,5');
     Route::any('customerview', 'AudPaymentController@customerview')->middleware('accessright:4,5');
 });
+
+
+// LoanView - ADDED By Sastha --2020/02/05
+Route::group(['prefix'=>'LoanView', 'middleware' => 'auth'], function() {
+    Route::get('changelanguage','AjaxController@index');
+    Route::any('index', 'LoanViewController@index');
+    Route::any('listview', 'LoanViewController@listview');
+});
