@@ -284,9 +284,13 @@
 										class="chnageorder">
 									<a href="javascript:completedflg('{{ $preBankIdFrom }}','{{ $preBankAccno }}','{{ $preCompletedFlg }}');">
 										@if($preCompletedFlg == 0)
-											{{ trans('messages.lbl_notcompleted') }}
+											<span style="color: red;">
+												{{ trans('messages.lbl_notconfirmed') }}
+											</span>
 										@else
-											{{ trans('messages.lbl_completed') }}
+											<span style="color: green;">
+												{{ trans('messages.lbl_confirmed') }}
+											</span>
 										@endif
 									</a>
 								</div>
@@ -296,6 +300,9 @@
 								$debitToal = 0;
 								$creditToal = 0;
 							?>
+						</tr>
+						<tr>
+							<td class="text-center columnspannodata"></td>
 						</tr>
 					@endif
 					@endif
@@ -437,7 +444,8 @@
 					@endphp 
 				@empty
 					<tr>
-						<td class="text-center columnspannodata"style="color: red;">{{ trans('messages.lbl_nodatafound') }}</td>
+						<td class="text-center columnspannodata"style="color: red;">
+							{{ trans('messages.lbl_nodatafound') }}</td>
 					</tr>
 				@endforelse
 
@@ -464,9 +472,14 @@
 									class="chnageorder">
 								<a href="javascript:completedflg('{{ $data['bankIdFrom'] }}','{{ $data['accNo'] }}','{{ $data['completedFlg'] }}');">
 									@if($data['completedFlg'] == 0)
-										{{ trans('messages.lbl_notcompleted') }}
+										<span style="color: red;">
+											{{ trans('messages.lbl_notconfirmed') }}
+										</span>
 									@else
-										{{ trans('messages.lbl_completed') }}
+										<span style="color: green;">
+											{{ trans('messages.lbl_confirmed') }}
+										</span>
+										
 									@endif
 								</a>
 							</div>

@@ -1363,7 +1363,7 @@ return [
     'lbl_alreadypaid' => 'Already Paid',
 
 	/* Accounting Invoice */
-	'lbl_accounting' => 'Accounting',
+	'lbl_accounting' => '経費明細',
 	'lbl_paymentamount' => '請求金額',
 	'lbl_paidamt' => '入金金額',
 
@@ -1393,8 +1393,9 @@ return [
 	'lbl_invoiceDtl' => '請求書情報',
 	'lbl_confirm' => '確認',
 	'lbl_confirmed' => '確認済',
-	'lbl_creditCardPay' => 'Credit Card',
-	'lbl_creditCard' => 'Credit Card',
+	'lbl_notconfirmed' => '未確認',
+	'lbl_creditCardPay' => 'クレジットカード',
+	'lbl_creditCard' => 'クレジットカード',
 	'lbl_creditCardName' => 'Credit Card Name',
 	'lbl_categories' => 'Categories',
 	'lbl_creditName' => 'Creditcard Name',
@@ -1424,7 +1425,7 @@ return [
 	'lbl_per_month_total' => '月々返済額',
 	'lbl_per_month_amount' => 'Per Month Amount',
 	'lbl_pay_count' => '返済回数',
-	'lbl_payment' => '支払額',
+	'lbl_payment' => '入金明細',
 	'lbl_principle' => '返済額',
 	'lbl_loan_balance' => 'ローン残高',
 	'lbl_loan_emi_details' => '返済回数',
