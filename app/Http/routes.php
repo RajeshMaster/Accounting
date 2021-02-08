@@ -493,6 +493,7 @@ Route::group(['prefix'=>'Accounting','middleware' => 'auth'], function() {
     Route::any('cashedit', 'AccountingController@cashedit')->middleware('accessright:0,1,2,3,4');
     Route::any('addeditprocess', 'AccountingController@addeditprocess')->middleware('accessright:0,1,2,3,4');
     Route::any('getInvoicePopup', 'AccountingController@getInvoicePopup')->middleware('accessright:0,1,2,3,4');
+    Route::any('getExpensespopup', 'AccountingController@getExpensespopup')->middleware('accessright:0,1,2,3,4');
 	 // Transfer // Sarath
     Route::any('empnamepopup', 'AccountingController@empnamepopup')->middleware('accessright:0,1,2,3,4');
     Route::any('getsalarypopup', 'AccountingController@getsalarypopup')->middleware('accessright:0,1,2,3,4');
@@ -506,6 +507,8 @@ Route::group(['prefix'=>'Accounting','middleware' => 'auth'], function() {
     Route::any('AutoDebitRegprocess', 'AccountingController@AutoDebitRegprocess')->middleware('accessright:0,1,2,3,4');
      // Invoice // Sastha
     Route::any('invoiceaddeditprocess', 'AccountingController@invoiceaddeditprocess')->middleware('accessright:0,1,2,3,4');
+     // Expenses Data // Sastha
+    Route::any('expensesDataaddeditprocess', 'AccountingController@expensesDataaddeditprocess')->middleware('accessright:0,1,2,3,4');
     // Completed and Not Complete // Sastha
     Route::any('completedflg', 'AccountingController@completedflg')->middleware('accessright:0,1,2,3,4');
     // Completed Bank Exists // Sastha

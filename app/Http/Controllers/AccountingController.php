@@ -1022,6 +1022,41 @@ class AccountingController extends Controller {
 		return Redirect::to('Accounting/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 	}
 
+	/**
+	*
+	* Expenses Date Details Popup Page for Transfer
+	* @author Sarath
+	* @return object to particular view page
+	* Created At 2020/10/19
+	*
+	*/
+	public function getExpensespopup(Request $request) {
+
+		$getBankDtls = array();
+		$salPaid = array();
+		if(Session::get('languageval') == "en") {
+			$mainSub = Accounting::subjectName('ExpensesData',1);
+		} else {
+			$mainSub = Accounting::subjectName('経費データ',2);
+		}
+		$SubIdVal = "";
+		if ($mainSub != array()) {
+			$SubId = array_keys($mainSub);
+			$SubIdVal = $SubId[0];
+		}
+
+		$expensesData = Accounting::fetchExpensesData($request);
+
+
+		return view('Accounting.expensesDatepopup',['request' => $request,
+														'mainSub' => $mainSub,
+														'SubIdVal' => $SubIdVal,
+														'getBankDtls' => $getBankDtls,
+														'expensesData' => $expensesData
+													]);
+	}
+
+
 	/**  
 	*  For Confirmed and Not Confirmed Process
 	*  @author Sastha 

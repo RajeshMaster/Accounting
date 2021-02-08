@@ -517,6 +517,11 @@ $(document).ready(function() {
 		}
 	});
 
+	// For Salary Select Popup
+	$('.selectExpenses').click(function(){
+		alert("Under Constrction");
+		return false;
+	});
 
 });
 
@@ -1169,6 +1174,23 @@ function GetInvoicepopup() {
 		alert("Please select Date field");
 	}
 }
+
+function GetExpensespopup() {
+	var mainmenu = $('#mainmenu').val();
+	var expensesDate = $('#accDate').val();
+	if (expensesDate != "") {
+		popupopenclose(1);
+		$('#getExpensespopup').load('../Accounting/getExpensespopup?mainmenu='+mainmenu+'&time='+datetime+'&expensesDate='+encodeURIComponent(expensesDate));
+		$("#getExpensespopup").modal({
+			backdrop: 'static',
+			keyboard: false
+		});
+		$('#getExpensespopup').modal('show');
+	} else {
+		alert("Please select Date field");
+	}
+}
+
 function salAllCheck() {
 	var salaryAllCheck = $('input[class=salaryAllCheck]:not(:checked)').val();
 	if (salaryAllCheck == undefined) {
@@ -1177,6 +1199,7 @@ function salAllCheck() {
 		$('.salarychk').prop("checked",false);
 	}
 }
+
 function invAllCheck() {
 	var invoiceAllCheck = $('input[class=invoiceAllCheck]:not(:checked)').val();
 	if (invoiceAllCheck == undefined) {
@@ -1192,6 +1215,16 @@ function loaAllCheck() {
 	} else {
 		$('.loanchk').prop("checked",false);
 	}
+}
+
+function expensesDataAllCheck() {
+	var expensesDataAllCheck = $('input[class=expensesDataAllCheck]:not(:checked)').val();
+	if (expensesDataAllCheck == undefined) {
+		$('.expensesDatachk').prop("checked",true);
+	} else {
+		$('.expensesDatachk').prop("checked",false);
+	}
+
 }
 function bankViewlist(bnkname,branchname,accno,startdate,bank_id,branchid) {
 	pageload();

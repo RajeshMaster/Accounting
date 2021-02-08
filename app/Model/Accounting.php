@@ -1039,4 +1039,33 @@ class Accounting extends Model {
 		return $query;
 
 	}
+
+	public static function fetchExpensesData($request) {
+
+		$db = DB::connection('mysql');
+		$query = $db->table('acc_expensesData')
+						->SELECT('acc_expensesData.*','bank.id As bankId','bank.AccNo','bank.FirstName','bank.LastName','bank.BankName','bank.Bank_NickName','dev_expensesetting.Subject','dev_expensesetting.Subject_jp','banname.BankName AS banknm','brncname.id AS brnchid','brncname.BranchName AS brnchnm', DB::RAW("CONCAT(emp_mstemployees.FirstName,' ', emp_mstemployees.LastName) AS Empname"))
+						->leftJoin('mstbank AS bank', function($join)
+							{
+								$join->on('acc_expensesData.bankIdFrom', '=', 'bank.BankName');
+								$join->on('acc_expensesData.accountNumberFrom', '=', 'bank.AccNo');
+							})
+						->leftJoin('mstbanks AS banname', 'banname.id', '=', 'bank.BankName')
+						->leftJoin('mstbankbranch AS brncname', function($join)
+							{
+								$join->on('brncname.BankId', '=', 'bank.BankName');
+								$join->on('brncname.id', '=', 'bank.BranchName');
+							})
+						->leftJoin('dev_expensesetting', 'dev_expensesetting.id', '=', 'acc_expensesData.subjectId')
+						->leftJoin('emp_mstemployees', 'emp_mstemployees.Emp_ID', '=', 'acc_expensesData.empId')
+						->where('acc_expensesData.delFlg','=',0)
+						->orderBy('acc_expensesData.bankIdFrom','ASC')
+						->orderBy('acc_expensesData.accountNumberFrom','ASC')
+						->orderBy('bank.Bank_NickName','ASC')
+						->orderBy('acc_expensesData.orderId','ASC')
+						->get($request->plimit);
+						// ->toSql();
+						// dd($query);
+		return $query;
+	}
 }

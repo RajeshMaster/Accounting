@@ -1287,5 +1287,7 @@ return [
 
 	// Expenses Data
 	'lbl_expensesData' => 'Expenses Data',
+	'lbl_getexpensesDtls' => 'Get Expenses Details',
+	'lbl_expensesDtls' => 'Expenses Details',
 	
 ];

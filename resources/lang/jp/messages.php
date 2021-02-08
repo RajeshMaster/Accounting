@@ -1459,4 +1459,6 @@ return [
 
 	// Expenses Data
 	'lbl_expensesData' => '経費データ',
+	'lbl_getexpensesDtls' => 'Get Expenses Details',
+	'lbl_expensesDtls' => 'Expenses Details',
 ];

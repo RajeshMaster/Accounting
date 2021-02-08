@@ -70,25 +70,25 @@
 			</div>
 		</div>
 		<div class="col-xs-12 pt10">
-			<div class="col-xs-5" style="text-align: left;margin-left: -15px;">
+			<div class="col-xs-3" style="text-align: left;margin-left: -25px;">
 				<button type="button" onclick="javascript:addedit('transferCash','{{ $request->mainmenu }}');" class="btn btn-success box25per pt9 pb8">
 					<span class="fa fa-plus"></span>&nbsp;{{ trans('messages.lbl_cash') }}
 				</button> 
-				<button type="button" id="transferbutton" class="btn btn-success box25per pt9 pb8">
+				<button type="button" id="transferbutton" class="btn btn-success box33per pt9 pb8">
 					<span class="fa fa-plus"></span>&nbsp;{{ trans('messages.lbl_transfer') }}
 				</button> 
-				<button type="button" onclick="javascript:addedit('transferAutoDebit','{{ $request->mainmenu }}');" class="btn btn-success box25per pt9 pb8">
+				<button type="button" onclick="javascript:addedit('transferAutoDebit','{{ $request->mainmenu }}');" class="btn btn-success box39per pt9 pb8">
 					<span class="fa fa-plus"></span>&nbsp;{{ trans('messages.lbl_autodebit') }}
 				</button> 
 			</div>
-			<div class="col-xs-7 pull-right" style="text-align: right;padding: 0px;">
+			<div class="col-xs-9 pull-right" style="text-align: right;padding: 0px;">
 				@if($request->edit_flg != 1)
 				{{ Form::text('accDate',(isset($transferEdit[0]->date)) ? $transferEdit[0]->date : '',
 							array('id'=>'accDate', 
 								'name' => 'accDate',
 								'data-label' => trans('messages.lbl_Date'),
 								'autocomplete' =>'off',
-								'class'=>' box15per form-control dob')) }}
+								'class'=>' box12per form-control dob')) }}
 					
 					<label class="mt10 ml2 fa fa-calendar fa-lg" for="accDate" aria-hidden="true">
 					</label>
@@ -102,23 +102,28 @@
 								'readonly' => 'true',
 								'data-label' => trans('messages.lbl_Date'),
 								'autocomplete' =>'off',
-								'class'=>' box15per form-control disabled')) }}
+								'class'=>' box12per form-control disabled')) }}
 				@endif
 				@if($request->edit_flg != 1)
 				<button type="button" id="salarybutton" style="background-color: purple; color: #fff;" 
 					onclick="return Getsalarypopup();"  
-					class="btn box24per pt9 pb8 ml2">
+					class="btn box20per pt9 pb8 ml2">
 					{{ trans('messages.lbl_getsalary') }}
 				</button> 
 				<button type="button" id="loanbutton" style="background-color: purple; color: #fff;" 
 					onclick="return Getloanpopup('','');"
-					class="btn box23per pt9 pb8 ml2">
+					class="btn box20per pt9 pb8 ml2">
 					{{ trans('messages.lbl_getloan') }}
 				</button> 
 				<button type="button" id="invoicebutton" style="background-color: purple; color: #fff;" 
 					onclick="return GetInvoicepopup();"
-					class="btn box24per pt9 pb8 ml2">
+					class="btn box20per pt9 pb8 ml2">
 					{{ trans('messages.lbl_getinvoiceDtl') }}
+				</button> 
+				<button type="button" id="expensesDatabutton" style="background-color: purple; color: #fff;" 
+					onclick="return GetExpensespopup();"  
+					class="btn box20per pt9 pb8 ml2">
+					{{ trans('messages.lbl_getexpensesDtls') }}
 				</button> 
 				@endif
 			</div>
@@ -420,6 +425,14 @@
 	</div>
 
 	<div id="getinvoicepopup" class="modal fade">
+		<div id="login-overlay">
+			<div class="modal-content">
+				<!-- Popup will be loaded here -->
+			</div>
+		</div>
+	</div>
+
+	<div id="getExpensespopup" class="modal fade">
 		<div id="login-overlay">
 			<div class="modal-content">
 				<!-- Popup will be loaded here -->
