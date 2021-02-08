@@ -487,26 +487,28 @@ Route::group(['prefix'=>'Accounting','middleware' => 'auth'], function() {
     Route::any('index', 'AccountingController@index')->middleware('accessright:0,1,2,3,4,5');
     Route::any('getcashDetails', 'AccountingController@getcashDetails')->middleware('accessright:0,1,2,3,4');
     Route::any('commitProcess', 'AccountingController@commitProcess')->middleware('accessright:0,1,2,3,4');
-    // Cash // Rajesh
+	// Cash // Rajesh
     Route::any('bank_ajax', 'AccountingController@bank_ajax')->middleware('accessright:0,1,2,3,4');
     Route::any('addedit', 'AccountingController@addedit')->middleware('accessright:0,1,2,3,4');
     Route::any('cashedit', 'AccountingController@cashedit')->middleware('accessright:0,1,2,3,4');
     Route::any('addeditprocess', 'AccountingController@addeditprocess')->middleware('accessright:0,1,2,3,4');
     Route::any('getInvoicePopup', 'AccountingController@getInvoicePopup')->middleware('accessright:0,1,2,3,4');
-    // Transfer // Sarath
+	 // Transfer // Sarath
     Route::any('empnamepopup', 'AccountingController@empnamepopup')->middleware('accessright:0,1,2,3,4');
     Route::any('getsalarypopup', 'AccountingController@getsalarypopup')->middleware('accessright:0,1,2,3,4');
     Route::any('transferaddedit', 'AccountingController@transferaddedit')->middleware('accessright:0,1,2,3,4');
     Route::any('transferedit', 'AccountingController@transferedit')->middleware('accessright:0,1,2,3,4');
     Route::any('tranferaddeditprocess', 'AccountingController@tranferaddeditprocess')->middleware('accessright:0,1,2,3,4');
-    // Auto Debit // Sastha
+	// Auto Debit // Sastha
     Route::any('getloanpopup', 'AccountingController@getloanpopup')->middleware('accessright:0,1,2,3,4');
     Route::any('autoDebitReg', 'AccountingController@autoDebitReg')->middleware('accessright:0,1,2,3,4');
     Route::any('autoDebitedit', 'AccountingController@autoDebitedit')->middleware('accessright:0,1,2,3,4');
     Route::any('AutoDebitRegprocess', 'AccountingController@AutoDebitRegprocess')->middleware('accessright:0,1,2,3,4');
      // Invoice // Sastha
     Route::any('invoiceaddeditprocess', 'AccountingController@invoiceaddeditprocess')->middleware('accessright:0,1,2,3,4');
+    // Completed and Not Complete // Sastha
     Route::any('completedflg', 'AccountingController@completedflg')->middleware('accessright:0,1,2,3,4');
+    // Completed Bank Exists // Sastha
     Route::any('dateBankExists', 'AccountingController@dateBankExists')->middleware('accessright:0,1,2,3,4');
 });
 
@@ -575,4 +577,19 @@ Route::group(['prefix'=>'LoanView', 'middleware' => 'auth'], function() {
     Route::get('changelanguage','AjaxController@index');
     Route::any('index', 'LoanViewController@index');
     Route::any('listview', 'LoanViewController@listview');
+});
+
+// Expenses Data Process by Sastha
+Route::group(['prefix'=>'ExpensesData','middleware' => 'auth'], function() {
+    Route::get('changelanguage', 'AjaxController@index');
+    Route::any('index', 'ExpensesDataController@index')->middleware('accessright:0,1,2,3,4,5');
+    Route::any('empnamepopup', 'ExpensesDataController@empnamepopup')->middleware('accessright:0,1,2,3,4');
+     Route::any('getExpDataDetails', 'ExpensesDataController@getExpDataDetails')->middleware('accessright:0,1,2,3,4');
+    Route::any('commitProcess', 'ExpensesDataController@commitProcess')->middleware('accessright:0,1,2,3,4');
+    Route::any('changeDelFlg', 'ExpensesDataController@changeDelFlg')->middleware('accessright:0,1,2,3,4');
+    // Expenses Data // Sastha
+    Route::any('bank_ajax', 'ExpensesDataController@bank_ajax')->middleware('accessright:0,1,2,3,4');
+    Route::any('addedit', 'ExpensesDataController@addedit')->middleware('accessright:0,1,2,3,4');
+    Route::any('expensesDataEdit', 'ExpensesDataController@expensesDataEdit')->middleware('accessright:0,1,2,3,4');
+    Route::any('addeditprocess', 'ExpensesDataController@addeditprocess')->middleware('accessright:0,1,2,3,4');
 });

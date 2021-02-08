@@ -1284,4 +1284,8 @@ return [
 	'lbl_loanprinciple' => 'Principle',
 	'lbl_fixed' => 'Fixed',
 	'lbl_tot' => 'Total',
+
+	// Expenses Data
+	'lbl_expensesData' => 'Expenses Data',
+	
 ];

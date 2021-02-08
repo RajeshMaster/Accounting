@@ -343,7 +343,7 @@
 			<!-- //Customer sub -->
 			@endif
 	
-			@if(isset($request->mainmenu) && ($request->mainmenu == "Accounting") || ($request->mainmenu == "AccBankDetail") || ($request->mainmenu == "CreditCardPay") || ($request->mainmenu == "LoanView"))
+			@if(isset($request->mainmenu) && ($request->mainmenu == "Accounting") || ($request->mainmenu == "AccBankDetail") || ($request->mainmenu == "CreditCardPay") || ($request->mainmenu == "LoanView") || ($request->mainmenu == "ExpensesData"))
 				<div id="accounting_sub_1">
 					<a href="{{ url('Accounting/index?mainmenu=Accounting&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_accounting') }}</a>
 				</div>
@@ -359,11 +359,15 @@
 				<div id="accounting_sub_5">
 					<a href="{{ url('LoanView/index?mainmenu=LoanView&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_loandetail') }}</a>
 				</div>
+
+				<div id="accounting_sub_6">
+					<a href="{{ url('ExpensesData/index?mainmenu=ExpensesData&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_expensesData') }}</a>
+				</div>
 			@endif
 			
 			@endif
 			@if(Session::get('userclassification') == 4 || Session::get('userclassification') == 5)
-				@if(isset($request->mainmenu) && ($request->mainmenu == "Auditing" || $request->mainmenu == "salarycalcplus" || $request->mainmenu == "AuditingAccounting" || $request->mainmenu == "AudPayment" || $request->mainmenu == "AuditingCreditCardPay") || ($request->mainmenu == "AuditingLoanView"))
+				@if(isset($request->mainmenu) && ($request->mainmenu == "Auditing" || $request->mainmenu == "salarycalcplus" || $request->mainmenu == "AuditingAccounting" || $request->mainmenu == "AudPayment" || $request->mainmenu == "AuditingCreditCardPay") || ($request->mainmenu == "AuditingLoanView") || ($request->mainmenu == "AuditingExpensesData"))
 					<div id="auditing_sub_1">
 						<a href="{{ url('Auditing/index?mainmenu=Auditing&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_invoice') }}</a>
 					</div>
@@ -381,8 +385,11 @@
 						<a href="{{ url('CreditCardPay/index?mainmenu=AuditingCreditCardPay&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_creditCard') }}</a>
 					</div>
 					<div id="auditing_sub_6">
-					<a href="{{ url('LoanView/index?mainmenu=AuditingLoanView&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_loandetail') }}</a>
-				</div>
+						<a href="{{ url('LoanView/index?mainmenu=AuditingLoanView&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_loandetail') }}</a>
+					</div>
+					<div id="auditing_sub_7">
+						<a href="{{ url('ExpensesData/index?mainmenu=AuditingExpensesData&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_expensesData') }}</a>
+					</div>
 				@endif
 			@endif
 

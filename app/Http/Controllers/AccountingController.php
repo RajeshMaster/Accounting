@@ -1022,12 +1022,26 @@ class AccountingController extends Controller {
 		return Redirect::to('Accounting/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 	}
 
+	/**  
+	*  For Confirmed and Not Confirmed Process
+	*  @author Sastha 
+	*  @param $request
+	*  Created At 2021/02/03
+	**/
+
 	public function completedflg(Request $request) {
 		$completedflg = Accounting::completedflg($request);
 		Session::flash('selYear', $request->selYear); 
 		Session::flash('selMonth', $request->selMonth);
 		return Redirect::to('Accounting/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 	}
+
+	/**  
+	*  For Confirmed Bank Exists Process
+	*  @author Sastha 
+	*  @param $request
+	*  Created At 2021/02/05
+	**/
 
 	public function dateBankExists(Request $request){
 		$dateBankExists = Accounting::fnGetdateBankExists($request);

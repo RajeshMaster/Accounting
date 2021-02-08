@@ -1456,4 +1456,7 @@ return [
 	'lbl_loanprinciple' => '元金均等',
 	'lbl_fixed' => '元利均等',
 	'lbl_tot' => 'Total',
+
+	// Expenses Data
+	'lbl_expensesData' => '経費データ',
 ];
