@@ -302,7 +302,7 @@
 							?>
 						</tr>
 						<tr>
-							<td class="text-center columnspannodata"></td>
+							<td class="text-center columnspannodata" style="background-color: white;border: none;"></td>
 						</tr>
 					@endif
 					@endif

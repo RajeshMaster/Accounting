@@ -506,7 +506,7 @@ function bankViewlist(bnkname,branchname,accno,startdate,bank_id,branchid) {
 	$("#frmexpensesDataindex").submit();
 }
 
-function changeDelFlg(editId){
+function changeDelFlg(editId,delFlg){
 	if(confirm("Do You Want to Change the Flg?")) {
 		$('#editId').val(editId);
 		$('#delFlg').val(delFlg);

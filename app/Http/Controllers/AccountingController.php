@@ -1036,10 +1036,10 @@ class AccountingController extends Controller {
 		$expensesData = array();
 		
 		$getBankDtls = Accounting::fetchExpensesBank($request);
-		if (count($getBankDtls) == 1) {
-			$userId = array_keys($getBankDtls);
-			$request->bankIdAccNo = $userId[0];
-		}
+		// if (count($getBankDtls) == 1) {
+		// 	$userId = array_keys($getBankDtls);
+		// 	$request->bankIdAccNo = $userId[0];
+		// }
 		if ($request->expensesDate != "" && $request->bankIdAccNo != "") {
 			$expensesData = Accounting::fetchExpensesData($request);
 		}
