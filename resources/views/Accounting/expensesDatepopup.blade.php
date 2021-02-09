@@ -15,13 +15,13 @@
 </style>
 {{ Form::open(array('name'=>'expensesDataPopup', 'id'=>'expensesDataPopup',
 							'class' => 'form-horizontal',
-							'url' => 'Accounting/tranferaddeditprocess?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
+							'url' => 'Accounting/expensesDataaddeditprocess?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
 							'method' => 'POST','files'=>true)) }}
 
 	{{ Form::hidden('mainmenu', $request->mainmenu , array('id' => 'mainmenu')) }}
 	{{ Form::hidden('accDate', $request->expensesDate , array('id' => 'accDate')) }}
 	{{ Form::hidden('hidempid', '', array('id' => 'hidempid')) }}
-	{{ Form::hidden('hidchkTrans', '', array('id' => 'hidchkTrans')) }}
+	{{ Form::hidden('hidchkExp', '', array('id' => 'hidchkExp')) }}
 	<div class="modal-content">
 		<div class="modal-header">
 			 <button type="button" class="close" data-dismiss="modal" style="color: red;" aria-hidden="true">&#10006;</button>
@@ -35,12 +35,12 @@
 			</div>
 			<div class="col-xs-6 clr_black text-right mt10">
 				<label>
-					{{ trans('messages.lbl_subject') }} : 
-					{{ Form::select('expensesDataSub',[null=>'']+$mainSub,($SubIdVal != "") ? $SubIdVal : '',
-									array('name' =>'expensesDataSub',
-											'id'=>'expensesDataSub',
-											'data-label' => trans('messages.lbl_subject'),
-											'class'=>'pl5 widthauto' ))}}
+					{{ trans('messages.lbl_bank') }} : 
+					{{ Form::select('bankIdAccNo',[null=>'']+$getBankDtls,$request->bankIdAccNo, array('name' =>'bankIdAccNo',
+									'id'=>'bankIdAccNo',
+									'onchange'=>'javascript:fnGetExpDtls(this.value);',
+									'data-label' => trans('messages.lbl_bank'),
+									'class'=>'pl5 widthauto' ))}}
 				</label>
 			</div>
 			
@@ -48,25 +48,23 @@
 		<div class="modal-body" style="height: 310px;overflow-y: scroll;width: 100%;">
 			<table id="data" class="tablealternate box100per" style="height: 40px;">
 				<colgroup>
-					<col width="6%">
-					<col width="13%">
+					<col width="5%">
 					<col width="25%">
 					<col width="15%">
 					<col width="10%">
-					<col width="6%">
+					<col width="5%">
 				</colgroup>
 				<thead class="CMN_tbltheadcolor">
 					<tr class="tableheader fwb tac"> 
 						<th class="tac">{{ trans('messages.lbl_sno') }}</th>
-						<th class="tac">{{ trans('messages.lbl_bank') }}</th>
-						<th class="tac">{{ trans('messages.lbl_empid') }}</th>
+						<th class="tac">{{ trans('messages.lbl_content') }}</th>
 						<th class="tac">{{ trans('messages.lbl_amount') }}</th>
 						<th class="tac">{{ trans('messages.lbl_fee') }}</th>
 						<th class="tac">
 							{{ trans('messages.lbl_notneed') }}
 							@if(count($expensesData) != 0)
-								<input  type="checkbox" name="expensesDataAllCheck" 
-									id="expensesDataAllCheck" class="expensesDataAllCheck" 
+								<input  type="checkbox" name="expensesAllCheck" 
+									id="expensesAllCheck" class="expensesAllCheck" 
 									onclick="expensesDataAllCheck();">
 							@endif
 						</th>
@@ -79,15 +77,6 @@
 						<tr>
 							<td align="center">
 								{{ $i++ }}
-							</td>
-							<td align="left">
-								{{ Form::text('expensesDataBankName'.$j,$value->Bank_NickName.'-'.$value->accountNumberFrom,
-									array('id'=>'expensesDataBankName'.$j, 
-										'name' => 'expensesDataBankName'.$j,
-										'readonly' => 'true',
-										'data-label' => trans('messages.lbl_bank'),
-										'class'=>'pl5 box95per disabled')) }}
-								{{ Form::hidden('expensesDataBank'.$j, $value->bankIdFrom.'-'.$value->accountNumberFrom, array('id' =>'expensesDataBank'.$j)) }}
 							</td>
 							<td align="center">
 								@if($value->empId != "")
@@ -128,13 +117,13 @@
 							<td align="center">
 								<input  type="checkbox" name="expensesData[]" 
 									id="expensesData[]" class="expensesDatachk" 
-									value="<?php  echo $value->empId."$".$value->content."$".$value->amount."$".$value->fee."$".$j; ?>">
+									value="<?php  echo $value->empId."$".$value->subjectId."$".$value->amount."$".$value->fee."$".$j; ?>">
 							</td>
 						</tr>
 						@php $j++; @endphp
 					@empty
 						<tr>
-							<td class="text-center" colspan="6" style="color: red;">
+							<td class="text-center" colspan="5" style="color: red;">
 								{{ trans('messages.lbl_nodatafound') }}
 							</td>
 						</tr>

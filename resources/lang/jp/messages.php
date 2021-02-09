@@ -1372,8 +1372,8 @@ return [
 	'lbl_autodebit' => 'Auto Debit',
 	'lbl_income' => '収入',
 	'lbl_fee' => '手数料',
-	'lbl_getsalary' => 'Get Salary Details',
-	'lbl_getloan' => 'Get Loan Details',
+	'lbl_getsalary' => '給料の取得',
+	'lbl_getloan' => 'ローンを取得',
 	'lbl_notneed' => 'Not Needed',
 	'lbl_pdfdwnld' => 'PDF Download',
 
@@ -1389,7 +1389,7 @@ return [
 	'lbl_history' => '履歴',
 	'lbl_gensen_download' => '原線 ダウンロード',
 	'lbl_changeOrder' => '順番変更',
-	'lbl_getinvoiceDtl' => '請求書情報の取得',
+	'lbl_getinvoiceDtl' => '請求書を取得',
 	'lbl_invoiceDtl' => '請求書情報',
 	'lbl_confirm' => '確認',
 	'lbl_confirmed' => '確認済',
@@ -1459,6 +1459,6 @@ return [
 
 	// Expenses Data
 	'lbl_expensesData' => '経費データ',
-	'lbl_getexpensesDtls' => 'Get Expenses Details',
+	'lbl_getexpensesDtls' => '経費を取得',
 	'lbl_expensesDtls' => 'Expenses Details',
 ];

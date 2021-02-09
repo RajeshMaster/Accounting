@@ -77,21 +77,11 @@
 					<label>{{ trans('messages.lbl_bank_name') }}<span class="fr ml2 red"> * </span></label>
 				</div>
 				<div class="col-xs-9">
-					@if($request->edit_flg == 1)
-						{{ Form::text('bankName',$expensesDataEdit[0]->Bank_NickName.'-'.$expensesDataEdit[0]->AccNo,
-									array('id'=>'bankName', 
-										'name' => 'bankName',
-										'readonly' => 'true',
+					{{ Form::select('bankIdAccNo',[null=>'']+$bankDetail,(isset($expensesDataEdit[0]->bankIdFrom)) ? $expensesDataEdit[0]->bankIdFrom.'-'.$expensesDataEdit[0]->accountNumberFrom : '',
+							array('name' =>'bankIdAccNo',
+										'id'=>'bankIdAccNo',
 										'data-label' => trans('messages.lbl_bank'),
-										'class'=>'pl5 widthauto disabled')) }}
-						{{ Form::hidden('bankIdAccNo', $expensesDataEdit[0]->bankIdFrom.'-'.$expensesDataEdit[0]->accountNumberFrom , array('id' =>'bankIdAccNo','name' =>'bankIdAccNo')) }}
-					@else
-						{{ Form::select('bankIdAccNo',[null=>'']+$bankDetail,(isset($expensesDataEdit[0]->bankIdFrom)) ? $expensesDataEdit[0]->bankIdFrom.'-'.$expensesDataEdit[0]->accountNumberFrom : '',
-								array('name' =>'bankIdAccNo',
-											'id'=>'bankIdAccNo',
-											'data-label' => trans('messages.lbl_bank'),
-											'class'=>'pl5 widthauto'))}}
-					@endif
+										'class'=>'pl5 widthauto'))}}
 				</div>
 			</div>
 

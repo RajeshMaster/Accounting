@@ -1197,8 +1197,8 @@ return [
 	'lbl_autodebit' => 'Auto Debit',
 	'lbl_income' => 'Income',
 	'lbl_fee' => 'Fee',
-	'lbl_getsalary' => 'Get Salary Details',
-	'lbl_getloan' => 'Get Loan Details',
+	'lbl_getsalary' => 'Get Salary',
+	'lbl_getloan' => 'Get Loan',
 	'lbl_notneed' => 'Not Needed',
 	'lbl_pdfdwnld' => 'PDF Download',
 	
@@ -1214,7 +1214,7 @@ return [
 	'lbl_history' => 'History',
 	'lbl_gensen_download' => 'Gensen Download',
 	'lbl_changeOrder' => 'Change Order',
-	'lbl_getinvoiceDtl' => 'Get Invoice Details',
+	'lbl_getinvoiceDtl' => 'Get Invoice',
 	'lbl_invoiceDtl' => 'Invoice Details',
 	'lbl_confirm' => 'Confirm',
 	'lbl_confirmed' => 'Confirmed',
@@ -1287,7 +1287,7 @@ return [
 
 	// Expenses Data
 	'lbl_expensesData' => 'Expenses Data',
-	'lbl_getexpensesDtls' => 'Get Expenses Details',
+	'lbl_getexpensesDtls' => 'Get Expenses',
 	'lbl_expensesDtls' => 'Expenses Details',
 	
 ];

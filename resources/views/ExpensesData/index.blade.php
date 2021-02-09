@@ -10,14 +10,12 @@
 		if($('#hidAuth').val() == "5" || mainmenu == "AuditingExpensesData"){
 			$(".divdisplay").css("display", "none");
 			$(".chnageorder").css("display", "none");
-			$('.columnspan').attr('colspan','3');
-			$('.columnspannodata').attr('colspan','6');
+			$('.columnspannodata').attr('colspan','7');
 			$('.columnspan1').attr('colspan','1');
   		} else {
   			$(".divdisplay").css("");
   			$(".chnageorder").css("");
-  			$('.columnspan').attr('colspan','4');
-  			$('.columnspannodata').attr('colspan','7');
+  			$('.columnspannodata').attr('colspan','8');
   			$('.columnspan1').attr('colspan','2');
   		}
 	});
@@ -121,6 +119,7 @@
 				<col width="11%">
 				<col width="">
 				<col width="8%">
+				<col width="5%">
 				<col width="14%">
 				<col width="5%">
 				<col width="11%" class="divdisplay">
@@ -131,7 +130,8 @@
 					<th class="vam">{{ trans('messages.lbl_sno') }}</th>
 					<th class="vam">{{ trans('messages.lbl_subject') }}</th>
 					<th class="vam">{{ trans('messages.lbl_content') }}</th>
-					<th class="vam">{{ trans('messages.lbl_debit') }}</th>
+					<th class="vam">{{ trans('messages.lbl_amount') }}</th>
+					<th class="vam">{{ trans('messages.lbl_fee') }}</th>
 					<th class="vam">{{ trans('messages.lbl_remarks') }}</th>
 					<th class="vam">{{ trans('messages.lbl_file') }}</th>
 					<th class="vam divdisplay">{{ trans('messages.lbl_copy') }}</th>
@@ -149,12 +149,10 @@
 					$preBankName = "";
 					$baseamount = "";
 					$balancebyBank = "";
-					$realBalanceAmount = 0;
 					$backgroundColor ="#e5f4f9";
-
-					$debitToal = 0;
-					$creditToal = 0;
-
+					$total = 0;
+					$feetot = 0;
+					$totAmt = 0;
 				@endphp
 				@forelse($expensesDetails as $key => $data)
 					@if($preBankName !="")
@@ -164,20 +162,19 @@
 								{{ trans('messages.lbl_total') }}
 							</td>
 							<td colspan="1" align="right">
-								{{ number_format($debitToal) }}
+								{{ number_format($total) }}
 							</td>
 							<td align="right">
-								{{ number_format($realBalanceAmount) }}
-								@php $balanceAmt = 0; @endphp
-								@php $realBalanceAmount = 0; @endphp
+								{{ number_format($feetot) }}
+							</td>
+							<td align="right">
+								<?php $totAmt = $total + $feetot; ?>
+								{{ number_format($totAmt) }}
 							</td>
 							<td class="columnspan1" align="right">
 								
 							</td>
-							<?php 
-								$debitToal = 0;
-								$creditToal = 0;
-							?>
+							<?php $total = 0; $feetot = 0; ?>
 						</tr>
 						<tr>
 							<td class="text-center columnspannodata"></td>
@@ -199,14 +196,9 @@
 									@endif
 								@endif
 							</td>
-							<td></td>
-							@if($data['baseAmt'])
-								<?php $realBalanceAmount = $data['balanceAmtonDownTr']; ?>
-							@else
-								<?php $realBalanceAmount = $data['balanceAmtonDownTr']; ?>
-							@endif
-							<td align="right">
-								{{ number_format($data['balanceAmtonDownTr']) }}</td>
+							<td align="right"></td>
+							<td align="right"></td>
+							<td align="left"></td>
 							<td class="columnspan1" align="right">
 								<div style="text-align: right;display: inline-block;" class="chnageorder">
 									<a href="javascript:changeOrderpopUp('{{ $data['bankIdFrom'] }}','{{ $data['accNo'] }}');">
@@ -237,9 +229,14 @@
 							@endif
 						</td>
 						<td align="right">
-							@php $debitAmt = $data['amount'] + $data['fee']; @endphp
-							<?php $debitToal = $debitAmt + $debitToal ?>
+							@php $amount = $data['amount']; @endphp
+							<?php $total = $amount + $total ?>
 							{{ number_format($data['amount']) }}
+						</td>
+						<td align="right">
+							@php $fee = $data['fee']; @endphp
+							<?php $feetot = $fee + $feetot ?>
+							{{ number_format($data['fee']) }}
 						</td>
 						<td>{{ $data['remarks']}}</td>
 						<td align="center">
@@ -269,19 +266,7 @@
 							@endif
 						</td>
 					</tr>
-
 					
-					@if($data['fee'] != "")
-						<tr >
-							<td  colspan="2" align="right">
-								{{ trans('messages.lbl_fee') }}
-							</td>
-							<td colspan="" align="right">
-								{{ number_format($data['fee']) }}</td>
-							<td class="columnspan"></td>
-						</tr>
-					@endif
-						<?php $realBalanceAmount = $realBalanceAmount - $debitAmt ?>
 					@php
 						$lastBankAccno = $data['accNo'];
 						$preBankAccno = $data['accNo'];
@@ -304,10 +289,14 @@
 							{{ trans('messages.lbl_total') }}
 						</td>
 						<td colspan="1" align="right">
-							{{ number_format($debitToal) }}
+							{{ number_format($total) }}
 						</td>
 						<td align="right">
-							{{ number_format($realBalanceAmount) }}
+							{{ number_format($feetot) }}
+						</td>
+						<td align="right">
+							<?php $totAmt = $total + $feetot; ?>
+							{{ number_format($totAmt) }}
 						</td>
 						<td class="columnspan1" align="right">
 						</td>

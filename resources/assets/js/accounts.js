@@ -402,7 +402,9 @@ $(document).ready(function() {
 		if (salsuberr) {
 			return false;
 		}
-		
+		if (salerr) {
+			return false;
+		}
 		var hidchkTrans = $("#hidchkTrans").val();
 		var confirmgroup = confirm("Do You Want To Select Salary?");
 
@@ -519,8 +521,61 @@ $(document).ready(function() {
 
 	// For Salary Select Popup
 	$('.selectExpenses').click(function(){
-		alert("Under Constrction");
-		return false;
+	
+		var expbankerr = 0;
+		var experr = 0;
+		
+		if ($('#bankIdAccNo').val() == "undefined" || $('#bankIdAccNo').val() == "") {
+			$('#bankIdAccNo').attr("style", "background-color: #E88F8F");
+			expbankerr = 1;
+			return false;
+		} else {
+			$('#bankIdAccNo').attr("style", "background-color:none");
+		}
+
+		var lengthOfUnchecked = $('input[class=expensesDatachk]:not(:checked)').length;
+		if(lengthOfUnchecked == 0){
+			alert("Please select data");
+			return false;
+		}
+		
+		$('input[class=expensesDatachk]:not(:checked)').each(function(){
+			var res = $(this).val().split("$"); 
+			if ($('#'+"expensesDataAmt"+res[4]).val() == "" || $('#'+"expensesDataAmt"+res[4]).val() == 0) {
+				$('#'+"expensesDataAmt"+res[4]).attr("style", "background-color: #E88F8F;text-align:right;");
+				experr = 1;
+				return false;
+			} else {
+				$('#'+"expensesDataAmt"+res[4]).attr("style", "background-color:none;text-align:right;");
+			}
+		});
+		if (expbankerr) {
+			return false;
+		}
+		if (experr) {
+			return false;
+		}
+		var hidchkExp = $("#hidchkExp").val();
+		var confirmgroup = confirm("Do You Want To Select Expenses Data?");
+
+		if(confirmgroup) {
+			$("#hidchkExp").val('1');
+			var getchecked = $("#hidchkExp").val();
+			$('input[class=expensesDatachk]:not(:checked)').each(function(){
+				var res = $(this).val().split("$"); 
+				if (getchecked == 1) {
+					getchecked = 2;
+					$('#hidempid').val(res[0] + ":" + res[1] + ":" + $('#'+"expensesDataAmt"+res[4]).val() + ":" + $('#'+"expensesDataFee"+res[4]).val());
+				} else {
+					$('#hidempid').val($('#hidempid').val() + ";" + res[0] + ":" + res[1] + ":" + $('#'+"expensesDataAmt"+res[4]).val() + ":" + $('#'+"expensesDataFee"+res[4]).val());
+				}
+			});
+			pageload();
+			form.submit();
+			return true;
+		} else {
+			return false;
+		}
 	});
 
 });
@@ -706,7 +761,7 @@ function editCashDtl(id, editflg, pgFlg, bankId) {
 	$('#bank_Id').val(bankId);
 	$('#edit_flg').val(editflg);
 	$('#editId').val(id);
-	if(pgFlg == 2) {
+	if(pgFlg == 2 || pgFlg == 5) {
 		$('#frmaccountingindex').attr('action', 'transferedit?mainmenu='+mainmenu+'&time='+datetime);
 		$("#frmaccountingindex").submit();
 	} else if(pgFlg == 3){
@@ -965,8 +1020,6 @@ function changeOrderpopUp(bankId,AccNo){
 
 	$('#bankNo').val('');
 	$('#accNo').val('');
-
-
 	$('#bankNo').val(bankId);
 	$('#accNo').val(AccNo);
 	var mainmenu = $('#mainmenu').val();
@@ -1175,12 +1228,12 @@ function GetInvoicepopup() {
 	}
 }
 
-function GetExpensespopup() {
+function GetExpensespopup(bankIdAccNo) {
 	var mainmenu = $('#mainmenu').val();
 	var expensesDate = $('#accDate').val();
 	if (expensesDate != "") {
 		popupopenclose(1);
-		$('#getExpensespopup').load('../Accounting/getExpensespopup?mainmenu='+mainmenu+'&time='+datetime+'&expensesDate='+encodeURIComponent(expensesDate));
+		$('#getExpensespopup').load('../Accounting/getExpensespopup?mainmenu='+mainmenu+'&time='+datetime+'&expensesDate='+encodeURIComponent(expensesDate)+'&bankIdAccNo='+bankIdAccNo);
 		$("#getExpensespopup").modal({
 			backdrop: 'static',
 			keyboard: false
@@ -1189,6 +1242,10 @@ function GetExpensespopup() {
 	} else {
 		alert("Please select Date field");
 	}
+}
+
+function fnGetExpDtls(bankIdAccNo){
+	GetExpensespopup(bankIdAccNo);
 }
 
 function salAllCheck() {
@@ -1218,8 +1275,8 @@ function loaAllCheck() {
 }
 
 function expensesDataAllCheck() {
-	var expensesDataAllCheck = $('input[class=expensesDataAllCheck]:not(:checked)').val();
-	if (expensesDataAllCheck == undefined) {
+	var expensesAllCheck = $('input[class=expensesAllCheck]:not(:checked)').val();
+	if (expensesAllCheck == undefined) {
 		$('.expensesDatachk').prop("checked",true);
 	} else {
 		$('.expensesDatachk').prop("checked",false);

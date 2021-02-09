@@ -235,7 +235,7 @@ class AccountingController extends Controller {
 				$cashDetails[$i]['pagecashSubject'] = $value->loanName;;
 			}
 
-			if ($cashDetails[$i]['content'] == 'Salary') {
+			if ($cashDetails[$i]['content'] == 'Salary' || ($cashDetails[$i]['content'] == 'Expenses' && $value->emp_ID != "")) {
 				$empIdArr[0] = $value->emp_ID;
 				$empname = Accounting::fnGetEmpName($value->emp_ID);
 				if (isset($empname[0]->LastName)) {
@@ -1025,35 +1025,55 @@ class AccountingController extends Controller {
 	/**
 	*
 	* Expenses Date Details Popup Page for Transfer
-	* @author Sarath
+	* @author Sastha
 	* @return object to particular view page
-	* Created At 2020/10/19
+	* Created At 2020/02/08
 	*
 	*/
 	public function getExpensespopup(Request $request) {
 
 		$getBankDtls = array();
-		$salPaid = array();
-		if(Session::get('languageval') == "en") {
-			$mainSub = Accounting::subjectName('ExpensesData',1);
-		} else {
-			$mainSub = Accounting::subjectName('経費データ',2);
+		$expensesData = array();
+		
+		$getBankDtls = Accounting::fetchExpensesBank($request);
+		if (count($getBankDtls) == 1) {
+			$userId = array_keys($getBankDtls);
+			$request->bankIdAccNo = $userId[0];
 		}
-		$SubIdVal = "";
-		if ($mainSub != array()) {
-			$SubId = array_keys($mainSub);
-			$SubIdVal = $SubId[0];
+		if ($request->expensesDate != "" && $request->bankIdAccNo != "") {
+			$expensesData = Accounting::fetchExpensesData($request);
 		}
-
-		$expensesData = Accounting::fetchExpensesData($request);
-
 
 		return view('Accounting.expensesDatepopup',['request' => $request,
-														'mainSub' => $mainSub,
-														'SubIdVal' => $SubIdVal,
-														'getBankDtls' => $getBankDtls,
-														'expensesData' => $expensesData
-													]);
+													'getBankDtls' => $getBankDtls,
+													'expensesData' => $expensesData
+												]);
+	}
+
+	/**
+	*
+	* Addedit Process for Expenses Data
+	* @author Sastha
+	* @return object to particular view page
+	* Created At 2020/02/09
+	*
+	*/
+	public function expensesDataaddeditprocess(Request $request) {
+		$insertProcess = Accounting::insexpensesData($request);
+		if($insertProcess) {
+			Session::flash('success', 'Inserted Sucessfully!'); 
+			Session::flash('type', 'alert-success'); 
+		} else {
+			Session::flash('type', 'Inserted Unsucessfully!'); 
+			Session::flash('type', 'alert-danger'); 
+		}
+		$accDate = explode("-", $request->accDate);
+		if (isset($accDate[0])) {
+			Session::flash('selYear', $accDate[0]); 
+			Session::flash('selMonth', $accDate[1]);
+		}
+		
+		return Redirect::to('Accounting/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 	}
 
 

@@ -365,11 +365,13 @@
 									{{ $data['invoiceDetails'] }}
 								@elseif($data['content'] == 'Loan')
 									{{ $data['loanDetails'] }}
+								@elseif($data['content'] == 'Expenses' && $data['employeDetails'] != "")
+									{{ $data['employeDetails'] }}
 								@else
 									{{ $data['subject'] }} 
 								@endif
 
-								@if( $data['pageFlg'] == 1)
+								@if($data['pageFlg'] == 1 || ($data['pageFlg'] == 5 && $data['employeDetails'] == ""))
 									{{ $data['content'] }} 
 								@endif
 							@endif

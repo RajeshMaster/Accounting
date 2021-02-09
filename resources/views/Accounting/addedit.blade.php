@@ -57,7 +57,7 @@
 			</div>
 		</div>
 		<div class="col-xs-12 pt10">
-			<div class="col-xs-3" style="text-align: left;margin-left: -25px;">
+			<div class="col-xs-4" style="text-align: left;margin-left: -25px;">
 				<button type="button" id="cashbutton" class="btn btn-success box25per pt9 pb8">
 					<span class="fa fa-plus"></span>&nbsp;{{ trans('messages.lbl_cash') }}
 				</button> 
@@ -68,14 +68,14 @@
 					<span class="fa fa-plus"></span>&nbsp;{{ trans('messages.lbl_autodebit') }}
 				</button> 
 			</div>
-			<div class="col-xs-9 pull-right" style="text-align: right;padding: 0px;">
+			<div class="col-xs-8 pull-right" style="text-align: right;padding: 0px;">
 				@if($request->edit_flg != 1)
 					{{ Form::text('accDate',(isset($editData[0]->date)) ? $editData[0]->date : '',
 							array('id'=>'accDate', 
 								'name' => 'accDate',
 								'data-label' => trans('messages.lbl_Date'),
 								'autocomplete' =>'off',
-								'class'=>' box12per form-control dob')) }}
+								'class'=>' box13per form-control dob')) }}
 					<label class="mt10 ml2 fa fa-calendar fa-lg" for="accDate" aria-hidden="true">
 					</label>
 					<a href="javascript:getdate();" class="anchorstyle">
@@ -88,27 +88,27 @@
 								'readonly' => 'true',
 								'data-label' => trans('messages.lbl_Date'),
 								'autocomplete' =>'off',
-								'class'=>' box12per form-control disabled')) }}
+								'class'=>' box13per form-control disabled')) }}
 				@endif
 				@if($request->edit_flg != 1)
 				<button type="button" id="salarybutton" style="background-color: purple; color: #fff;" 
 					onclick="return Getsalarypopup();"  
-					class="btn box20per pt9 pb8 ml2">
+					class="btn box15per pt9 pb8 ml2">
 					{{ trans('messages.lbl_getsalary') }}
 				</button> 
 				<button type="button" id="loanbutton" style="background-color: purple; color: #fff;" 
 					onclick="return Getloanpopup('','');"
-					class="btn box20per pt9 pb8 ml2">
+					class="btn box15per pt9 pb8 ml2">
 					{{ trans('messages.lbl_getloan') }}
 				</button> 
 				<button type="button" id="invoicebutton" style="background-color: purple; color: #fff;"
 					onclick="return GetInvoicepopup();"
-					class="btn box20per pt9 pb8 ml2">
+					class="btn box15per pt9 pb8 ml2">
 					{{ trans('messages.lbl_getinvoiceDtl') }}
 				</button> 
 				<button type="button" id="expensesDatabutton" style="background-color: purple; color: #fff;" 
-					onclick="return GetExpensespopup();"  
-					class="btn box20per pt9 pb8 ml2">
+					onclick="return GetExpensespopup('');"  
+					class="btn box15per pt9 pb8 ml2">
 					{{ trans('messages.lbl_getexpensesDtls') }}
 				</button> 
 				@endif

@@ -387,9 +387,9 @@
 					<div id="auditing_sub_6">
 						<a href="{{ url('LoanView/index?mainmenu=AuditingLoanView&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_loandetail') }}</a>
 					</div>
-					<div id="auditing_sub_7">
+					<!-- <div id="auditing_sub_7">
 						<a href="{{ url('ExpensesData/index?mainmenu=AuditingExpensesData&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_expensesData') }}</a>
-					</div>
+					</div> -->
 				@endif
 			@endif
 

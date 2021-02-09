@@ -769,6 +769,7 @@ class Accounting extends Model {
 						->select('date','emp_ID')
 						->WHERERAW("SUBSTRING(acc_cashregister.date,1,7) = '$date'")
 						->where('emp_ID','!=','')
+						->where('pageFlg','=',2)
 						->whereNotNull('emp_ID')
 						->get();
 		return $query;
@@ -1040,32 +1041,100 @@ class Accounting extends Model {
 
 	}
 
+	public static function fetchExpensesBank($request) {
+		$db = DB::connection('mysql');
+		$query = $db->TABLE('acc_expensesData')
+						->SELECT('acc_expensesData.*',DB::RAW("CONCAT(mstbank.Bank_NickName,'-',mstbank.AccNo) AS BANKNAME"),DB::RAW("CONCAT(mstbank.BankName,'-',mstbank.AccNo) AS ID"),'mstbank.id')
+						->leftJoin('mstbank', function($join)
+						{
+							$join->on('acc_expensesData.bankIdFrom', '=', 'mstbank.BankName');
+							$join->on('acc_expensesData.accountNumberFrom', '=', 'mstbank.AccNo');
+						})
+						->where('acc_expensesData.delFlg','=',0)
+						->where('mstbank.delflg','=','0')
+						->orderBy('mstbank.Bank_NickName','ASC')
+						->lists('BANKNAME','ID');
+		return $query;
+	}
+
 	public static function fetchExpensesData($request) {
 
 		$db = DB::connection('mysql');
+		$bankIdAccNo = explode("-", $request->bankIdAccNo);
+		if (!isset($bankIdAccNo['0'])) {
+			$bankIdAccNo['0'] = "";
+		}
+		if (!isset($bankIdAccNo['1'])) {
+			$bankIdAccNo['1'] = "";
+		}
+		
 		$query = $db->table('acc_expensesData')
-						->SELECT('acc_expensesData.*','bank.id As bankId','bank.AccNo','bank.FirstName','bank.LastName','bank.BankName','bank.Bank_NickName','dev_expensesetting.Subject','dev_expensesetting.Subject_jp','banname.BankName AS banknm','brncname.id AS brnchid','brncname.BranchName AS brnchnm', DB::RAW("CONCAT(emp_mstemployees.FirstName,' ', emp_mstemployees.LastName) AS Empname"))
-						->leftJoin('mstbank AS bank', function($join)
-							{
-								$join->on('acc_expensesData.bankIdFrom', '=', 'bank.BankName');
-								$join->on('acc_expensesData.accountNumberFrom', '=', 'bank.AccNo');
-							})
-						->leftJoin('mstbanks AS banname', 'banname.id', '=', 'bank.BankName')
-						->leftJoin('mstbankbranch AS brncname', function($join)
-							{
-								$join->on('brncname.BankId', '=', 'bank.BankName');
-								$join->on('brncname.id', '=', 'bank.BranchName');
-							})
-						->leftJoin('dev_expensesetting', 'dev_expensesetting.id', '=', 'acc_expensesData.subjectId')
-						->leftJoin('emp_mstemployees', 'emp_mstemployees.Emp_ID', '=', 'acc_expensesData.empId')
-						->where('acc_expensesData.delFlg','=',0)
-						->orderBy('acc_expensesData.bankIdFrom','ASC')
-						->orderBy('acc_expensesData.accountNumberFrom','ASC')
-						->orderBy('bank.Bank_NickName','ASC')
-						->orderBy('acc_expensesData.orderId','ASC')
-						->get($request->plimit);
-						// ->toSql();
-						// dd($query);
+					->SELECT('acc_expensesData.*','bank.id As bankId','bank.AccNo','bank.FirstName','bank.LastName','bank.BankName','bank.Bank_NickName','dev_expensesetting.Subject','dev_expensesetting.Subject_jp','banname.BankName AS banknm','brncname.id AS brnchid','brncname.BranchName AS brnchnm', DB::RAW("CONCAT(emp_mstemployees.FirstName,' ', emp_mstemployees.LastName) AS Empname"))
+					->leftJoin('mstbank AS bank', function($join)
+						{
+							$join->on('acc_expensesData.bankIdFrom', '=', 'bank.BankName');
+							$join->on('acc_expensesData.accountNumberFrom', '=', 'bank.AccNo');
+						})
+					->leftJoin('mstbanks AS banname', 'banname.id', '=', 'bank.BankName')
+					->leftJoin('mstbankbranch AS brncname', function($join)
+						{
+							$join->on('brncname.BankId', '=', 'bank.BankName');
+							$join->on('brncname.id', '=', 'bank.BranchName');
+						})
+					->leftJoin('dev_expensesetting', 'dev_expensesetting.id', '=', 'acc_expensesData.subjectId')
+					->leftJoin('emp_mstemployees', 'emp_mstemployees.Emp_ID', '=', 'acc_expensesData.empId')
+					->where('acc_expensesData.delFlg','=',0)
+					->where('acc_expensesData.bankIdFrom','=',$bankIdAccNo['0'])
+					->where('acc_expensesData.accountNumberFrom','=',$bankIdAccNo['1'])
+					->orderBy('acc_expensesData.orderId','ASC')
+					->get();
+		
 		return $query;
+	}
+
+	public static function insexpensesData($request) {
+
+		$name = Session::get('FirstName').' '.Session::get('LastName');
+		$empId = "";
+		$insert = 1;
+
+		$db = DB::connection('mysql');
+
+		if ($request->hidempid != "" && $request->bankIdAccNo != "") {
+
+			$empId = explode(";", $request->hidempid);
+
+			foreach ($empId as $key => $value) {
+
+				$statement = DB::select("show table status like 'acc_cashregister'");
+				
+				if (isset($statement[0]->Auto_increment)) {
+					$orderId = $statement[0]->Auto_increment;
+				} else {
+					$orderId = 1;
+				}
+
+				$empArr = explode(":", $value);
+				$bankAcc = explode("-", $request->bankIdAccNo);
+				
+				$insert = $db->table('acc_cashregister')
+							->insert([
+									'emp_ID' => $empArr['0'], 
+									'date' => $request->accDate,
+									'transcationType' => 1,
+									'bankIdFrom' => $bankAcc['0'],
+									'accountNumberFrom' => $bankAcc['1'],
+									'amount' => preg_replace("/,/", "", $empArr['2']),
+									'fee' => preg_replace("/,/", "", $empArr['3']),
+									'content' => "Expenses",
+									'subjectId' => "",
+									'orderId' => $orderId,
+									'createdBy' => $name,
+									'pageFlg' => 5,
+								]);
+			}
+		} 
+
+		return $insert;
 	}
 }
