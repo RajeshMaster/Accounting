@@ -565,9 +565,9 @@ $(document).ready(function() {
 				var res = $(this).val().split("$"); 
 				if (getchecked == 1) {
 					getchecked = 2;
-					$('#hidempid').val(res[0] + ":" + res[1] + ":" + $('#'+"expensesDataAmt"+res[4]).val() + ":" + $('#'+"expensesDataFee"+res[4]).val());
+					$('#hidempid').val(res[0] + ":" + res[1] + ":" + $('#'+"expensesDataAmt"+res[4]).val() + ":" + $('#'+"expensesDataFee"+res[4]).val() + ":" + res[5]);
 				} else {
-					$('#hidempid').val($('#hidempid').val() + ";" + res[0] + ":" + res[1] + ":" + $('#'+"expensesDataAmt"+res[4]).val() + ":" + $('#'+"expensesDataFee"+res[4]).val());
+					$('#hidempid').val($('#hidempid').val() + ";" + res[0] + ":" + res[1] + ":" + $('#'+"expensesDataAmt"+res[4]).val() + ":" + $('#'+"expensesDataFee"+res[4]).val() + ":" + res[5]);
 				}
 			});
 			pageload();

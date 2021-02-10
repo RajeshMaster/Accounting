@@ -235,7 +235,7 @@ class AccountingController extends Controller {
 				$cashDetails[$i]['pagecashSubject'] = $value->loanName;;
 			}
 
-			if ($cashDetails[$i]['content'] == 'Salary' || ($cashDetails[$i]['content'] == 'Expenses' && $value->emp_ID != "")) {
+			if ($cashDetails[$i]['content'] == 'Salary' || ($cashDetails[$i]['pageFlg'] == 5 && $value->emp_ID != "")) {
 				$empIdArr[0] = $value->emp_ID;
 				$empname = Accounting::fnGetEmpName($value->emp_ID);
 				if (isset($empname[0]->LastName)) {

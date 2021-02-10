@@ -21,7 +21,7 @@
 			$("#browseEmp").removeAttr("disabled");
 			$("#clearEmp").removeAttr("disabled");
 		}
-		if ($('#txt_empname').val() != "" || $('#edit_flg').val() == 1) {
+		if ($('#txt_empname').val() != "") {
 			$("#transferContent").attr("disabled", "disabled");
 		} else {
 			$("#transferContent").removeAttr("disabled");
@@ -83,7 +83,7 @@
 			</div>
 			<div class="col-xs-8 pull-right" style="text-align: right;padding: 0px;">
 				@if($request->edit_flg != 1)
-				{{ Form::text('accDate',(isset($transferEdit[0]->date)) ? $transferEdit[0]->date : '',
+					{{ Form::text('accDate',(isset($transferEdit[0]->date)) ? $transferEdit[0]->date : '',
 							array('id'=>'accDate', 
 								'name' => 'accDate',
 								'data-label' => trans('messages.lbl_Date'),
@@ -102,7 +102,7 @@
 								'readonly' => 'true',
 								'data-label' => trans('messages.lbl_Date'),
 								'autocomplete' =>'off',
-								'class'=>' box12per form-control disabled')) }}
+								'class'=>' box13per form-control disabled')) }}
 				@endif
 				@if($request->edit_flg != 1)
 				<button type="button" id="salarybutton" style="background-color: purple; color: #fff;" 

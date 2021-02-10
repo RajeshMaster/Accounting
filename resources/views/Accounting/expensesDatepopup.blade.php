@@ -117,7 +117,7 @@
 							<td align="center">
 								<input  type="checkbox" name="expensesData[]" 
 									id="expensesData[]" class="expensesDatachk" 
-									value="<?php  echo $value->empId."$".$value->subjectId."$".$value->amount."$".$value->fee."$".$j; ?>">
+									value="<?php  echo $value->empId."$".$value->subjectId."$".$value->amount."$".$value->fee."$".$j."$".$value->content; ?>">
 							</td>
 						</tr>
 						@php $j++; @endphp

@@ -366,22 +366,12 @@
 					<label>{{ trans('messages.lbl_remarks') }}<span class="fr ml2 red" style="visibility: hidden;"> * </span></label>
 				</div>
 				<div class="col-xs-9">
-					@if(isset($autodebitEdit[0]->content) && $autodebitEdit[0]->content == 'Invoice' && $request->edit_flg == 1)
-						{{ Form::textarea('autoDebitRemarks',(isset($autodebitEdit[0]->remarks)) ? $autodebitEdit[0]->remarks : '', 
-									array('name' => 'autoDebitRemarks',
-											'id'=>'autoDebitRemarks', 
-											'autocomplete' =>'off',
-											'readonly' => 'true',
-											'class' => 'box40per form-control disabled',
-											'size' => '30x4')) }}
-					@else
-						{{ Form::textarea('autoDebitRemarks',(isset($autodebitEdit[0]->remarks)) ? $autodebitEdit[0]->remarks : '', 
-										array('name' => 'autoDebitRemarks',
-												'id'=>'autoDebitRemarks', 
-												'autocomplete' =>'off',
-												'class' => 'box40per form-control',
-												'size' => '30x4')) }}
-					@endif
+					{{ Form::textarea('autoDebitRemarks',(isset($autodebitEdit[0]->remarks)) ? $autodebitEdit[0]->remarks : '', 
+								array('name' => 'autoDebitRemarks',
+										'id'=>'autoDebitRemarks', 
+										'autocomplete' =>'off',
+										'class' => 'box40per form-control',
+										'size' => '30x4')) }}
 				</div>
 			</div>
 		
