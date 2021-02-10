@@ -1117,7 +1117,7 @@ class AccountingController extends Controller {
 	*
 	*/
 	public function accExlwnld(Request $request) {
-		$template_name = 'resources/assets/uploadandtemplates/templates/accounting_details.xlsx';
+		$template_name = 'resources/assets/uploadandtemplates/templates/accounting_details.xls';
 		if ($request->selYear == "") {
 			$request->selYear = date('Y');
 		}
@@ -1409,6 +1409,6 @@ class AccountingController extends Controller {
 			$objPHPExcel->setActiveSheetIndex();
 			$objPHPExcel->getActiveSheet(0)->setSelectedCells('A1');
 		
-		})->setFilename($excel_name)->download('xlsx');
+		})->setFilename($excel_name)->download('xls');
 	}
 }
