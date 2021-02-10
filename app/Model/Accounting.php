@@ -524,7 +524,7 @@ class Accounting extends Model {
 		return $query;
 	}
 	
-	public static function fetchcashRegister($from_date, $to_date, $request) {
+	public static function fetchcashRegister($from_date,$to_date,$request,$flg) {
 
 		$db = DB::connection('mysql');
 		$query = $db->table('acc_cashregister')
@@ -547,8 +547,13 @@ class Accounting extends Model {
 						->orderBy('acc_cashregister.bankIdFrom','ASC')
 						->orderBy('acc_cashregister.accountNumberFrom','ASC')
 						->orderBy('bank.Bank_NickName','ASC')
-						->orderBy('acc_cashregister.orderId','ASC')
-						->paginate($request->plimit);
+						->orderBy('acc_cashregister.orderId','ASC');
+						if ($flg == 0) {
+							$query = $query->paginate($request->plimit);
+						} else {
+							$query = $query->get();
+											
+						}
 						 // ->toSql();
 						// dd($query);
 		return $query;

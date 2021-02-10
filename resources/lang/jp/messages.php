@@ -1375,6 +1375,7 @@ return [
 	'lbl_getsalary' => '給料の取得',
 	'lbl_getloan' => 'ローンを取得',
 	'lbl_notneed' => 'Not Needed',
+	'lbl_exldwnld' => 'Excel Download',
 	'lbl_pdfdwnld' => 'PDF Download',
 
 	/* Salary Calc */

@@ -14,12 +14,12 @@ use Fpdf;
 use Fpdi;
 require_once('vendor/setasign/fpdf/fpdf.php');
 require_once('vendor/setasign/fpdi/fpdi.php');
+use Carbon;
 use Excel;
 use PHPExcel_Style_Border;
 use PHPExcel_Style_Alignment;
 use PHPExcel_Style_Fill;
 use PHPExcel_Cell;
-use Carbon;
 use PHPExcel_Style_Conditional;
 use PHPExcel_Style_Color;
 
@@ -198,7 +198,7 @@ class AccountingController extends Controller {
 		$start = $request->selYear .'-'.$request->selMonth.'-01';
 		$end = $request->selYear .'-'.$request->selMonth.'-'.Common::fnGetMaximumDateofMonth($start);
 	
-		$cashDetailsIndex = Accounting::fetchcashRegister($start, $end, $request);
+		$cashDetailsIndex = Accounting::fetchcashRegister($start,$end,$request,0);
 		$cashDetails =array();
 		$i = 0;
 		$balanceAmtonDownTr = 0;
@@ -1106,5 +1106,309 @@ class AccountingController extends Controller {
 			print_r("0");exit;
 		}
 		
+	}
+
+	/**
+	*
+	* Excel Download Process
+	* @author Sastha
+	* @return object to particular view page
+	* Created At 2021/02/10
+	*
+	*/
+	public function accExlwnld(Request $request) {
+		$template_name = 'resources/assets/uploadandtemplates/templates/accounting_details.xlsx';
+		if ($request->selYear == "") {
+			$request->selYear = date('Y');
+		}
+		if ($request->selMonth == "") {
+			$request->selMonth = date('m');
+		}
+		$excel_name = 'Accounting_'.$request->selYear.'_'.$request->selMonth;
+
+		Excel::load($template_name, function($objPHPExcel) use($request) {
+
+			$date_month = $request->selYear . "-" . substr("0" . $request->selMonth , -2);
+			$start = $request->selYear .'-'.$request->selMonth.'-01';
+			$end = $request->selYear .'-'.$request->selMonth.'-'.Common::fnGetMaximumDateofMonth($start);
+
+			$cashDetails =array();
+			$i = 4;
+			$j = 1;
+			$bankAcconoforCheck = "";
+			$bankNameforCheck = "";
+			$lastBankAccno = "";
+			$lastBankName = "";
+			$preBankAccno = "";
+			$preBankName = "";
+			$debitTotal = 0;
+			$creditTotal = 0;
+			$debitAmt = 0;
+			$creditAmt = 0;
+			$TotalDebit = 0;
+			$TotalCredit = 0;
+			$realBalanceAmount = 0;
+
+			$cashDetailsIndex = Accounting::fetchcashRegister($start,$end,$request,1);
+
+			foreach ($cashDetailsIndex as $key => $value) {
+
+				$pagecashSubject = "";
+				$details = "";
+				$debitAmount = "";
+				$creditAmount = "";
+				$baseAmt = Accounting::baseAmt($value->bankIdFrom,$value->accountNumberFrom);
+				if($value->pageFlg == 1 || $value->pageFlg == 999) {
+					$pagecashSubject = $value->loanName;
+				}
+				if ($value->content == 'Salary' || ($value->pageFlg == 5 && $value->emp_ID != "")) {
+					$empIdArr[0] = $value->emp_ID;
+					$empname = Accounting::fnGetEmpName($value->emp_ID);
+					if (isset($empname[0]->LastName)) {
+						$name = $empname[0]->LastName;
+					} else {
+						$name ="";
+					}
+					$details = $value->emp_ID.'-'.$name;
+				} elseif ($value->content == 'Invoice') {
+					$empIdArr[0] = $value->loan_ID;
+					$details = $value->loan_ID.'-'.$value->loanName;
+				} elseif ($value->content == 'Loan') {
+					$empIdArr[0] = $value->loan_ID;
+					$details = $value->loanName;
+				}
+
+				$balanceAmtonDownTr = 0;
+				$curBal = 0;
+
+				$checkPrevious = Accounting::fnGetRecordPreviousForAmountCheck(substr($start, 0, 7) ,$value->bankIdFrom,$value->accountNumberFrom);
+
+				if (isset($baseAmt[0]->amount)) {
+					$cashDetails[$i]['startDate'] = $baseAmt[0]->date;
+					$cashDetails[$i]['baseAmt'] = $baseAmt[0]->amount;
+
+					if ($bankAcconoforCheck != $value->accountNumberFrom || $bankNameforCheck != $value->Bank_NickName) {
+						$curBal = $baseAmt[0]->amount;
+
+						if (empty($checkPrevious)) {
+
+							if ($bankAcconoforCheck != $value->accountNumberFrom || $bankNameforCheck != $value->Bank_NickName) {
+								$curBal = $baseAmt[0]->amount;
+							}
+
+						} else {
+							$prYrMn = date("Y-m", strtotime("-1 months", strtotime($date_month)));
+							$prevBalanceAmt = Accounting::AccBalance($value->bankIdFrom,$value->AccNo,$baseAmt[0]->date,$prYrMn);
+						
+							foreach ($prevBalanceAmt AS $prevBalKey => $prevBalVal) {
+								if ($prevBalVal->transcationType == 2 || $prevBalVal->transcationType == 4) {
+									$curBal += $prevBalVal->amount;
+								} else {
+									$curBal -= $prevBalVal->amount;
+								}
+								$curBal -= $prevBalVal->fee;
+							} 
+						}
+					}
+				}
+
+				$bankAcconoforCheck = $value->accountNumberFrom;
+				$bankNameforCheck = $value->Bank_NickName;
+				if($preBankAccno != "" && ($preBankAccno != $value->accountNumberFrom 
+					|| $preBankName != $value->Bank_NickName)){
+					$objPHPExcel->getActiveSheet()->setCellValue("A".$i,'合計');
+					$objPHPExcel->getActiveSheet()->getStyle("A".$i)->getAlignment()->setWrapText(true);
+					$objPHPExcel->getActiveSheet()->getStyle("A".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('BFBFBF');
+					$objPHPExcel->getActiveSheet()->getStyle('A'.$i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+					$objPHPExcel->getActiveSheet()->getStyle("A".$i)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+					$objPHPExcel->getActiveSheet()->mergeCells('A'.$i.':D'.$i);
+					$objPHPExcel->getActiveSheet()->setCellValue("E".$i,$debitTotal);
+					$objPHPExcel->getActiveSheet()->getStyle("E".$i)->getAlignment()->setWrapText(true);
+					$objPHPExcel->getActiveSheet()->getStyle("E".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('BFBFBF');
+					$objPHPExcel->getActiveSheet()->getStyle('E'.$i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+					$objPHPExcel->getActiveSheet()->getStyle("E".$i)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+					$objPHPExcel->getActiveSheet()->setCellValue("F".$i,$creditTotal);
+					$objPHPExcel->getActiveSheet()->getStyle("F".$i)->getAlignment()->setWrapText(true);
+					$objPHPExcel->getActiveSheet()->getStyle("F".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('BFBFBF');
+					$objPHPExcel->getActiveSheet()->getStyle('F'.$i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+					$objPHPExcel->getActiveSheet()->getStyle("F".$i)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+					$objPHPExcel->getActiveSheet()->setCellValue("G".$i,$realBalanceAmount);
+					$objPHPExcel->getActiveSheet()->getStyle("G".$i)->getAlignment()->setWrapText(true);
+					$objPHPExcel->getActiveSheet()->getStyle("G".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('BFBFBF');
+					$objPHPExcel->getActiveSheet()->getStyle('G'.$i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+					$objPHPExcel->getActiveSheet()->getStyle("G".$i)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+					$realBalanceAmount = 0;
+					$debitTotal = 0;
+					$creditTotal = 0;
+					$i = $i + 2;
+
+				}
+				if($lastBankAccno != $value->accountNumberFrom || $lastBankName != $value->Bank_NickName) { 
+					$realBalanceAmount = $curBal;
+					$objPHPExcel->getActiveSheet()->setCellValue("A".$i,$value->Bank_NickName."-".$value->accountNumberFrom);
+					$objPHPExcel->getActiveSheet()->getStyle("A".$i)->getAlignment()->setWrapText(true);
+					$objPHPExcel->getActiveSheet()->getStyle("A".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('f1a2a2');
+					$objPHPExcel->getActiveSheet()->getStyle("A".$i)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+					$objPHPExcel->getActiveSheet()->getStyle('A'.$i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+					$objPHPExcel->getActiveSheet()->mergeCells('A'.$i.':F'.$i);
+					$objPHPExcel->getActiveSheet()->setCellValue("G".$i,$curBal);
+					$objPHPExcel->getActiveSheet()->getStyle("G".$i)->getAlignment()->setWrapText(true);
+					$objPHPExcel->getActiveSheet()->getStyle("G".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('f1a2a2');
+					$objPHPExcel->getActiveSheet()->getStyle('G'.$i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+					$objPHPExcel->getActiveSheet()->getStyle("G".$i)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+					$i = $i + 1;
+				}
+				$objPHPExcel->getActiveSheet()->setCellValue("A".$i,$j);
+				$objPHPExcel->getActiveSheet()->getStyle("A".$i)->getAlignment()->setWrapText(true);
+				$objPHPExcel->getActiveSheet()->getStyle("A".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('CEECF5');
+				$objPHPExcel->getActiveSheet()->getStyle("A".$i)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+				$objPHPExcel->getActiveSheet()->setCellValue("B".$i,$value->date);
+				$objPHPExcel->getActiveSheet()->getStyle("B".$i)->getAlignment()->setWrapText(true);
+				$objPHPExcel->getActiveSheet()->getStyle("B".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('CEECF5');
+				$objPHPExcel->getActiveSheet()->getStyle("B".$i)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+				if($value->pageFlg == 1) {
+					$subject = $pagecashSubject;
+				} elseif($value->Subject != "" && Session::get('languageval') == "en") {
+					$subject = $value->Subject;
+				} elseif($value->Subject_jp != "" && Session::get('languageval') == "jp") {
+					$subject = $value->Subject_jp;
+				} else {
+					$subject = $value->content;
+				}
+				$objPHPExcel->getActiveSheet()->setCellValue("C".$i,$subject);
+				$objPHPExcel->getActiveSheet()->getStyle("C".$i)->getAlignment()->setWrapText(true);
+				$objPHPExcel->getActiveSheet()->getStyle("C".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('CEECF5');
+				$objPHPExcel->getActiveSheet()->getStyle("C".$i)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+				if($value->pageFlg == 999) {
+					$content = $pagecashSubject;
+				} else {
+					if($value->content == 'Salary') {
+						$content = $details;
+					} elseif($value->content == 'Invoice') {
+						$content = $details;
+					} elseif($value->content == 'Loan') {
+						$content = $details;
+					} elseif($value->pageFlg == 5 && $value->emp_ID != "") {
+						$content = $details;
+					} else {
+						$content = $value->content; 
+					}
+				}
+				$objPHPExcel->getActiveSheet()->setCellValue("D".$i,$content);
+				$objPHPExcel->getActiveSheet()->getStyle("D".$i)->getAlignment()->setWrapText(true);
+				$objPHPExcel->getActiveSheet()->getStyle("D".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('CEECF5');
+				$objPHPExcel->getActiveSheet()->getStyle("D".$i)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+				if($value->transcationType == 1) {
+					$debitAmount = $value->amount;
+					$debitAmt = $value->amount + $value->fee;
+					$debitTotal = $debitTotal + $debitAmt;
+					$TotalDebit = $TotalDebit + $debitAmt;
+				}
+				$objPHPExcel->getActiveSheet()->setCellValue("E".$i,$debitAmount);
+				$objPHPExcel->getActiveSheet()->getStyle("E".$i)->getAlignment()->setWrapText(true);
+				$objPHPExcel->getActiveSheet()->getStyle("E".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('CEECF5');
+				$objPHPExcel->getActiveSheet()->getStyle("E".$i)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+				if($value->transcationType == 2 || $value->transcationType == 4) {
+					$creditAmount = $value->amount;
+					$creditAmt = $value->amount + $value->fee;
+					$creditTotal = $creditTotal + $creditAmt;
+					$TotalCredit = $TotalCredit + $creditAmt;
+				}
+				$objPHPExcel->getActiveSheet()->setCellValue("F".$i,$creditAmount);
+				$objPHPExcel->getActiveSheet()->getStyle("F".$i)->getAlignment()->setWrapText(true);
+				$objPHPExcel->getActiveSheet()->getStyle("F".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('CEECF5');
+				$objPHPExcel->getActiveSheet()->getStyle("F".$i)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+				$objPHPExcel->getActiveSheet()->setCellValue("G".$i,$value->remarks);
+				$objPHPExcel->getActiveSheet()->getStyle("G".$i)->getAlignment()->setWrapText(true);
+				$objPHPExcel->getActiveSheet()->getStyle("G".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('CEECF5');
+				$objPHPExcel->getActiveSheet()->getStyle("G".$i)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+				if ($value->fee != "") {
+					$i = $i + 1;
+					if ($value->content == 'Loan') {
+					$objPHPExcel->getActiveSheet()->setCellValue("A".$i,'金利');
+					} else {
+						$objPHPExcel->getActiveSheet()->setCellValue("A".$i,'手数料');
+					}
+					$objPHPExcel->getActiveSheet()->getStyle("A".$i)->getAlignment()->setWrapText(true);
+					$objPHPExcel->getActiveSheet()->getStyle("A".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('FFFFFF');
+					$objPHPExcel->getActiveSheet()->getStyle('A'.$i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+					$objPHPExcel->getActiveSheet()->getStyle("A".$i)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+					$objPHPExcel->getActiveSheet()->mergeCells('A'.$i.':D'.$i);
+					$objPHPExcel->getActiveSheet()->setCellValue("E".$i,$value->fee);
+					$objPHPExcel->getActiveSheet()->getStyle("E".$i)->getAlignment()->setWrapText(true);
+					$objPHPExcel->getActiveSheet()->getStyle("E".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('FFFFFF');
+					$objPHPExcel->getActiveSheet()->getStyle('E'.$i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+					$objPHPExcel->getActiveSheet()->getStyle("E".$i)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+					$objPHPExcel->getActiveSheet()->getStyle("F".$i)->getAlignment()->setWrapText(true);
+					$objPHPExcel->getActiveSheet()->getStyle("F".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('FFFFFF');
+					$objPHPExcel->getActiveSheet()->getStyle('F'.$i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+					$objPHPExcel->getActiveSheet()->getStyle("F".$i)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+					$objPHPExcel->getActiveSheet()->setCellValue("G".$i, $value->amount+ $value->fee);
+					$objPHPExcel->getActiveSheet()->getStyle("G".$i)->getAlignment()->setWrapText(true);
+					$objPHPExcel->getActiveSheet()->getStyle("G".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('FFFFFF');
+					$objPHPExcel->getActiveSheet()->getStyle('G'.$i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+					$objPHPExcel->getActiveSheet()->getStyle("G".$i)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+				}
+				if($value->transcationType == 1) {
+					$realBalanceAmount = $realBalanceAmount - $debitAmt;
+				} else {
+					$realBalanceAmount = $realBalanceAmount + $creditAmt;
+				}
+				$lastBankAccno = $value->accountNumberFrom;
+				$lastBankName = $value->Bank_NickName;
+				$preBankAccno = $value->accountNumberFrom;
+				$preBankName = $value->Bank_NickName;
+				$i++;
+				$j++;
+			}
+			if(count($cashDetailsIndex) != 0) {
+				$objPHPExcel->getActiveSheet()->setCellValue("A".$i,'合計');
+				$objPHPExcel->getActiveSheet()->getStyle("A".$i)->getAlignment()->setWrapText(true);
+				$objPHPExcel->getActiveSheet()->getStyle("A".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('BFBFBF');
+				$objPHPExcel->getActiveSheet()->getStyle('A'.$i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+				$objPHPExcel->getActiveSheet()->getStyle("A".$i)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+				$objPHPExcel->getActiveSheet()->mergeCells('A'.$i.':D'.$i);
+				$objPHPExcel->getActiveSheet()->setCellValue("E".$i,$debitTotal);
+				$objPHPExcel->getActiveSheet()->getStyle("E".$i)->getAlignment()->setWrapText(true);
+				$objPHPExcel->getActiveSheet()->getStyle("E".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('BFBFBF');
+				$objPHPExcel->getActiveSheet()->getStyle('E'.$i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+				$objPHPExcel->getActiveSheet()->getStyle("E".$i)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+				$objPHPExcel->getActiveSheet()->setCellValue("F".$i,$creditTotal);
+				$objPHPExcel->getActiveSheet()->getStyle("F".$i)->getAlignment()->setWrapText(true);
+				$objPHPExcel->getActiveSheet()->getStyle("F".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('BFBFBF');
+				$objPHPExcel->getActiveSheet()->getStyle('F'.$i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+				$objPHPExcel->getActiveSheet()->getStyle("F".$i)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+				$objPHPExcel->getActiveSheet()->setCellValue("G".$i,$realBalanceAmount);
+				$objPHPExcel->getActiveSheet()->getStyle("G".$i)->getAlignment()->setWrapText(true);
+				$objPHPExcel->getActiveSheet()->getStyle("G".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('BFBFBF');
+				$objPHPExcel->getActiveSheet()->getStyle('G'.$i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+				$objPHPExcel->getActiveSheet()->getStyle("G".$i)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+				$i = $i + 2;
+				$objPHPExcel->getActiveSheet()->setCellValue("A".$i,'合計');
+				$objPHPExcel->getActiveSheet()->getStyle("A".$i)->getAlignment()->setWrapText(true);
+				$objPHPExcel->getActiveSheet()->getStyle("A".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('BFBFBF');
+				$objPHPExcel->getActiveSheet()->getStyle('A'.$i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+				$objPHPExcel->getActiveSheet()->getStyle("A".$i)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+				$objPHPExcel->getActiveSheet()->mergeCells('A'.$i.':D'.$i);
+				$objPHPExcel->getActiveSheet()->setCellValue("E".$i,$TotalDebit);
+				$objPHPExcel->getActiveSheet()->getStyle("E".$i)->getAlignment()->setWrapText(true);
+				$objPHPExcel->getActiveSheet()->getStyle("E".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('BFBFBF');
+				$objPHPExcel->getActiveSheet()->getStyle('E'.$i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+				$objPHPExcel->getActiveSheet()->getStyle("E".$i)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+				$objPHPExcel->getActiveSheet()->setCellValue("F".$i,$TotalCredit);
+				$objPHPExcel->getActiveSheet()->getStyle("F".$i)->getAlignment()->setWrapText(true);
+				$objPHPExcel->getActiveSheet()->getStyle("F".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('BFBFBF');
+				$objPHPExcel->getActiveSheet()->getStyle('F'.$i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+				$objPHPExcel->getActiveSheet()->getStyle("F".$i)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+				$objPHPExcel->getActiveSheet()->setCellValue("G".$i,'');
+				$objPHPExcel->getActiveSheet()->getStyle("G".$i)->getAlignment()->setWrapText(true);
+				$objPHPExcel->getActiveSheet()->getStyle("G".$i)->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setRGB('BFBFBF');
+				$objPHPExcel->getActiveSheet()->getStyle('G'.$i)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+				$objPHPExcel->getActiveSheet()->getStyle("G".$i)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
+			}
+			$objPHPExcel->setActiveSheetIndex();
+			$objPHPExcel->getActiveSheet(0)->setSelectedCells('A1');
+		
+		})->setFilename($excel_name)->download('xlsx');
 	}
 }

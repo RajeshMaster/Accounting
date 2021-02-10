@@ -10,13 +10,13 @@
 		if($('#hidAuth').val() == "5" || mainmenu == "AuditingAccounting"){
 			$(".divdisplay").css("display", "none");
 			$(".chnageorder").css("display", "none");
-			$('.columnspan').attr('colspan','3');
+			$('.columnspan').attr('colspan','1');
 			$('.columnspannodata').attr('colspan','8');
 			$('.columnspan1').attr('colspan','1');
   		} else {
   			$(".divdisplay").css("");
   			$(".chnageorder").css("");
-  			$('.columnspan').attr('colspan','4');
+  			$('.columnspan').attr('colspan','2');
   			$('.columnspannodata').attr('colspan','9');
   			$('.columnspan1').attr('colspan','2');
   		}
@@ -32,11 +32,15 @@
 
 	function pageClick(pageval) {
 		$('#page').val(pageval);
-			$("#frmaccountingindex").submit();
+		var mainmenu = $('#mainmenu').val();
+		$('#frmaccountingindex').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+		$("#frmaccountingindex").submit();
 	}
 	function pageLimitClick(pagelimitval) {
 		$('#page').val('');
 		$('#plimit').val(pagelimitval);
+		var mainmenu = $('#mainmenu').val();
+		$('#frmaccountingindex').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
 		$("#frmaccountingindex").submit();
 	}
 </script>
@@ -193,19 +197,26 @@
 		</div>
 	</div>
 
-	<div class="col-xs-12 pull-left pl10 pr10">
+	<div class="col-xs-12">
 		<!-- Session msg -->
-			@if(Session::has('success'))
-				<div align="center" class="alertboxalign" role="alert">
-					<p class="alert {{ Session::get('alert', Session::get('type') ) }}">
-		            	{{ Session::get('success') }}
-		          	</p>
-				</div>
-			@endif
-			@php Session::forget('success'); @endphp
-			<!-- Session msg -->
-		<div class="col-xs-6  pm0 pull-left mt10 divdisplay">
-			<a href="javascript:addedit('index','{{ $request->mainmenu }}');" class="btn btn-success box100"><span class="fa fa-plus"></span> {{ trans('messages.lbl_register') }}</a>
+		@if(Session::has('success'))
+			<div align="center" class="alertboxalign" role="alert">
+				<p class="alert {{ Session::get('alert', Session::get('type') ) }}">
+	            	{{ Session::get('success') }}
+	          	</p>
+			</div>
+		@endif
+		@php Session::forget('success'); @endphp
+		<!-- Session msg -->
+		<div class="col-xs-6 pm0 mt10 divdisplay">
+			<a href="javascript:addedit('index','{{ $request->mainmenu }}');" 
+				class="btn btn-success pull-left"><span class="fa fa-plus"></span> 
+			{{ trans('messages.lbl_register') }}</a>
+		</div>
+		<div class="col-xs-6 pm0 mt10 divdisplay">
+			<a href="javascript:accExlwnld();" 
+				class="btn btn-primary pull-right"><span class="fa fa-download"></span>
+			{{ trans('messages.lbl_exldwnld') }}</a>
 		</div>
 	</div>
 
@@ -418,7 +429,13 @@
 									{{ trans('messages.lbl_fee') }}
 								@endif
 							</td>
-							<td colspan="" align="right"> {{ number_format($data['fee']) }}</td>
+							<td colspan="" align="right"> 
+								{{ number_format($data['fee']) }}
+							</td>
+							<td></td>
+							<td align="right">
+								{{ number_format($data['amount'] + $data['fee']) }}
+							</td>
 							<td class="columnspan"></td>
 						</tr>
 					@endif

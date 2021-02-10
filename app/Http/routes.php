@@ -513,6 +513,8 @@ Route::group(['prefix'=>'Accounting','middleware' => 'auth'], function() {
     Route::any('completedflg', 'AccountingController@completedflg')->middleware('accessright:0,1,2,3,4');
     // Completed Bank Exists // Sastha
     Route::any('dateBankExists', 'AccountingController@dateBankExists')->middleware('accessright:0,1,2,3,4');
+    // Excel download // Sastha
+    Route::any('accExlwnld', 'AccountingController@accExlwnld')->middleware('accessright:0,1,2,3,4');
 });
 
 

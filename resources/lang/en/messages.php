@@ -1200,6 +1200,7 @@ return [
 	'lbl_getsalary' => 'Get Salary',
 	'lbl_getloan' => 'Get Loan',
 	'lbl_notneed' => 'Not Needed',
+	'lbl_exldwnld' => 'Excel Download',
 	'lbl_pdfdwnld' => 'PDF Download',
 	
 	/* Salary Calc */

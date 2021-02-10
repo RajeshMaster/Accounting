@@ -1012,6 +1012,7 @@ function getData(month, year, flg, prevcnt, nextcnt, account_period, lastyear, c
 		$('#prevcnt').val(prevcnt);
 		$('#nextcnt').val(nextcnt);
 		$('#account_val').val(account_val);
+		$('#frmaccountingindex').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
 		$('#frmaccountingindex').submit();
 	}
 }
@@ -1316,12 +1317,21 @@ function fngetValue(val,flg,loopVal) {
 	var total =  parseInt(amount) + parseInt(fee);
 	$('#totalAmt'+loopVal).val(total);
 }
+
 function completedflg(bankId,AccNo,completedFlg){
 	if(confirm("Do You Want to Change the Flg?")) {
 		$('#bankNo').val(bankId);
 		$('#accNo').val(AccNo);
 		$('#completedFlg').val(completedFlg);
 		$('#frmaccountingindex').attr('action', 'completedflg?mainmenu='+mainmenu+'&time='+datetime);
+		$("#frmaccountingindex").submit();
+	}
+}
+
+function accExlwnld(){
+	if(confirm("Do You Want to Download the Excel?")) {
+		var mainmenu = $('#mainmenu').val();
+		$('#frmaccountingindex').attr('action', 'accExlwnld?mainmenu='+mainmenu+'&time='+datetime);
 		$("#frmaccountingindex").submit();
 	}
 }
