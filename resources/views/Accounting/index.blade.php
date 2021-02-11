@@ -10,15 +10,17 @@
 		if($('#hidAuth').val() == "5" || mainmenu == "AuditingAccounting"){
 			$(".divdisplay").css("display", "none");
 			$(".chnageorder").css("display", "none");
-			$('.columnspan').attr('colspan','1');
-			$('.columnspannodata').attr('colspan','8');
-			$('.columnspan1').attr('colspan','1');
+			$('.columnspan').attr('colspan','2');
+			$('.columnspannodata').attr('colspan','9');
+			$('.columnspan1').attr('colspan','2');
+			$(".Auddivdisplay").css("");
   		} else {
   			$(".divdisplay").css("");
   			$(".chnageorder").css("");
   			$('.columnspan').attr('colspan','2');
   			$('.columnspannodata').attr('colspan','9');
   			$('.columnspan1').attr('colspan','2');
+  			$(".Auddivdisplay").css("display", "none");
   		}
 	});
 
@@ -232,7 +234,7 @@
 				<!-- <col width="8%"> -->
 				<col width="14%">
 				<col width="5%">
-				<col width="9%" class="divdisplay">
+				<col width="9%">
 			</colgroup>
 
 			<thead class="CMN_tbltheadcolor">
@@ -247,6 +249,7 @@
 					<th class="vam">{{ trans('messages.lbl_remarks') }}</th>
 					<th class="vam">{{ trans('messages.lbl_file') }}</th>
 					<th class="vam divdisplay">{{ trans('messages.lbl_copy') }}</th>
+					<th class="vam Auddivdisplay">{{ trans('messages.lbl_flag') }}</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -291,8 +294,7 @@
 								$previousYearMonth = date("Y-m",strtotime("-1 months", strtotime(date('Y-m'))));
 								$selectedYearMonth = $request->selYear."-".$request->selMonth; ?>
 								@if($currentYearMonth == $selectedYearMonth || $previousYearMonth == $selectedYearMonth)
-								<div style="text-align: right;display: inline-block;" 
-										class="chnageorder">
+								<div style="text-align: right;display: inline-block;">
 									<a href="javascript:completedflg('{{ $preBankIdFrom }}','{{ $preBankAccno }}','{{ $preCompletedFlg }}');">
 										@if($preCompletedFlg == 0)
 											<span style="color: red;">
@@ -417,6 +419,7 @@
 								</a>
 							@endif
 						</td>
+						<td class="Auddivdisplay"></td>
 					</tr>
 
 					
@@ -484,8 +487,7 @@
 								$previousYearMonth = date("Y-m",strtotime("-1 months", strtotime(date('Y-m'))));
 							$selectedYearMonth = $request->selYear."-".$request->selMonth; ?>
 							@if($currentYearMonth == $selectedYearMonth || $previousYearMonth == $selectedYearMonth)
-							<div style="text-align: right;display: inline-block;" 
-									class="chnageorder">
+							<div style="text-align: right;display: inline-block;">
 								<a href="javascript:completedflg('{{ $data['bankIdFrom'] }}','{{ $data['accNo'] }}','{{ $data['completedFlg'] }}');">
 									@if($data['completedFlg'] == 0)
 										<span style="color: red;">

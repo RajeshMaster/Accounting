@@ -1395,6 +1395,7 @@ return [
 	'lbl_confirm' => '確認',
 	'lbl_confirmed' => '確認済',
 	'lbl_notconfirmed' => '未確認',
+	'lbl_flag' => 'Flag',
 	'lbl_creditCardPay' => 'クレジットカード',
 	'lbl_creditCard' => 'クレジットカード',
 	'lbl_creditCardName' => 'Credit Card Name',

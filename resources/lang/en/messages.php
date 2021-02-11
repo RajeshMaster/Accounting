@@ -1220,6 +1220,7 @@ return [
 	'lbl_confirm' => 'Confirm',
 	'lbl_confirmed' => 'Confirmed',
 	'lbl_notconfirmed' => 'Not Confirmed',
+	'lbl_flag' => 'Flag',
 	'lbl_creditCardPay' => 'Credit Card',
 	'lbl_creditCard' => 'Credit Card',
 	'lbl_creditCardName' => 'Credit Card Name',
