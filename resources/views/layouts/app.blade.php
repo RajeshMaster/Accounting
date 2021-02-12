@@ -99,9 +99,13 @@
 							<a class="pageload" href="{{ url('Estimation/index?mainmenu=estimation&time='.date('Ymdhis')) }}">
 							{{ trans('messages.lbl_sales') }}</a>
 						</li>
-						<li class="btn_expenses jop_btn">
+						<!-- <li class="btn_expenses jop_btn">
 							<a class="pageload" href="{{ url('Expenses/index?mainmenu=expenses&time='.date('Ymdhis')) }}">
 							{{ trans('messages.lbl_cexpenses') }}</a>
+						</li> -->
+						<li class="btn_external jop_btn">
+							<a class="pageload" href="{{ url('ExternalUser/index?mainmenu=extUser&time='.date('Ymdhis')) }}">
+							{{ trans('messages.lbl_extInvoice') }}</a>
 						</li>
 						@if(Session::get('userclassification') == 4)
 						<li class="btn_staff jop_btn">
@@ -228,12 +232,12 @@
 				</div>
 			<!-- //Sales Sub -->
 			@endif
-			@if (isset($request->mainmenu) && ($request->mainmenu == "expenses") ||
+			<!-- Expenses Sub -->
+			<!-- @if (isset($request->mainmenu) && ($request->mainmenu == "expenses") ||
 			 ($request->mainmenu == "company_transfer") || ($request->mainmenu == "pettycash") || 
 			 ($request->mainmenu == "company_loan") || ($request->mainmenu == "company_salary") ||
 			  ($request->mainmenu == "company_bankdetails") || ($request->mainmenu == "expdetails") || 
 			  ($request->mainmenu == "engineerexpdetails"))
-			<!-- Expenses Sub -->
 				<div id="expenses_sub_1">
 					<a class="pageload" href="{{ url('Expenses/index?mainmenu=expenses&time='.date('Ymdhis')) }}" 
 						style="text-decoration:none;color:white;">{{ trans('messages.lbl_expenses') }}</a>
@@ -263,8 +267,17 @@
 					{{ trans('messages.lbl_bankdetail') }}</a>
 				</div>
 				@endif
+			@endif -->
 			<!-- //Expenses sub -->
+			<!-- // External User sub -->
+			@if (isset($request->mainmenu) && ($request->mainmenu == "extUser"))
+				<div id="external_sub_1">
+					<a class="pageload" href="{{ url('ExternalUser/index?mainmenu=extUser&time='.date('Ymdhis')) }}" 
+						style="text-decoration:none;color:white;">
+						{{ trans('messages.lbl_user') }}</a>
+				</div>
 			@endif
+			<!-- // External User sub -->
 			@if (isset($request->mainmenu) && ($request->mainmenu == "staff"|| $request->mainmenu == "nonstaff"|| $request->mainmenu == "timesheet" || $request->mainmenu == "StaffContr" || $request->mainmenu == "StaffSalary" || $request->mainmenu == "visarenew" ||  $request->mainmenu == "tax")) 
 			<!-- Staff Sub -->
 				<div id="staff_sub_1">

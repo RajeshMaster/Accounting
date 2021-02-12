@@ -586,15 +586,26 @@ Route::group(['prefix'=>'LoanView', 'middleware' => 'auth'], function() {
 
 // Expenses Data Process by Sastha
 Route::group(['prefix'=>'ExpensesData','middleware' => 'auth'], function() {
-    Route::get('changelanguage', 'AjaxController@index');
-    Route::any('index', 'ExpensesDataController@index')->middleware('accessright:0,1,2,3,4,5');
-    Route::any('empnamepopup', 'ExpensesDataController@empnamepopup')->middleware('accessright:0,1,2,3,4');
-     Route::any('getExpDataDetails', 'ExpensesDataController@getExpDataDetails')->middleware('accessright:0,1,2,3,4');
-    Route::any('commitProcess', 'ExpensesDataController@commitProcess')->middleware('accessright:0,1,2,3,4');
-    Route::any('changeDelFlg', 'ExpensesDataController@changeDelFlg')->middleware('accessright:0,1,2,3,4');
-    // Expenses Data // Sastha
-    Route::any('bank_ajax', 'ExpensesDataController@bank_ajax')->middleware('accessright:0,1,2,3,4');
-    Route::any('addedit', 'ExpensesDataController@addedit')->middleware('accessright:0,1,2,3,4');
-    Route::any('expensesDataEdit', 'ExpensesDataController@expensesDataEdit')->middleware('accessright:0,1,2,3,4');
-    Route::any('addeditprocess', 'ExpensesDataController@addeditprocess')->middleware('accessright:0,1,2,3,4');
+	Route::get('changelanguage', 'AjaxController@index');
+	Route::any('index', 'ExpensesDataController@index')->middleware('accessright:0,1,2,3,4,5');
+	Route::any('empnamepopup', 'ExpensesDataController@empnamepopup')->middleware('accessright:0,1,2,3,4');
+	 Route::any('getExpDataDetails', 'ExpensesDataController@getExpDataDetails')->middleware('accessright:0,1,2,3,4');
+	Route::any('commitProcess', 'ExpensesDataController@commitProcess')->middleware('accessright:0,1,2,3,4');
+	Route::any('changeDelFlg', 'ExpensesDataController@changeDelFlg')->middleware('accessright:0,1,2,3,4');
+	// Expenses Data // Sastha
+	Route::any('bank_ajax', 'ExpensesDataController@bank_ajax')->middleware('accessright:0,1,2,3,4');
+	Route::any('addedit', 'ExpensesDataController@addedit')->middleware('accessright:0,1,2,3,4');
+	Route::any('expensesDataEdit', 'ExpensesDataController@expensesDataEdit')->middleware('accessright:0,1,2,3,4');
+	Route::any('addeditprocess', 'ExpensesDataController@addeditprocess')->middleware('accessright:0,1,2,3,4');
+});
+
+// External User Process by Sastha
+Route::group(['prefix'=>'ExternalUser','middleware' => 'auth'], function() {
+
+	Route::get('changelanguage', 'AjaxController@index');
+	Route::any('index', 'ExternalUserController@index')->middleware('accessright:0,1,2,3,4,5');
+	Route::any('addedit', 'ExternalUserController@addedit')->middleware('accessright:0,1,2,3,4');
+	Route::any('addeditprocess', 'ExternalUserController@addeditprocess')->middleware('accessright:0,1,2,3,4');
+	Route::any('userView', 'ExternalUserController@userView')->middleware('accessright:0,1,2,3,4');
+	Route::any('emailIdExists', 'ExternalUserController@emailIdExists')->middleware('accessright:0,1,2,3,4');
 });

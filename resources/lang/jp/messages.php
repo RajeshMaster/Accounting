@@ -1463,4 +1463,9 @@ return [
 	'lbl_expensesData' => '経費データ',
 	'lbl_getexpensesDtls' => '経費を取得',
 	'lbl_expensesDtls' => 'Expenses Details',
+
+	// External User
+	'lbl_extInvoice' => 'External Invoice',
+	'lbl_pincode' => 'Pincode',
+
 ];

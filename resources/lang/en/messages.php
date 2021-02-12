@@ -1291,5 +1291,9 @@ return [
 	'lbl_expensesData' => 'Expenses Data',
 	'lbl_getexpensesDtls' => 'Get Expenses',
 	'lbl_expensesDtls' => 'Expenses Details',
-	
+
+	// External User
+	'lbl_extInvoice' => 'External Inv',
+	'lbl_pincode' => 'Pincode',
+
 ];
