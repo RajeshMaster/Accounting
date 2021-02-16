@@ -103,10 +103,12 @@
 							<a class="pageload" href="{{ url('Expenses/index?mainmenu=expenses&time='.date('Ymdhis')) }}">
 							{{ trans('messages.lbl_cexpenses') }}</a>
 						</li> -->
+						@if(Session::get('userclassification') == 4)
 						<li class="btn_external jop_btn">
 							<a class="pageload" href="{{ url('ExternalUser/index?mainmenu=extUser&time='.date('Ymdhis')) }}">
 							{{ trans('messages.lbl_extInvoice') }}</a>
 						</li>
+						@endif
 						@if(Session::get('userclassification') == 4)
 						<li class="btn_staff jop_btn">
 							<a class="pageload" href="{{ url('Staff/index?mainmenu=staff&time='.date('Ymdhis')) }}">

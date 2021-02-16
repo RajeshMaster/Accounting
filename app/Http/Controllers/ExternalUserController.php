@@ -28,13 +28,10 @@ class ExternalUserController extends Controller {
 		}
 
 		//Query to get data
-
 		$userdetails = ExternalUser::getUserDetails($request);
 
 
 		//returning to view page
-
-
 		return view('ExternalUser.index', [ 'request' => $request,
 											'userdetails' => $userdetails
 										]);
@@ -52,9 +49,7 @@ class ExternalUserController extends Controller {
 	public function addedit(Request $request) {
 
 		if(!isset($request->editflg)){
-
 			return Redirect::to('ExternalUser/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
-
 		}
 
 		$userview = ExternalUser::viewUserDetails($request->editId);
@@ -85,39 +80,28 @@ class ExternalUserController extends Controller {
 		if($request->editId != "") {
 
 			$update = ExternalUser::updateUser($request);
-
 			Session::flash('viewId', $request->editId); 
 
 			if($update) {
-
 				Session::flash('success', 'Updated Sucessfully!'); 
 				Session::flash('type', 'alert-success'); 
-
 			} else {
-
 				Session::flash('type', 'Updated Unsucessfully!'); 
 				Session::flash('type', 'alert-danger'); 
-
 			}
 
 		} else {
 
 			$autoincId = ExternalUser::getautoincrement();
-
 			$insert = ExternalUser::insertUser($request);
-
 			Session::flash('viewId', $autoincId);
 
 			if($insert) {
-
 				Session::flash('success', 'Inserted Sucessfully!'); 
 				Session::flash('type', 'alert-success'); 
-
 			} else {
-
 				Session::flash('type', 'Inserted Unsucessfully!'); 
 				Session::flash('type', 'alert-danger'); 
-
 			}
 
 		}
@@ -137,9 +121,7 @@ class ExternalUserController extends Controller {
 	public function userView(Request $request) {
 
 		if(Session::get('viewId') != ""){
-
 			$request->viewId = Session::get('viewId');
-
 		}
 
 		//ON URL ENTER REDIRECT TO INDEX PAGE
@@ -150,13 +132,9 @@ class ExternalUserController extends Controller {
 		$userview = ExternalUser::viewUserDetails($request->viewId);
 
 		if ($userview[0]->gender == 1) {
-
 			$userview[0]->gender = "Male";
-
 		} else if ($userview[0]->gender == 2) {
-
 			$userview[0]->gender = "Female";
-
 		}
 
 		return view('ExternalUser.view', [	'request' => $request,
@@ -175,17 +153,29 @@ class ExternalUserController extends Controller {
 	*/
 	public function emailIdExists(Request $request){
 
-		$emailIdExists = User::getemailIdExists($request);
+		$emailIdExists = ExternalUser::getemailIdExists($request);
 
-		if (!empty($emailIdExists)) {
-
+		if (count($emailIdExists) != 0) {
 			print_r("1");exit;
-
 		} else {
-
 			print_r("0");exit;
-
 		}
+
+	}
+
+	/**
+	*
+	* Change DelFlg Process for User
+	* @author Sastha
+	* @return object to particular view page
+	* Created At 2021/02/16
+	*
+	*/
+	public function changeDelFlg(Request $request){
+
+		$changeDelFlg = ExternalUser::changeDelFlg($request);
+
+		return Redirect::to('ExternalUser/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 
 	}
 

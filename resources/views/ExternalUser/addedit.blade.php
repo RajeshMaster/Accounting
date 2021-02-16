@@ -11,9 +11,7 @@
 	var mainmenu = '<?php echo $request->mainmenu; ?>';
 
 	$(document).ready(function() {
-
 		setDatePicker18yearbefore("dob");
-
 	});
 
 </script>
@@ -200,6 +198,7 @@
 				<div>
 					{{ Form::text('pincode',(isset($userview[0]->pincode)) ? $userview[0]->pincode : '', array('id'=>'pincode', 
 									'name' => 'pincode',
+									'maxlength' => '6',
 									'data-label' => trans('messages.lbl_pincode'),
 									'class'=>'box10per form-control pl5',
 									'onkeypress' => 'return isNumberKey(event)')) 

@@ -16,9 +16,7 @@ class ExternalUser extends Model {
 		$result = DB::table('ext_mstuser')
 
 						->SELECT('*')
-
 						->orderBy('id','ASC')
-
 						->paginate($request->plimit);
 
 		return $result;
@@ -44,31 +42,18 @@ class ExternalUser extends Model {
 						->insert([ 
 
 							'emailId' => $request->emailId,
-
 							'userName' => $request->userName,
-							
 							'password' => md5($request->userPassword),
-
 							'conpassword' => md5($request->userConPassword),
-
 							'dob' => $request->dob,
-
 							'gender' => $request->gender,
-
 							'mobileno' => $phone,
-
 							'address' => $request->address,
-
 							'buildingName' => $request->buildingName,
-
 							'pincode' => $request->pincode,
-
 							'bankId' => $request->bankId,
-
 							'delflg' => 0,
-
 							'CreatedBy' => Auth::user()->username,
-
 							'UpdatedBy' => Auth::user()->username
 
 						]);
@@ -92,31 +77,14 @@ class ExternalUser extends Model {
 						->update([
 
 							'emailId' => $request->emailId,
-
 							'userName' => $request->userName,
-							
-							'password' => md5($request->userPassword),
-
-							'conpassword' => md5($request->userConPassword),
-
 							'dob' => $request->dob,
-
 							'gender' => $request->gender,
-
 							'mobileno' => $phone,
-
 							'address' => $request->address,
-
 							'buildingName' => $request->buildingName,
-
 							'pincode' => $request->pincode,
-
 							'bankId' => $request->bankId,
-
-							'delflg' => 0,
-
-							'CreatedBy' => Auth::user()->username,
-
 							'UpdatedBy' => Auth::user()->username
 
 						]);
@@ -131,9 +99,7 @@ class ExternalUser extends Model {
 		$result = DB::table('ext_mstuser')
 
 						->SELECT('*')
-
 						->WHERE('id', '=', $id)
-
 						->get();
 
 		return $result;
@@ -144,11 +110,38 @@ class ExternalUser extends Model {
 
 		$result = DB::table('ext_mstuser')
 
-						->SELECT('*')
+						->SELECT('*');
 
-						->WHERE('emailId', '=', $request->emailId)
+		if ($request->editId != "") {
+			$result = $result->WHERE('id', '!=' ,$request->editId)
+							->WHERE('emailId', '=' ,$request->emailId);
+		} else {
+			$result = $result->WHERE('emailId', '=', $request->emailId);
+		}
 
-						->get();
+		$result = $result->get();
+						
+		return $result;
+
+	}
+
+	public static function changeDelFlg($request) {
+
+		if ($request->delflg == 0) {
+			$delflg = 1;
+		} else {
+			$delflg = 0;
+		}
+
+		$result = DB::table('ext_mstuser')
+
+						->where('id', $request->id)
+
+						->update([
+
+							'delflg' => $delflg
+
+						]);
 
 		return $result;
 

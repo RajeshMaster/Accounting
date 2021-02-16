@@ -153,17 +153,17 @@
 									<a href="javascript:userView('{{ $data->id }}');"
 										class="pageload">
 									{{ trans('messages.lbl_Details') }}</a>&nbsp;
-									<!-- <span class="ml3">|</span> -->
+									<span class="ml3">|</span>
 								</div>
 								<div class="CMN_display_block ml3">
-									<!-- @if($data->delflg == 1)
-										<a href="javascript:fnchangeflag('{{ $data->id }}','{{ $data->delflg }}');" class="colbl">
+									@if($data->delflg == 1)
+										<a href="javascript:changeDelFlg('{{ $data->id }}','{{ $data->delflg }}');" class="colbl">
 											{{ trans('messages.lbl_use') }}
 										</a>
 									@else
-										<a href="javascript:fnchangeflag('{{ $data->id }}','{{ $data->delflg }}');" class="colred">		{{trans('messages.lbl_notuse') }}
+										<a href="javascript:changeDelFlg('{{ $data->id }}','{{ $data->delflg }}');" class="colred">		{{trans('messages.lbl_notuse') }}
 										</a> 
-									@endif -->
+									@endif
 								</div>
 							</div>
 						</td>

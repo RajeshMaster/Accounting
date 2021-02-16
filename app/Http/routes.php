@@ -602,10 +602,11 @@ Route::group(['prefix'=>'ExpensesData','middleware' => 'auth'], function() {
 // External User Process by Sastha
 Route::group(['prefix'=>'ExternalUser','middleware' => 'auth'], function() {
 
-	Route::get('changelanguage', 'AjaxController@index');
-	Route::any('index', 'ExternalUserController@index')->middleware('accessright:0,1,2,3,4,5');
-	Route::any('addedit', 'ExternalUserController@addedit')->middleware('accessright:0,1,2,3,4');
-	Route::any('addeditprocess', 'ExternalUserController@addeditprocess')->middleware('accessright:0,1,2,3,4');
-	Route::any('userView', 'ExternalUserController@userView')->middleware('accessright:0,1,2,3,4');
-	Route::any('emailIdExists', 'ExternalUserController@emailIdExists')->middleware('accessright:0,1,2,3,4');
+	Route::get('changelanguage','AjaxController@index');
+	Route::any('index','ExternalUserController@index')->middleware('accessright:4');
+	Route::any('addedit','ExternalUserController@addedit')->middleware('accessright:4');
+	Route::any('addeditprocess','ExternalUserController@addeditprocess')->middleware('accessright:4');
+	Route::any('userView','ExternalUserController@userView')->middleware('accessright:4');
+	Route::any('emailIdExists','ExternalUserController@emailIdExists')->middleware('accessright:4');
+    Route::any('changeDelFlg','ExternalUserController@changeDelFlg')->middleware('accessright:4');
 });

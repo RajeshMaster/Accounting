@@ -45,43 +45,29 @@ $(document).ready(function() {
 			rules: {
 
 				userName: {required: true},
-
 				gender: {required: true},
-
 				dob: {required: true, date: true,correctformatdate: true,DOB : "#DOB"},
-
 				userPassword: {required: true},
-
 				userConPassword: {required: true,equalTo: "#userPassword"},
-
 				emailId: {required: true, email:true},
-
 				address: {required: true},
-
 				buildingName: {required: true},
-
 				pincode: {required: true, minlength: 6},
-
 				userTelNo1: {required: true, minlength: 2},
-
 				userTelNo2: {required: true, minlength: 4},
-
 				userTelNo3: {required: true, minlength: 4},
-
 
 			},
 
 			submitHandler: function(form) { // for demo
 
+				var editId = $('#editId').val();
 				var emailId = $('#emailId').val();
 
-				/*$.ajax({
-
+				$.ajax({
 					type: 'GET',
-
 					url: 'emailIdExists',
-
-					data: {"emailId": emailId },
+					data: { "editId": editId, "emailId": emailId },
 
 					success: function(resp) {
 						if (resp != 0) {
@@ -96,9 +82,7 @@ $(document).ready(function() {
 							error+='</tr></tbody></table></div>';
 							document.getElementById('errorSectiondisplay').style.display = 'block';
 							document.getElementById('errorSectiondisplay').innerHTML = error;
-							if (resp == 1) {
-								$("#emailId").focus();
-							} 
+							$("#emailId").focus();
 							return false;
 						} else {
 							if($('#editId').val() == "") {
@@ -111,76 +95,45 @@ $(document).ready(function() {
 								form.submit(); // dont use this cause of double time insert in internet explorer
 								return true;
 							} else {
-								return false
+								return false;
 							}
 						}
 					},
 
 					error: function(data) {
-
 						// alert(data);
-
 					}
 
-				});*/
-
-				if($('#editId').val() == "") {
-					var confirmprocess = confirm("Do You Want To Register?");
-				} else {
-					var confirmprocess = confirm("Do You Want To Update?");
-				}
-				if(confirmprocess) {
-					pageload();
-					form.submit(); // dont use this cause of double time insert in internet explorer
-					return true;
-				} else {
-					return false
-				}
+				});
 
 			}
 
 		});
 
 		$.validator.messages.required = function (param, input) {
-
 			var article = document.getElementById(input.id);
-
 			return article.dataset.label + ' field is required';
-
 		}
 
 		$.validator.messages.equalTo = function (param, input) {
-
 			var article = document.getElementById(input.id);
-
 			return passwordmatch;
-
 		}
 
 		$.validator.messages.minlength = function (param, input) {
-
 			var article = document.getElementById(input.id);
-
 			if (input.id == "userTelNo1") {
-
 				return "Please Enter 2 Characters";
-
 			} else if (input.id == "userTelNo2" || input.id == "userTelNo3") {
-
 				return "Please Enter 4 Characters";
-
 			} else if (input.id == "pincode") {
-
 				return "Please Enter 6 Characters";
-
 			}
 
 		}
 
 		$('.a-middle').css('margin-top', function () {
-
 			return ($(window).height() - $(this).height()) / 4
-
 	    });
 
 	});
@@ -245,12 +198,12 @@ function backindexpage() {
 	$("#frmextuserview").submit();
 }
 
-function delflg(id,delflg) {
+function changeDelFlg(id,delflg) {
 	if (confirm("Do You Want To Change The User Status?")) {
 		$("#id").val(id);
 		$("#delflg").val(delflg);
 		pageload();
-		$('#frmextuserindex').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+		$('#frmextuserindex').attr('action', 'changeDelFlg?mainmenu='+mainmenu+'&time='+datetime);
 		$('#frmextuserindex').submit();
 	}
 }
