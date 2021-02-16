@@ -78,7 +78,15 @@
 
 	@if($userview[0]->delflg != "1")
 		<div class="pull-right mr5">
-			<a href="javascript:addeditview('edit','{{ $userview[0]->id }}');" class="pageload btn btn-warning box80 pull-right pr10"><span class="fa fa-pencil"></span> {{ trans('messages.lbl_edit') }}</a>
+			<a href="javascript:passwordchange('{{ $userview[0]->id }}');" 
+				class="btn btn-primary box150 pull-right pr10">
+				<span class="fa fa-key"></span>{{ trans('messages.lbl_passwordchange') }}
+			</a>
+		</div>
+		<div class="pull-right mr5">
+			<a href="javascript:addeditview('edit','{{ $userview[0]->id }}');" 
+				class="pageload btn btn-warning box80 pull-right pr10">
+				<span class="fa fa-pencil"></span> {{ trans('messages.lbl_edit') }}</a>
 		</div>
 	@endif
 

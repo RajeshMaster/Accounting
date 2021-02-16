@@ -69,7 +69,7 @@
 					{{ Form::text('userName',(isset($userview[0]->userName)) ? $userview[0]->userName : '',
 							array('id'=>'userName',
 								'name' => 'userName',
-								'data-label' => trans('messages.lbl_unamesurname'),
+								'data-label' => trans('messages.lbl_usernamesign'),
 								'class'=>'box25per form-control pl5')) 
 					}}
 				</div>

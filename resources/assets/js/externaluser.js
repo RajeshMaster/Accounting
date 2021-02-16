@@ -138,7 +138,65 @@ $(document).ready(function() {
 
 		$('.a-middle').css('margin-top', function () {
 			return ($(window).height() - $(this).height()) / 4
-	    });
+		});
+
+	});
+
+	$('.passwordchangeprocess').click(function () {
+
+		$("#frmextpasswordchange").validate({
+
+			showErrors: function(errorMap, errorList) {
+
+				// Clean up any tooltips for valid elements
+				$.each(this.validElements(), function (index, element) {
+					var $element = $(element);
+					$element.data("title", "") // Clear the title - there is no error associated anymore
+							.removeClass("error")
+							.tooltip("destroy");
+				});
+
+				// Create new tooltips for invalid elements
+				$.each(errorList, function (index, error) {
+					var $element = $(error.element);
+					$element.tooltip("destroy") // Destroy any pre-existing tooltip so we can repopulate with new tooltip content
+							.data("title", error.message)
+							.addClass("error")
+							.tooltip(); // Create a new tooltip based on the error messsage we just set in the title
+				});
+			},
+
+			rules: {
+				password: { required: true },
+				confirmpassword: { required: true, equalTo: "#password" },
+			},
+
+			submitHandler: function(form) { // for demo
+				var confirmprocess = confirm("Do You Want To Change The password?");
+				if(confirmprocess) {
+					pageload();
+					form.submit();
+					return true;
+				} else {
+					return false
+				}
+			}
+			
+		});
+
+		$.validator.messages.required = function (param, input) {
+			var article = document.getElementById(input.id);
+			return article.dataset.label + ' field is required';
+		}
+
+		$.validator.messages.equalTo = function (param, input) {
+			var article = document.getElementById(input.id);
+			return passwordmatch;
+		}
+
+		$('.a-middle').css('margin-top', function () {
+			return ($(window).height() - $(this).height()) / 4
+		});
 
 	});
 
@@ -212,6 +270,13 @@ function changeDelFlg(id,delflg) {
 	}
 }
 
+function passwordchange(id) {
+	$("#id").val(id);
+	pageload();
+	$('#frmextuserview').attr('action', 'passwordchange?mainmenu='+mainmenu+'&time='+datetime);
+	$('#frmextuserview').submit();
+}
+
 function nextfield(input1,input2,length,event) {
 	var event = event.keyCode || event.charCode;
 	if(event != 8){
@@ -219,4 +284,15 @@ function nextfield(input1,input2,length,event) {
 			document.getElementById(input2).focus();
 		}
 	}
+}
+
+function cancelpassword() {
+	if (cancel_check == false) {
+		if (!confirm("Do You Want To Cancel the Page?")) {
+			return false;
+		}
+	}
+	pageload();
+	$('#frmextpasswordchange').attr('action', 'userView?mainmenu='+mainmenu+'&time='+datetime);
+	$("#frmextpasswordchange").submit();
 }

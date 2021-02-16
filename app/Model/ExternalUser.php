@@ -159,6 +159,23 @@ class ExternalUser extends Model {
 
 	}
 
+	public static function passwordchange($request) {
+
+		$update = DB::table('ext_mstuser')
+
+			->where('id', $request->id)
+
+			->update([
+
+				'password' => md5($request->password),
+				'conpassword' => md5($request->confirmpassword),
+				'UpdatedBy' => Auth::user()->username
+			]);
+
+		return $update;
+
+	}
+
 	/*public static function getbankDetails() {
 
 		$result = DB::table('ext_mstbank as bank')

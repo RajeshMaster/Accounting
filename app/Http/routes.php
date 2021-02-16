@@ -608,18 +608,7 @@ Route::group(['prefix'=>'ExternalUser','middleware' => 'auth'], function() {
 	Route::any('addeditprocess','ExternalUserController@addeditprocess')->middleware('accessright:4');
 	Route::any('userView','ExternalUserController@userView')->middleware('accessright:4');
 	Route::any('emailIdExists','ExternalUserController@emailIdExists')->middleware('accessright:4');
-    Route::any('changeDelFlg','ExternalUserController@changeDelFlg')->middleware('accessright:4');
-});
-
-// External User Process by Sastha
-Route::group(['prefix'=>'ExternalBank','middleware' => 'auth'], function() {
-
-    Route::get('changelanguage','AjaxController@index');
-    Route::any('index','ExternalBankController@index')->middleware('accessright:4');
-    Route::any('addedit','ExternalBankController@addedit')->middleware('accessright:4');
-    Route::any('addeditprocess','ExternalBankController@addeditprocess')->middleware('accessright:4');
-    Route::any('bankView','ExternalBankController@bankView')->middleware('accessright:4');
-    Route::any('accountNoExists','ExternalBankController@accountNoExists')->middleware('accessright:4');
-    Route::any('changeDelFlg','ExternalBankController@changeDelFlg')->middleware('accessright:4');
-    Route::any('changeMainFlg','ExternalBankController@changeMainFlg')->middleware('accessright:4');
+	Route::any('changeDelFlg','ExternalUserController@changeDelFlg')->middleware('accessright:4');
+	Route::any('passwordchange','ExternalUserController@passwordchange')->middleware('accessright:4');
+	Route::any('passwordchangeprocess','ExternalUserController@passwordchangeprocess')->middleware('accessright:4');
 });

@@ -169,4 +169,52 @@ class ExternalUserController extends Controller {
 
 	}
 
+	/**
+	*
+	* Change Password Page for User
+	* @author Sastha
+	* @return object to particular view page
+	* Created At 2021/02/16
+	*
+	*/
+
+	public function passwordchange(Request $request) {
+
+		if(!isset($request->id)){
+			return Redirect::to('ExternalUser/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
+		}
+
+		$passwordview = ExternalUser::viewUserDetails($request->id);
+
+		return view('ExternalUser.passwordchange',[ 'request' => $request,
+													'passwordview' => $passwordview
+												]);
+
+	}
+
+	/**
+	*
+	* Change Password Process for User
+	* @author Sastha
+	* @return object to particular view page
+	* Created At 2021/02/16
+	*
+	*/
+	public function passwordchangeprocess(Request $request) {
+
+		$update = ExternalUser::passwordchange($request);
+
+		if($update) {
+			Session::flash('message', 'Password Updated Sucessfully!'); 
+			Session::flash('type', 'alert-success'); 
+		} else {
+			Session::flash('type', 'Password Updated Unsucessfully!'); 
+			Session::flash('type', 'alert-danger'); 
+		}
+
+		Session::flash('viewId', $request->id);
+
+		return Redirect::to('ExternalUser/userView?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
+	}
+
 }
