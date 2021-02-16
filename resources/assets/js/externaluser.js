@@ -293,6 +293,6 @@ function cancelpassword() {
 		}
 	}
 	pageload();
-	$('#frmextpasswordchange').attr('action', 'userView?mainmenu='+mainmenu+'&time='+datetime);
-	$("#frmextpasswordchange").submit();
+	$('#frmextpasswordchangecancel').attr('action', 'userView?mainmenu='+mainmenu+'&time='+datetime);
+	$("#frmextpasswordchangecancel").submit();
 }

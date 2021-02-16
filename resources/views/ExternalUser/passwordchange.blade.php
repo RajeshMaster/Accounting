@@ -82,8 +82,9 @@
 		<fieldset class="bg_footer_clr">
 			<div class="form-group">
 				<div align="center" class="mt7">
-					<button type="submit" class="btn btn-success add box100 passwordchangeprocess">
-						<i class="fa fa-key"></i>{{ trans('messages.lbl_register') }}
+					<button type="submit" class="btn btn-success passwordchangeprocess">
+						<i class="fa fa-key"></i>
+						{{ trans('messages.lbl_passwordchange') }}
 					</button>
 					<a onclick="javascript:cancelpassword();" class="pageload btn btn-danger white"><span class="fa fa-times"></span> 
 						{{trans('messages.lbl_cancel')}}
@@ -92,6 +93,15 @@
 			</div>
 		</fieldset>
 	</div>
+
+	{{ Form::close() }}
+
+	{{ Form::open(array('name'=>'frmextpasswordchangecancel','id'=>'frmextpasswordchangecancel', 
+						'url' => 'ExternalUser/userView?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),'files'=>true,'method' => 'POST')) }}
+
+		{{ Form::hidden('mainmenu', $request->mainmenu , array('id' => 'mainmenu')) }}
+		{{ Form::hidden('viewId', $request->editid, array('id' => 'viewId')) }}
+		{{ Form::hidden('editId', $request->editid, array('id' => 'editId')) }}
 
 	{{ Form::close() }}
 
