@@ -272,16 +272,11 @@
 			@endif -->
 			<!-- //Expenses sub -->
 			<!-- // External User sub -->
-			@if (isset($request->mainmenu) && ($request->mainmenu == "extUser" || $request->mainmenu == "extBank"))
+			@if (isset($request->mainmenu) && ($request->mainmenu == "extUser"))
 				<div id="external_sub_1">
 					<a class="pageload" href="{{ url('ExternalUser/index?mainmenu=extUser&time='.date('Ymdhis')) }}" 
 						style="text-decoration:none;color:white;">
 						{{ trans('messages.lbl_user') }}</a>
-				</div>
-				<div id="external_sub_2">
-					<a class="pageload" href="{{ url('ExternalBank/index?mainmenu=extBank&time='.date('Ymdhis')) }}" 
-						style="text-decoration:none;color:white;">
-						{{ trans('messages.lbl_bank') }}</a>
 				</div>
 			@endif
 			<!-- // External User sub -->

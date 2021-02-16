@@ -96,24 +96,6 @@
 
 		<div class="col-xs-12 mt5">
 			<div class="col-xs-3 text-right clr_blue">
-				<label>{{ trans('messages.lbl_gender') }}</label>
-			</div>
-			<div>
-				{{ ($userview[0]->gender != "") ? $userview[0]->gender : 'Nill'}}
-			</div>
-		</div>
-
-		<div class="col-xs-12 mt5">
-			<div class="col-xs-3 text-right clr_blue">
-				<label>{{ trans('messages.lbl_dob') }}</label>
-			</div>
-			<div>
-				{{ ($userview[0]->dob != "" && $userview[0]->dob != "0000-00-00") ? $userview[0]->dob : 'Nill'}}
-			</div>
-		</div>
-
-		<div class="col-xs-12 mt5">
-			<div class="col-xs-3 text-right clr_blue">
 				<label>{{ trans('messages.lbl_mailid') }}</label>
 			</div>
 			<div>
@@ -151,20 +133,64 @@
 
 		<div class="col-xs-12 mt5">
 			<div class="col-xs-3 text-right clr_blue">
-				<label>{{ trans('messages.lbl_bank_name') }}</label>
-			</div>
-			<div>
-				{{ ($userview[0]->BANKNAME != "") ? $userview[0]->BANKNAME : 'Nill'}}
-			</div>
-		</div>
-
-
-		<div class="col-xs-12 mt5 mb15">
-			<div class="col-xs-3 text-right clr_blue">
 				<label>{{ trans('messages.lbl_mobilenumber') }}</label>
 			</div>
 			<div>
 				{{ ($userview[0]->mobileno != "") ? $userview[0]->mobileno : 'Nill'}}
+			</div>
+		</div>
+
+		<div class="col-xs-12 mt5">
+			<div class="col-xs-3 text-right clr_blue">
+				<label>{{ trans('messages.lbl_kananame') }}</label>
+			</div>
+			<div>
+				{{ ($userview[0]->bankKanaName != "") ? $userview[0]->bankKanaName : 'Nill'}}
+			</div>
+		</div>
+
+		<div class="col-xs-12 mt5">
+			<div class="col-xs-3 text-right clr_blue">
+				<label>{{ trans('messages.lbl_account_no') }}</label>
+			</div>
+			<div>
+				{{ ($userview[0]->accountNo != "") ? $userview[0]->accountNo : 'Nill'}}
+			</div>
+		</div>
+
+		<div class="col-xs-12 mt5">
+			<div class="col-xs-3 text-right clr_blue">
+				<label>{{ trans('messages.lbl_accounttype') }}</label>
+			</div>
+			<div>
+				{{ ($userview[0]->accountType != "") ? getJpnAccountType($userview[0]->accountType) : 'Nill'}}
+			</div>
+		</div>
+
+		<div class="col-xs-12 mt5">
+			<div class="col-xs-3 text-right clr_blue">
+				<label>{{ trans('messages.lbl_bank_name') }}</label>
+			</div>
+			<div>
+				{{ ($userview[0]->bankName != "") ? $userview[0]->bankName : 'Nill'}}
+			</div>
+		</div>
+
+		<div class="col-xs-12 mt5">
+			<div class="col-xs-3 text-right clr_blue">
+				<label>{{ trans('messages.lbl_branch_name') }}</label>
+			</div>
+			<div>
+				{{ ($userview[0]->branchName != "") ? $userview[0]->branchName : 'Nill'}}
+			</div>
+		</div>
+
+		<div class="col-xs-12 mt5 mb15">
+			<div class="col-xs-3 text-right clr_blue">
+				<label>{{ trans('messages.lbl_branch_number') }}</label>
+			</div>
+			<div>
+				{{ ($userview[0]->branchNo != "") ? $userview[0]->branchNo : 'Nill'}}
 			</div>
 		</div>
 		

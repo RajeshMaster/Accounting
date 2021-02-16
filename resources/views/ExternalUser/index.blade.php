@@ -131,22 +131,22 @@
 								</div>
 								<div class="f12 vam label_gray boxhei24">
 									<span class="f12 fwb"> 
-										{{ trans('messages.lbl_Gender') }} :
+										{{ trans('messages.lbl_bank_name') }} :
 									</span>
 									<span class="f12 ml5">
-										@if($data->gender == 1)
-											{{ trans('messages.lbl_male') }}
+										@if($data->bankName != "")
+											{{ $data->bankName }} - {{ $data->accountNo }}
 										@else 
-											{{ trans('messages.lbl_female')  }} 
+											NILL
 										@endif
 									</span>
 									<span class="ml5">|</span>
 									<span class="f12 fwb ml5"> 
-										{{ trans('messages.lbl_bank_name') }} :
+										{{ trans('messages.lbl_mobilenumber') }} :
 									</span>
 									<span class="f12 ml5">
-										@if($data->bankId != "")
-											{{ $data->BANKNAME }}
+										@if($data->mobileno != "")
+											{{ $data->mobileno }}
 										@else 
 											NILL
 										@endif

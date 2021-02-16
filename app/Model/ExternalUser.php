@@ -13,11 +13,10 @@ class ExternalUser extends Model {
 
 	public static function getUserDetails($request) {
 
-		$result = DB::table('ext_mstuser as user')
+		$result = DB::table('ext_mstuser')
 
-						->SELECT('user.*', DB::RAW("CONCAT(bank.bankName,'-',bank.accountNo) AS BANKNAME"))
-						->LEFTJOIN('ext_mstbank as bank','bank.id', '=', 'user.bankId')
-						->ORDERBY('user.id','ASC')
+						->SELECT('*')
+						->ORDERBY('id','ASC')
 						->PAGINATE($request->plimit);
 
 		return $result;
@@ -46,13 +45,16 @@ class ExternalUser extends Model {
 							'userName' => $request->userName,
 							'password' => md5($request->userPassword),
 							'conpassword' => md5($request->userConPassword),
-							'dob' => $request->dob,
-							'gender' => $request->gender,
-							'mobileno' => $phone,
 							'address' => $request->address,
 							'buildingName' => $request->buildingName,
 							'pincode' => $request->pincode,
-							'bankId' => $request->bankId,
+							'mobileno' => $phone,
+							'bankKanaName' => $request->bankKanaName,
+							'accountNo' => $request->accountNo,
+							'accountType' => $request->accountType,
+							'bankName' => $request->bankName,
+							'branchName' => $request->branchName,
+							'branchNo' => $request->branchNo,
 							'delflg' => 0,
 							'CreatedBy' => Auth::user()->username,
 							'UpdatedBy' => Auth::user()->username
@@ -79,13 +81,16 @@ class ExternalUser extends Model {
 
 							'emailId' => $request->emailId,
 							'userName' => $request->userName,
-							'dob' => $request->dob,
-							'gender' => $request->gender,
 							'mobileno' => $phone,
 							'address' => $request->address,
 							'buildingName' => $request->buildingName,
 							'pincode' => $request->pincode,
-							'bankId' => $request->bankId,
+							'bankKanaName' => $request->bankKanaName,
+							'accountNo' => $request->accountNo,
+							'accountType' => $request->accountType,
+							'bankName' => $request->bankName,
+							'branchName' => $request->branchName,
+							'branchNo' => $request->branchNo,
 							'UpdatedBy' => Auth::user()->username
 
 						]);
@@ -97,11 +102,10 @@ class ExternalUser extends Model {
 
 	public static function viewUserDetails($id) {
 
-		$result = DB::table('ext_mstuser as user')
+		$result = DB::table('ext_mstuser')
 
-						->SELECT('user.*', DB::RAW("CONCAT(bank.bankName,'-',bank.accountNo) AS BANKNAME"))
-						->LEFTJOIN('ext_mstbank as bank','bank.id', '=', 'user.bankId')
-						->WHERE('user.id', '=', $id)
+						->SELECT('*')
+						->WHERE('id', '=', $id)
 						->get();
 
 		return $result;
@@ -149,7 +153,13 @@ class ExternalUser extends Model {
 
 	}
 
-	public static function getbankDetails() {
+	public static function getJapanAccount() {
+
+		return array('1'=>$msg = "普通");
+
+	}
+
+	/*public static function getbankDetails() {
 
 		$result = DB::table('ext_mstbank as bank')
 
@@ -160,7 +170,7 @@ class ExternalUser extends Model {
 						
 		return $result;
 
-	}
+	}*/
 
 
 	

@@ -35,7 +35,6 @@
 	{{ Form::hidden('id', '', array('id' => 'id')) }}
 	{{ Form::hidden('viewId', $request->editid, array('id' => 'viewId')) }}
 	{{ Form::hidden('editId', $request->editid, array('id' => 'editId')) }}
-	{{ Form::hidden('DOB', $dob_year, array('id' => 'DOB')) }}
 
 	<!-- Start Heading -->
 	<div class="row hline">
@@ -77,45 +76,17 @@
 			</div>
 			<div class="col-xs-12 mt5">
 				<div class="col-xs-3 text-right clr_blue">
-					<label>{{ trans('messages.lbl_gender') }}
-						<span class="fr ml2 red"> * </span></label>
-				</div>
-				<div class="col-md-6 pm0">
-					<label class="fwn">
-						{{ Form::radio('gender', '1',(isset($userview[0]->gender) && ($userview[0]->gender)=="1") ? $userview[0]->							gender : '', 
-								array('id' =>'male',
-										'name' => 'gender',
-										'class' => 'comp',
-										'data-label' => trans('messages.lbl_gender'))) 
-
-						}}
-						<span class="vam">&nbsp;{{ trans('messages.lbl_male') }}&nbsp;
-						</span>
-					</label>
-					<label class="fwn">
-						{{ Form::radio('gender', '2',(isset($userview[0]->gender) && ($userview[0]->gender)=="2") ? $userview[						0]->gender : '', array('id' =>'female',
-										'name' => 'gender',
-										'class' => 'ntcomp',
-										'data-label' => trans('messages.lbl_gender')))
-						}}
-						<span class="vam">&nbsp;{{ trans('messages.lbl_female') }}&nbsp;</span>
-					</label>
-				</div>
-			</div>
-			<div class="col-xs-12 mt5">
-				<div class="col-xs-3 text-right clr_blue">
-					<label>{{ trans('messages.lbl_dob') }}
+					<label>{{ trans('messages.lbl_mailid') }}
 						<span class="fr ml2 red"> * </span></label>
 				</div>
 				<div>
-					{{ Form::text('dob',(isset($userview[0]->dob) && ($userview[0]->dob)!="0000-00-00") ? $userview[0]->								dob : '', array('id'=>'dob',
-									'name' => 'dob',
-									'autocomplete' => 'off',
-									'data-label' => trans('messages.lbl_dob'),
-									'class'=>'box8per form-control pl5 dob')) 
+					{{ Form::text('emailId',(isset($userview[0]->emailId)) ? $userview[0]->emailId : '', array('id'=>'emailId', 
+									'name' => 'emailId',
+									'data-label' => trans('messages.lbl_mailid'),
+									'class'=>'box25per form-control pl5')) 
 					}}
-					<label class="mt10 ml2 fa fa-calendar fa-lg" for="dob" 
-						aria-hidden="true"></label>
+
+					<span>&nbsp;(Ex: info@XXXXX.co.jp）</span>
 				</div>
 			</div>
 			@if($request->editflg != "edit")
@@ -149,21 +120,6 @@
 					</div>
 				</div>
 			@endif
-			<div class="col-xs-12 mt5">
-				<div class="col-xs-3 text-right clr_blue">
-					<label>{{ trans('messages.lbl_mailid') }}
-						<span class="fr ml2 red"> * </span></label>
-				</div>
-				<div>
-					{{ Form::text('emailId',(isset($userview[0]->emailId)) ? $userview[0]->emailId : '', array('id'=>'emailId', 
-									'name' => 'emailId',
-									'data-label' => trans('messages.lbl_mailid'),
-									'class'=>'box25per form-control pl5')) 
-					}}
-
-					<span>&nbsp;(Ex: info@XXXXX.co.jp）</span>
-				</div>
-			</div>
 			<div class="col-xs-12 mt5">
 				<div class="col-xs-3 text-right clr_blue">
 					<label>{{ trans('messages.lbl_address') }}
@@ -206,20 +162,6 @@
 				</div>
 			</div>
 			<div class="col-xs-12 mt5">
-				<div class="col-xs-3 text-right clr_blue">
-					<label>{{ trans('messages.lbl_bank_name') }}
-						<span class="fr ml2 red"> * </span></label>
-				</div>
-				<div>
-					{{ Form::select('bankId', [null=>'']+$bankDetails, (isset($userview[0]->bankId)) ? $userview[0]->bankId : '',
-							array('name' => 'bankId',
-									'id'=>'bankId',
-									'data-label' => trans('messages.lbl_bank_name'),
-									'class'=>'pl5'))}}
-
-				</div>
-			</div>
-			<div class="col-xs-12 mt5 mb10">
 				<div class="col-xs-3 text-right clr_blue">
 					<label>{{ trans('messages.lbl_mobilenumber') }}
 						<span class="fr ml2 red"> * </span></label>
@@ -268,6 +210,95 @@
 
 					<span>&nbsp;(Ex: 080-3138-4449）</span>
 
+				</div>
+			</div>
+			<div class="col-xs-12 mt5">
+				<div class="col-xs-3 text-right clr_blue">
+					<label>{{ trans('messages.lbl_kananame') }}
+						<span class="fr ml2 red"> * </span></label>
+				</div>
+				<div>
+					{{ Form::text('bankKanaName',(isset($userview[0]->bankKanaName)) ? $userview[0]->bankKanaName : '',
+							array('id'=>'bankKanaName',
+								'name' => 'bankKanaName',
+								'maxlength' => 30,
+								'data-label' => trans('messages.lbl_kananame'),
+								'class'=>'box25per form-control pl5')) 
+					}}
+					<span>&nbsp;(Ex: microbit limited company）</span>
+				</div>
+			</div>
+			<div class="col-xs-12 mt5">
+				<div class="col-xs-3 text-right clr_blue">
+					<label>{{ trans('messages.lbl_account_no') }}
+						<span class="fr ml2 red"> * </span></label>
+				</div>
+				<div>
+					{{ Form::text('accountNo',(isset($userview[0]->accountNo)) ? $userview[0]->accountNo : '', 
+							array('id'=>'accountNo',
+									'name' => 'accountNo',
+									'maxlength' => 15,
+									'data-label' => trans('messages.lbl_account_no'),
+									'class'=>'box12per form-control pl5')) 
+					}}
+					
+				</div>
+			</div>
+			<div class="col-xs-12 mt5">
+				<div class="col-xs-3 text-right clr_blue">
+					<label>{{ trans('messages.lbl_accounttype') }}
+						<span class="fr ml2 red"> * </span></label>
+				</div>
+				<div>
+					{{ Form::select('accountType', $jpnaccounttype, (isset($getdetails->accountType)) ? $getdetails->accountType : '',
+							array('name' => 'accountType',
+									'id'=>'accountType',
+									'data-label' => trans('messages.lbl_accounttype'),
+									'class'=>'pl5'))}}
+
+				</div>
+			</div>
+			<div class="col-xs-12 mt5">
+				<div class="col-xs-3 text-right clr_blue">
+					<label>{{ trans('messages.lbl_bank_name') }}
+						<span class="fr ml2 red"> * </span></label>
+				</div>
+				<div>
+					{{ Form::text('bankName',(isset($userview[0]->bankName)) ? $userview[0]->bankName : '', array('id'=>'bankName', 
+									'name' => 'bankName',
+									'maxlength' => 30,
+									'data-label' => trans('messages.lbl_bank_name'),
+									'class'=>'box25per form-control pl5')) 
+					}}
+				</div>
+			</div>
+			<div class="col-xs-12 mt5">
+				<div class="col-xs-3 text-right clr_blue">
+					<label>{{ trans('messages.lbl_branch_name') }}
+						<span class="fr ml2 red"> * </span></label>
+				</div>
+				<div>
+					{{ Form::text('branchName',(isset($userview[0]->branchName)) ? $userview[0]->branchName : '', array('id'=>'branchName', 
+									'name' => 'branchName',
+									'maxlength' => 20,
+									'data-label' => trans('messages.lbl_branch_name'),
+									'class'=>'box25per form-control pl5')) 
+					}}
+				</div>
+			</div>
+			<div class="col-xs-12 mt5 mb10">
+				<div class="col-xs-3 text-right clr_blue">
+					<label>{{ trans('messages.lbl_branch_number') }}
+						<span class="fr ml2 red"> * </span></label>
+				</div>
+				<div>
+					{{ Form::text('branchNo',(isset($userview[0]->branchNo)) ? $userview[0]->branchNo : '', array('id'=>'branchNo', 
+									'name' => 'branchNo',
+									'maxlength' => '12',
+									'data-label' => trans('messages.lbl_branch_number'),
+									'class'=>'box12per form-control pl5',
+									'onkeypress' => 'return isNumberKey(event)')) 
+					}}
 				</div>
 			</div>
 		</fieldset>

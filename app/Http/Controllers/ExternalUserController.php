@@ -54,18 +54,11 @@ class ExternalUserController extends Controller {
 
 		$userview = ExternalUser::viewUserDetails($request->editId);
 
-		$bankDetails = ExternalUser::getbankDetails();
-
-		$dob_year = Carbon\Carbon::createFromFormat('Y-m-d', date("Y-m-d"));
-
-		$dob_year = $dob_year->subYears(18);
-
-		$dob_year = $dob_year->format('Y-m-d');
+		$jpnaccounttype = ExternalUser::getJapanAccount();
 
 		return view('ExternalUser.addedit', ['request' => $request,
 												'userview' => $userview,
-												'bankDetails' => $bankDetails,
-												'dob_year' => $dob_year
+												'jpnaccounttype' => $jpnaccounttype
 											]);
 
 	}
@@ -133,12 +126,6 @@ class ExternalUserController extends Controller {
 		}
 
 		$userview = ExternalUser::viewUserDetails($request->viewId);
-
-		if ($userview[0]->gender == 1) {
-			$userview[0]->gender = "Male";
-		} else if ($userview[0]->gender == 2) {
-			$userview[0]->gender = "Female";
-		}
 
 		return view('ExternalUser.view', [	'request' => $request,
 											'userview' => $userview
