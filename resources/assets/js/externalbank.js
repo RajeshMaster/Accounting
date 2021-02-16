@@ -2,15 +2,15 @@ var data = {};
 
 function pageClick(pageval) {
 	$('#page').val(pageval);
-	$('#frmextuserindex').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
-	$("#frmextuserindex").submit();
+	$('#frmextbankindex').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+	$("#frmextbankindex").submit();
 }
 
 function pageLimitClick(pagelimitval) {
 	$('#page').val('');
 	$('#plimit').val(pagelimitval);
-	$('#frmextuserindex').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
-	$("#frmextuserindex").submit();
+	$('#frmextbankindex').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+	$("#frmextbankindex").submit();
 }
 
 $(document).ready(function() {
@@ -20,7 +20,7 @@ $(document).ready(function() {
 
 	$('.addeditprocess').click(function () {
 
-		$("#frmextuseraddedit").validate({
+		$("#frmextbankaddedit").validate({
 
 			showErrors: function(errorMap, errorList) {
 
@@ -44,36 +44,29 @@ $(document).ready(function() {
 
 			rules: {
 
-				userName: {required: true},
-				gender: {required: true},
-				dob: {required: true, date: true,correctformatdate: true,DOB : "#DOB"},
-				userPassword: {required: true},
-				userConPassword: {required: true,equalTo: "#userPassword"},
-				emailId: {required: true, email:true},
-				address: {required: true},
-				buildingName: {required: true},
-				pincode: {required: true, minlength: 6},
-				bankId: {required: true},
-				userTelNo1: {required: true, minlength: 2},
-				userTelNo2: {required: true, minlength: 4},
-				userTelNo3: {required: true, minlength: 4},
+				bankKanaName: {required: true},
+				accountNo: {required: true, minlength: 6, number: true},
+				accountType: {required: true},
+				bankName: {required: true},
+				branchName: {required: true},
+				branchNo: {required: true, minlength: 6, number: true},
 
 			},
 
 			submitHandler: function(form) { // for demo
 
 				var editId = $('#editId').val();
-				var emailId = $('#emailId').val();
+				var accountNo = $('#accountNo').val();
 
 				$.ajax({
 					type: 'GET',
-					url: 'emailIdExists',
-					data: { "editId": editId, "emailId": emailId },
+					url: 'accountNoExists',
+					data: { "editId": editId, "accountNo": accountNo },
 
 					success: function(resp) {
 						if (resp != 0) {
 							document.getElementById('errorSectiondisplay').innerHTML = "";
-							err_invalidcer = "Email Id Already exists";
+							err_invalidcer = "Account Number Already exists";
 							var error='<div align="center" style="padding: 0px;" id="inform">';
 							error+='<table cellspacing="0" class="statusBg1" cellpadding="0" border="0">';
 							error+='<tbody><tr><td style="padding: 4px 10px" align="center"><span class="innerBg" id="mc_msg_txt">'+err_invalidcer+'</span></td>';
@@ -83,7 +76,7 @@ $(document).ready(function() {
 							error+='</tr></tbody></table></div>';
 							document.getElementById('errorSectiondisplay').style.display = 'block';
 							document.getElementById('errorSectiondisplay').innerHTML = error;
-							$("#emailId").focus();
+							$("#accountNo").focus();
 							return false;
 						} else {
 							if($('#editId').val() == "") {
@@ -116,20 +109,9 @@ $(document).ready(function() {
 			return article.dataset.label + ' field is required';
 		}
 
-		$.validator.messages.equalTo = function (param, input) {
-			var article = document.getElementById(input.id);
-			return passwordmatch;
-		}
-
 		$.validator.messages.minlength = function (param, input) {
 			var article = document.getElementById(input.id);
-			if (input.id == "userTelNo1") {
-				return "Please Enter 2 Characters";
-			} else if (input.id == "userTelNo2" || input.id == "userTelNo3") {
-				return "Please Enter 4 Characters";
-			} else if (input.id == "pincode") {
-				return "Please Enter 6 Characters";
-			}
+			return "Please Enter 6 Characters";
 
 		}
 
@@ -158,21 +140,21 @@ function underConstruction() {
 
 function addedit(type) {
 	$('#editflg').val(type);
-	$('#frmextuserindex').attr('action', 'addedit?mainmenu='+mainmenu+'&time='+datetime);
-	$("#frmextuserindex").submit();
+	$('#frmextbankindex').attr('action', 'addedit?mainmenu='+mainmenu+'&time='+datetime);
+	$("#frmextbankindex").submit();
 }
 
 function addeditview(type,id) {
 	$('#editflg').val(type);
 	$('#editId').val(id);
-	$('#frmextuserview').attr('action', 'addedit?mainmenu='+mainmenu+'&time='+datetime);
-	$("#frmextuserview").submit();
+	$('#frmextbankview').attr('action', 'addedit?mainmenu='+mainmenu+'&time='+datetime);
+	$("#frmextbankview").submit();
 }
 
-function userView(id) {
+function getbankview(id) {
 	$('#viewId').val(id);
-	$('#frmextuserindex').attr('action', 'userView?mainmenu='+mainmenu+'&time='+datetime);
-	$("#frmextuserindex").submit();
+	$('#frmextbankindex').attr('action', 'bankView?mainmenu='+mainmenu+'&time='+datetime);
+	$("#frmextbankindex").submit();
 }
 
 function gotoindexpage(viewflg) {
@@ -184,36 +166,37 @@ function gotoindexpage(viewflg) {
 
 	if (viewflg == "1") {
 		pageload();
-		$('#frmextuseraddeditcancel').attr('action', 'userView?mainmenu='+mainmenu+'&time='+datetime);
-		$("#frmextuseraddeditcancel").submit();
+		$('#frmextbankaddeditcancel').attr('action', 'bankView?mainmenu='+mainmenu+'&time='+datetime);
+		$("#frmextbankaddeditcancel").submit();
 	} else {
 		pageload();
-		$('#frmextuseraddeditcancel').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
-		$("#frmextuseraddeditcancel").submit();
+		$('#frmextbankaddeditcancel').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+		$("#frmextbankaddeditcancel").submit();
 	}
 }
 
 function backindexpage() {
 	pageload();
-	$('#frmextuserview').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
-	$("#frmextuserview").submit();
+	$('#frmextbankview').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
+	$("#frmextbankview").submit();
 }
 
 function changeDelFlg(id,delflg) {
-	if (confirm("Do You Want To Change The User Status?")) {
+	if (confirm("Do You Want To Change The Bank Status?")) {
 		$("#id").val(id);
 		$("#delflg").val(delflg);
 		pageload();
-		$('#frmextuserindex').attr('action', 'changeDelFlg?mainmenu='+mainmenu+'&time='+datetime);
-		$('#frmextuserindex').submit();
+		$('#frmextbankindex').attr('action', 'changeDelFlg?mainmenu='+mainmenu+'&time='+datetime);
+		$('#frmextbankindex').submit();
 	}
 }
 
-function nextfield(input1,input2,length,event) {
-	var event = event.keyCode || event.charCode;
-	if(event != 8){
-		if(document.getElementById(input1).value.length == length) {
-			document.getElementById(input2).focus();
-		}
+function changeMainFlg(id,mainflg) {
+	if (confirm("Do You Want To Change The Main Bank Status?")) {
+		$("#id").val(id);
+		$("#mainflg").val(mainflg);
+		pageload();
+		$('#frmextbankindex').attr('action', 'changeMainFlg?mainmenu='+mainmenu+'&time='+datetime);
+		$('#frmextbankindex').submit();
 	}
 }

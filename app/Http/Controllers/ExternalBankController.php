@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
-use App\Model\ExternalUser;
+use App\Model\ExternalBank;
 use DB;
 use Input;
 use Redirect;
@@ -11,11 +11,11 @@ use Session;
 use Carbon;
 use Illuminate\Support\Facades\Validator;
 
-class ExternalUserController extends Controller {
+class ExternalBankController extends Controller {
 
 	/**
 	*
-	* Get User Process
+	* Get Bank Process
 	* @author Sastha
 	* @return object to particular view page
 	* Created At 2021/02/12
@@ -28,19 +28,19 @@ class ExternalUserController extends Controller {
 		}
 
 		//Query to get data
-		$userdetails = ExternalUser::getUserDetails($request);
+		$bankdetails = ExternalBank::getbankDetails($request);
 
 
 		//returning to view page
-		return view('ExternalUser.index', [ 'request' => $request,
-											'userdetails' => $userdetails
+		return view('ExternalBank.index', [ 'request' => $request,
+											'bankdetails' => $bankdetails
 										]);
 
 	}
 
 	/**
 	*
-	* Add Edit Page for User
+	* Add Edit Page for Bank
 	* @author Sastha
 	* @return object to particular view page
 	* Created At 2021/02/12
@@ -49,30 +49,23 @@ class ExternalUserController extends Controller {
 	public function addedit(Request $request) {
 
 		if(!isset($request->editflg)){
-			return Redirect::to('ExternalUser/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
+			return Redirect::to('ExternalBank/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 		}
 
-		$userview = ExternalUser::viewUserDetails($request->editId);
+		$bankview = ExternalBank::viewBankDetails($request->editId);
 
-		$bankDetails = ExternalUser::getbankDetails();
+		$jpnaccounttype = ExternalBank::getJapanAccount();
 
-		$dob_year = Carbon\Carbon::createFromFormat('Y-m-d', date("Y-m-d"));
-
-		$dob_year = $dob_year->subYears(18);
-
-		$dob_year = $dob_year->format('Y-m-d');
-
-		return view('ExternalUser.addedit', ['request' => $request,
-												'userview' => $userview,
-												'bankDetails' => $bankDetails,
-												'dob_year' => $dob_year
+		return view('ExternalBank.addedit', ['request' => $request,
+												'bankview' => $bankview,
+												'jpnaccounttype' => $jpnaccounttype
 											]);
 
 	}
 
 	/**
 	*
-	* Addedit Process for User
+	* Addedit Process for Bank
 	* @author Sastha
 	* @return object to particular view page
 	* Created At 2021/02/12
@@ -82,7 +75,7 @@ class ExternalUserController extends Controller {
 
 		if($request->editId != "") {
 
-			$update = ExternalUser::updateUser($request);
+			$update = ExternalBank::updateBank($request);
 			Session::flash('viewId', $request->editId); 
 
 			if($update) {
@@ -95,8 +88,8 @@ class ExternalUserController extends Controller {
 
 		} else {
 
-			$autoincId = ExternalUser::getautoincrement();
-			$insert = ExternalUser::insertUser($request);
+			$autoincId = ExternalBank::getautoincrement();
+			$insert = ExternalBank::insertBank($request);
 			Session::flash('viewId', $autoincId);
 
 			if($insert) {
@@ -109,19 +102,19 @@ class ExternalUserController extends Controller {
 
 		}
 
-		return Redirect::to('ExternalUser/userView?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
+		return Redirect::to('ExternalBank/bankView?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 
 	}
 
 	/**
 	*
-	* View Process for User
+	* View Process for Bank
 	* @author Sastha
 	* @return object to particular view page
 	* Created At 2021/02/12
 	*
 	*/
-	public function userView(Request $request) {
+	public function BankView(Request $request) {
 
 		if(Session::get('viewId') != ""){
 			$request->viewId = Session::get('viewId');
@@ -129,36 +122,30 @@ class ExternalUserController extends Controller {
 
 		//ON URL ENTER REDIRECT TO INDEX PAGE
 		if(!isset($request->viewId)){
-			return Redirect::to('ExternalUser/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
+			return Redirect::to('ExternalBank/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 		}
 
-		$userview = ExternalUser::viewUserDetails($request->viewId);
+		$bankview = ExternalBank::viewBankDetails($request->viewId);
 
-		if ($userview[0]->gender == 1) {
-			$userview[0]->gender = "Male";
-		} else if ($userview[0]->gender == 2) {
-			$userview[0]->gender = "Female";
-		}
-
-		return view('ExternalUser.view', [	'request' => $request,
-											'userview' => $userview
+		return view('ExternalBank.view', [	'request' => $request,
+											'bankview' => $bankview
 										]);
 
 	}
 
 	/**
 	*
-	* Mail Exists Process for User
+	* Mail Exists Process for Bank
 	* @author Sastha
 	* @return object to particular view page
 	* Created At 2021/02/12
 	*
 	*/
-	public function emailIdExists(Request $request){
+	public function accountNoExists(Request $request){
 
-		$emailIdExists = ExternalUser::getemailIdExists($request);
+		$accountNoExists = ExternalBank::getaccountNoExists($request);
 
-		if (count($emailIdExists) != 0) {
+		if (count($accountNoExists) != 0) {
 			print_r("1");exit;
 		} else {
 			print_r("0");exit;
@@ -168,7 +155,7 @@ class ExternalUserController extends Controller {
 
 	/**
 	*
-	* Change DelFlg Process for User
+	* Change DelFlg Process for Bank
 	* @author Sastha
 	* @return object to particular view page
 	* Created At 2021/02/16
@@ -176,9 +163,25 @@ class ExternalUserController extends Controller {
 	*/
 	public function changeDelFlg(Request $request){
 
-		$changeDelFlg = ExternalUser::changeDelFlg($request);
+		$changeDelFlg = ExternalBank::changeDelFlg($request);
 
-		return Redirect::to('ExternalUser/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
+		return Redirect::to('ExternalBank/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
+
+	}
+
+	/**
+	*
+	* Change MainFlg Process for Bank
+	* @author Sastha
+	* @return object to particular view page
+	* Created At 2021/02/16
+	*
+	*/
+	public function changeMainFlg(Request $request){
+
+		$changeMainFlg = ExternalBank::changeMainFlg($request);
+
+		return Redirect::to('ExternalBank/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 
 	}
 

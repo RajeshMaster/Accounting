@@ -126,29 +126,51 @@
 						</td>
 						<td>
 							<div class="ml5 pt5 pb8">
-								<div class="mb8">
-									<b> {{ $data->userName }} </b>
+								<div class="mb8 fwb">
+									{{ $data->userName }}
 								</div>
 								<div class="f12 vam label_gray boxhei24">
-									<span class="f12"> 
+									<span class="f12 fwb"> 
 										{{ trans('messages.lbl_Gender') }} :
 									</span>
-									<span class="f12">
+									<span class="f12 ml5">
 										@if($data->gender == 1)
 											{{ trans('messages.lbl_male') }}
 										@else 
 											{{ trans('messages.lbl_female')  }} 
 										@endif
 									</span>
-									<span class="f12 ml20">
+									<span class="ml5">|</span>
+									<span class="f12 fwb ml5"> 
+										{{ trans('messages.lbl_bank_name') }} :
+									</span>
+									<span class="f12 ml5">
+										@if($data->bankId != "")
+											{{ $data->BANKNAME }}
+										@else 
+											NILL
+										@endif
+									</span>
+									<span class="ml5">|</span>
+									<span class="f12 fwb ml5">
 										{{ trans('messages.lbl_Creater') }} :
 									</span>
-									<span class="f12">
-										{{ (!empty($data->UpdatedBy) ?  $data->UpdatedBy : "Nill")  }}
+									<span class="f12 ml5">
+										{{ (!empty($data->UpdatedBy) ?  $data->UpdatedBy : NILL )  }}
 									</span>
 								</div>
 							</div>
-							<div class="ml5 mb8 smallBlue CMN_display_block">
+							<div class="ml5 mb8">
+								<span class="f12 fwb"> 
+									{{ trans('messages.lbl_address') }} :
+								</span>
+								<span class="f12 ml5">
+									{{ $data->address }}
+									{{ $data->buildingName }}
+									{{ $data->pincode }}
+								</span>
+							</div>
+							<div class="ml3 mb8 smallBlue CMN_display_block">
 								<div class="CMN_display_block ml3">
 									<a href="javascript:userView('{{ $data->id }}');"
 										class="pageload">

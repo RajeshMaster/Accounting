@@ -205,6 +205,20 @@
 					}}
 				</div>
 			</div>
+			<div class="col-xs-12 mt5">
+				<div class="col-xs-3 text-right clr_blue">
+					<label>{{ trans('messages.lbl_bank_name') }}
+						<span class="fr ml2 red"> * </span></label>
+				</div>
+				<div>
+					{{ Form::select('bankId', [null=>'']+$bankDetails, (isset($userview[0]->bankId)) ? $userview[0]->bankId : '',
+							array('name' => 'bankId',
+									'id'=>'bankId',
+									'data-label' => trans('messages.lbl_bank_name'),
+									'class'=>'pl5'))}}
+
+				</div>
+			</div>
 			<div class="col-xs-12 mt5 mb10">
 				<div class="col-xs-3 text-right clr_blue">
 					<label>{{ trans('messages.lbl_mobilenumber') }}

@@ -13,11 +13,12 @@ class ExternalUser extends Model {
 
 	public static function getUserDetails($request) {
 
-		$result = DB::table('ext_mstuser')
+		$result = DB::table('ext_mstuser as user')
 
-						->SELECT('*')
-						->orderBy('id','ASC')
-						->paginate($request->plimit);
+						->SELECT('user.*', DB::RAW("CONCAT(bank.bankName,'-',bank.accountNo) AS BANKNAME"))
+						->LEFTJOIN('ext_mstbank as bank','bank.id', '=', 'user.bankId')
+						->ORDERBY('user.id','ASC')
+						->PAGINATE($request->plimit);
 
 		return $result;
 
@@ -96,10 +97,11 @@ class ExternalUser extends Model {
 
 	public static function viewUserDetails($id) {
 
-		$result = DB::table('ext_mstuser')
+		$result = DB::table('ext_mstuser as user')
 
-						->SELECT('*')
-						->WHERE('id', '=', $id)
+						->SELECT('user.*', DB::RAW("CONCAT(bank.bankName,'-',bank.accountNo) AS BANKNAME"))
+						->LEFTJOIN('ext_mstbank as bank','bank.id', '=', 'user.bankId')
+						->WHERE('user.id', '=', $id)
 						->get();
 
 		return $result;
@@ -146,5 +148,21 @@ class ExternalUser extends Model {
 		return $result;
 
 	}
+
+	public static function getbankDetails() {
+
+		$result = DB::table('ext_mstbank as bank')
+
+					->SELECT(DB::RAW("CONCAT(bank.bankName,'-',bank.accountNo) AS BANKNAME"),'bank.id AS ID')
+					->WHERE('bank.delflg','=','0')
+					->ORDERBY('bank.bankName','ASC')
+					->LISTS('BANKNAME','ID');
+						
+		return $result;
+
+	}
+
+
+	
 
 }

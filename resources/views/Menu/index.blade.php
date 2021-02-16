@@ -176,6 +176,12 @@
 						{{ trans('messages.lbl_user') }}
 					</a>
 				</div>
+				<div class="alinkEng ml20 mt5 tal">
+					<a class="pageload csrp btn-link" href="{{ url('ExternalBank/index?mainmenu=extBank&time='.date('Ymdhis')) }}" 
+					style="color:blue;font-size: 13px;">
+						{{ trans('messages.lbl_bank') }}
+					</a>
+				</div>
 			</div>
 			@if(Auth::user()->userclassification == 4)
 			<div class="col-xs-3" style="padding-left: 53px;">
