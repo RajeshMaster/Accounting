@@ -60,7 +60,7 @@
 	<div class="col-xs-12 pl5 pr5">
 		<fieldset>
 			<div id="errorSectiondisplay" align="center" class="box100per mt5"></div>
-			<div class="col-xs-12 mt5">
+			<div class="col-xs-12 mt15">
 				<div class="col-xs-3 text-right clr_blue">
 					<label>{{ trans('messages.lbl_usernamesign') }}
 						<span class="fr ml2 red"> * </span></label>
@@ -161,7 +161,7 @@
 					}}
 				</div>
 			</div>
-			<div class="col-xs-12 mt5">
+			<div class="col-xs-12 mt5 mb15">
 				<div class="col-xs-3 text-right clr_blue">
 					<label>{{ trans('messages.lbl_mobilenumber') }}
 						<span class="fr ml2 red"> * </span></label>
@@ -212,7 +212,9 @@
 
 				</div>
 			</div>
-			<div class="col-xs-12 mt5">
+		</fieldset>
+		<fieldset>
+			<div class="col-xs-12 mt15">
 				<div class="col-xs-3 text-right clr_blue">
 					<label>{{ trans('messages.lbl_kananame') }}
 						<span class="fr ml2 red"> * </span></label>
@@ -225,7 +227,7 @@
 								'data-label' => trans('messages.lbl_kananame'),
 								'class'=>'box25per form-control pl5')) 
 					}}
-					<span>&nbsp;(Ex: microbit limited company）</span>
+					<span>&nbsp;(Ex: カ）マイクロビット）</span>
 				</div>
 			</div>
 			<div class="col-xs-12 mt5">
@@ -286,10 +288,11 @@
 					}}
 				</div>
 			</div>
-			<div class="col-xs-12 mt5 mb10">
+			<div class="col-xs-12 mt5 mb15">
 				<div class="col-xs-3 text-right clr_blue">
 					<label>{{ trans('messages.lbl_branch_number') }}
-						<span class="fr ml2 red"> * </span></label>
+						<span class="fr ml2 red" style="display: none;"> * </span>
+					</label>
 				</div>
 				<div>
 					{{ Form::text('branchNo',(isset($userview[0]->branchNo)) ? $userview[0]->branchNo : '', array('id'=>'branchNo', 

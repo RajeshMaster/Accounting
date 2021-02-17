@@ -171,6 +171,12 @@
 				<div class="image_b div_inline mb15 mr120">
 					{{ trans('messages.lbl_extInvoice') }}</div>
 				<div class="alinkEng ml20 mt5 tal">
+					<a class="pageload csrp btn-link" href="{{ url('ExternalInvoice/index?mainmenu=extInvoice&time='.date('Ymdhis')) }}" 
+					style="color:blue;font-size: 13px;">
+						{{ trans('messages.lbl_invoice') }}
+					</a>
+				</div>
+				<div class="alinkEng ml20 mt5 tal">
 					<a class="pageload csrp btn-link" href="{{ url('ExternalUser/index?mainmenu=extUser&time='.date('Ymdhis')) }}" 
 					style="color:blue;font-size: 13px;">
 						{{ trans('messages.lbl_user') }}

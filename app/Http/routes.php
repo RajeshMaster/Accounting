@@ -612,3 +612,13 @@ Route::group(['prefix'=>'ExternalUser','middleware' => 'auth'], function() {
 	Route::any('passwordchange','ExternalUserController@passwordchange')->middleware('accessright:4');
 	Route::any('passwordchangeprocess','ExternalUserController@passwordchangeprocess')->middleware('accessright:4');
 });
+
+// External Invoice Process by Sastha
+Route::group(['prefix'=>'ExternalInvoice','middleware' => 'auth'], function() {
+
+	Route::get('changelanguage','AjaxController@index');
+	Route::any('index','ExternalInvoiceController@index')->middleware('accessright:4');
+	Route::any('addedit','ExternalInvoiceController@addedit')->middleware('accessright:4');
+	Route::any('addeditprocess','ExternalInvoiceController@addeditprocess')->middleware('accessright:4');
+	Route::any('noticepopup','ExternalInvoiceController@noticepopup')->middleware('accessright:4');
+});

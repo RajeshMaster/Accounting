@@ -59,7 +59,6 @@ $(document).ready(function() {
 				accountType: {required: true},
 				bankName: {required: true},
 				branchName: {required: true},
-				branchNo: {required: true, minlength: 6, number: true},
 
 			},
 
