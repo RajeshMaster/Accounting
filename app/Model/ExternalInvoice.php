@@ -80,7 +80,7 @@ class ExternalInvoice extends Model {
 								WHEN ext_invoice_registration.classification = 2 THEN 3
 								ELSE 0
 								END) AS orderbysent"))
-							->leftjoin('extInv_work_amount_det works on works .invoice_id = main.invoiceId')
+							->leftjoin('extinv_work_amount_det works on works .invoice_id = main.invoiceId')
 							->leftjoin('ext_mstuser users on users.id = main.userId')
 							->WHERE('delFlg',0);
 
@@ -201,7 +201,7 @@ class ExternalInvoice extends Model {
         		ELSE 0
 				END) AS orderbysent,main.totalval 
 			FROM  ext_invoice_registration main
-			left join extInv_work_amount_det works on works.invoice_id = main.invoiceId 
+			left join extinv_work_amount_det works on works.invoice_id = main.invoiceId 
 			left join ext_mstuser users on users.id = main.userId 
 			WHERE main.delFlg = 0 AND main.quot_date LIKE '%$date_month%'
 			GROUP BY invoiceId Order By invoiceId Asc, quot_date Asc) AS DDD"));
@@ -338,7 +338,7 @@ class ExternalInvoice extends Model {
 				} 
 			}
 			if (!empty($amount_details)) {
-				$insert = DB::table('extInv_work_amount_det')->insert($amount_details);
+				$insert = DB::table('extinv_work_amount_det')->insert($amount_details);
 			}
 		}
 
@@ -384,7 +384,7 @@ class ExternalInvoice extends Model {
 
 		// New Table Update
 
-		$deldetails = DB::table('extInv_work_amount_det')
+		$deldetails = DB::table('extinv_work_amount_det')
 
 						->WHERE('inv_primery_key_id', '=', $request->editid)
 
@@ -426,7 +426,7 @@ class ExternalInvoice extends Model {
 		}
 
 		if (!empty($amount_details)) {
-			$insert = DB::table('extInv_work_amount_det')->insert($amount_details);
+			$insert = DB::table('extinv_work_amount_det')->insert($amount_details);
 		}
 
 		return $update;
@@ -472,7 +472,7 @@ class ExternalInvoice extends Model {
 
 	public static function fnGetInvoiceWorkDtls($request) {
 
-		$query = DB::TABLE('extInv_work_amount_det')
+		$query = DB::TABLE('extinv_work_amount_det')
 
 						->SELECT('*')
 						->WHERE('inv_primery_key_id', $request->id)
@@ -489,7 +489,7 @@ class ExternalInvoice extends Model {
 		$query = $db->TABLE(
 			$db->raw("(SELECT ext_invoice_registration.id, invoiceId, userId, projectName, projectType, tax, quot_date, totalval, special_ins1, special_ins2, special_ins3, special_ins4, special_ins5, payment_date, personalMark, paid_status, pdfFlg, mailFlg, accessFlg, classification, memo, copyFlg, inv_primery_key_id, work_specific, quantity, amount, unit_price, remarks, ext_mstuser.userName FROM ext_invoice_registration
 
-				LEFT JOIN extInv_work_amount_det ON extInv_work_amount_det.inv_primery_key_id = ext_invoice_registration.id
+				LEFT JOIN extinv_work_amount_det ON extinv_work_amount_det.inv_primery_key_id = ext_invoice_registration.id
 
 				LEFT JOIN ext_mstuser ON ext_mstuser.id = ext_invoice_registration.userId 
 
