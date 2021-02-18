@@ -104,13 +104,13 @@ class ExternalInvoiceController extends Controller {
 		$search_flg = 0;
 		$singlesearchtxt = trim($request->singlesearchtxt);
 		$estimateno = trim($request->estimateno);
-		$companyname = "";
-		if ($request->companyname != "" ) {
-			$companyname = trim($request->companyname);
-			$request->companynameClick = "";
-		} else if ($request->companynameClick != "" ) {
-			$companyname = trim($request->companynameClick);
-			$request->companyname = "";
+		$username = "";
+		if ($request->username != "" ) {
+			$username = trim($request->username);
+			$request->usernameclick = "";
+		} else if ($request->usernameclick != "" ) {
+			$username = trim($request->usernameclick);
+			$request->username = "";
 			$disabledall = "";
 		}
 		$startdate = $request->startdate;
@@ -324,7 +324,7 @@ class ExternalInvoiceController extends Controller {
 		}
 
 		//------
-		$TotEstquery = ExternalInvoice::fnGetinvoiceTotalValue($request,$taxSearch,$date_month,$search_flg, $projecttype,$singlesearchtxt, $estimateno, $companyname, $startdate, $enddate,$fil);
+		$TotEstquery = ExternalInvoice::fnGetinvoiceTotalValue($request,$taxSearch,$date_month,$search_flg, $projecttype,$singlesearchtxt, $estimateno, $username, $startdate, $enddate,$fil);
 
 		$get_view = array();
 		$totalcount = count($TotEstquery);
@@ -444,15 +444,32 @@ class ExternalInvoiceController extends Controller {
 		if (!isset($request->editid)) {
 			return Redirect::to('ExternalInvoice/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 		}
+
 		$amtcount = 0;
-		$montharray = array("1"=>trans('messages.lbl_presentmonth'),
-							"2"=>trans('messages.lbl_nextmonth'),
-							"3"=>trans('messages.lbl_nextnextmonth'),
-							"4"=>trans('messages.lbl_Others'));
+		$selectval = "";
+		$getUserDetails = ExternalInvoice::getUserDetails($request);
+		$getProjectType = ExternalInvoice::getProjectType($request);
+
+		$dat = array();
+		$invoicedata = array();
+		if ($request->editid != "") {
+			$invoicedataforloop = ExternalInvoice::fnGetInvoiceWorkDtls($request);
+			foreach ($invoicedataforloop as $key => $value) {
+				$dat[] = $value->amount;
+			} 
+			$amtcount = count($dat);
+			$invoicedata = ExternalInvoice::fnGetinvoiceUserData($request);
+			if (!empty($invoicedata)) {
+				$selectval = $invoicedata[0]->userId;
+			}
+		}
 
 		return view('ExternalInvoice.addedit',[ 'request' => $request,
-												'montharray' => $montharray,
-												'amtcount' => $amtcount
+												'invoicedata' => $invoicedata,
+												'getUserDetails' => $getUserDetails,
+												'getProjectType' => $getProjectType,
+												'amtcount' => $amtcount,
+												'selectval' => $selectval
 										]);
 
 	}
@@ -462,15 +479,14 @@ class ExternalInvoiceController extends Controller {
 	* Addedit Process for Invoice
 	* @author Sastha
 	* @return object to particular view page
-	* Created At 2021/02/17
+	* Created At 2021/02/18
 	*
 	*/
 	public function addeditprocess(Request $request) {
 
-		if($request->editId != "") {
+		if($request->editid != "") {
 
-			$update = ExternalUser::updateUser($request);
-			Session::flash('viewId', $request->editId); 
+			$update = ExternalInvoice::updExtInvoice($request);
 
 			if($update) {
 				Session::flash('success', 'Updated Sucessfully!'); 
@@ -481,10 +497,8 @@ class ExternalInvoiceController extends Controller {
 			}
 
 		} else {
-
-			$autoincId = ExternalUser::getautoincrement();
-			$insert = ExternalUser::insertUser($request);
-			Session::flash('viewId', $autoincId);
+			$invoiceId = ExternalInvoice::fnGenerateInvoiceID();
+			$insert = ExternalInvoice::insExtInvoice($request,$invoiceId);
 
 			if($insert) {
 				Session::flash('success', 'Inserted Sucessfully!'); 
@@ -502,19 +516,19 @@ class ExternalInvoiceController extends Controller {
 
 	/**
 	*
-	* Notice Popup for Invoice
+	* Bank Detail for User Invoice
 	* @author Sastha
 	* @return object to particular view page
-	* Created At 2021/02/17
+	* Created At 2021/02/18
 	*
 	*/
-	public static function noticepopup(Request $request) {
+	public static function getBankDetails(Request $request) {
 
-		$notice = ExternalInvoice::fnGetOtherDetails($request);
+		$getbankdetails = ExternalInvoice::getbankdetails($request);
 
-		return view('ExternalInvoice.noticepopup',[ 'request' => $request,
-													'notice' => $notice
-												]);
+		$getbankdetails = json_encode($getbankdetails);
+
+		echo $getbankdetails; exit;      
 
 	}
 

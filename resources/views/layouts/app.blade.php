@@ -105,7 +105,7 @@
 						</li> -->
 						@if(Session::get('userclassification') == 4)
 						<li class="btn_external jop_btn">
-							<a class="pageload" href="{{ url('ExternalUser/index?mainmenu=extUser&time='.date('Ymdhis')) }}">
+							<a class="pageload" href="{{ url('ExternalInvoice/index?mainmenu=extInvoice&time='.date('Ymdhis')) }}">
 							{{ trans('messages.lbl_extInvoice') }}</a>
 						</li>
 						@endif

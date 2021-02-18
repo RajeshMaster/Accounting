@@ -496,7 +496,7 @@ function fnCalculateTotal(tbn) {
     document.getElementById('totval').value = "";
   }
 }
-function fnControlAddOrRemove(cnt,invflg) {
+function fnControlAddOrRemove(cnt,invflg=null) {
     var rowCount = $('#workspectable tr').length-1;
 
     var addrow = document.getElementsByName('addrow');
@@ -621,7 +621,7 @@ function blockSpecialChar(e){
   return ((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57));
 }
 
-function fnAddTR(cnt,flg) {
+function fnAddTR(cnt,flg=null) {
   var invflg = "";
   if (flg == 1) {
     invflg = 1;
@@ -725,7 +725,7 @@ function fnAddTR(cnt,flg) {
   fnControlAddOrRemove(rowCount,invflg);
 }
 
-function fnRemoveTR(cnt,flg) {
+function fnRemoveTR(cnt,flg=null) {
   var invflg = "";
   if (flg == 1) {
     invflg = 1;

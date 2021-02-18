@@ -45,10 +45,9 @@
 	{{ Form::hidden('ordervalue', $request->ordervalue, array('id' => 'ordervalue')) }}
 	{{ Form::hidden('totalrecords', $request->totalrecords, array('id' => 'totalrecords')) }}
 	{{ Form::hidden('currentRec', $request->currentRec, array('id' => 'currentRec')) }}
-	{{ Form::hidden('hdncancel', $request->hdncancel, array('id' => 'hdncancel')) }}
-	{{ Form::hidden('id',$request->id,array('id' => 'id')) }}
+	{{ Form::hidden('id', $request->id ,array('id' => 'id')) }}
 	{{ Form::hidden('rowCount','',array('id' => 'rowCount')) }}
-	{{ Form::hidden('userId',$request->userId,array('id' => 'userId')) }}
+	{{ Form::hidden('invoiceId', $request->invoiceId ,array('id' => 'invoiceId')) }}
 	@if (Auth::user()->userclassification == 1) 
 		{{ Form::hidden('accessdate',Auth::user()->accessDate, array('id' => 'accessdate')) }}
 	@else
@@ -79,21 +78,22 @@
 						<label>{{ trans('messages.lbl_usernamesign') }}<span class="fr ml2 red"> * </span></label>
 					</div>
 					<div class="col-xs-6 pm0">
-						{{ Form::select('userName',[null=>''],(isset($invoice[0]->userId)) ? $invoice[0]->userId : '', 
-							array('name' => 'userName',
-									'id'=>'userName',
+						{{Form::select('userId',[null=>'']+$getUserDetails,(isset($invoicedata[0]->userId)) ? $invoicedata[0]->userId : '', 
+							array('name' => 'userId',
+									'id'=>'userId',
 									'style'=>'min-width: 30%;',
 									'class'=>'pl5',
 									'data-label' => trans('messages.lbl_usernamesign'),
-									'onchange' => 'return fnGetBankDetails(this.id)')) }}
+									'onchange' => 'return fnGetBankDetails(this.value)')) }}
 					</div>
 				</div>
 				<div class="col-xs-12 mt5">
 					<div class="col-xs-4 text-right clr_blue">
-						<label>{{ trans('messages.lbl_projecttitle') }}<span class="fr ml2 red"> * </span></label>
+						<label>{{ trans('messages.lbl_projecttitle') }}
+							<span class="fr ml2 red"> * </span></label>
 					</div>
 					<div class="col-xs-8 pm0">
-						{{ Form::text('projectName',(isset($invoice[0]->projectName)) ? $invoice[0]->projectName : '',
+						{{ Form::text('projectName',(isset($invoicedata[0]->projectName)) ? $invoicedata[0]->projectName : '',
 								array('id'=>'projectName',
 									'name' => 'projectName',
 									'maxlength' => '32',
@@ -106,7 +106,7 @@
 						<label>{{ trans('messages.lbl_projecttype') }}<span class="fr ml2 red"> * </span></label>
 					</div>
 					<div class="col-xs-8 pm0">
-						{{ Form::select('projectType',[null=>''],(isset($invoice[0]->projectType)) ? $invoice[0]->projectType : '', 
+						{{ Form::select('projectType',[null=>''],(isset($invoicedata[0]->projectType)) ? $invoicedata[0]->projectType : '', 
 								array('name' => 'projectType',
 									'id'=>'projectType',
 									'style'=>'min-width: 30%;',
@@ -116,54 +116,38 @@
 				</div>
 				<div class="col-xs-12 mt5">
 					<div class="col-xs-4 text-right clr_blue">
-						<label>{{ trans('messages.lbl_bank_name') }}<span class="fr ml2 red"> * </span></label>
+						<label>{{ trans('messages.lbl_bank_name') }}
+							<span class="fr ml2 red"> </span></label>
 					</div>
 					<div class="col-xs-8 pm0">
-						{{ Form::text('bankName',(isset($invoice[0]->bankName)) ? $invoice[0]->bankName : '',
-								array('id'=>'bankName',
-										'name' => 'bankName',
-										'maxlength' => '32',
-										'data-label' => trans('messages.lbl_bank_name'),
-										'class'=>'form-control pl5 box60per')) }}
+						<label id="invbankname"> </label>
 					</div>
 				</div>
 				<div class="col-xs-12 mt5">
 					<div class="col-xs-4 text-right clr_blue">
-						<label>{{ trans('messages.lbl_branch_name') }}<span class="fr ml2 red"> * </span></label>
+						<label>{{ trans('messages.lbl_branch_name') }}
+							<span class="fr ml2 red">  </span></label>
 					</div>
 					<div class="col-xs-8 pm0">
-						{{ Form::text('branchName',(isset($invoice[0]->branchName)) ? $invoice[0]->branchName : '',
-								array('id'=>'branchName',
-										'name' => 'branchName',
-										'maxlength' => '32',
-										'data-label' => trans('messages.lbl_branch_name'),
-										'class'=>'form-control pl5 box60per')) }}
+						<label id="invbranchname"> </label>
 					</div>
 				</div>
 				<div class="col-xs-12 mt5">
 					<div class="col-xs-4 text-right clr_blue">
-						<label>{{ trans('messages.lbl_account') }}<span class="fr ml2 red"> * </span></label>
+						<label>{{ trans('messages.lbl_account') }}
+							<span class="fr ml2 red">  </span></label>
 					</div>
 					<div class="col-xs-8 pm0">
-						{{ Form::text('branchNo',(isset($invoice[0]->branchNo)) ? $invoice[0]->branchNo : '',
-								array('id'=>'branchNo',
-									'name' => 'branchNo',
-									'maxlength' => '32',
-									'data-label' => trans('messages.lbl_account'),
-									'class'=>'form-control pl5 box60per')) }}
+						<label id="invaccount"> </label>
 					</div>
 				</div>
 				<div class="col-xs-12 mt5 mb10">
 					<div class="col-xs-4 text-right clr_blue">
-						<label>{{ trans('messages.lbl_accountholder') }}<span class="fr ml2 red"> * </span></label>
+						<label>{{ trans('messages.lbl_accountholder') }}
+							<span class="fr ml2 red">  </span></label>
 					</div>
 					<div class="col-xs-8 pm0">
-						{{ Form::text('bankKanaName',(isset($invoice[0]->bankKanaName)) ? $invoice[0]->bankKanaName : '',
-								array('id'=>'bankKanaName',
-										'name' => 'bankKanaName',
-										'maxlength' => '32',
-										'data-label' => trans('messages.lbl_accountholder'),
-										'class'=>'form-control pl5 box60per')) }}
+						<label id="invactholder"> </label>
 					</div>
 				</div>
 			</fieldset>
@@ -175,8 +159,8 @@
 						<label>{{ trans('messages.lbl_invoicedate') }}<span class="fr ml2 red"> * </span></label>
 					</div>
 					<div class="col-xs-8 pm0">
-						<?php if($request->editflg =="copy") { $invoice[0]->quot_date = ""; } ?>
-							{{ Form::text('quot_date',(isset($invoice[0]->quot_date)) ? $invoice[0]->quot_date : '',
+						<?php if($request->editflg =="copy") { $invoicedata[0]->quot_date = ""; } ?>
+							{{ Form::text('quot_date',(isset($invoicedata[0]->quot_date)) ? $invoicedata[0]->quot_date : '',
 								array('id'=>'quot_date',
 									'name' => 'quot_date',
 									'autocomplete'=>'off',
@@ -195,7 +179,7 @@
 					<div class="col-xs-8 pm0">
 						<label>
 							<div class="fll">
-								{{ Form::radio('tax', '1', (isset($invoice[0]->tax) && ($invoice[0]->tax)=="1") ? $invoice[0]->tax : '', 
+								{{ Form::radio('tax', '1', (isset($invoicedata[0]->tax) && ($invoicedata[0]->tax)=="1") ? $invoicedata[0]->tax : '', 
 									array('id' =>'tax1',
 											'name' => 'tax',
 											'data-label' => trans('messages.lbl_tax'),
@@ -217,7 +201,8 @@
 											'class' => 'amtrup')) }}
 							</div>
 							<div class="fll">
-								<label class="ml5 mt3 black fwn" for="tax2">{{ trans('messages.lbl_withtax') }}</label>
+								<label class="ml5 mt3 black fwn" for="tax2">
+								{{ trans('messages.lbl_withtax') }}</label>
 							</div>
 						</label>
 					</div>
@@ -248,9 +233,9 @@
 						</label>
 					</div>
 					<div class="col-xs-8 pm0" style="display: inline-block;">
-						{{ Form::select('projecttype_sel',[null=>''],'',
-								array('name' => 'projecttype_sel',
-									'id'=>'projecttype_sel',
+						{{ Form::select('personalmark',[null=>''],'',
+								array('name' => 'personalmark',
+									'id'=>'personalmark',
 									'data-label' => trans('messages.lbl_projectype'),
 									'style'=>'min-width: 30%;background-color:#EEEEEE;',
 									'disabled' => 'disabled',
@@ -314,7 +299,7 @@
 						<tr id="othercc_<?php echo $i ?>">
 							<td>
 								<div class="">
-								{{ Form::text('work_specific'.$i,(isset($estimate[$i-1]->$workloop)) ? $estimate[$i-1]->$workloop : '', 
+								{{ Form::text('work_specific'.$i,(isset($invoicedata[$i-1]->$workloop)) ? $invoicedata[$i-1]->$workloop : '', 
 									array('id'=>'work_specific'.$i,
 										'name' => 'work_specific'.$i,
 										'maxlength' => '20',
@@ -331,7 +316,7 @@
 							</td>
 							<td>
 								<div class="">
-								{{ Form::text('quantity'.$i,(isset($estimate[$i-1]->$quantityloop)) ? $estimate[$i-1]->$quantityloop : '', 
+								{{ Form::text('quantity'.$i,(isset($invoicedata[$i-1]->$quantityloop)) ? $invoicedata[$i-1]->$quantityloop : '', 
 									array('id'=>'quantity'.$i,
 										'name' => 'quantity'.$i,
 										'maxlength' => '7',
@@ -357,7 +342,7 @@
 										}
 									} 
 								?>
-								{{ Form::text('unit_price'.$i,(isset($estimate[$i-1]->$unit_priceloop)) ? $estimate[$i-1]->$unit_priceloop : '', 
+								{{ Form::text('unit_price'.$i,(isset($invoicedata[$i-1]->$unit_priceloop)) ? $invoicedata[$i-1]->$unit_priceloop : '', 
 									array('id'=>'unit_price'.$i,
 											'name' => 'unit_price'.$i,
 											'maxlength' => '11',
@@ -366,7 +351,7 @@
 											'onkeypress' => 'return isNumberKeywithminus(event)',
 											'ondragstart'=>'return false',
 											'ondrop'=>'return false',
-											"onkeyup" => "return fnCalculateAmount('$i', this.name, this.value,$a)",
+											"onkeyup" => "return fnCalculateAmount('$i', '','',$a)",
 											"onfocus" => "return fnControlAddOrRemove('$i')",
 											"onblur" => "return fnControlAddOrRemove('$i')",
 											'class'=>'box99per form-control pl5 mt3 tar numonly')) }}
@@ -377,14 +362,14 @@
 								<?php 
 									$color = "";
 									$bordercolor = "";
-									if (isset($invoice[$i-1]->$amountloop)) {
-										if ($invoice[$i-1]->$amountloop < 0) {
+									if (isset($invoicedata[$i-1]->$amountloop)) {
+										if ($invoicedata[$i-1]->$amountloop < 0) {
 											$color = 'color:red;';
 											$bordercolor = 'border-color:red;';
 										}
 									} 
 								?>
-								{{ Form::text('amount'.$i,(isset($estimate[$i-1]->$amountloop)) ? $estimate[$i-1]->$amountloop : '', 
+								{{ Form::text('amount'.$i,(isset($invoicedata[$i-1]->$amountloop)) ? $invoicedata[$i-1]->$amountloop : '', 
 									array('id'=>'amount'.$i,
 										'name' => 'amount'.$i,
 										'style' => $color.$bordercolor,
@@ -394,7 +379,7 @@
 							</td>
 							<td style="padding: 0px;">
 								<div class="" style="padding: 0px;padding-left: 5px;">
-								{{ Form::text('remarks'.$i,(isset($estimate[$i-1]->$remarksloop)) ? $estimate[$i-1]->$remarksloop : '', 
+								{{ Form::text('remarks'.$i,(isset($invoicedata[$i-1]->$remarksloop)) ? $invoicedata[$i-1]->$remarksloop : '', 
 									array('id'=>'remarks'.$i,
 										'name' => 'remarks'.$i,
 										'maxlength' => '10',
@@ -407,7 +392,10 @@
 							</td>
 							<td style="text-align: center;">
 								<div style="display: inline-block;">
-									<a onclick="return fnAddTR('<?php echo $i; ?>');" id="addrow{{ $i }}" name = "addrow"　class="csrp"><i class="fa fa-plus" aria-hidden="true"></i></a>
+									<a onclick="return fnAddTR('<?php echo $i; ?>');" 
+									id="addrow{{ $i }}" name = "addrow"　class="csrp">
+									<i class="fa fa-plus" aria-hidden="true"></i>
+									</a>
 								</div>
 								<div class="ml10" style="display: inline-block;">
 									<a onclick="return fnRemoveTR('<?php echo $i; ?>');"　id="removerow{{ $i }}" name = "removerow" class="csrp"><i class="fa fa-minus" aria-hidden="true"></i></a>
@@ -449,7 +437,7 @@
 					</label>
 				</div>
 				<div class="box46per pull-right" style="display: inline-block;">
-					{{ Form::text('totval',(isset($estimate[0]->totalval))?$estimate[0]->totalval:'',array('id'=>'totval',
+					{{ Form::text('totval',(isset($extinvoice[0]->totalval))?$extinvoice[0]->totalval:'',array('id'=>'totval',
 										'name' => 'totval',
 										'disabled' => 'true',
 										'class'=>'box36per form-control pl5 mt3 tar')) }}
@@ -475,11 +463,6 @@
 						{{ Form::hidden('noticesel'.$i, '', 
 							array('id' => 'noticesel'.$i)) 
 						}}
-						<a onclick="return popupenable('{{ $i }}');" 
-							class="btn btn-success box100 white">
-							<i class="fa fa-search" aria-hidden="true"></i>
-							{{ trans('messages.lbl_browser') }}
-						</a>
 					</div>
 				@endfor
 			</div>
@@ -506,7 +489,7 @@
 		<div class="form-group">
 			<div align="center" class="mt5">
 			@if($request->editflg =="viewedit")
-				{{ Form::hidden('userid', $invoice[0]->user_id, array('id' => 'userid')) }}
+				{{ Form::hidden('invoiceId', $invoicedata[0]->invoiceId, array('id' => 'invoiceId')) }}
 				<button type="submit" class="btn edit btn-warning box100 addeditprocess">
 					<i class="fa fa-edit" aria-hidden="true"></i> {{ trans('messages.lbl_update') }}
 				</button>
@@ -514,7 +497,7 @@
 				</a>
 			@else
 				@if($request->editflg =="edit")
-				{{ Form::hidden('userid', $invoice[0]->user_id, array('id' => 'userid')) }}
+				{{ Form::hidden('invoiceId', $invoicedata[0]->invoiceId, array('id' => 'invoiceId')) }}
 					<button type="submit" class="btn edit btn-warning box100 addeditprocess">
 						<i class="fa fa-edit" aria-hidden="true"></i> 
 						{{ trans('messages.lbl_update') }}
@@ -532,6 +515,12 @@
 			</div>
 		</div>
 	</fieldset>
+
+	@if(!empty($selectval))
+	<script type="text/javascript">
+		fnGetBankDetails('{{ $selectval }}')
+	</script>
+	@endif
 	<!-- End Heading -->
 	{{ Form::close() }}
 

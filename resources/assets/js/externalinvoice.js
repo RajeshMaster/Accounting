@@ -46,9 +46,9 @@ $(document).ready(function() {
 
 				quot_date: {required: true, date: true, accessDateCheck: "#accessdate"},
 				payment_date: {required: true, date: true, greaterThan: "#quot_date"},
-				userName: {required: true},
+				userId: {required: true},
 				projectName: {required: true},
-				projectType: {required: true},
+				// projectType: {required: true},
 				bankName: {required: true},
 				branchName: {required: true},
 				branchNo: {required: true},
@@ -57,8 +57,7 @@ $(document).ready(function() {
 			},
 
 			submitHandler: function(form) { // for demo
-				alert("Under Construction");
-				/*if($('#editId').val() == "") {
+				if($('#editid').val() == "") {
 					var confirmprocess = confirm("Do You Want To Register?");
 				} else {
 					var confirmprocess = confirm("Do You Want To Update?");
@@ -69,7 +68,7 @@ $(document).ready(function() {
 					return true;
 				} else {
 					return false;
-				}*/
+				}
 						
 			}
 
@@ -370,13 +369,112 @@ function cloneremoveabove(thisattr) {
 	}
 }
 
-function popupenable(cnt) {
+function fnGetBankDetails(userId) {
+	$.ajax({
+		type:"GET",
+		dataType: "JSON",
+		url: 'getBankDetails',
+		data: {
+			userId: userId
+		},
+		success: function(data){ // What to do if we succeed
+			var checkobject = jQuery.isEmptyObject(data);
+			if (!checkobject) {
+				$('#invbankname').text(data[0]["bankName"]);
+				$('#invbranchname').text(data[0]["branchName"]);       
+				$('#invaccount').text(data[0]["accountNo"]);
+				$('#invactholder').text(data[0]["bankKanaName"]);
+				$('#invacttype').text('普通');
+			} else {
+				$('#invbankname').text('');
+				$('#invbranchname').text('');       
+				$('#invaccount').text('');
+				$('#invactholder').text('');
+				$('#invacttype').text('');
+			}
+		},
+		error: function(xhr, textStatus, errorThrown){
+		}  
+	})
+
+}
+
+function usernameclick(userName){ 
 	alert("Under Construction");
-	// popupopenclose(1);
-	// $('#noticepopup').load('noticepopup?cnt='+cnt+'&mainmenu='+mainmenu);
-	// $("#noticepopup").modal({
-	// 	backdrop: 'static',
-	// 	keyboard: false
-	// });
-	// $('#noticepopup').modal('show');
+	// pageload();
+	// $('#usernameclick').val(userName);
+	// $('#username').val('');
+	// $('#startdate').val('');
+	// $('#enddate').val('');
+	// $('#projecttype').val('');
+	// $('#estimateno').val('');
+	// $('#taxSearch').val('');
+	// $('#singlesearchtxt').val('');
+	// $("#searchmethod").val(3);
+	// $('#frminvoiceindex').attr('action','index'+'?mainmenu='+mainmenu+'&time='+datetime); 
+	// $("#frminvoiceindex").submit();
+}
+
+function invoicestatus(id, status) {
+	alert("Under Construction");
+	// $('#invoicestatusid').val(id);
+	// $('#invoicestatus').val(status);
+	// $('#frmextinvoiceindex').attr('action','index'+'?mainmenu='+mainmenu+'&time='+datetime); 
+	// $("#frmextinvoiceindex").submit();
+}
+
+function fnpaymentaddedit(id) {
+	alert("Under Construction");
+	// $('#estimate_id').val(id);
+	// $('#frmextinvoiceindex').attr('action','paymentaddedit'+'?mainmenu='+mainmenu+'&time='+datetime); 
+	// $("#frmextinvoiceindex").submit();
+}
+
+function sendmail(id,custid,estid) {
+	alert("Under Construction");
+	// var res = confirm("Do You want send the mail with New PDF?");
+	// if(res==true) {
+	// 	document.getElementById('estimate_id').value = id;
+	// 	document.getElementById('cust_id').value = custid;
+	// 	document.getElementById('estid').value = estid;
+	// 	$('#frmextinvoiceindex').attr('action', '../Estimation/sendmail?mainmenu='+mainmenu+'&time='+datetime);
+	// 	$("#frmextinvoiceindex").submit();
+	// }
+}
+
+function gotoinvoicedetails(invid,keycnt) {
+	alert("Under Construction");
+	// pageload();
+	// $('#invoiceid').val(invid);
+	// $('#estimate_id').val(invid);
+	// $('#currentRec').val(keycnt);
+	// $('#frmextinvoiceindex').attr('action', 'specification?mainmenu='+mainmenu+'&time='+datetime);
+	// $('#frmextinvoiceindex').submit();
+}
+
+function gotoinvoiceedit(id,keycnt) {
+	pageload();
+	$('#editid').val(id);
+	$('#editflg').val('edit');
+	$('#currentRec').val(keycnt);
+	$('#identEdit').val(1);
+	$('#frmextinvoiceindex').attr('action', 'addedit?mainmenu='+mainmenu+'&time='+datetime);
+	$('#frmextinvoiceindex').submit();
+}
+
+function newpdf(id,estimateno,pdfflg,pdfimg,custid) {
+	alert("Under Construction");
+	/*var res = confirm("Do You want to Create New PDF?");
+	if(res==true) {
+		if (pdfflg == 0) {
+			document.getElementById(pdfimg).src = "../resources/assets/images/pdf.png";
+			$('#sendemail' + id).attr('onclick', 'sendmail("' + id + '","' + custid + '","' + estimateno + '")');
+			$('#sendemail' + id).removeAttr('class');
+			$('#sendemail' + id).attr('class', 'anchorstyle ml3 csrp');
+		}
+		document.getElementById('invoice_id').value = id;
+		document.getElementById('userid').value = estimateno;
+		$('#frmextinvoiceindex').attr('action', 'newpdf?mainmenu='+mainmenu+'&time='+datetime);
+		$("#frmextinvoiceindex").submit();
+	}*/
 }

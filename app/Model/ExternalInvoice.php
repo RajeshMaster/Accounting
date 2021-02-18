@@ -67,7 +67,7 @@ class ExternalInvoice extends Model {
 
 	}
 
-	public static function fnGetinvoiceTotalValue($request,$taxSearch,$date_month,$search_flg, $projecttype,$singlesearchtxt, $estimateno, $companyname, $startdate, $enddate,$filter) {
+	public static function fnGetinvoiceTotalValue($request,$taxSearch,$date_month,$search_flg, $projecttype,$singlesearchtxt, $estimateno, $username, $startdate, $enddate,$filter) {
 
 		if ($request->searchmethod == 1 || $request->searchmethod == 2 || $request->searchmethod == 3) {
 			$filter = "";
@@ -75,54 +75,56 @@ class ExternalInvoice extends Model {
 
 		if (!empty($request->searchmethod)) {
 			$wherecondition = "";
-			$Estimate = db::table('ext_invoice_registration')
-							->select('ext_invoice_registration.*', DB::raw("(CASE 
+			$Invoice = db::table('ext_invoice_registration')
+							->select('ext_invoice_registration.*','works.amount','works.work_specific','works.quantity','works.unit_price','works.remarks','users.userName', DB::raw("(CASE 
 								WHEN ext_invoice_registration.classification = 2 THEN 3
 								ELSE 0
 								END) AS orderbysent"))
+							->leftjoin('extInv_work_amount_det works on works .invoice_id = main.invoiceId')
+							->leftjoin('ext_mstuser users on users.id = main.userId')
 							->WHERE('delFlg',0);
 
 			if ($filter == "2") {
-				$Estimate = $Estimate->where('ext_invoice_registration.classification',0)
+				$Invoice = $Invoice->where('ext_invoice_registration.classification',0)
 									->where('ext_invoice_registration.quot_date', 'LIKE', '%' . $date_month . '%');
 			} else if ($filter == "3") {
-				$Estimate = $Estimate->where('ext_invoice_registration.classification',1)
+				$Invoice = $Invoice->where('ext_invoice_registration.classification',1)
 									 ->where('ext_invoice_registration.quot_date', 'LIKE', '%' . $date_month . '%');
 			} else if ($filter == "4") {
-				$Estimate = $Estimate->where('ext_invoice_registration.classification',3)
+				$Invoice = $Invoice->where('ext_invoice_registration.classification',3)
 									 ->where('ext_invoice_registration.quot_date', 'LIKE', '%' . $date_month . '%');
 			} else if ($filter == "5") {
-				$Estimate = $Estimate->where('ext_invoice_registration.classification',2)
+				$Invoice = $Invoice->where('ext_invoice_registration.classification',2)
 									->where('ext_invoice_registration.quot_date', 'LIKE', '%' . $date_month . '%');
 			} else if ($filter == "1") {
-				$Estimate = $Estimate->where('ext_invoice_registration.quot_date', 'LIKE', '%' . $date_month . '%');
+				$Invoice = $Invoice->where('ext_invoice_registration.quot_date', 'LIKE', '%' . $date_month . '%');
 			}
 
 			if ($request->searchmethod == 3) {
-				if (!empty($request->companynameClick)) {
-						$Estimate = $Estimate->where('ext_invoice_registration.userId','LIKE','%'.$request->companynameClick.'%');
+				if (!empty($request->usernameclick)) {
+						$Invoice = $Invoice->where('ext_invoice_registration.userId','LIKE','%'.$request->usernameclick.'%');
 				}
 			}
 
-			if (!empty($estimateno)) {
-				$Estimate = $Estimate->where('ext_invoice_registration.invoiceId','LIKE','%'.$estimateno.'%');
+			if (!empty($invoiceno)) {
+				$Invoice = $Invoice->where('ext_invoice_registration.invoiceId','LIKE','%'.$Invoiceno.'%');
 			}
 
 			if (!empty($startdate) && !empty($enddate)) {
-				$Estimate = $Estimate->where('ext_invoice_registration.quot_date','>=',$startdate);
-				$Estimate = $Estimate->where('ext_invoice_registration.quot_date','<=',$enddate);
+				$Invoice = $Invoice->where('ext_invoice_registration.quot_date','>=',$startdate);
+				$Invoice = $Invoice->where('ext_invoice_registration.quot_date','<=',$enddate);
 			}
 
 			if (!empty($startdate) && empty($enddate)) {
-				$Estimate = $Estimate->where('ext_invoice_registration.quot_date','>=',$startdate);
+				$Invoice = $Invoice->where('ext_invoice_registration.quot_date','>=',$startdate);
 			}
 
 			if (empty($startdate) &&!empty($enddate)) {
-				$Estimate = $Estimate->where('ext_invoice_registration.quot_date','<=',$enddate);
+				$Invoice = $Invoice->where('ext_invoice_registration.quot_date','<=',$enddate);
 			}
 
 			if ($request->searchmethod == 1) {
-				$Estimate = $Estimate->where(function($joincont) use ($request) {
+				$Invoice = $Invoice->where(function($joincont) use ($request) {
 					$joincont->where('ext_invoice_registration.invoiceId', 'LIKE', '%' . trim($request->singlesearch) . '%')
 							->orWhere('ext_invoice_registration.userId', 'LIKE', '%' . trim($request->singlesearch) . '%')
 							->orWhere('ext_invoice_registration.project_name', 'LIKE', '%' . trim($request->singlesearch) . '%');
@@ -131,30 +133,30 @@ class ExternalInvoice extends Model {
 
 			if ($request->searchmethod == 2) {
 				if (!empty($request->msearchusercode)) {
-					$Estimate = $Estimate->where('ext_invoice_registration.invoiceId', 'LIKE', '%' . trim($request->msearchusercode) . '%');
+					$Invoice = $Invoice->where('ext_invoice_registration.invoiceId', 'LIKE', '%' . trim($request->msearchusercode) . '%');
 
 				}
 
 				if (!empty($request->msearchcustomer)) {
-					$Estimate = $Estimate->where('ext_invoice_registration.userId', 'LIKE', '%' . trim($request->msearchcustomer) . '%');
+					$Invoice = $Invoice->where('ext_invoice_registration.userId', 'LIKE', '%' . trim($request->msearchcustomer) . '%');
 				}
 
 				if(!empty($request->msearchstdate) && !empty($request->msearcheddate)) {
-					$Estimate = $Estimate->whereBetween('ext_invoice_registration.quot_date', [$request->msearchstdate, $request->msearcheddate]);
+					$Invoice = $Invoice->whereBetween('ext_invoice_registration.quot_date', [$request->msearchstdate, $request->msearcheddate]);
 				}
 
 				if(!empty($request->msearchstdate) && empty($request->msearcheddate)) {
-					$Estimate = $Estimate->where(function($joincont) use ($request) {
+					$Invoice = $Invoice->where(function($joincont) use ($request) {
 						$joincont->where('ext_invoice_registration.quot_date', '>=', $request->msearchstdate);
 					});
 				}
 
 				if(!empty($request->msearcheddate) && empty($request->msearchstdate)) {
-					$Estimate = $Estimate->where('ext_invoice_registration.quot_date', '<=', $request->msearcheddate);
+					$Invoice = $Invoice->where('ext_invoice_registration.quot_date', '<=', $request->msearcheddate);
 				}
 
 				if ($taxSearch == 999 && !empty($request->protype1)) {
-					$Estimate = $Estimate->where(function($joincont) use ($request) {
+					$Invoice = $Invoice->where(function($joincont) use ($request) {
 						$joincont->where('ext_invoice_registration.projectType', 'NOT LIKE', '%' . $request->protype1 . '%');
 
 					});
@@ -164,7 +166,7 @@ class ExternalInvoice extends Model {
 					if($request->protype1 == 1) {
 						$request->protype1 = "";
 					}
-					$Estimate = $Estimate->where(function($joincont) use ($request) {
+					$Invoice = $Invoice->where(function($joincont) use ($request) {
 						$joincont->where('ext_invoice_registration.projectType', 'LIKE', '%' . $request->protype1 . '%');
 					});
 
@@ -176,7 +178,7 @@ class ExternalInvoice extends Model {
 			// CONTRACT EMPLOYEE
 			if (Auth::user()->userclassification == 1) {
 				$accessDate = Auth::user()->accessDate;
-				$Estimate = $Estimate->WHERE(function($joincont) use($accessDate) {
+				$Invoice = $Invoice->WHERE(function($joincont) use($accessDate) {
 				$joincont->WHERE('ext_invoice_registration.quot_date', '>',$accessDate)
 						->ORWHERE('accessFlg','=',1);
 
@@ -185,20 +187,22 @@ class ExternalInvoice extends Model {
 			// END ACCESS RIGHTS
 
 			if ($request->checkdefault != 1) {
-				$Estimate = $Estimate->orderByRaw("orderbysent ASC, invoiceId DESC")
+				$Invoice = $Invoice->orderByRaw("orderbysent ASC, invoiceId DESC")
 					  				->paginate($request->plimit);
 			} else {
-				$Estimate = $Estimate->orderBy($request->invoicesort,$request->sortOrder)
+				$Invoice = $Invoice->orderBy($request->invoicesort,$request->sortOrder)
 									->paginate($request->plimit);
 			}
 		} else {
 
 			$db = DB::connection('mysql');
-			$Estimate = $db->TABLE($db->raw("(SELECT main.quot_date,main.id,main.userId,main.invoiceId,main.payment_date,main.delFlg,main.copyFlg,main.projectName,main.classification,main.createdBy,main.projectType,main.mailFlg,main.tax,
+			$Invoice = $db->TABLE($db->raw("(SELECT main.quot_date,main.id,main.userId,main.invoiceId,main.payment_date,main.delFlg,main.copyFlg,main.projectName,main.classification,main.createdBy,main.projectType,main.mailFlg,main.pdfFlg,main.tax,main.paid_status,works.amount,works.work_specific,works.quantity,works.unit_price,works.remarks,users.userName,
 				(CASE WHEN main.classification = 2 THEN 3
         		ELSE 0
 				END) AS orderbysent,main.totalval 
 			FROM  ext_invoice_registration main
+			left join extInv_work_amount_det works on works.invoice_id = main.invoiceId 
+			left join ext_mstuser users on users.id = main.userId 
 			WHERE main.delFlg = 0 AND main.quot_date LIKE '%$date_month%'
 			GROUP BY invoiceId Order By invoiceId Asc, quot_date Asc) AS DDD"));
 
@@ -206,7 +210,7 @@ class ExternalInvoice extends Model {
 			// CONTRACT EMPLOYEE
 			if (Auth::user()->userclassification == 1) {
 				$accessDate = Auth::user()->accessDate;
-				$Estimate = $Estimate->WHERE(function($joincont) use($accessDate) {
+				$Invoice = $Invoice->WHERE(function($joincont) use($accessDate) {
 					$joincont->WHERE('ext_invoice_registration.quot_date', '>',$accessDate)
 							->ORWHERE('accessFlg','=',1);
 
@@ -216,19 +220,19 @@ class ExternalInvoice extends Model {
 			// END ACCESS RIGHTS
 
 			if ($request->checkdefault != 1) {
-				$Estimate = $Estimate->orderByRaw("orderbysent ASC, invoiceId DESC")
+				$Invoice = $Invoice->orderByRaw("orderbysent ASC, invoiceId DESC")
 					  				->paginate($request->plimit);
-				//->toSql();dd($Estimate);
+				//->toSql();dd($Invoice);
 			} else {
-				$Estimate = $Estimate->orderBy($request->invoicesort,$request->sortOrder)
+				$Invoice = $Invoice->orderBy($request->invoicesort,$request->sortOrder)
 					  				->paginate($request->plimit);
 			}
 		}
-		return $Estimate;
+		return $Invoice;
 	}
 
 	public static function updateClassification($request) {
-		$data[] =   [ 'classification' => $request->invoicestatus ];
+		$data[] = [ 'classification' => $request->invoicestatus ];
 
 		$update = DB::table('ext_invoice_registration')
 					->where('id', $request->invoicestatusid)->update($data[0]);
@@ -237,92 +241,265 @@ class ExternalInvoice extends Model {
 
 	}
 	
-	public static function getautoincrement() {
+	public static function fnGenerateInvoiceID() {
 
-		$statement = DB::select("show table status like 'ext_mstuser'");
+		$result = DB::table('ext_invoice_registration')
 
-		return $statement[0]->Auto_increment;
+						->SELECT('invoiceId')
+						->orderBy('invoiceId', 'DESC')
+						->limit(1)
+						->get();
+
+		$inv = "INV";
+		if (count($result) == 0) {
+			$invoiceId = $inv . "00001";
+		} else {
+			foreach ($result as $key => $value) {
+				$invoice = intval(str_replace("INV", "", $value->invoiceId)) + 1;
+				$invoiceId = $inv . substr("00000" . $invoice, -5);
+			}
+		}
+
+		return $invoiceId;
 
 	}
 
-	public static function insertUser($request) {
+	public static function insExtInvoice($request,$invoiceId) {
 
-		$phone = $request->userTelNo1.'-'.$request->userTelNo2.'-'.$request->userTelNo3;
+		$tableamountcount = $request->rowCount;
+		$accessrights = 0;
+		$common_field =array("work_specific","quantity","unit_price","amount","remarks");
 
-		$insert = DB::table('ext_mstuser')
+		if (isset($request->accessrights)) {
+			$accessrights = $request->accessrights;
+		}
 
-						->insert([ 
+ 		$data[] =	[	
+ 						'invoiceId' =>  $invoiceId,
+						'userId' => $request->userId,
+						'projectName' => $request->projectName,
+						'projectType' => $request->projectType,
+						'quot_date' => $request->quot_date,
+						'payment_date' => $request->payment_date,
+						'tax' => $request->tax,
+						'personalMark' => $request->personalMark,
+						'memo' => $request->memo,
+						'totalval' => $request->totval,
+						'createdBy' => Auth::user()->username
+					];
 
-							'emailId' => $request->emailId,
-							'userName' => $request->userName,
-							'password' => md5($request->userPassword),
-							'conpassword' => md5($request->userConPassword),
-							'address' => $request->address,
-							'buildingName' => $request->buildingName,
-							'pincode' => $request->pincode,
-							'mobileno' => $phone,
-							'bankKanaName' => $request->bankKanaName,
-							'accountNo' => $request->accountNo,
-							'accountType' => $request->accountType,
-							'bankName' => $request->bankName,
-							'branchName' => $request->branchName,
-							'branchNo' => $request->branchNo,
-							'delflg' => 0,
-							'CreatedBy' => Auth::user()->username,
-							'UpdatedBy' => Auth::user()->username
+		for ($i = 1; $i <= 5 ; $i++) { // loop for notice insert
+			$stat = 'special_ins'.$i;
+			$note = 'note'.$i;
+			// array_push_asociate($data[0],$stat,$request->$note);
+		}
 
-						]);
+		if (Auth::user()->userclassification == 4) {
+			// array_push_asociate($data[0],'accessFlg',$accessrights);
+			$insert = DB::table('ext_invoice_registration')->insert($data[0]);
+		} else {
+			$insert = DB::table('ext_invoice_registration')->insert($data[0]);
+		}
+
+		// To get Id For Register Amount
+
+		$result = DB::table('ext_invoice_registration')
+						->SELECT('id')
+						->orderBy('id', 'DESC')
+						->limit(1)
+						->get();
+
+		if (isset($result[0])) {
+			$lo = 0;
+			for ($i = 1; $i <= $tableamountcount; $i++) { 
+				$stat1 = 'work_specific'.$i;
+				$stat3 = 'quantity'.$i;
+				$stat4 = 'unit_price'.$i;
+				$stat5 = 'amount'.$i;
+				$stat6 = 'remarks'.$i;
+
+				if ($request->$stat1 !=''|| $request->$stat3 !=''|| $request->$stat4 !=''
+					|| $request->$stat5!=''|| $request->$stat6!='') {
+					$amount_details[$lo] =   [
+						'inv_primery_key_id' => $result[0]->id,
+						'invoice_id' =>  $result[0]->invoiceId,
+						'user_id' =>  $request->userId,
+						'createdBy' => Auth::user()->username,
+						'updatedBy' => Auth::user()->username,
+						'delFlg' => 0,
+
+					];
+					array_push_asociate($amount_details[$lo], 'work_specific', $request->$stat1);
+					array_push_asociate($amount_details[$lo], 'quantity', $request->$stat3);
+					array_push_asociate($amount_details[$lo], 'unit_price', $request->$stat4);
+					array_push_asociate($amount_details[$lo], 'amount', $request->$stat5);
+					array_push_asociate($amount_details[$lo], 'remarks', $request->$stat6);
+					$lo++;
+				} 
+			}
+			if (!empty($amount_details)) {
+				$insert = DB::table('extInv_work_amount_det')->insert($amount_details);
+			}
+		}
 
 		return $insert;
-
-
-
 	}
 
+	public static function updExtInvoice($request) {
 
+		$tableamountcount = $request->rowCount;
+		$accessrights = 0;
+		$common_field =array("work_specific","quantity","unit_price","amount","remarks");
 
-	public static function updateUser($request) {
+		if (isset($request->accessrights)) {
+			$accessrights = $request->accessrights;
+		}
 
-		$phone = $request->userTelNo1.'-'.$request->userTelNo2.'-'.$request->userTelNo3;
+ 		$data[] =	[	
+ 						'invoiceId' =>  $request->invoiceId,
+						'userId' => $request->userId,
+						'projectName' => $request->projectName,
+						'projectType' => $request->projectType,
+						'quot_date' => $request->quot_date,
+						'payment_date' => $request->payment_date,
+						'tax' => $request->tax,
+						'personalMark' => $request->personalMark,
+						'memo' => $request->memo,
+						'totalval' => $request->totval,
+						'updatedBy' => Auth::user()->username
+					];
 
-		$update = DB::table('ext_mstuser')
+		for ($i = 1; $i <= 5 ; $i++) { // loop for notice insert
+			$stat = 'special_ins'.$i;
+			$note = 'note'.$i;
+			// array_push_asociate($data[0],$stat,$request->$note);
+		}
 
-						->where('id', $request->editId)
+		if (Auth::user()->userclassification == 4) {
+			// array_push_asociate($data[0],'accessFlg',$accessrights);
+			$update = DB::table('ext_invoice_registration')->where('id', $request->editid)->update($data[0]);
+		} else {
+			$update = DB::table('ext_invoice_registration')->where('id', $request->editid)->update($data[0]);
+		}
 
-						->update([
+		// New Table Update
 
-							'emailId' => $request->emailId,
-							'userName' => $request->userName,
-							'mobileno' => $phone,
-							'address' => $request->address,
-							'buildingName' => $request->buildingName,
-							'pincode' => $request->pincode,
-							'bankKanaName' => $request->bankKanaName,
-							'accountNo' => $request->accountNo,
-							'accountType' => $request->accountType,
-							'bankName' => $request->bankName,
-							'branchName' => $request->branchName,
-							'branchNo' => $request->branchNo,
-							'UpdatedBy' => Auth::user()->username
+		$deldetails = DB::table('extInv_work_amount_det')
 
-						]);
+						->WHERE('inv_primery_key_id', '=', $request->editid)
 
-    		return $update;
+						->DELETE();
 
+		$lo = 0;
+
+		for ($i = 1; $i <= $tableamountcount; $i++) { 
+
+			$stat1 = 'work_specific'.$i;
+			$stat3 = 'quantity'.$i;
+			$stat4 = 'unit_price'.$i;
+			$stat5 = 'amount'.$i;
+			$stat6 = 'remarks'.$i;
+
+			if ($request->$stat1 !=''|| $request->$stat3 !=''|| $request->$stat4 !=''||
+				$request->$stat5!=''|| $request->$stat6!='') {
+
+				$amount_details[$lo] =   [
+
+					'inv_primery_key_id' => $request->editid,
+					'invoice_id' =>  $request->invoiceId,
+					'user_id' =>  $request->userId,
+					'createdBy' => Auth::user()->username,
+					'updatedBy' => Auth::user()->username,
+					'delFlg' => 0,
+
+				];
+
+				array_push_asociate($amount_details[$lo], 'work_specific', $request->$stat1);
+				array_push_asociate($amount_details[$lo], 'quantity', $request->$stat3);
+				array_push_asociate($amount_details[$lo], 'unit_price', $request->$stat4);
+				array_push_asociate($amount_details[$lo], 'amount', $request->$stat5);
+				array_push_asociate($amount_details[$lo], 'remarks', $request->$stat6);
+				$lo++;
+
+			} 
+
+		}
+
+		if (!empty($amount_details)) {
+			$insert = DB::table('extInv_work_amount_det')->insert($amount_details);
+		}
+
+		return $update;
 	}
 
+	public static function getUserDetails($request) {
 
-	public static function fnGetOtherDetails($request) {
-
-		$result= DB::table('dev_estimate_others')
+		$result = DB::table('ext_mstuser')
 
 						->SELECT('*')
-
 						->WHERE('delFlg', '=', 0)
-
-						->lists('content','id');
+						->LISTS('userName','id');
 
 		return $result;
+
+	}
+
+	public static function getProjectType($request) {
+
+		$certificateName = DB::TABLE('dev_estimatesetting')
+
+							->SELECT('*')
+							->WHERE('delFlg', '=', 0)
+							->LISTS('ProjectType','id');
+
+		return $certificateName;
+
+	}
+
+
+	public static function getbankdetails($request) {
+
+		$result= DB::table('ext_mstuser')
+
+						->SELECT('*')
+						->WHERE('id', '=', $request->userId)
+						->WHERE('delFlg', '=', 0)
+						->GET();
+
+		return $result;
+
+	}
+
+	public static function fnGetInvoiceWorkDtls($request) {
+
+		$query = DB::TABLE('extInv_work_amount_det')
+
+						->SELECT('*')
+						->WHERE('inv_primery_key_id', $request->id)
+						->get();
+
+		return $query;	
+
+	}
+
+	public static function fnGetinvoiceUserData($request){
+
+		$db = DB::connection('mysql');
+
+		$query = $db->TABLE(
+			$db->raw("(SELECT ext_invoice_registration.id, invoiceId, userId, projectName, projectType, tax, quot_date, totalval, special_ins1, special_ins2, special_ins3, special_ins4, special_ins5, payment_date, personalMark, paid_status, pdfFlg, mailFlg, accessFlg, classification, memo, copyFlg, inv_primery_key_id, work_specific, quantity, amount, unit_price, remarks, ext_mstuser.userName FROM ext_invoice_registration
+
+				LEFT JOIN extInv_work_amount_det ON extInv_work_amount_det.inv_primery_key_id = ext_invoice_registration.id
+
+				LEFT JOIN ext_mstuser ON ext_mstuser.id = ext_invoice_registration.userId 
+
+				WHERE ext_invoice_registration.id = '$request->editid') as tb1"))
+
+				->get();
+
+				// ->toSql();// dd($query);
+
+		return $query;
 
 	}
 

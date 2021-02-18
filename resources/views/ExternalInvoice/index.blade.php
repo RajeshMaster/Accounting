@@ -148,7 +148,7 @@
 		{{ Form::hidden('estimate_id', '', array('id' => 'estimate_id')) }}
 		{{ Form::hidden('currentRec', '', array('id' => 'currentRec')) }}
 		{{ Form::hidden('invoicestatusid', '', array('id' => 'invoicestatusid')) }}
-		{{ Form::hidden('companynameClick', $request->companynameClick, array('id' => 'companynameClick')) }}
+		{{ Form::hidden('usernameclick', $request->usernameclick, array('id' => 'usernameclick')) }}
 		{{ Form::hidden('estid', '', array('id' => 'estid')) }}
 		{{ Form::hidden('checkdefault', '', array('id' => 'checkdefault')) }}
 		{{ Form::hidden('identEdit', 0, array('id' => 'identEdit')) }}
@@ -183,12 +183,6 @@
 			</a>
 			<a href="javascript:underConstruction();"  class="btn btn-primary box145"><span class="fa fa-download"></span> 
 				{{ trans('messages.lbl_pdfdwnld') }}</a>
-			<a href="javascript:underConstruction();"  class="btn btn-warning box145"><span class="fa fa-plus"></span> 
-				{{ trans('messages.lbl_assignemployee') }}</a>
-			<a href="javascript:underConstruction();"  
-				class="btn btn-primary box145"><span class="fa fa-download"></span> 
-				{{ trans('messages.lbl_invoice') }} {{ trans('messages.lbl_download') }}
-			</a>
 		</div>
 
 		<!-- Session msg -->
@@ -266,12 +260,13 @@
 						<tr>
 							<td class="text-center">
 								{{ ($TotEstquery->currentpage()-1) * $TotEstquery->perpage() + $i + 1 }}
-								{{ Form::checkbox($data->user_id, $data->id.'#'.$data->estimate_id,'',['id' => $data->user_id,'class' => 'checkboxid','style' => 'display:inline-block']) }}
+								</br>
+								{{ Form::checkbox($data->invoiceId, $data->id,'',['id' => $data->invoiceId,'class' => 'checkboxid','style' => 'display:inline-block']) }}
 							</td>
 							<td class="tal pr10 vat pt5">
 								<div class="">
 									<label class="pm0 vam" style="color:#136E83;">
-										{{ $data->user_id }}
+										{{ $data->invoiceId }}
 									</label>
 								</div>
 								<div>
@@ -310,8 +305,10 @@
 							<td>
 								<div class="ml5 pt5">
 									<div class="mb2">
-										<a href="javascript:customernameclick('{{ $data->company_name }}');" class="blue">
-											<b class="blue">{{ $data->company_name}}</b>
+										<a href="javascript:usernameclick('{{ $data->userId }}');" class="blue">
+											<b class="blue">
+												{{ $data->userName }}
+											</b>
 										</a>
 									</div>
 									<div class="f12 vam label_gray boxhei24">
@@ -325,13 +322,13 @@
 											{{ trans('messages.lbl_projecttitle') }} :
 										</span>
 										<span class="f12">
-											{{ $data->project_name }}
+											{{ $data->projectName }}
 										</span>
 										<span class="f12 ml20">
 											{{ trans('messages.lbl_projecttype') }} :
 										</span>
 										<span class="f12">
-											{{ $data->ProjectType }}
+											{{ $data->projectType }}
 										</span>
 									</div>
 									<div class="f12 vam label_gray boxhei24">
@@ -345,32 +342,32 @@
 											{{ trans('messages.lbl_Creater') }} :
 										</span>
 										<span class="f12">
-											{{ $data->created_by }}
+											{{ $data->createdBy }}
 										</span>
 									</div>
 
 								</div>
 								<div class="ml5 mb2 smallBlue CMN_display_block">
 									<div class="CMN_display_block">
-										<a href="javascript:underconstruction();" 
+										<a href="javascript:underConstruction();" 
 											class="anchorstyle">
 											{{ trans('messages.lbl_estimation') }}
 										</a>&nbsp;<span class="ml3">|</span>
 									</div>
 									<div class="CMN_display_block">
-										<a href="javascript:underconstruction();" 
+										<a href="javascript:underConstruction();" 
 											class="anchorstyle">
 											{{ trans('messages.lbl_purchaseorder') }}
 										</a>&nbsp;<span class="ml3">|</span>
 									</div>
 									<div class="CMN_display_block ml3">
-										@if($data->pdf_flg==0)
+										@if($data->pdfFlg == 0)
 											<img class="pull-left box15 mt5" id="{{ $data->id}}pdfimg" src="{{ URL::asset('resources/assets/images/nopdf.png') }}">
 										@else
 											<img class="pull-left box15 mt5" id="{{ $data->id}}pdfimg" src="{{ URL::asset('resources/assets/images/pdf.png') }}">
 										@endif
-										{{ Form::hidden('pdfflag', '', array('id' => 'pdfflag')) }}
-										<a href="javascript:newpdf('{{ $data->id }}','{{ $data->user_id }}','{{ $data->pdf_flg }}','{{ $data->id}}pdfimg','{{ $request->mainmenu }}','{{ $data->trading_destination_selection }}');"  class="anchorstyle ml3">
+										{{ Form::hidden('pdfFlg', '', array('id' => 'pdfFlg')) }}
+										<a href="javascript:newpdf('{{ $data->id }}','{{ $data->invoiceId }}','{{ $data->pdfFlg }}','{{ $data->id}},'pdfimg');"  class="anchorstyle ml3">
 											{{ trans('messages.lbl_invoice') }}
 										</a>&nbsp;<span class="ml3">|</span>
 									</div>
@@ -389,13 +386,13 @@
 								<div class="ml5 mb2 smallBlue">
 									<div class="CMN_display_block">
 										@if($data->paid_status != 1 && $data->classification==0)
-											<a href="javascript:gotoinvoiceedit('{{ $data->id }}','{{ $request->mainmenu }}','{{ $key+1 }}');" class="anchorstyle">{{ trans('messages.lbl_edit') }}</a>&nbsp;<span class="ml3">|</span>
+											<a href="javascript:gotoinvoiceedit('{{ $data->id }}','{{ $key+1 }}');" class="anchorstyle">{{ trans('messages.lbl_edit') }}</a>&nbsp;<span class="ml3">|</span>
 										@else
 											<span>{{ trans('messages.lbl_edit') }}</span>&nbsp;<span class="ml3">|</span>
 										@endif
 									</div>
 									<div class="CMN_display_block">
-										<a href="javascript:gotoinvoicedetails('{{ $data->id }}','{{ $request->mainmenu }}','{{ $key+1 }}');" class="anchorstyle">{{ trans('messages.lbl_Details') }}</a>&nbsp;<span class="ml3">|</span>
+										<a href="javascript:gotoinvoicedetails('{{ $data->id }}','{{ $key+1 }}');" class="anchorstyle">{{ trans('messages.lbl_Details') }}</a>&nbsp;<span class="ml3">|</span>
 									</div>
 									<div class="CMN_display_block">
 										@if($data->mailFlg=="0")
@@ -403,7 +400,7 @@
 										@else
 											<img class="pull-left box18 mt1" id="{{ $data->id}}pdfimg" src="{{ URL::asset('resources/assets/images/sendmail.png') }}">
 										@endif
-										<a <?php if($data->pdf_flg==1) { ?> href="javascript:sendmail('{{ $data->id }}','{{ $data->trading_destination_selection}}','{{ $data->user_id}}');" class="anchorstyle ml3 csrp" <?php } else { ?>  class="black disabled tdn pl3 cur_default" <?php } ?> id="sendemail{{ $data->id }}">{{ trans('messages.lbl_email') }}</a>&nbsp;<span class="ml3">|</span>
+										<a <?php if($data->pdfFlg==1) { ?> href="javascript:sendmail('{{ $data->id }}','{{ $data->trading_destination_selection}}','{{ $data->invoiceId}}');" class="anchorstyle ml3 csrp" <?php } else { ?>  class="black disabled tdn pl3 cur_default" <?php } ?> id="sendemail{{ $data->id }}">{{ trans('messages.lbl_email') }}</a>&nbsp;<span class="ml3">|</span>
 									</div>
 									<div class="CMN_display_block ml3">
 										<a href="javascript:fnpaymentaddedit('{{ $data->id }}');" class="anchorstyle ml3">{{ trans('messages.lbl_payment') }}</a>&nbsp;<span class="ml3">|</span>

@@ -620,5 +620,5 @@ Route::group(['prefix'=>'ExternalInvoice','middleware' => 'auth'], function() {
 	Route::any('index','ExternalInvoiceController@index')->middleware('accessright:4');
 	Route::any('addedit','ExternalInvoiceController@addedit')->middleware('accessright:4');
 	Route::any('addeditprocess','ExternalInvoiceController@addeditprocess')->middleware('accessright:4');
-	Route::any('noticepopup','ExternalInvoiceController@noticepopup')->middleware('accessright:4');
+	Route::any('getBankDetails','ExternalInvoiceController@getBankDetails')->middleware('accessright:4');
 });
