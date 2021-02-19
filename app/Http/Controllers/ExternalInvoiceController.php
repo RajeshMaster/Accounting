@@ -78,7 +78,7 @@ class ExternalInvoiceController extends Controller {
 		$invoicesortarray = [$request->invoicesort => $request->invoicesort,
 								'invoiceId' => trans('messages.lbl_invoiceno'),
 								'quot_date'=> trans('messages.lbl_billingdate'),
-								'userId'=> trans('messages.lbl_usernamesign')
+								'userName'=> trans('messages.lbl_usernamesign')
 							];
 		$request->invoicesort = $request->sortOptn;
 		$request->sortOptn = $request->sortOptn;
@@ -101,30 +101,14 @@ class ExternalInvoiceController extends Controller {
 		} else {
 			$sortMargin = "margin-right:0px;";
 		}
-		$search_flg = 0;
+
 		$singlesearchtxt = trim($request->singlesearchtxt);
-		$estimateno = trim($request->estimateno);
 		$username = "";
-		if ($request->username != "" ) {
-			$username = trim($request->username);
-			$request->usernameclick = "";
-		} else if ($request->usernameclick != "" ) {
+		if ($request->usernameclick != "" ) {
 			$username = trim($request->usernameclick);
-			$request->username = "";
-			$disabledall = "";
 		}
 		$startdate = $request->startdate;
 		$enddate = $request->enddate;
-		if($request->projecttype == "a") {
-			$projecttype = "";
-		} else {
-			$projecttype = $request->projecttype;
-		}
-		if($request->protype2 == "0"){
-			$taxSearch = "";
-		} else {
-			$taxSearch = $request->protype2;
-		}
 
 		// Year Bar Process
 		$accountperiod = ExternalInvoice::fnGetAccountPeriod($request);
@@ -324,7 +308,7 @@ class ExternalInvoiceController extends Controller {
 		}
 
 		//------
-		$TotEstquery = ExternalInvoice::fnGetinvoiceTotalValue($request,$taxSearch,$date_month,$search_flg, $projecttype,$singlesearchtxt, $estimateno, $username, $startdate, $enddate,$fil);
+		$TotEstquery = ExternalInvoice::fnGetinvoiceTotalValue($request,$date_month,$singlesearchtxt,$username,$startdate,$enddate,$fil);
 
 		$get_view = array();
 		$totalcount = count($TotEstquery);
@@ -453,13 +437,13 @@ class ExternalInvoiceController extends Controller {
 		$dat = array();
 		$invoicedata = array();
 		if ($request->editid != "") {
-			$invoicedataforloop = ExternalInvoice::fnGetInvoiceWorkDtls($request);
+			$invoicedataforloop = ExternalInvoice::fnGetInvoiceWorkDtls($request->editid);
 			foreach ($invoicedataforloop as $key => $value) {
 				$dat[] = $value->amount;
 			} 
 			$amtcount = count($dat);
-			$invoicedata = ExternalInvoice::fnGetinvoiceUserData($request);
-			if (!empty($invoicedata)) {
+			$invoicedata = ExternalInvoice::fnGetinvoiceUserData($request->editid);
+			if (isset($invoicedata[0])) {
 				$selectval = $invoicedata[0]->userId;
 			}
 		}
@@ -524,11 +508,120 @@ class ExternalInvoiceController extends Controller {
 	*/
 	public static function getBankDetails(Request $request) {
 
-		$getbankdetails = ExternalInvoice::getbankdetails($request);
-
+		$getbankdetails = ExternalInvoice::getbankdetails($request->userId);
 		$getbankdetails = json_encode($getbankdetails);
-
 		echo $getbankdetails; exit;      
+
+	}
+
+	/**
+	*
+	* View Detail for Invoice
+	* @author Sastha
+	* @return object to particular view page
+	* Created At 2021/02/18
+	*
+	*/
+	public static function view(Request $request){
+
+		if(Session::get('viewid') != ""){
+			$request->viewid = Session::get('viewid');
+		}
+
+		//ON URL ENTER REDIRECT TO INDEX PAGE
+		if(!isset($request->viewid) || $request->viewid == ""){
+			return Redirect::to('ExternalInvoice/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
+		}
+
+		$invoicedata = ExternalInvoice::fnGetinvoiceUserData($request->viewid);
+		$getbankdetails = array();
+		if (isset($invoicedata[0])) {
+			$getbankdetails = ExternalInvoice::getbankdetails($invoicedata[0]->userId);
+		}
+
+		$search_flg = 0;
+		$order = $request->sortOrder;
+		$sort = $request->sortOptn;
+		$curTime = date('YmdHis');
+
+		$date_month = $request->selYear."-".$request->selMonth;
+		if (!empty($date_month)) {
+			$date_month = $date_month;
+		} else {
+			$date_month = substr($request->qdate, 0, 7);
+		}
+
+		$get_view = array();
+		$x = 1;
+		$TotEstquery = ExternalInvoice::fnGetinvoiceTotVal($request,$date_month);
+		foreach ($TotEstquery as $key => $value) {
+			$get_view[$x]["id"] = $value->id;
+			$x++;
+		}
+
+		if(!empty($request->totalrecords)) {
+			$totalRec = $request->totalrecords;
+			$currentRec = $request->currentRec;
+		} else {
+			$totalRec = count($get_view);
+			if($order == "DESC"){
+				$currentRec = 1;
+			} else {
+				$currentRec = count($get_view);
+			}
+		}
+
+		$amtcount = 0;
+		$dat = array();
+		$invoicedataforloop = ExternalInvoice::fnGetInvoiceWorkDtls($request->viewid);
+		foreach ($invoicedataforloop as $key => $value) {
+			$dat[] = $value->amount;
+		} 
+		$amtcount = count($dat);
+
+		$grandtotal = 0;
+		$dispval = "";
+		if (isset($invoicedata[0])){
+			if ($invoicedata[0]->tax != 2) {
+				$totroundval =  preg_replace("/,/", "", $invoicedata[0]->totalval);
+				$dispval = (($totroundval * intval((isset($getinvtaxdetails[0]->Tax)?$getinvtaxdetails[0]->Tax:0)))/100);
+				$grandtotal = $totroundval + $dispval;
+			} else {
+				$totroundval =  preg_replace("/,/", "", $invoicedata[0]->totalval);
+				$dispval = 0;
+				$grandtotal = $totroundval + $dispval;
+			}
+		}
+		
+
+		$type = "";
+		if (isset($getbankdetails[0])) {
+			if ($getbankdetails[0]->accountType == 1) {
+				$type = "普通";
+			} else if ($getbankdetails[0]->accountType == 2) {
+				$type = "Other";
+			}
+		} else {
+			$type = "";
+		}
+		
+
+		return view('ExternalInvoice.view', [	'request' => $request,
+												'invoicedata' => $invoicedata,
+												'getbankdetails' => $getbankdetails,
+												'search_flg' => $search_flg,
+												'order' => $order,
+												'curTime' => $curTime,
+												'sort' => $sort,
+												'date_month' => $date_month,
+												'get_view' => $get_view,
+												'totalRec' => $totalRec,
+												'currentRec' => $currentRec,
+												'amtcount' => $amtcount,
+												'grandtotal' => $grandtotal,
+												'dispval' => $dispval,
+												'type' => $type
+										]);
 
 	}
 

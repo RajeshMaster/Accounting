@@ -67,7 +67,7 @@ class ExternalInvoice extends Model {
 
 	}
 
-	public static function fnGetinvoiceTotalValue($request,$taxSearch,$date_month,$search_flg, $projecttype,$singlesearchtxt, $estimateno, $username, $startdate, $enddate,$filter) {
+	public static function fnGetinvoiceTotalValue($request,$date_month,$singlesearchtxt,$username,$startdate,$enddate,$filter) {
 
 		if ($request->searchmethod == 1 || $request->searchmethod == 2 || $request->searchmethod == 3) {
 			$filter = "";
@@ -75,103 +75,85 @@ class ExternalInvoice extends Model {
 
 		if (!empty($request->searchmethod)) {
 			$wherecondition = "";
-			$Invoice = db::table('ext_invoice_registration')
-							->select('ext_invoice_registration.*','works.amount','works.work_specific','works.quantity','works.unit_price','works.remarks','users.userName', DB::raw("(CASE 
-								WHEN ext_invoice_registration.classification = 2 THEN 3
+			$Invoice = db::table('ext_invoice_registration AS main')
+							->select('main.*','works.amount','works.work_specific','works.quantity','works.unit_price','works.remarks','users.userName', DB::raw("(CASE 
+								WHEN main.classification = 2 THEN 3
 								ELSE 0
 								END) AS orderbysent"))
-							->leftjoin('extinv_work_amount_det works on works .invoice_id = main.invoiceId')
-							->leftjoin('ext_mstuser users on users.id = main.userId')
-							->WHERE('delFlg',0);
+							->leftJoin('extinv_work_amount_det AS works', 'main.invoiceId', '=', 'works.invoice_id')
+							->leftJoin('ext_mstuser AS users', 'main.userId', '=', 'users.id')
+							->WHERE('main.delFlg',0);
 
 			if ($filter == "2") {
-				$Invoice = $Invoice->where('ext_invoice_registration.classification',0)
-									->where('ext_invoice_registration.quot_date', 'LIKE', '%' . $date_month . '%');
+				$Invoice = $Invoice->where('main.classification',0)
+									->where('main.quot_date', 'LIKE', '%' . $date_month . '%');
 			} else if ($filter == "3") {
-				$Invoice = $Invoice->where('ext_invoice_registration.classification',1)
-									 ->where('ext_invoice_registration.quot_date', 'LIKE', '%' . $date_month . '%');
+				$Invoice = $Invoice->where('main.classification',1)
+									 ->where('main.quot_date', 'LIKE', '%' . $date_month . '%');
 			} else if ($filter == "4") {
-				$Invoice = $Invoice->where('ext_invoice_registration.classification',3)
-									 ->where('ext_invoice_registration.quot_date', 'LIKE', '%' . $date_month . '%');
+				$Invoice = $Invoice->where('main.classification',3)
+									 ->where('main.quot_date', 'LIKE', '%' . $date_month . '%');
 			} else if ($filter == "5") {
-				$Invoice = $Invoice->where('ext_invoice_registration.classification',2)
-									->where('ext_invoice_registration.quot_date', 'LIKE', '%' . $date_month . '%');
+				$Invoice = $Invoice->where('main.classification',2)
+									->where('main.quot_date', 'LIKE', '%' . $date_month . '%');
 			} else if ($filter == "1") {
-				$Invoice = $Invoice->where('ext_invoice_registration.quot_date', 'LIKE', '%' . $date_month . '%');
+				$Invoice = $Invoice->where('main.quot_date', 'LIKE', '%' . $date_month . '%');
 			}
 
 			if ($request->searchmethod == 3) {
 				if (!empty($request->usernameclick)) {
-						$Invoice = $Invoice->where('ext_invoice_registration.userId','LIKE','%'.$request->usernameclick.'%');
+						$Invoice = $Invoice->where('main.userId','LIKE','%'.$request->usernameclick.'%');
 				}
 			}
 
 			if (!empty($invoiceno)) {
-				$Invoice = $Invoice->where('ext_invoice_registration.invoiceId','LIKE','%'.$Invoiceno.'%');
+				$Invoice = $Invoice->where('main.invoiceId','LIKE','%'.$Invoiceno.'%');
 			}
 
 			if (!empty($startdate) && !empty($enddate)) {
-				$Invoice = $Invoice->where('ext_invoice_registration.quot_date','>=',$startdate);
-				$Invoice = $Invoice->where('ext_invoice_registration.quot_date','<=',$enddate);
+				$Invoice = $Invoice->where('main.quot_date','>=',$startdate);
+				$Invoice = $Invoice->where('main.quot_date','<=',$enddate);
 			}
 
 			if (!empty($startdate) && empty($enddate)) {
-				$Invoice = $Invoice->where('ext_invoice_registration.quot_date','>=',$startdate);
+				$Invoice = $Invoice->where('main.quot_date','>=',$startdate);
 			}
 
 			if (empty($startdate) &&!empty($enddate)) {
-				$Invoice = $Invoice->where('ext_invoice_registration.quot_date','<=',$enddate);
+				$Invoice = $Invoice->where('main.quot_date','<=',$enddate);
 			}
 
 			if ($request->searchmethod == 1) {
 				$Invoice = $Invoice->where(function($joincont) use ($request) {
-					$joincont->where('ext_invoice_registration.invoiceId', 'LIKE', '%' . trim($request->singlesearch) . '%')
-							->orWhere('ext_invoice_registration.userId', 'LIKE', '%' . trim($request->singlesearch) . '%')
-							->orWhere('ext_invoice_registration.project_name', 'LIKE', '%' . trim($request->singlesearch) . '%');
+					$joincont->where('main.invoiceId', 'LIKE', '%' . trim($request->singlesearch) . '%')
+							->orWhere('users.userName', 'LIKE', '%' . trim($request->singlesearch) . '%')
+							->orWhere('main.projectName', 'LIKE', '%' . trim($request->singlesearch) . '%');
 				});
 			}
 
 			if ($request->searchmethod == 2) {
 				if (!empty($request->msearchusercode)) {
-					$Invoice = $Invoice->where('ext_invoice_registration.invoiceId', 'LIKE', '%' . trim($request->msearchusercode) . '%');
+					$Invoice = $Invoice->where('main.invoiceId', 'LIKE', '%' . trim($request->msearchusercode) . '%');
 
 				}
 
-				if (!empty($request->msearchcustomer)) {
-					$Invoice = $Invoice->where('ext_invoice_registration.userId', 'LIKE', '%' . trim($request->msearchcustomer) . '%');
+				if (!empty($request->msearchusers)) {
+					$Invoice = $Invoice->where('users.userName', 'LIKE', '%' . trim($request->msearchusers) . '%');
 				}
 
 				if(!empty($request->msearchstdate) && !empty($request->msearcheddate)) {
-					$Invoice = $Invoice->whereBetween('ext_invoice_registration.quot_date', [$request->msearchstdate, $request->msearcheddate]);
+					$Invoice = $Invoice->whereBetween('main.quot_date', [$request->msearchstdate, $request->msearcheddate]);
 				}
 
 				if(!empty($request->msearchstdate) && empty($request->msearcheddate)) {
 					$Invoice = $Invoice->where(function($joincont) use ($request) {
-						$joincont->where('ext_invoice_registration.quot_date', '>=', $request->msearchstdate);
+						$joincont->where('main.quot_date', '>=', $request->msearchstdate);
 					});
 				}
 
 				if(!empty($request->msearcheddate) && empty($request->msearchstdate)) {
-					$Invoice = $Invoice->where('ext_invoice_registration.quot_date', '<=', $request->msearcheddate);
+					$Invoice = $Invoice->where('main.quot_date', '<=', $request->msearcheddate);
 				}
-
-				if ($taxSearch == 999 && !empty($request->protype1)) {
-					$Invoice = $Invoice->where(function($joincont) use ($request) {
-						$joincont->where('ext_invoice_registration.projectType', 'NOT LIKE', '%' . $request->protype1 . '%');
-
-					});
-				}
-
-				if ($taxSearch != 999 && !empty($request->protype1)) {
-					if($request->protype1 == 1) {
-						$request->protype1 = "";
-					}
-					$Invoice = $Invoice->where(function($joincont) use ($request) {
-						$joincont->where('ext_invoice_registration.projectType', 'LIKE', '%' . $request->protype1 . '%');
-					});
-
-				}
-
 			}
 
    			// ACCESS RIGHTS
@@ -179,7 +161,7 @@ class ExternalInvoice extends Model {
 			if (Auth::user()->userclassification == 1) {
 				$accessDate = Auth::user()->accessDate;
 				$Invoice = $Invoice->WHERE(function($joincont) use($accessDate) {
-				$joincont->WHERE('ext_invoice_registration.quot_date', '>',$accessDate)
+				$joincont->WHERE('main.quot_date', '>',$accessDate)
 						->ORWHERE('accessFlg','=',1);
 
 				});
@@ -457,12 +439,12 @@ class ExternalInvoice extends Model {
 	}
 
 
-	public static function getbankdetails($request) {
+	public static function getbankdetails($userId) {
 
 		$result= DB::table('ext_mstuser')
 
 						->SELECT('*')
-						->WHERE('id', '=', $request->userId)
+						->WHERE('id', '=', $userId)
 						->WHERE('delFlg', '=', 0)
 						->GET();
 
@@ -470,19 +452,19 @@ class ExternalInvoice extends Model {
 
 	}
 
-	public static function fnGetInvoiceWorkDtls($request) {
+	public static function fnGetInvoiceWorkDtls($id) {
 
 		$query = DB::TABLE('extinv_work_amount_det')
 
 						->SELECT('*')
-						->WHERE('inv_primery_key_id', $request->id)
+						->WHERE('inv_primery_key_id', $id)
 						->get();
 
 		return $query;	
 
 	}
 
-	public static function fnGetinvoiceUserData($request){
+	public static function fnGetinvoiceUserData($id){
 
 		$db = DB::connection('mysql');
 
@@ -493,13 +475,38 @@ class ExternalInvoice extends Model {
 
 				LEFT JOIN ext_mstuser ON ext_mstuser.id = ext_invoice_registration.userId 
 
-				WHERE ext_invoice_registration.id = '$request->editid') as tb1"))
+				WHERE ext_invoice_registration.id = '$id') as tb1"))
 
 				->get();
 
 				// ->toSql();// dd($query);
 
 		return $query;
+
+	}
+
+	public static function fnGetinvoiceTotVal($request,$date_month) {
+
+		$Invoice = db::table('ext_invoice_registration')
+						->select('ext_invoice_registration.*', 
+							DB::raw("(CASE 
+								WHEN ext_invoice_registration.classification = 2 THEN 3
+								ELSE 0
+								END) AS orderbysent"))
+							->WHERE('quot_date','LIKE','%'.$date_month.'%')
+							->WHERE('delFlg',0);
+
+			// ACCESS RIGHTS
+			// CONTRACT EMPLOYEE
+			if (Auth::user()->userclassification == 1) {
+				$accessDate = Auth::user()->accessDate;
+				$Invoice = $Invoice->WHERE('quot_date', '>', $accessDate);
+			}
+			// END ACCESS RIGHTS
+
+			$Invoice = $Invoice->orderByRaw("orderbysent ASC, invoiceId DESC")->get();
+
+		return $Invoice;
 
 	}
 

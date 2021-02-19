@@ -31,14 +31,14 @@
 						'url' => 'ExternalInvoice/addeditprocess?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
 						'files'=>true,
 						'method' => 'POST')) }}
+	{{ Form::hidden('mainmenu', $request->mainmenu, array('id' => 'mainmenu')) }}
+	{{ Form::hidden('page', $request->page , array('id' => 'page')) }}
+	{{ Form::hidden('plimit', $request->plimit , array('id' => 'plimit')) }}
+	{{ Form::hidden('selYear', $request->selYear, array('id' => 'selYear')) }}
+	{{ Form::hidden('selMonth', $request->selMonth, array('id' => 'selMonth')) }}
 	{{ Form::hidden('editflg', $request->editflg, array('id' => 'editflg')) }}
 	{{ Form::hidden('editid', $request->editid, array('id' => 'editid')) }}
-	{{ Form::hidden('selMonth', $request->selMonth, array('id' => 'selMonth')) }}
-	{{ Form::hidden('mainmenu', $request->mainmenu, array('id' => 'mainmenu')) }}
-	{{ Form::hidden('selYear', $request->selYear, array('id' => 'selYear')) }}
 	{{ Form::hidden('filter', $request->filter, array('id' => 'filter')) }}
-	{{ Form::hidden('plimit', $request->plimit , array('id' => 'plimit')) }}
-	{{ Form::hidden('page', $request->page , array('id' => 'page')) }}
 	{{ Form::hidden('sorting', $request->sorting, array('id' => 'sorting')) }}
 	{{ Form::hidden('lastsortvalue', $request->lastsortvalue, array('id' => 'lastsortvalue')) }}
 	{{ Form::hidden('lastordervalue', $request->lastordervalue, array('id' => 'lastordervalue')) }}
@@ -60,8 +60,8 @@
 			<img class="pull-left box25 mt10" src="{{ URL::asset('resources/assets/images/invoice.png') }}">
 			<h2 class="pull-left pl5 mt15">{{ trans('messages.lbl_invoice') }}</h2>
 			<h2 class="pull-left mt15">・</h2>
-			@if($request->editflg=="copy")
-			<h2 class="pull-left mt15 green">{{ trans('messages.lbl_multible') }}</h2>
+			@if($request->editflg == "copy")
+			<h2 class="pull-left mt15 green">{{ trans('messages.lbl_multiple') }}</h2>
 			@elseif($request->editflg=="edit" || $request->editflg=="viewedit")
 			<h2 class="pull-left mt15 red">{{ trans('messages.lbl_edit') }}</h2>
 			@else
