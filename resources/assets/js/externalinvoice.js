@@ -64,7 +64,6 @@ $(document).ready(function() {
 				}
 				if(confirmprocess) {
 					var rowCount = $('#workspectable tr').length-1;
-					alert(rowCount);
 					$('#rowCount').val(rowCount);
 					var k = rowCount;
 					if(k < 15) {

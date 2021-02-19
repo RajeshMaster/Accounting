@@ -76,11 +76,10 @@ class ExternalInvoice extends Model {
 		if (!empty($request->searchmethod)) {
 			$wherecondition = "";
 			$Invoice = db::table('ext_invoice_registration AS main')
-							->select('main.*','works.amount','works.work_specific','works.quantity','works.unit_price','works.remarks','users.userName', DB::raw("(CASE 
+							->select('main.*','users.userName', DB::raw("(CASE 
 								WHEN main.classification = 2 THEN 3
 								ELSE 0
 								END) AS orderbysent"))
-							->leftJoin('extinv_work_amount_det AS works', 'main.invoiceId', '=', 'works.invoice_id')
 							->leftJoin('ext_mstuser AS users', 'main.userId', '=', 'users.id')
 							->WHERE('main.delFlg',0);
 
@@ -286,7 +285,7 @@ class ExternalInvoice extends Model {
 		// To get Id For Register Amount
 
 		$result = DB::table('ext_invoice_registration')
-						->SELECT('id')
+						->SELECT('*')
 						->orderBy('id', 'DESC')
 						->limit(1)
 						->get();
