@@ -57,12 +57,28 @@ $(document).ready(function() {
 			},
 
 			submitHandler: function(form) { // for demo
-				if($('#editid').val() == "") {
+				if($('#editflg').val() != "edit") {
 					var confirmprocess = confirm("Do You Want To Register?");
 				} else {
 					var confirmprocess = confirm("Do You Want To Update?");
 				}
 				if(confirmprocess) {
+					var rowCount = $('#workspectable tr').length-1;
+					alert(rowCount);
+					$('#rowCount').val(rowCount);
+					var k = rowCount;
+					if(k < 15) {
+						var a = 15;
+					} else {
+						a = k;
+					}
+					for (var i = 1; i <= a; i++) {
+						$('#work_specific'+i).attr('disabled',false);
+						$('#quantity'+i).attr('disabled',false);
+						$('#unit_price'+i).attr('disabled',false);
+						$('#amount'+i).attr('disabled',false);
+					}
+					$('#totval').attr('disabled',false);
 					pageload();
 					form.submit(); // dont use this cause of double time insert in internet explorer
 					return true;

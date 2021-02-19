@@ -137,7 +137,6 @@
 		{{ Form::hidden('year_month', $date_month, array('id' => 'year_month')) }}
 		{{ Form::hidden('searchmethod', $request->searchmethod, array('id' => 'searchmethod')) }}
 		{{ Form::hidden('previou_next_year', $request->previou_next_year, array('id' => 'previou_next_year')) }}
-		{{ Form::hidden('invoiceId', '', array('id' => 'invoiceId')) }}
 		{{ Form::hidden('editflg', '', array('id' => 'editflg')) }}
 		{{ Form::hidden('editid', '', array('id' => 'editid')) }}
 		{{ Form::hidden('viewid', '', array('id' => 'viewid')) }}

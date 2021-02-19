@@ -47,7 +47,6 @@
 	{{ Form::hidden('currentRec', $request->currentRec, array('id' => 'currentRec')) }}
 	{{ Form::hidden('id', $request->id ,array('id' => 'id')) }}
 	{{ Form::hidden('rowCount','',array('id' => 'rowCount')) }}
-	{{ Form::hidden('invoiceId', $request->invoiceId ,array('id' => 'invoiceId')) }}
 	@if (Auth::user()->userclassification == 1) 
 		{{ Form::hidden('accessdate',Auth::user()->accessDate, array('id' => 'accessdate')) }}
 	@else
@@ -437,7 +436,7 @@
 					</label>
 				</div>
 				<div class="box46per pull-right" style="display: inline-block;">
-					{{ Form::text('totval',(isset($extinvoice[0]->totalval))?$extinvoice[0]->totalval:'',array('id'=>'totval',
+					{{ Form::text('totval',(isset($invoicedata[0]->totalval))?$invoicedata[0]->totalval:'',array('id'=>'totval',
 										'name' => 'totval',
 										'disabled' => 'true',
 										'class'=>'box36per form-control pl5 mt3 tar')) }}
@@ -455,7 +454,7 @@
 						</label>
 					</div>
 					<div>
-						{{ Form::text('special_ins'.$i,(isset($invoice[0]->$noteloop))?$invoice[0]->$noteloop:'', 
+						{{ Form::text('special_ins'.$i,(isset($invoicedata[0]->$noteloop))?$invoicedata[0]->$noteloop:'', 
 							array('id'=>'special_ins'.$i,
 									'name' => 'special_ins'.$i,
 									'class'=>'box60per form-control pl5 mt3')) 
@@ -473,7 +472,7 @@
 					</label>
 				</div>
 				<div class="mt8">
-					{{ Form::textarea('memo',(isset($invoice[0]->memo)) ? $invoice[0]->memo : '', array('id'=>'memo',
+					{{ Form::textarea('memo',(isset($invoicedata[0]->memo)) ? $invoicedata[0]->memo : '', array('id'=>'memo',
 										'name' => 'memo',
 										'class'=>'box100per form-control',
 										'data-label' => trans('messages.lbl_payday'),
@@ -488,16 +487,8 @@
 	<fieldset style="background-color: #DDF1FA;">
 		<div class="form-group">
 			<div align="center" class="mt5">
-			@if($request->editflg =="viewedit")
-				{{ Form::hidden('invoiceId', $invoicedata[0]->invoiceId, array('id' => 'invoiceId')) }}
-				<button type="submit" class="btn edit btn-warning box100 addeditprocess">
-					<i class="fa fa-edit" aria-hidden="true"></i> {{ trans('messages.lbl_update') }}
-				</button>
-				<a onclick="javascript:gotoviewpage('edit','{{$request->editid}}');" class="btn btn-danger box120 white"><i class="fa fa-times" aria-hidden="true"></i> {{trans('messages.lbl_cancel')}}
-				</a>
-			@else
 				@if($request->editflg =="edit")
-				{{ Form::hidden('invoiceId', $invoicedata[0]->invoiceId, array('id' => 'invoiceId')) }}
+					{{ Form::hidden('invoiceId', (isset($invoicedata[0]->invoiceId)) ? $invoicedata[0]->invoiceId : '', array('id' => 'invoiceId')) }}
 					<button type="submit" class="btn edit btn-warning box100 addeditprocess">
 						<i class="fa fa-edit" aria-hidden="true"></i> 
 						{{ trans('messages.lbl_update') }}
@@ -511,7 +502,6 @@
 					class="btn btn-danger box120 white">
 					<i class="fa fa-times"  aria-hidden="true"></i> {{trans('messages.lbl_cancel')}}
 				</a>
-			@endif
 			</div>
 		</div>
 	</fieldset>

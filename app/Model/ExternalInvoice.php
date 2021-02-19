@@ -273,11 +273,11 @@ class ExternalInvoice extends Model {
 		for ($i = 1; $i <= 5 ; $i++) { // loop for notice insert
 			$stat = 'special_ins'.$i;
 			$note = 'note'.$i;
-			// array_push_asociate($data[0],$stat,$request->$note);
+			array_push_asociate($data[0],$stat,$request->$note);
 		}
 
 		if (Auth::user()->userclassification == 4) {
-			// array_push_asociate($data[0],'accessFlg',$accessrights);
+			array_push_asociate($data[0],'accessFlg',$accessrights);
 			$insert = DB::table('ext_invoice_registration')->insert($data[0]);
 		} else {
 			$insert = DB::table('ext_invoice_registration')->insert($data[0]);
@@ -311,11 +311,11 @@ class ExternalInvoice extends Model {
 						'delFlg' => 0,
 
 					];
-					array_push_asociate($amount_details[$lo], 'work_specific', $request->$stat1);
-					array_push_asociate($amount_details[$lo], 'quantity', $request->$stat3);
-					array_push_asociate($amount_details[$lo], 'unit_price', $request->$stat4);
-					array_push_asociate($amount_details[$lo], 'amount', $request->$stat5);
-					array_push_asociate($amount_details[$lo], 'remarks', $request->$stat6);
+					array_push_asociate($amount_details[$lo],'work_specific',$request->$stat1);
+					array_push_asociate($amount_details[$lo],'quantity',$request->$stat3);
+					array_push_asociate($amount_details[$lo],'unit_price',$request->$stat4);
+					array_push_asociate($amount_details[$lo],'amount',$request->$stat5);
+					array_push_asociate($amount_details[$lo],'remarks',$request->$stat6);
 					$lo++;
 				} 
 			}
@@ -353,12 +353,11 @@ class ExternalInvoice extends Model {
 
 		for ($i = 1; $i <= 5 ; $i++) { // loop for notice insert
 			$stat = 'special_ins'.$i;
-			$note = 'note'.$i;
-			// array_push_asociate($data[0],$stat,$request->$note);
+			array_push_asociate($data[0],$stat,$request->$stat);
 		}
 
 		if (Auth::user()->userclassification == 4) {
-			// array_push_asociate($data[0],'accessFlg',$accessrights);
+			array_push_asociate($data[0],'accessFlg',$accessrights);
 			$update = DB::table('ext_invoice_registration')->where('id', $request->editid)->update($data[0]);
 		} else {
 			$update = DB::table('ext_invoice_registration')->where('id', $request->editid)->update($data[0]);
@@ -509,5 +508,12 @@ class ExternalInvoice extends Model {
 		return $Invoice;
 
 	}
+
+}
+
+function array_push_asociate(&$array, $key, $value) {
+
+	$array[$key] = $value;
+	return $array;
 
 }
