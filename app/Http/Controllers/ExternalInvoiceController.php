@@ -1135,527 +1135,272 @@ class ExternalInvoiceController extends Controller {
 
 						$pdf->SetTextColor(0,0,0);
 						if (!empty($in_query[0]->$unit_pricearr)) {
-
 							$pdf->SetXY(108.7, 96.9+$y);
-
 							$pdf->Cell(28.4, 6.0301, "", 'LRTB', 0, 'R', true);
-
 							$pdf->SetXY(108.7, 96.9+$y);
-
-						if ($in_query[0]->$unit_pricearr < 0) {
-
-						$pdf->SetTextColor(255,0,0);
-
+							if ($in_query[0]->$unit_pricearr < 0) {
+								$pdf->SetTextColor(255,0,0);
+							}
+							$pdf->drawTextBox($in_query[0]->$unit_pricearr, 28.4, 6.0301, 'R', 'B', 0);
+						} else {
+							$pdf->SetXY(108.7, 96.9+$y);
+							$pdf->Cell(28.4, 6.0301, "", 'LRTB', 0, 'R', true);
 						}
 
-$pdf->drawTextBox($in_query[0]->$unit_pricearr, 28.4, 6.0301, 'R', 'B', 0);
-
-} else {
-
-$pdf->SetXY(108.7, 96.9+$y);
-
-$pdf->Cell(28.4, 6.0301, "", 'LRTB', 0, 'R', true);
-
-}
-
-$pdf->SetTextColor(0,0,0);
-
-if (!empty($in_query[0]->$amountarr)) {
-
-$pdf->SetXY(137.1, 96.9+$y);
-
-$pdf->Cell(30.3, 6.0301, "", 'LRTB', 0, 'R', true);
-
-$pdf->SetXY(137.1, 96.9+$y); 
-
-if ($in_query[0]->$amountarr < 0) {
-
-$pdf->SetTextColor(255,0,0);
-
-}
-
-$pdf->drawTextBox($in_query[0]->$amountarr, 30.3, 6.0301, 'R', 'B', 0);
-
-} else {
-
-$pdf->SetXY(137.1, 96.9+$y);
-
-$pdf->Cell(30.3, 6.0301, "", 'LRTB', 0, 'R', true);
-
-}
-
-$pdf->SetTextColor(0,0,0);
-
-$pdf->SetXY(167.3, 96.9+$y);
-
-$pdf->Cell(29, 6.0301, "", 'LRTB', 0, 'LB', true);
-
-$pdf->SetXY(167.3, 96.9+$y);
-
-$pdf->drawTextBox(iconv('UTF-8', 'SJIS', $in_query[0]->$remarksarr), 29, 6.0301, 'L', 'B', 0);
-
-}
-
-$y=$y+6.065;
-
-}
-
-
-
-if ($n>0) {
-
-$ynew = $y + 10;//px = 212
-
-$yn = $y + 16.065;//px = 218
-
-$yn1 = $y + 16.165;//px = 218.1
-
-$new = $y + 22.13;//px = 224
-
-$new1 = $y + 22.33;  //px = 224.2
-
-$new11 = $y + 22.53; //px = 224.4
-
-$new2 = $y + 28.495;  //px = 230.3
-
-$new21 = $y + 28.695; //px = 230.5
-
-} else {
-
-$ynew = $y + 96.9;
-
-$yn = $y + 102.965;
-
-$yn1 = $y + 103.065;
-
-$new = $y + 109.03;
-
-$new1 = $y + 109.23;
-
-$new11 = $y + 109.43;
-
-$new2 = $y + 115.195;
-
-$new21 = $y + 115.595; 
-
-}
-
-
-
-$pdf->SetFont( 'MS-Mincho' ,'B',11);
-
-$pdf->SetXY(137, $ynew);
-
-$pdf->Cell(30.3, 6.1, "", 1, 0, 'R');
-
-$pdf->SetXY(137, $ynew);
-
-$pdf->drawTextBox($in_query[0]->totalval, 30.3, 6.1, 'R', 'B');
-
-$pdf->SetFillColor(175, 175, 175);
-
-$pdf->SetFont( 'MS-Mincho' ,'B',9);
-
-if (isset($in_query[0]->tax) && $in_query[0]->tax == 1) {
-
-$pdf->SetXY(108.7, $ynew);
-
-$pdf->Cell(28.4, 6.1, "", 'LBRT', 0, 'C', 'B', true);
-
-$pdf->SetXY(108.7, $ynew);
-
-$pdf->drawTextBox(iconv('UTF-8', 'SJIS',"小計" ), 28.4, 6.1, 'C', 'B');
-
-$pdf->SetXY(108.7, $yn);
-
-$pdf->Cell(28.4, 6.3, "", 'LBRT', 0, 'C', true);
-
-$pdf->SetXY(108.7, $yn);
-
-$pdf->drawTextBox(iconv('UTF-8', 'SJIS',"消費税" ), 28.4, 6.3, 'C', 'B');
-
-$pdf->SetXY(108.7, $new1);
-
-$pdf->Cell(28.4, 6.1, "", 'LBRT', 0, 'C', true);
-
-$pdf->SetXY(108.7, $new1);
-
-$pdf->drawTextBox(iconv('UTF-8', 'SJIS',"税込合計" ), 28.4, 6.1, 'C', 'B');
-
-$pdf->SetFont( 'MS-Mincho' ,'B',11);
-
-$pdf->SetXY(137, $yn);
-
-$pdf->Cell(30.3, 6.2, "", 'BR', 0, 'R');
-
-$pdf->SetXY(137, $yn);
-
-$pdf->drawTextBox(number_format($dispval), 30.3, 6.2, 'R', 'B', 'BR'); 
-
-$pdf->SetXY(137, $new); 
-
-$pdf->Cell(30.3, 6.3, "", 'RB', 0, 'R');
-
-$pdf->SetXY(137, $new); 
-
-$pdf->drawTextBox(number_format($grandtotal), 30.3, 6.3, 'R', 'B', 'BR');
-
-$pdf->SetFont( 'MS-Mincho' ,'B',9);
-
-} else if (isset($in_query[0]->tax) && $in_query[0]->tax == 2) {
-
-$pdf->SetXY(108.7, $ynew);
-
-$pdf->Cell(28.4, 6.1, "", 'LBRT', 0, 'C', 'B', true);
-
-$pdf->SetXY(108.7, $ynew);
-
-$pdf->drawTextBox(iconv('UTF-8', 'SJIS',"小計   " ), 28.4, 6.1, 'C', 'B');
-
-$pdf->SetXY(108.7, $yn);
-
-$pdf->Cell(28.4, 6.3, "", 'LBRT', 0, 'C', true);
-
-$pdf->SetXY(108.7, $yn);
-
-$pdf->drawTextBox(iconv('UTF-8', 'SJIS',"非課税" ), 28.4, 6.3, 'C', 'B');
-
-$pdf->SetXY(108.7, $new1);
-
-$pdf->Cell(28.4, 6.1, "", 'LBRT', 0, 'C', true);
-
-$pdf->SetXY(108.7, $new1);
-
-$pdf->drawTextBox(iconv('UTF-8', 'SJIS',"税込合計" ), 28.4, 6.1, 'C', 'B');
-
-$pdf->SetFont( 'MS-Mincho' ,'B',11);
-
-$pdf->SetXY(137, $yn);
-
-$pdf->Cell(30.3, 6.2, "", 'BR', 0, 'R');
-
-$pdf->SetXY(137, $yn);
-
-$pdf->drawTextBox(number_format($dispval), 30.3, 6.2, 'R', 'B', 'BR');
-
-$pdf->SetXY(137, $new); 
-
-$pdf->Cell(30.3, 6.3, "", 'RB', 0, 'R');
-
-$pdf->SetXY(137, $new); 
-
-$pdf->drawTextBox(number_format($grandtotal), 30.3, 6.3, 'R', 'B', 'BR');
-
-$pdf->SetFont( 'MS-Mincho' ,'B',9);
-
-} else {
-
-$pdf->SetXY(108.7, $ynew);
-
-$pdf->Cell(28.4, 6.1, "", 'LBRT', 0, 'C', 'B', true);
-
-$pdf->SetXY(108.7, $ynew);
-
-$pdf->drawTextBox(iconv('UTF-8', 'SJIS',"小計   " ), 28.4, 6.1, 'C', 'B');
-
-$pdf->SetXY(108.7, $yn);
-
-$pdf->Cell(28.4, 6.3, "", 'LBRT', 0, 'C', true);
-
-$pdf->SetXY(108.7, $yn);
-
-$pdf->drawTextBox(iconv('UTF-8', 'SJIS',"消費税" ), 28.4, 6.3, 'C', 'B');
-
-$pdf->SetXY(108.7, $new1);
-
-$pdf->Cell(28.4, 6.1, "", 'LBRT', 0, 'L', true);
-
-$pdf->SetFont( 'MS-Mincho' ,'B',11);
-
-$pdf->SetXY(137, $yn);
-
-$pdf->Cell(30.3, 6.2, "", 'BR', 0, 'R');
-
-$pdf->SetXY(137, $yn);
-
-$pdf->drawTextBox(number_format($dispval), 30.3, 6.2, 'R', 'B', 'BR');
-
-$pdf->SetXY(137, $new21); 
-
-$pdf->Cell(30.3, 6.3, "", 'R', 0, 'L');
-
-$pdf->SetXY(137, $new21);
-
-$pdf->Cell(30.3, 6.5, "", 1, 0, 'R');
-
-$pdf->SetXY(137, $new1);
-
-$pdf->drawTextBox(number_format($grandtotal), 30.3, 6.5, 'R', 'B', 'BR');
-
-$pdf->SetFont( 'MS-Mincho' ,'B',9);
-
-}
-
-$pdf->SetXY(14.5, $ynew);
-
-$pdf->Cell(25, 6.1, iconv('UTF-8', 'SJIS', "振込口座 "), 'L', 0, 'C', true);  
-
-$pdf->SetXY(39.5, $ynew);
-
-$pdf->Cell(5, 6.1, "", 0, 0, 'C');
-
-$pdf->SetXY(44.5, $ynew);
-
-$pdf->Cell(64, 6.1, mb_convert_encoding((isset($in_query[0]->bankName)) ? $in_query[0]->bankName : '', 'SJIS', 'UTF-8'), 0, 0, 'L');
-
-$pdf->SetXY(14.5, $yn1);
-
-$pdf->Cell(25, 6.3, iconv('UTF-8', 'SJIS', "口座番号  "), 'L', 0, 'C', true); 
-
-$pdf->SetXY(39.5, $yn1);
-
-$pdf->Cell(5, 6.1, "", 0, 0, 'C');
-
-$pdf->SetXY(44.5, $yn1);
-
-if(!isset($in_query[0]->accountNo)) {
-
-$accountNo = "";
-
-} else {
-
-$accountNo = $in_query[0]->accountNo;
-
-}
-
-$pdf->Cell(64, 6.3, mb_convert_encoding($type."  ".$accountNo, 'SJIS', 'UTF-8'), 0, 0, 'L');
-
-$pdf->SetXY(14.5, $new11);
-
-$pdf->Cell(25, 6.3, iconv('UTF-8', 'SJIS', "    支店名"), 'L', 0, 'C', true);
-
-$pdf->SetXY(39.5, $new11);
-
-$pdf->Cell(5, 6.1, "", 0, 0, 'C');  
-
-$pdf->SetXY(44.5, $new11);
-
-$pdf->Cell(64, 6.3,  mb_convert_encoding((isset($in_query[0]->branchName)) ? $in_query[0]->branchName : '', 'SJIS', 'UTF-8'), 0, 0, 'L');
-
-$pdf->SetXY(14.5, $new21);
-
-$pdf->Cell(25, 6.3, iconv('UTF-8', 'SJIS', "  口座名"), 'LB', 0, 'C', true);
-
-$pdf->SetXY(39.5, $new21);
-
-$pdf->Cell(5, 6.3, "", 'B', 0, 'C');
-
-$pdf->SetXY(44.5, $new21);
-
-$pdf->Cell(64, 6.3, mb_convert_encoding((isset($in_query[0]->bankKanaName)) ? $in_query[0]->bankKanaName : '', 'SJIS', 'UTF-8'), 'B', 0, 'L');
-
-$pdf->SetXY(108.7, $new21);
-
-$pdf->Cell(28.4, 6.3, "", 'LBR', 0, 'L', true);
-
-$pdf->SetXY(137, $new21);
-
-$pdf->Cell(30.3, 6.3, "", 'BR', 0, 'L');
-
-
-
-$arrval = array();
-
-for ($i = 1; $i <= 5; $i++) {
-
-$special_insarr="special_ins".$i;
-
-if($in_query[0]->$special_insarr != "") {
-
-array_push($arrval, $in_query[0]->$special_insarr);
-
-}
-
-}
-
-$x=0;
-
-for ($rccnt=0; $rccnt < count($arrval); $rccnt++) { 
-
-}
-
-
-
-if(count($arrval) != 0) {
-
-
-
-$ynot = $ynew + 26.5;
-
-if (($n==0 && $ynot+20>=$pdf->h - 15 && count($arrval)==5) || ($n==0 && ($ynot+9)>=$pdf->h - 20 && count($arrval)==4) || ($n==0 && ($ynot+3)>=$pdf->h - 20 && count($arrval)<=3)  )
-
-{
-
-$pdf->AddPage();
-
-$ynot = 10;
-
-}
-
-$y=0;
-
-$exvalue=$rccnt-1;
-
-$pdf->SetFont( 'MS-Mincho' ,'B',11);
-
-$pdf->SetXY(22.5 ,$ynot);
-
-$pdf->Write(6, iconv('UTF-8', 'SJIS',  "【特記事項】"));
-
-$tilde = '~';//～,〜
-
-$japtilde = '〜';
-
-$japreptilde = "～";
-
-
-
-for($i = 0; $i<count($arrval); $i++) {
-
-$pdf->SetFont( 'MS-Mincho' ,'',10);
-
-$no=($rccnt-$exvalue).")";
-
-$pdf->SetXY(22.5 ,($ynot+6)+$y );
-
-$pdf->Write(6, iconv('UTF-8', 'SJIS', $no ));
-
-$pdf->SetFont( 'MS-Mincho' ,'B',10);
-
-$pdf->SetXY(26.5 ,($ynot+5)+$y );
-
-$dispStr = $arrval[$i];
-
-$dispStr = mb_convert_encoding($dispStr, 'SJIS', 'UTF-8'); 
-
-$pdf->Write(9, $dispStr);
-
-
-
-$y=$y+5.5;
-
-$exvalue=$exvalue-1;
-
-}
-
-}
-
-$pdf->SetXY(100 ,-10 );
-
-$pdf->Write(6, iconv('UTF-8', 'SJIS', $m+1 .'/'.count($TotEstquery)));
-
-}
-
-}
-
-
-
-//download secction
-
-$path= "resources/assets/uploadandtemplates/upload/ExternalInvoice";
-
-if (isset($in_query[0])) {
-
-$id = $in_query[0]->invoiceId;
-
-} else {
-
-$id = "PdfDwnld";
-
-} 
-
-
-
-if(!is_dir($path)){
-
-mkdir($path, true);
-
-}
-
-chmod($path, 0777); 
-
-$files = glob($path . '/' . $id . '*.pdf');
-
-if ( $files !== false ) {
-
-$filecount = count( $files );
-
-}
-
-$pdf_name = "";
-
-if(isset($in_query[0]->pdf_flg)) { 
-
-if($in_query[0]->pdf_flg == 0){
-
-if($filecount != 0){
-
-$pdf_name=$in_query[0]->invoiceId."_".str_pad($filecount , 2, '0', STR_PAD_LEFT);
-
-$pdfnamelist=$pdf_name;
-
-} else {
-
-$pdf_name=$in_query[0]->invoiceId;
-
-$pdfnamelist=$pdf_name;
-
-}
-
-} else {
-
-$pdf_name=$in_query[0]->invoiceId;
-
-$pdfnamelist=$pdf_name;
-
-}
-
-}
-
-// $pdfflg = Invoice::pdfflgset($in_query[0]->invoiceId,$pdfnamelist); 
-
-
-
-$filepath = "resources/assets/uploadandtemplates/upload/ExternalInvoice/".$pdf_name.".pdf";
-
-$pdf->Output($filepath, 'F');
-
-chmod($filepath, 0777);
-
-$pdfname = "MB_INVOICE".$date_month;
-
-header('Pragma: public');  // required
-
-header('Expires: 0');  // no cache
-
-header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-
-header('Cache-Control: private', false);
-
-header('Content-Type: application/pdf; charset=utf-8');
-
-header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($filepath)) . ' GMT');
-
-header('Content-disposition: attachment; filename=' . $pdfname . '.pdf');
-
-header("Content-Transfer-Encoding:  binary");
-
-header('Content-Length: ' . filesize($filepath)); // provide file size
-
-header('Connection: close');
-
-readfile($filepath);
-
-}
+						$pdf->SetTextColor(0,0,0);
+						if (!empty($in_query[0]->$amountarr)) {
+							$pdf->SetXY(137.1, 96.9+$y);
+							$pdf->Cell(30.3, 6.0301, "", 'LRTB', 0, 'R', true);
+							$pdf->SetXY(137.1, 96.9+$y); 
+							if ($in_query[0]->$amountarr < 0) {
+								$pdf->SetTextColor(255,0,0);
+							}
+							$pdf->drawTextBox($in_query[0]->$amountarr, 30.3, 6.0301, 'R', 'B', 0);
+						} else {
+							$pdf->SetXY(137.1, 96.9+$y);
+							$pdf->Cell(30.3, 6.0301, "", 'LRTB', 0, 'R', true);
+						}
+						$pdf->SetTextColor(0,0,0);
+						$pdf->SetXY(167.3, 96.9+$y);
+						$pdf->Cell(29, 6.0301, "", 'LRTB', 0, 'LB', true);
+						$pdf->SetXY(167.3, 96.9+$y);
+						$pdf->drawTextBox(iconv('UTF-8', 'SJIS', $in_query[0]->$remarksarr), 29, 6.0301, 'L', 'B', 0);
+					}
+					$y = $y + 6.065;
+				}
+
+				if ($n > 0) {
+					$ynew = $y + 10; //px = 212
+					$yn = $y + 16.065; //px = 218
+					$yn1 = $y + 16.165; //px = 218.1
+					$new = $y + 22.13; //px = 224
+					$new1 = $y + 22.33;  //px = 224.2
+					$new11 = $y + 22.53; //px = 224.4
+					$new2 = $y + 28.495;  //px = 230.3
+					$new21 = $y + 28.695; //px = 230.5
+				} else {
+					$ynew = $y + 96.9;
+					$yn = $y + 102.965;
+					$yn1 = $y + 103.065;
+					$new = $y + 109.03;
+					$new1 = $y + 109.23;
+					$new11 = $y + 109.43;
+					$new2 = $y + 115.195;
+					$new21 = $y + 115.595; 
+				}
+
+				$pdf->SetFont( 'MS-Mincho' ,'B',11);
+				$pdf->SetXY(137, $ynew);
+				$pdf->Cell(30.3, 6.1, "", 1, 0, 'R');
+				$pdf->SetXY(137, $ynew);
+				$pdf->drawTextBox($in_query[0]->totalval, 30.3, 6.1, 'R', 'B');
+				$pdf->SetFillColor(175, 175, 175);
+				$pdf->SetFont( 'MS-Mincho' ,'B',9);
+
+				if (isset($in_query[0]->tax) && $in_query[0]->tax == 1) {
+					$pdf->SetXY(108.7, $ynew);
+					$pdf->Cell(28.4, 6.1, "", 'LBRT', 0, 'C', 'B', true);
+					$pdf->SetXY(108.7, $ynew);
+					$pdf->drawTextBox(iconv('UTF-8', 'SJIS',"小計" ), 28.4, 6.1, 'C', 'B');
+					$pdf->SetXY(108.7, $yn);
+					$pdf->Cell(28.4, 6.3, "", 'LBRT', 0, 'C', true);
+					$pdf->SetXY(108.7, $yn);
+					$pdf->drawTextBox(iconv('UTF-8', 'SJIS',"消費税" ), 28.4, 6.3, 'C', 'B');
+					$pdf->SetXY(108.7, $new1);
+					$pdf->Cell(28.4, 6.1, "", 'LBRT', 0, 'C', true);
+					$pdf->SetXY(108.7, $new1);
+					$pdf->drawTextBox(iconv('UTF-8', 'SJIS',"税込合計" ), 28.4, 6.1, 'C', 'B');
+					$pdf->SetFont( 'MS-Mincho' ,'B',11);
+					$pdf->SetXY(137, $yn);
+					$pdf->Cell(30.3, 6.2, "", 'BR', 0, 'R');
+					$pdf->SetXY(137, $yn);
+					$pdf->drawTextBox(number_format($dispval), 30.3, 6.2, 'R', 'B', 'BR'); 
+					$pdf->SetXY(137, $new); 
+					$pdf->Cell(30.3, 6.3, "", 'RB', 0, 'R');
+					$pdf->SetXY(137, $new); 
+					$pdf->drawTextBox(number_format($grandtotal), 30.3, 6.3, 'R', 'B', 'BR');
+					$pdf->SetFont( 'MS-Mincho' ,'B',9);
+				} else if (isset($in_query[0]->tax) && $in_query[0]->tax == 2) {
+					$pdf->SetXY(108.7, $ynew);
+					$pdf->Cell(28.4, 6.1, "", 'LBRT', 0, 'C', 'B', true);
+					$pdf->SetXY(108.7, $ynew);
+					$pdf->drawTextBox(iconv('UTF-8', 'SJIS',"小計   " ), 28.4, 6.1, 'C', 'B');
+					$pdf->SetXY(108.7, $yn);
+					$pdf->Cell(28.4, 6.3, "", 'LBRT', 0, 'C', true);
+					$pdf->SetXY(108.7, $yn);
+					$pdf->drawTextBox(iconv('UTF-8', 'SJIS',"非課税" ), 28.4, 6.3, 'C', 'B');
+					$pdf->SetXY(108.7, $new1);
+					$pdf->Cell(28.4, 6.1, "", 'LBRT', 0, 'C', true);
+					$pdf->SetXY(108.7, $new1);
+					$pdf->drawTextBox(iconv('UTF-8', 'SJIS',"税込合計" ), 28.4, 6.1, 'C', 'B');
+					$pdf->SetFont( 'MS-Mincho' ,'B',11);
+					$pdf->SetXY(137, $yn);
+					$pdf->Cell(30.3, 6.2, "", 'BR', 0, 'R');
+					$pdf->SetXY(137, $yn);
+					$pdf->drawTextBox(number_format($dispval), 30.3, 6.2, 'R', 'B', 'BR');
+					$pdf->SetXY(137, $new); 
+					$pdf->Cell(30.3, 6.3, "", 'RB', 0, 'R');
+					$pdf->SetXY(137, $new); 
+					$pdf->drawTextBox(number_format($grandtotal), 30.3, 6.3, 'R', 'B', 'BR');
+					$pdf->SetFont( 'MS-Mincho' ,'B',9);
+				} else {
+					$pdf->SetXY(108.7, $ynew);
+					$pdf->Cell(28.4, 6.1, "", 'LBRT', 0, 'C', 'B', true);
+					$pdf->SetXY(108.7, $ynew);
+					$pdf->drawTextBox(iconv('UTF-8', 'SJIS',"小計   " ), 28.4, 6.1, 'C', 'B');
+					$pdf->SetXY(108.7, $yn);
+					$pdf->Cell(28.4, 6.3, "", 'LBRT', 0, 'C', true);
+					$pdf->SetXY(108.7, $yn);
+					$pdf->drawTextBox(iconv('UTF-8', 'SJIS',"消費税" ), 28.4, 6.3, 'C', 'B');
+					$pdf->SetXY(108.7, $new1);
+					$pdf->Cell(28.4, 6.1, "", 'LBRT', 0, 'L', true);
+					$pdf->SetFont( 'MS-Mincho' ,'B',11);
+					$pdf->SetXY(137, $yn);
+					$pdf->Cell(30.3, 6.2, "", 'BR', 0, 'R');
+					$pdf->SetXY(137, $yn);
+					$pdf->drawTextBox(number_format($dispval), 30.3, 6.2, 'R', 'B', 'BR');
+					$pdf->SetXY(137, $new21); 
+					$pdf->Cell(30.3, 6.3, "", 'R', 0, 'L');
+					$pdf->SetXY(137, $new21);
+					$pdf->Cell(30.3, 6.5, "", 1, 0, 'R');
+					$pdf->SetXY(137, $new1);
+					$pdf->drawTextBox(number_format($grandtotal), 30.3, 6.5, 'R', 'B', 'BR');
+					$pdf->SetFont( 'MS-Mincho' ,'B',9);
+				}
+
+				$pdf->SetXY(14.5, $ynew);
+				$pdf->Cell(25, 6.1, iconv('UTF-8', 'SJIS', "振込口座 "), 'L', 0, 'C', true);  
+				$pdf->SetXY(39.5, $ynew);
+				$pdf->Cell(5, 6.1, "", 0, 0, 'C');
+				$pdf->SetXY(44.5, $ynew);
+				$pdf->Cell(64, 6.1, mb_convert_encoding((isset($in_query[0]->bankName)) ? $in_query[0]->bankName : '', 'SJIS', 'UTF-8'), 0, 0, 'L');
+				$pdf->SetXY(14.5, $yn1);
+				$pdf->Cell(25, 6.3, iconv('UTF-8', 'SJIS', "口座番号  "), 'L', 0, 'C', true); 
+				$pdf->SetXY(39.5, $yn1);
+				$pdf->Cell(5, 6.1, "", 0, 0, 'C');
+				$pdf->SetXY(44.5, $yn1);
+				if(!isset($in_query[0]->accountNo)) {
+					$accountNo = "";
+				} else {
+					$accountNo = $in_query[0]->accountNo;
+				}
+				$pdf->Cell(64, 6.3, mb_convert_encoding($type."  ".$accountNo, 'SJIS', 'UTF-8'), 0, 0, 'L');
+				$pdf->SetXY(14.5, $new11);
+				$pdf->Cell(25, 6.3, iconv('UTF-8', 'SJIS', "    支店名"), 'L', 0, 'C', true);
+				$pdf->SetXY(39.5, $new11);
+				$pdf->Cell(5, 6.1, "", 0, 0, 'C');  
+				$pdf->SetXY(44.5, $new11);
+				$pdf->Cell(64, 6.3,  mb_convert_encoding((isset($in_query[0]->branchName)) ? $in_query[0]->branchName : '', 'SJIS', 'UTF-8'), 0, 0, 'L');
+				$pdf->SetXY(14.5, $new21);
+				$pdf->Cell(25, 6.3, iconv('UTF-8', 'SJIS', "  口座名"), 'LB', 0, 'C', true);
+				$pdf->SetXY(39.5, $new21);
+				$pdf->Cell(5, 6.3, "", 'B', 0, 'C');
+				$pdf->SetXY(44.5, $new21);
+				$pdf->Cell(64, 6.3, mb_convert_encoding((isset($in_query[0]->bankKanaName)) ? $in_query[0]->bankKanaName : '', 'SJIS', 'UTF-8'), 'B', 0, 'L');
+				$pdf->SetXY(108.7, $new21);
+				$pdf->Cell(28.4, 6.3, "", 'LBR', 0, 'L', true);
+				$pdf->SetXY(137, $new21);
+				$pdf->Cell(30.3, 6.3, "", 'BR', 0, 'L');
+
+				$arrval = array();
+				for ($i = 1; $i <= 5; $i++) {
+					$special_insarr="special_ins".$i;
+					if($in_query[0]->$special_insarr != "") {
+						array_push($arrval, $in_query[0]->$special_insarr);
+					}
+				}
+
+				$x = 0;
+				for ($rccnt = 0; $rccnt < count($arrval); $rccnt++) { 
+				}
+
+				if(count($arrval) != 0) {
+					$ynot = $ynew + 26.5;
+					if (($n == 0 && $ynot + 20 >= $pdf->h - 15 
+						&& count($arrval) == 5) 
+						|| ($n == 0 && ($ynot + 9) >= $pdf->h - 20 
+						&& count($arrval) == 4) 
+						|| ($n == 0 && ($ynot + 3) >= $pdf->h - 20 
+						&& count($arrval) <= 3)) {
+
+						$pdf->AddPage();
+						$ynot = 10;
+					}
+					$y = 0;
+					$exvalue = $rccnt-1;
+					$pdf->SetFont( 'MS-Mincho' ,'B',11);
+					$pdf->SetXY(22.5 ,$ynot);
+					$pdf->Write(6, iconv('UTF-8', 'SJIS',  "【特記事項】"));
+					$tilde = '~';//～,〜
+					$japtilde = '〜';
+					$japreptilde = "～";
+					for($i = 0; $i<count($arrval); $i++) {
+						$pdf->SetFont( 'MS-Mincho' ,'',10);
+						$no = ($rccnt-$exvalue).")";
+						$pdf->SetXY(22.5 ,($ynot + 6) + $y);
+						$pdf->Write(6, iconv('UTF-8', 'SJIS', $no ));
+						$pdf->SetFont( 'MS-Mincho' ,'B',10);
+						$pdf->SetXY(26.5 ,($ynot+5)+$y );
+						$dispStr = $arrval[$i];
+						$dispStr = mb_convert_encoding($dispStr, 'SJIS', 'UTF-8'); 
+						$pdf->Write(9, $dispStr);
+						$y = $y+5.5;
+						$exvalue = $exvalue-1;
+					}
+				}
+				$pdf->SetXY(100 ,-10 );
+				$pdf->Write(6, iconv('UTF-8', 'SJIS', $m + 1 .'/'.count($TotEstquery)));
+			}
+
+		}
+
+		//download secction
+		$path = "../AccountingUpload/ExternalInvoice";
+		if (isset($in_query[0])) {
+			$id = $in_query[0]->invoiceId;
+		} else {
+			$id = "PdfDwnld";
+		} 
+		if(!is_dir($path)){
+			mkdir($path, 0777,true);
+		}
+		chmod($path, 0777); 
+		$files = glob($path . '/' . $id . '*.pdf');
+		if ( $files !== false ) {
+			$filecount = count($files);
+		}
+		$pdf_name = "";
+		if(isset($in_query[0]->pdfFlg)) { 
+			if($in_query[0]->pdfFlg == 0){
+				if($filecount != 0){
+					$pdf_name = $in_query[0]->invoiceId."_".str_pad($filecount , 2, '0', STR_PAD_LEFT);
+					$pdfnamelist = $pdf_name;
+				} else {
+					$pdf_name = $in_query[0]->invoiceId;
+					$pdfnamelist = $pdf_name;
+				}
+			} else {
+				$pdf_name = $in_query[0]->invoiceId;
+				$pdfnamelist = $pdf_name;
+			}
+		}
+
+		// $pdfflg = Invoice::pdfflgset($in_query[0]->invoiceId,$pdfnamelist); 
+		$filepath = "../AccountingUpload/ExternalInvoice/".$pdf_name.".pdf";
+		$pdf->Output($filepath, 'F');
+		chmod($filepath, 0777);
+		$pdfname = "MB_EXTERNALINVOICE".$date_month;
+		header('Pragma: public');  // required
+		header('Expires: 0');  // no cache
+		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+		header('Cache-Control: private', false);
+		header('Content-Type: application/pdf; charset=utf-8');
+		header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($filepath)) . ' GMT');
+		header('Content-disposition: attachment; filename=' . $pdfname . '.pdf');
+		header("Content-Transfer-Encoding:  binary");
+		header('Content-Length: ' . filesize($filepath)); // provide file size
+		header('Connection: close');
+		readfile($filepath);
+	}
 
 }
