@@ -431,11 +431,10 @@ function fnGetBankDetails(userId) {
 }
 
 function invoicestatus(id, status) {
-	alert("Under Construction");
-	// $('#invoicestatusid').val(id);
-	// $('#invoicestatus').val(status);
-	// $('#frmextinvoiceindex').attr('action','index'+'?mainmenu='+mainmenu+'&time='+datetime); 
-	// $("#frmextinvoiceindex").submit();
+	$('#invoicestatusid').val(id);
+	$('#invoicestatus').val(status);
+	$('#frmextinvoiceindex').attr('action','index'+'?mainmenu='+mainmenu+'&time='+datetime); 
+	$("#frmextinvoiceindex").submit();
 }
 
 function sendmail(id,custid,estid) {
@@ -450,8 +449,24 @@ function sendmail(id,custid,estid) {
 	// }
 }
 
+function invoiceexceldownload(selectedyearmonth) {
+	var confirm_create = "Do you Want to Create Invoice";
+	if(confirm(confirm_create)) {
+		$('#selYearMonth').val(selectedyearmonth);
+		$('#frmextinvoiceexceldownload').attr('action', 'extinvoiceExceldownloadprocess?mainmenu='+mainmenu+'&time='+datetime);
+		$("#frmextinvoiceexceldownload").submit();
+	}
+}
+
+function invoicepdfdownload() {
+	var confirm_create = "Do you Want to Create Invoice";
+	if(confirm(confirm_create)) {
+		$('#frmextinvoicepdfdownload').attr('action', 'extinvoicePdfdownloadprocess?mainmenu='+mainmenu+'&time='+datetime);
+		$("#frmextinvoicepdfdownload").submit();
+	}
+}
+
 function gotoinvoicedetails(id,keycnt) {
-	// alert("Under Construction");
 	pageload();
 	$('#viewid').val(id);
 	$('#currentRec').val(keycnt);

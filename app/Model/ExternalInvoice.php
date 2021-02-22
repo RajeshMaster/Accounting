@@ -76,11 +76,12 @@ class ExternalInvoice extends Model {
 		if (!empty($request->searchmethod)) {
 			$wherecondition = "";
 			$Invoice = db::table('ext_invoice_registration AS main')
-							->select('main.*','users.userName', DB::raw("(CASE 
+							->select('main.*','works.amount','works.work_specific','works.quantity','users.userName', DB::raw("(CASE 
 								WHEN main.classification = 2 THEN 3
 								ELSE 0
 								END) AS orderbysent"))
 							->leftJoin('ext_mstuser AS users', 'main.userId', '=', 'users.id')
+							->leftJoin('extinv_work_amount_det AS works', 'main.invoiceId', '=', 'works.invoice_id')
 							->WHERE('main.delFlg',0);
 
 			if ($filter == "2") {
@@ -168,16 +169,18 @@ class ExternalInvoice extends Model {
 			// END ACCESS RIGHTS
 
 			if ($request->checkdefault != 1) {
-				$Invoice = $Invoice->orderByRaw("orderbysent ASC, invoiceId DESC")
+				$Invoice = $Invoice->groupBy('invoiceId')
+									->orderByRaw("orderbysent ASC, invoiceId DESC")
 					  				->paginate($request->plimit);
 			} else {
-				$Invoice = $Invoice->orderBy($request->invoicesort,$request->sortOrder)
+				$Invoice = $Invoice->groupBy('invoiceId')
+									->orderBy($request->invoicesort,$request->sortOrder)
 									->paginate($request->plimit);
 			}
 		} else {
 
 			$db = DB::connection('mysql');
-			$Invoice = $db->TABLE($db->raw("(SELECT main.quot_date,main.id,main.userId,main.invoiceId,main.payment_date,main.delFlg,main.copyFlg,main.projectName,main.classification,main.createdBy,main.projectType,main.mailFlg,main.pdfFlg,main.tax,main.paid_status,works.amount,works.work_specific,works.quantity,works.unit_price,works.remarks,users.userName,
+			$Invoice = $db->TABLE($db->raw("(SELECT main.quot_date, main.id, main.userId,main.invoiceId, main.payment_date, main.delFlg, main.copyFlg, main.projectName, main.classification, main.createdBy, main.projectType, main.mailFlg, main.pdfFlg, main.tax, main.paid_status, works.amount, works.work_specific, works.quantity, works.unit_price, works.remarks, users.userName,
 				(CASE WHEN main.classification = 2 THEN 3
         		ELSE 0
 				END) AS orderbysent,main.totalval 
@@ -505,6 +508,58 @@ class ExternalInvoice extends Model {
 			$Invoice = $Invoice->orderByRaw("orderbysent ASC, invoiceId DESC")->get();
 
 		return $Invoice;
+
+	}
+
+	public static function fnGetExtinvoiceDownload($request,$date_month) {
+
+		$db = DB::connection('mysql');
+
+		$ExtInvoice = $db->TABLE($db->raw("(SELECT main.quot_date, main.id, main.invoiceId, main.userId, main.payment_date, main.delFlg, main.copyFlg, main.projectName, main.CreatedBy, main.pdfFlg, main.projectType, main.mailFlg, main.paid_status, main.tax, main.classification, users.userName, users.bankKanaName, users.bankName, users.branchName, users.branchNo, users.accountNo, works.amount, works.work_specific, works.quantity, works.unit_price, works.remarks, main.totalval,
+			(CASE WHEN main.classification = 2 THEN 3
+				ELSE 0
+				END) AS orderbysent
+		FROM ext_invoice_registration main 
+		LEFT JOIN extinv_work_amount_det works on main.invoiceId = works.invoice_id 
+		LEFT JOIN ext_mstuser users ON main.userId = users.id 
+
+		WHERE main.delFlg = 0 AND main.quot_date LIKE '%$date_month%'
+
+		GROUP BY invoiceId Order By invoiceId Asc, quot_date Asc
+			) AS DDD Order By invoiceId DESC"))
+
+		->get();
+
+		// ->toSql();dd($query);
+
+		return $ExtInvoice;
+
+	}
+
+	// pdf download start
+
+	public static function fnGetEstiamteDetailsPDFDownload($id) {
+
+		$result = DB::table('ext_invoice_registration AS main')
+
+						->SELECT('main.*', 'users.userName', 'users.bankKanaName', 'users.bankName', 'users.branchName', 'users.branchNo', 'users.accountNo', 'users.accountType')
+						->leftJoin('ext_mstuser AS users', 'main.userId', '=', 'users.id')
+						->WHERE('main.id', $id)
+						->get();
+
+		return $result;
+
+	}
+
+	public static function fnGetAmountDetails($id) {
+
+		$result = DB::table('extinv_work_amount_det')
+
+						->SELECT('id','inv_primery_key_id', 'invoice_id','work_specific', 'quantity', 'unit_price', 'amount', 'remarks')
+						->WHERE('inv_primery_key_id', $id)
+						->get();
+
+		return $result;
 
 	}
 

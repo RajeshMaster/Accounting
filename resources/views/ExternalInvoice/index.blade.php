@@ -142,6 +142,7 @@
 		{{ Form::hidden('viewid', '', array('id' => 'viewid')) }}
 		{{ Form::hidden('sendmailfrom', 'Invoice', array('id' => 'sendmailfrom')) }}
 		{{ Form::hidden('currentRec', '', array('id' => 'currentRec')) }}
+		{{ Form::hidden('invoicestatus', '', array('id' => 'invoicestatus')) }}
 		{{ Form::hidden('invoicestatusid', '', array('id' => 'invoicestatusid')) }}
 		{{ Form::hidden('usernameclick', $request->usernameclick, array('id' => 'usernameclick')) }}
 		{{ Form::hidden('checkdefault', '', array('id' => 'checkdefault')) }}
@@ -170,12 +171,16 @@
 			<a href="javascript:addedit('add','');"  
 				class="btn btn-success box100"><span class="fa fa-plus"></span> 
 				{{ trans('messages.lbl_register') }}</a>
-			<a href="javascript:underConstruction();"  class="btn btn-primary box145">
+			@if(count($TotEstquery) != 0)
+			<a href="javascript:invoiceexceldownload('{{ $date_month }}');"  
+				class="btn btn-primary box145">
 				<span class="fa fa-download"></span> 
 				{{ trans('messages.lbl_excel') }} {{ trans('messages.lbl_download') }}
 			</a>
-			<a href="javascript:underConstruction();"  class="btn btn-primary box145"><span class="fa fa-download"></span> 
+			<a href="javascript:invoicepdfdownload();"  class="btn btn-primary box145">
+				<span class="fa fa-download"></span> 
 				{{ trans('messages.lbl_pdfdwnld') }}</a>
+			@endif
 		</div>
 
 		<!-- Session msg -->
@@ -366,7 +371,7 @@
 											<img class="pull-left box12 CMN_display_block" id="{{ $data->id}}pdfimg" src="{{ URL::asset('resources/assets/images/downarrowothers.png') }}">
 										</div>
 										<div class="dropdown-content ml10" style="border: 1px solid grey;">
-											<?php for ($ot=0; $ot < count($othersArray); $ot++) { ?>
+											<?php for ($ot = 0; $ot < count($othersArray); $ot++) { ?>
 											<?php if ($ot!=$data->classification) {?>
 												<a href="javascript:invoicestatus('{{ $data->id }}', '{{ $ot }}');" style="text-decoration: none;border-bottom: 1px solid grey;font-size: 12px;">{{ $othersArray[$ot] }}</a>
 											<?php } ?>
@@ -627,9 +632,9 @@
 
 	{{ Form::close() }}
 
-	{{ Form::open(array('name'=>'frminvoiceexceldownload', 
-						'id'=>'frminvoiceexceldownload', 
-						'url' => 'Invoice/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
+	{{ Form::open(array('name'=>'frmextinvoiceexceldownload', 
+						'id'=>'frmextinvoiceexceldownload', 
+						'url' => 'ExternalInvoice/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
 						'files'=>true,
 						'method' => 'POST')) }}
 
@@ -637,13 +642,36 @@
 
 	{{ Form::close() }}
 
-	{{ Form::open(array('name'=>'frmallinvoicepdfdownload', 
-						'id'=>'frmallinvoicepdfdownload', 
-						'url' => 'Invoice/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
+	{{ Form::open(array('name'=>'frmextinvoicepdfdownload', 
+						'id'=>'frmextinvoicepdfdownload', 
+						'url' => 'ExternalInvoice/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
 						'files'=>true,
 						'method' => 'POST')) }}
 
-		
+		{{ Form::hidden('mainmenu', $request->mainmenu, array('id' => 'mainmenu')) }}
+		{{ Form::hidden('filter', $request->filter, array('id' => 'filter')) }}
+		{{ Form::hidden('plimit', $request->plimit , array('id' => 'plimit')) }}
+		{{ Form::hidden('page', $request->page , array('id' => 'page')) }}
+		{{ Form::hidden('selMonth', $request->selMonth, array('id' => 'selMonth')) }}
+		{{ Form::hidden('selYear', $request->selYear, array('id' => 'selYear')) }}
+		{{ Form::hidden('prevcnt', $request->prevcnt, array('id' => 'prevcnt')) }}
+		{{ Form::hidden('nextcnt', $request->nextcnt, array('id' => 'nextcnt')) }}
+		{{ Form::hidden('account_val', $account_val, array('id' => 'account_val')) }}
+		{{ Form::hidden('sortOptn',$request->invoicesort , array('id' => 'sortOptn')) }}
+		{{ Form::hidden('sortOrder', $request->sortOrder , array('id' => 'sortOrder')) }}
+		{{ Form::hidden('ordervalue', $request->ordervalue, array('id' => 'ordervalue')) }}
+		{{ Form::hidden('year_month', $date_month, array('id' => 'year_month')) }}
+		{{ Form::hidden('searchmethod', $request->searchmethod, array('id' => 'searchmethod')) }}
+		{{ Form::hidden('previou_next_year', $request->previou_next_year, array('id' => 'previou_next_year')) }}
+		{{ Form::hidden('editflg', '', array('id' => 'editflg')) }}
+		{{ Form::hidden('editid', '', array('id' => 'editid')) }}
+		{{ Form::hidden('viewid', '', array('id' => 'viewid')) }}
+		{{ Form::hidden('sendmailfrom', 'Invoice', array('id' => 'sendmailfrom')) }}
+		{{ Form::hidden('currentRec', '', array('id' => 'currentRec')) }}
+		{{ Form::hidden('invoicestatus', '', array('id' => 'invoicestatus')) }}
+		{{ Form::hidden('invoicestatusid', '', array('id' => 'invoicestatusid')) }}
+		{{ Form::hidden('usernameclick', $request->usernameclick, array('id' => 'usernameclick')) }}
+		{{ Form::hidden('checkdefault', '', array('id' => 'checkdefault')) }}
 
 	{{ Form::close() }}
 
