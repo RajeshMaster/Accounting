@@ -563,6 +563,21 @@ class ExternalInvoice extends Model {
 
 	}
 
+	public static function pdfflgset($invoiceId,$pdf_name) {
+
+		$update = DB::table('ext_invoice_registration')
+
+					->where('invoiceId', $invoiceId)
+
+					->update([
+							'pdfFlg' => 1,
+							'pdfName' => $pdf_name
+						]);
+
+		return $update;
+
+	}
+
 }
 
 function array_push_asociate(&$array, $key, $value) {

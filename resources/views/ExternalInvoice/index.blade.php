@@ -137,10 +137,10 @@
 		{{ Form::hidden('year_month', $date_month, array('id' => 'year_month')) }}
 		{{ Form::hidden('searchmethod', $request->searchmethod, array('id' => 'searchmethod')) }}
 		{{ Form::hidden('previou_next_year', $request->previou_next_year, array('id' => 'previou_next_year')) }}
+		{{ Form::hidden('invoice_id', '', array('id' => 'invoice_id')) }}
 		{{ Form::hidden('editflg', '', array('id' => 'editflg')) }}
 		{{ Form::hidden('editid', '', array('id' => 'editid')) }}
 		{{ Form::hidden('viewid', '', array('id' => 'viewid')) }}
-		{{ Form::hidden('sendmailfrom', 'Invoice', array('id' => 'sendmailfrom')) }}
 		{{ Form::hidden('currentRec', '', array('id' => 'currentRec')) }}
 		{{ Form::hidden('invoicestatus', '', array('id' => 'invoicestatus')) }}
 		{{ Form::hidden('invoicestatusid', '', array('id' => 'invoicestatusid')) }}
@@ -258,8 +258,6 @@
 						<tr>
 							<td class="text-center">
 								{{ ($TotEstquery->currentpage()-1) * $TotEstquery->perpage() + $i + 1 }}
-								</br>
-								{{ Form::checkbox($data->invoiceId, $data->id,'',['id' => $data->invoiceId,'class' => 'checkboxid','style' => 'display:inline-block']) }}
 							</td>
 							<td class="tal pr10 vat pt5">
 								<div class="">
@@ -356,13 +354,15 @@
 									<div class="CMN_display_block">
 										<a href="javascript:gotoinvoicedetails('{{ $data->id }}','{{ $key+1 }}');" class="anchorstyle">{{ trans('messages.lbl_Details') }}</a>&nbsp;<span class="ml3">|</span>
 									</div>
-									<div class="CMN_display_block">
-										@if($data->mailFlg=="0")
-											<img class="pull-left box15 mt2" id="{{ $data->id}}pdfimg" src="{{ URL::asset('resources/assets/images/nosendmail.png') }}">
+									<div class="CMN_display_block ml3">
+										@if($data->pdfFlg == 0)
+											<img class="pull-left box15 mt5" id="{{ $data->id}}pdfimg" src="{{ URL::asset('resources/assets/images/nopdf.png') }}">
 										@else
-											<img class="pull-left box18 mt1" id="{{ $data->id}}pdfimg" src="{{ URL::asset('resources/assets/images/sendmail.png') }}">
+											<img class="pull-left box15 mt5" id="{{ $data->id}}pdfimg" src="{{ URL::asset('resources/assets/images/pdf.png') }}">
 										@endif
-										<a <?php if($data->pdfFlg == 1) { ?> href="javascript:sendmail('{{ $data->id }}','{{ $data->trading_destination_selection}}','{{ $data->invoiceId}}');" class="anchorstyle ml3 csrp" <?php } else { ?>  class="black disabled tdn pl3 cur_default" <?php } ?> id="sendemail{{ $data->id }}">{{ trans('messages.lbl_email') }}</a>&nbsp;<span class="ml3">|</span>
+										{{ Form::hidden('pdfflag', '', array('id' => 'pdfflag')) }}
+										<a href="javascript:invoicenewpdf('{{ $data->id }}','{{ $data->pdfFlg }}','{{ $data->id}}pdfimg');"  class="anchorstyle ml3">{{ trans('messages.lbl_invoice') }}</a>&nbsp;
+										<span class="ml3">|</span>
 									</div>
 									<div class="CMN_display_block ml3 dropdown">
 										<a href="#" style="text-decoration: none !important;" class="anchorstyle">
@@ -639,39 +639,6 @@
 						'method' => 'POST')) }}
 
 		{{ Form::hidden('selYearMonth', '', array('id' => 'selYearMonth')) }}
-
-	{{ Form::close() }}
-
-	{{ Form::open(array('name'=>'frmextinvoicepdfdownload', 
-						'id'=>'frmextinvoicepdfdownload', 
-						'url' => 'ExternalInvoice/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
-						'files'=>true,
-						'method' => 'POST')) }}
-
-		{{ Form::hidden('mainmenu', $request->mainmenu, array('id' => 'mainmenu')) }}
-		{{ Form::hidden('filter', $request->filter, array('id' => 'filter')) }}
-		{{ Form::hidden('plimit', $request->plimit , array('id' => 'plimit')) }}
-		{{ Form::hidden('page', $request->page , array('id' => 'page')) }}
-		{{ Form::hidden('selMonth', $request->selMonth, array('id' => 'selMonth')) }}
-		{{ Form::hidden('selYear', $request->selYear, array('id' => 'selYear')) }}
-		{{ Form::hidden('prevcnt', $request->prevcnt, array('id' => 'prevcnt')) }}
-		{{ Form::hidden('nextcnt', $request->nextcnt, array('id' => 'nextcnt')) }}
-		{{ Form::hidden('account_val', $account_val, array('id' => 'account_val')) }}
-		{{ Form::hidden('sortOptn',$request->invoicesort , array('id' => 'sortOptn')) }}
-		{{ Form::hidden('sortOrder', $request->sortOrder , array('id' => 'sortOrder')) }}
-		{{ Form::hidden('ordervalue', $request->ordervalue, array('id' => 'ordervalue')) }}
-		{{ Form::hidden('year_month', $date_month, array('id' => 'year_month')) }}
-		{{ Form::hidden('searchmethod', $request->searchmethod, array('id' => 'searchmethod')) }}
-		{{ Form::hidden('previou_next_year', $request->previou_next_year, array('id' => 'previou_next_year')) }}
-		{{ Form::hidden('editflg', '', array('id' => 'editflg')) }}
-		{{ Form::hidden('editid', '', array('id' => 'editid')) }}
-		{{ Form::hidden('viewid', '', array('id' => 'viewid')) }}
-		{{ Form::hidden('sendmailfrom', 'Invoice', array('id' => 'sendmailfrom')) }}
-		{{ Form::hidden('currentRec', '', array('id' => 'currentRec')) }}
-		{{ Form::hidden('invoicestatus', '', array('id' => 'invoicestatus')) }}
-		{{ Form::hidden('invoicestatusid', '', array('id' => 'invoicestatusid')) }}
-		{{ Form::hidden('usernameclick', $request->usernameclick, array('id' => 'usernameclick')) }}
-		{{ Form::hidden('checkdefault', '', array('id' => 'checkdefault')) }}
 
 	{{ Form::close() }}
 

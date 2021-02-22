@@ -105,7 +105,7 @@
 						<label>{{ trans('messages.lbl_projecttype') }}<span class="fr ml2 red"> * </span></label>
 					</div>
 					<div class="col-xs-8 pm0">
-						{{ Form::select('projectType',[null=>''],(isset($invoicedata[0]->projectType)) ? $invoicedata[0]->projectType : '', 
+						{{ Form::select('projectType',[null=>'']+$getProjectType,(isset($invoicedata[0]->projectType)) ? $invoicedata[0]->projectType : '', 
 								array('name' => 'projectType',
 									'id'=>'projectType',
 									'style'=>'min-width: 30%;',

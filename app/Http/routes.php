@@ -621,7 +621,8 @@ Route::group(['prefix'=>'ExternalInvoice','middleware' => 'auth'], function() {
 	Route::any('addedit','ExternalInvoiceController@addedit')->middleware('accessright:4');
 	Route::any('addeditprocess','ExternalInvoiceController@addeditprocess')->middleware('accessright:4');
 	Route::any('getBankDetails','ExternalInvoiceController@getBankDetails')->middleware('accessright:4');
-    Route::any('view', 'ExternalInvoiceController@view')->middleware('accessright:4');
-    Route::any('extinvoiceExceldownloadprocess', 'ExternalInvoiceController@extinvoiceExceldownloadprocess')->middleware('accessright:4');
-    Route::any('extinvoicePdfdownloadprocess', 'ExternalInvoiceController@extinvoicePdfdownloadprocess')->middleware('accessright:4');
+    Route::any('view','ExternalInvoiceController@view')->middleware('accessright:4');
+    Route::any('extinvExceldwnldprocess','ExternalInvoiceController@extinvExceldwnldprocess')->middleware('accessright:4');
+    Route::any('extinvPdfdwnldprocess','ExternalInvoiceController@extinvPdfdwnldprocess')->middleware('accessright:4');
+    Route::any('extinvnewPdfdwnldprocess','ExternalInvoiceController@extinvnewPdfdwnldproces')->middleware('accessright:4');
 });

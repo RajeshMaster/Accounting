@@ -153,39 +153,12 @@
 					</li>
 				</ul>
 			</div>
-			<ul>
-				<li>
-					<div class="box100per mt10">
-						<div class="mt5 ml10 fa fa-arrow-down">
-							<a href="javascript:gotoexceldownload('{{ $request->viewid }}');"><b>{{ trans('messages.lbl_CreateInvoice') }} 
-								({{ trans('messages.lbl_excel') }})
-							</b></a>
-						</div>
-					</div>
-				</li>
-				<li>
-					<div class="box100per mt10">
-						<div class="mt5 ml10 fa fa-arrow-down">
-							<a href="javascript:newexceldownload('{{ $request->viewid }}');"><b>{{ trans('messages.lbl_CreateInvoice+') }} 
-								({{ trans('messages.lbl_excel') }})
-							</b></a>
-						</div>
-					</div>
-				</li>
-				<li>
-					<div class="box100per">
-						<div class="mt5 ml10 fa fa-arrow-down">
-							<a href="javascript:fncoverpopup('{{ $invoicedata[0]->userId }}');"><b>{{ trans('messages.lbl_coverletter') }}</b></a>
-						</div>
-					</div>
-				</li>
-			</ul>
 
 			<?php 
-			$path = "resources/assets/uploadandtemplates/upload/Invoice";
+			$path = "../AccountingUpload/ExternalInvoice";
 			$files = glob($path . '/' . $invoicedata[0]->invoiceId . '*.pdf');
 			if ( $files !== false ) {
-				$filecount = count( $files );
+				$filecount = count($files);
 			}
 			$i = 1;
 			foreach ($files as $readfile) {
@@ -222,19 +195,6 @@
 				</div>
 			<?php } ?>
 
-			@if(isset($get_customer_detail[0]->cover_letter))
-			@if(!empty($get_customer_detail[0]->cover_letter))
-				<div>
-					<ul>
-						<li>
-							<?php $filePath=''; ?>
-							<img name="newinvoice" class="ml5 vam box20 boxhei20 csrp" src="{{ URL::asset('resources/assets/images/coverletterdown.png') }}" style="width:25px;height:20px;vertical-align: top;" onclick="return downloadcoverletter('../../../resources/assets/uploadandtemplates/upload/Coverletter/','{{ $get_customer_detail[0]->cover_letter }}');">
-							<a class="csrp" href="javascript:downloadcoverletter('../../../resources/assets/uploadandtemplates/upload/Coverletter/','{{ $get_customer_detail[0]->cover_letter }}');"><span class="mt5 csrp">{{ trans('messages.lbl_coverletter') }}</span></a>
-						</li>
-					</ul>
-				</div>
-			@endif
-			@endif
 		</div>
 
 		<!-- END SEARCH -->

@@ -48,7 +48,7 @@ $(document).ready(function() {
 				payment_date: {required: true, date: true, greaterThan: "#quot_date"},
 				userId: {required: true},
 				projectName: {required: true},
-				// projectType: {required: true},
+				projectType: {required: true},
 				bankName: {required: true},
 				branchName: {required: true},
 				branchNo: {required: true},
@@ -437,23 +437,11 @@ function invoicestatus(id, status) {
 	$("#frmextinvoiceindex").submit();
 }
 
-function sendmail(id,custid,estid) {
-	alert("Under Construction");
-	// var res = confirm("Do You want send the mail with New PDF?");
-	// if(res==true) {
-	// 	document.getElementById('estimate_id').value = id;
-	// 	document.getElementById('cust_id').value = custid;
-	// 	document.getElementById('estid').value = estid;
-	// 	$('#frmextinvoiceindex').attr('action', '../Estimation/sendmail?mainmenu='+mainmenu+'&time='+datetime);
-	// 	$("#frmextinvoiceindex").submit();
-	// }
-}
-
 function invoiceexceldownload(selectedyearmonth) {
 	var confirm_create = "Do you Want to Create Invoice";
 	if(confirm(confirm_create)) {
 		$('#selYearMonth').val(selectedyearmonth);
-		$('#frmextinvoiceexceldownload').attr('action', 'extinvoiceExceldownloadprocess?mainmenu='+mainmenu+'&time='+datetime);
+		$('#frmextinvoiceexceldownload').attr('action', 'extinvExceldwnldprocess?mainmenu='+mainmenu+'&time='+datetime);
 		$("#frmextinvoiceexceldownload").submit();
 	}
 }
@@ -461,9 +449,22 @@ function invoiceexceldownload(selectedyearmonth) {
 function invoicepdfdownload() {
 	var confirm_create = "Do you Want to Create Invoice";
 	if(confirm(confirm_create)) {
-		$('#frmextinvoicepdfdownload').attr('action', 'extinvoicePdfdownloadprocess?mainmenu='+mainmenu+'&time='+datetime);
-		$("#frmextinvoicepdfdownload").submit();
+		$('#frmextinvoiceindex').attr('action', 'extinvPdfdwnldprocess?mainmenu='+mainmenu+'&time='+datetime);
+		$("#frmextinvoiceindex").submit();
 	}
+}
+
+function invoicenewpdf(id,pdfflg,pdfimg) {
+	var res = confirm("Do You want to Create New PDF?");
+	if(res == true) {
+		if (pdfflg == 0) {
+			document.getElementById(id+"pdfimg").src = "../resources/assets/images/pdf.png";
+		}
+		document.getElementById('invoice_id').value = id;
+		$('#frmextinvoiceindex').attr('action', 'extinvnewPdfdwnldprocess?mainmenu='+mainmenu+'&time='+datetime);
+		$("#frmextinvoiceindex").submit();
+	}
+
 }
 
 function gotoinvoicedetails(id,keycnt) {
@@ -499,35 +500,14 @@ function getData_view(totalRec,currentRec,date_month,id,time,invid) {
 	$('#frmextinvoiceview').submit();
 }
 
-function gotoexceldownload(invid) {
-	alert("Under Construction");
-	// var confirm_create = "Do you Want to Create Invoice";
-	// if(confirm(confirm_create)) {
-	// 	$('#frmextinvoiceview').attr('action', 'exceldownloadprocess?mainmenu='+mainmenu+'&time='+datetime);
-	// 	$("#frmextinvoiceview").submit();
-	// }
-}
-
-function newexceldownload(invid) {
-	alert("Under Construction");
-	// var confirm_create = "Do you Want to Create Invoice";
-	// if(confirm(confirm_create)) {
-	// 	$('#frmextinvoiceview').attr('action', 'newexceldownloadprocess?mainmenu='+mainmenu+'&time='+datetime);
-	// 	$("#frmextinvoiceview").submit();
-	// }
-}
-
-function fncoverpopup(userId) {
-	alert("Under Construction");
-	// $('#coverpopup').load('../Estimation/coverpopup?userId='+userId+'&mainmenu='+mainmenu);
-	// $("#coverpopup").modal({
-	// 	backdrop: 'static',
-	// 	keyboard: false
-	// });
-	// $('#coverpopup').modal('show');
-}
-
 function fngotoindex() {
 	$('#frmextinvoiceview').attr('action', 'index'+'?mainmenu='+mainmenu+'&time='+datetime); 
 	$("#frmextinvoiceview").submit();
+}
+
+function filedownload(path,file) {
+	var confirm_download = "Do You Want To Download?";
+	if(confirm(confirm_download)) {
+		window.location.href="../app/Http/Common/downloadfile.php?file="+file+"&path="+path+"/";
+	}
 }
