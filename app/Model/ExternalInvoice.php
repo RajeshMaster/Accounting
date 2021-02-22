@@ -285,7 +285,6 @@ class ExternalInvoice extends Model {
 			$insert = DB::table('ext_invoice_registration')->insert($data[0]);
 		}
 
-		// To get Id For Register Amount
 
 		$result = DB::table('ext_invoice_registration')
 						->SELECT('*')
@@ -294,6 +293,15 @@ class ExternalInvoice extends Model {
 						->get();
 
 		if (isset($result[0])) {
+
+			// For Copy Flag process Added by Kumaran
+			if ($request->editflg == "copy") {
+				$update = DB::table('ext_invoice_registration')
+								->where('id', $result[0]->id)
+								->update(['copyFlg' => 1]);				
+			}
+
+			// To get Id For Register Amount
 			$lo = 0;
 			for ($i = 1; $i <= $tableamountcount; $i++) { 
 				$stat1 = 'work_specific'.$i;

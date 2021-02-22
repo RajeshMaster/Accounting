@@ -480,7 +480,7 @@ class ExternalInvoiceController extends Controller {
 	*/
 	public function addeditprocess(Request $request) {
 
-		if($request->editid != "") {
+		if($request->editflg == "edit") {
 
 			$update = ExternalInvoice::updExtInvoice($request);
 
@@ -830,13 +830,6 @@ class ExternalInvoiceController extends Controller {
 				$set_amount_array[0]['accountNo'] = $in_query[0]->accountNo;
 				$set_amount_array[0]['branchName'] = $in_query[0]->branchName;
 				$set_amount_array[0]['branchNo'] = $in_query[0]->branchNo;
-				if ($in_query[0]->accountType == 1) {
-					$type = "普通";
-				} else if ($in_query[0]->accountType == 2) {
-					$type = "Other";
-				} else {
-					$type = $in_query[0]->accountType;
-				}
 				$set_amount_array[0]['special_ins1'] = $in_query[0]->special_ins1;
 				$set_amount_array[0]['special_ins2'] = $in_query[0]->special_ins2;
 				$set_amount_array[0]['special_ins3'] = $in_query[0]->special_ins3;
@@ -1283,6 +1276,13 @@ class ExternalInvoiceController extends Controller {
 					$accountNo = "";
 				} else {
 					$accountNo = $in_query[0]->accountNo;
+				}
+				if ($in_query[0]->accountType == 1) {
+					$type = "普通";
+				} else if ($in_query[0]->accountType == 2) {
+					$type = "Other";
+				} else {
+					$type = $in_query[0]->accountType;
 				}
 				$pdf->Cell(64, 6.3, mb_convert_encoding($type."  ".$accountNo, 'SJIS', 'UTF-8'), 0, 0, 'L');
 				$pdf->SetXY(14.5, $new11);
