@@ -178,7 +178,7 @@
 					<div class="col-xs-8 pm0">
 						<label>
 							<div class="fll">
-								{{ Form::radio('tax', '1', (isset($invoicedata[0]->tax) && ($invoicedata[0]->tax)=="1") ? $invoicedata[0]->tax : '', 
+								{{ Form::radio('tax', '1', (isset($invoicedata[0]->tax) && ($invoicedata[0]->tax) == "1") ? $invoicedata[0]->tax : '', 
 									array('id' =>'tax1',
 											'name' => 'tax',
 											'data-label' => trans('messages.lbl_tax'),
@@ -193,7 +193,7 @@
 						</label>
 						<label>
 							<div class="fll">
-								{{ Form::radio('tax', '2', (isset($invoice[0]->tax) && ($invoice[0]->tax)=="2") ? $invoice[0]->tax : '', 
+								{{ Form::radio('tax', '2', (isset($invoicedata[0]->tax) && ($invoicedata[0]->tax) == "2") ? $invoicedata[0]->tax : '', 
 									array('id' =>'tax2',
 											'name' => 'tax',
 											'data-label' => trans('messages.lbl_tax'),
