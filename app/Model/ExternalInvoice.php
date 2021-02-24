@@ -226,6 +226,14 @@ class ExternalInvoice extends Model {
 		return $update;
 
 	}
+
+	public static function getautoincrement() {
+
+		$statement = DB::select("show table status like 'ext_invoice_registration'");
+
+		return $statement[0]->Auto_increment;
+
+	}
 	
 	public static function fnGenerateInvoiceID() {
 

@@ -494,6 +494,7 @@ class ExternalInvoiceController extends Controller {
 
 		} else {
 			$invoiceId = ExternalInvoice::fnGenerateInvoiceID();
+			$autoincId = ExternalInvoice::getautoincrement();
 			$insert = ExternalInvoice::insExtInvoice($request,$invoiceId);
 
 			if($insert) {
@@ -503,7 +504,13 @@ class ExternalInvoiceController extends Controller {
 				Session::flash('type', 'Inserted Unsucessfully!'); 
 				Session::flash('type', 'alert-danger'); 
 			}
+		}
 
+		$date = explode("-", $request->quot_date);
+		if (isset($date[0])) {
+			Session::flash('selYear', $date[0]);
+		} if (isset($date[1])) {
+			Session::flash('selMonth', $date[1]);
 		}
 
 		return Redirect::to('ExternalInvoice/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
