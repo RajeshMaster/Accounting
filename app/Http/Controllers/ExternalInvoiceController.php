@@ -714,7 +714,7 @@ class ExternalInvoiceController extends Controller {
 				$objTpl->getActiveSheet()->getStyle('D'.$x)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 				$objTpl->getActiveSheet()->setCellValue('D'.$x, $value->payment_date);
 				$objTpl->getActiveSheet()->setCellValue('E'.$x, $value->userName);
-				$objTpl->getActiveSheet()->setCellValue('F'.$x, $value->projectType);
+				$objTpl->getActiveSheet()->setCellValue('F'.$x, $value->ProjectTypeName);
 				$objTpl->getActiveSheet()->setCellValue('G'.$x, round($totalval));
 				$objTpl->getActiveSheet()->getStyle('G'.$x)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
 				$totalval = preg_replace('/,/', '', $value->totalval);
@@ -830,6 +830,7 @@ class ExternalInvoiceController extends Controller {
 				$set_amount_array[0]['accountNo'] = $in_query[0]->accountNo;
 				$set_amount_array[0]['branchName'] = $in_query[0]->branchName;
 				$set_amount_array[0]['branchNo'] = $in_query[0]->branchNo;
+				$set_amount_array[0]['bankKanaName'] = $in_query[0]->bankKanaName;
 				$set_amount_array[0]['special_ins1'] = $in_query[0]->special_ins1;
 				$set_amount_array[0]['special_ins2'] = $in_query[0]->special_ins2;
 				$set_amount_array[0]['special_ins3'] = $in_query[0]->special_ins3;
@@ -861,10 +862,10 @@ class ExternalInvoiceController extends Controller {
 					if(!empty($in_query)) {
 						$in_query[0]->$work_specificarr = "";
 						$in_query[0]->$quantityarr = "";
-						$in_query[0]->$unit_pricearr="";
-						$in_query[0]->$amountarr="";
-						$in_query[0]->$remarksarr="";
-						$in_query[0]->totalval=0;
+						$in_query[0]->$unit_pricearr = "";
+						$in_query[0]->$amountarr = "";
+						$in_query[0]->$remarksarr = "";
+						$in_query[0]->totalval = 0;
 					}
 				}
 			}
@@ -950,9 +951,9 @@ class ExternalInvoiceController extends Controller {
 				$pdf->SetXY(135, 65 );
 				$pdf->Write(4, iconv('UTF-8', 'SJIS', $display4));
 
-				$pdf->SetFont( 'MS-Mincho' ,'',9); 
+				$pdf->SetFont( 'MS-Mincho', '', 9); 
 				$pdf->SetXY(170, 29 );
-				$pdf->Write(4, iconv('UTF-8', 'SJIS', $in_query[0]->invoiceId));
+				$pdf->Write(4, iconv('UTF-8', 'SJIS', ""));
 
 				$pdf->SetXY(153, 20 );
 				$pdf->Cell(20, 6, "", 0, 1, 'L', true);
@@ -965,7 +966,7 @@ class ExternalInvoiceController extends Controller {
 
 				$pdf->SetFont( 'MS-Mincho' ,'B',11);
 				$pdf->SetXY(19, 37 );
-				$pdf->Write(6, mb_convert_encoding($in_query[0]->userName."御中",'SJIS', 'UTF-8'));
+				$pdf->Write(6, mb_convert_encoding($in_query[0]->userName." 御中", 'SJIS', 'UTF-8'));
 
 				// User Id Red Color
 				$pdf->SetTextColor(194,8,8);
@@ -1011,7 +1012,7 @@ class ExternalInvoiceController extends Controller {
 				$y = 0;
 				$n = 0;
 				$y_axis = 96.9;
-				if($data_count<19){
+				if($data_count < 19){
 					$tb_count = 19;
 				} else {
 					$tb_count = $data_count;
@@ -1277,12 +1278,16 @@ class ExternalInvoiceController extends Controller {
 				} else {
 					$accountNo = $in_query[0]->accountNo;
 				}
-				if ($in_query[0]->accountType == 1) {
-					$type = "普通";
-				} else if ($in_query[0]->accountType == 2) {
-					$type = "Other";
+				if (isset($in_query[0]->accountType)) {
+					if ($in_query[0]->accountType == 1) {
+						$type = "普通";
+					} else if(isset($in_query[0]->accountType) && $in_query[0]->accountType == 2) {
+						$type = "Other";
+					} else {
+						$type = $in_query[0]->accountType;
+					}
 				} else {
-					$type = $in_query[0]->accountType;
+					$type = "";
 				}
 				$pdf->Cell(64, 6.3, mb_convert_encoding($type."  ".$accountNo, 'SJIS', 'UTF-8'), 0, 0, 'L');
 				$pdf->SetXY(14.5, $new11);
@@ -1356,11 +1361,7 @@ class ExternalInvoiceController extends Controller {
 
 		//download secction
 		$path = "../AccountingUpload/ExternalInvoice";
-		if (isset($in_query[0])) {
-			$id = $in_query[0]->invoiceId;
-		} else {
-			$id = "PdfDwnld";
-		} 
+		$id = $date_month;
 		if(!is_dir($path)){
 			mkdir($path, 0777,true);
 		}
@@ -1373,14 +1374,14 @@ class ExternalInvoiceController extends Controller {
 		if(isset($in_query[0]->pdfFlg)) { 
 			if($in_query[0]->pdfFlg == 0){
 				if($filecount != 0){
-					$pdf_name = $in_query[0]->invoiceId."_".str_pad($filecount , 2, '0', STR_PAD_LEFT);
+					$pdf_name = $date_month."_".str_pad($filecount , 2, '0', STR_PAD_LEFT);
 					$pdfnamelist = $pdf_name;
 				} else {
-					$pdf_name = $in_query[0]->invoiceId;
+					$pdf_name = $date_month;
 					$pdfnamelist = $pdf_name;
 				}
 			} else {
-				$pdf_name = $in_query[0]->invoiceId;
+				$pdf_name = $date_month;
 				$pdfnamelist = $pdf_name;
 			}
 		}
@@ -1389,7 +1390,7 @@ class ExternalInvoiceController extends Controller {
 		$filepath = "../AccountingUpload/ExternalInvoice/".$pdf_name.".pdf";
 		$pdf->Output($filepath, 'F');
 		chmod($filepath, 0777);
-		$pdfname = "MB_EXTERNALINVOICE".$date_month;
+		$pdfname = "MB_EXTERNALINVOICE_".$date_month;
 		header('Pragma: public');  // required
 		header('Expires: 0');  // no cache
 		header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
@@ -1434,13 +1435,7 @@ class ExternalInvoiceController extends Controller {
 			$set_amount_array[0]['accountNo'] = $in_query[0]->accountNo;
 			$set_amount_array[0]['branchName'] = $in_query[0]->branchName;
 			$set_amount_array[0]['branchNo'] = $in_query[0]->branchNo;
-			if ($in_query[0]->accountType == 1) {
-				$type = "普通";
-			} else if ($in_query[0]->accountType == 2) {
-				$type = "Other";
-			} else {
-				$type = $in_query[0]->accountType;
-			}
+			$set_amount_array[0]['bankKanaName'] = $in_query[0]->bankKanaName;
 			$set_amount_array[0]['special_ins1'] = $in_query[0]->special_ins1;
 			$set_amount_array[0]['special_ins2'] = $in_query[0]->special_ins2;
 			$set_amount_array[0]['special_ins3'] = $in_query[0]->special_ins3;
@@ -1526,7 +1521,7 @@ class ExternalInvoiceController extends Controller {
 			$pdf->SetXY(20, 79.5);
 			$pdf->Cell(20, 5, mb_convert_encoding("ご請求金額", 'SJIS', 'UTF-8'), 0, 1, 'L', true);
 			$pdf->SetFont( 'MS-Mincho' ,'B',20);
-			$note = "請求書(控)";
+			$note = "請求書";
 			$pdf->SetXY(90, 21 );
 			$pdf->Write(10, iconv('UTF-8', 'SJIS', $note));
 
@@ -1543,7 +1538,7 @@ class ExternalInvoiceController extends Controller {
 
 			$pdf->SetFont( 'MS-Mincho' ,'',9); 
 			$pdf->SetXY(170, 29 );
-			$pdf->Write(4, iconv('UTF-8', 'SJIS', $in_query[0]->invoiceId));
+			$pdf->Write(4, iconv('UTF-8', 'SJIS', ""));
 
 			$pdf->SetXY(153, 20 );
 			$pdf->Cell(20, 6, "", 0, 1, 'L', true);
@@ -1556,7 +1551,7 @@ class ExternalInvoiceController extends Controller {
 
 			$pdf->SetFont( 'MS-Mincho' ,'B',11);
 			$pdf->SetXY(19, 37 );
-			$pdf->Write(6, mb_convert_encoding($in_query[0]->userName."御中",'SJIS', 'UTF-8'));
+			$pdf->Write(6, mb_convert_encoding($in_query[0]->userName." 御中",'SJIS', 'UTF-8'));
 
 			// User Id Red Color
 			$pdf->SetTextColor(194,8,8);
@@ -1863,6 +1858,17 @@ class ExternalInvoiceController extends Controller {
 			$pdf->SetXY(39.5, $yn1);
 			$pdf->Cell(5, 6.1, "", 0, 0, 'C');
 			$pdf->SetXY(44.5, $yn1);
+			if (isset($in_query[0]->accountType)) {
+				if ($in_query[0]->accountType == 1) {
+					$type = "普通";
+				} else if(isset($in_query[0]->accountType) && $in_query[0]->accountType == 2) {
+					$type = "Other";
+				} else {
+					$type = $in_query[0]->accountType;
+				}
+			} else {
+				$type = "";
+			}
 			if(!isset($in_query[0]->accountNo)) {
 				$accountNo = "";
 			} else {

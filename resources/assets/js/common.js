@@ -153,29 +153,29 @@ function pageload() {
   $(".se-pre-con").show();
 }
 function changelanguage() {
-	// var confm = confirm("Do You Want To Change The Language?.");
-	if (!confirm(err_changelanguage)) {
-		return false;
-	}
-	$.ajax({
-		type:'GET',
-		url:'changelanguage',
-		data: {
-			langvalue: $('#langvalue').val()
-		},
-		success:function(data){
-			location.reload(true);
-		},
-		error: function (data) {
-			// alert(data.status);
-		}
-	});
+  // var confm = confirm("Do You Want To Change The Language?.");
+  if (!confirm(err_changelanguage)) {
+    return false;
+  }
+  $.ajax({
+    type:'GET',
+    url:'changelanguage',
+    data: {
+      langvalue: $('#langvalue').val()
+    },
+    success:function(data){
+      location.reload(true);
+    },
+    error: function (data) {
+      // alert(data.status);
+    }
+  });
 }
 function isNumberKey(evt) { 
-  	var charCode = (evt.which) ? evt.which : event.keyCode
-  	if (charCode > 31 && (charCode < 48 || charCode > 57))
-  		return false;
-  	return true;
+    var charCode = (evt.which) ? evt.which : event.keyCode
+    if (charCode > 31 && (charCode < 48 || charCode > 57))
+      return false;
+    return true;
 }
 function isNumberKeywithminus(evt) { 
     var charCode = (evt.which) ? evt.which : event.keyCode
@@ -187,8 +187,8 @@ function isNumberKeywithminus(evt) {
     return true;
 }
 function up() {
-	alert("Under Construction");
-	// return false;
+  alert("Under Construction");
+  // return false;
 }
 function setDatePicker(datefield) {
   $('.'+datefield).datetimepicker({
@@ -496,7 +496,7 @@ function fnCalculateTotal(tbn) {
     document.getElementById('totval').value = "";
   }
 }
-function fnControlAddOrRemove(cnt,invflg=null) {
+function fnControlAddOrRemove(cnt,invflg) {
     var rowCount = $('#workspectable tr').length-1;
 
     var addrow = document.getElementsByName('addrow');
@@ -621,7 +621,7 @@ function blockSpecialChar(e){
   return ((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8 || k == 32 || (k >= 48 && k <= 57));
 }
 
-function fnAddTR(cnt,flg=null) {
+function fnAddTR(cnt,flg) {
   var invflg = "";
   if (flg == 1) {
     invflg = 1;
@@ -725,7 +725,7 @@ function fnAddTR(cnt,flg=null) {
   fnControlAddOrRemove(rowCount,invflg);
 }
 
-function fnRemoveTR(cnt,flg=null) {
+function fnRemoveTR(cnt,flg) {
   var invflg = "";
   if (flg == 1) {
     invflg = 1;

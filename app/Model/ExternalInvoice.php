@@ -76,12 +76,14 @@ class ExternalInvoice extends Model {
 		if (!empty($request->searchmethod)) {
 			$wherecondition = "";
 			$Invoice = db::table('ext_invoice_registration AS main')
-							->select('main.*','works.amount','works.work_specific','works.quantity','users.userName', DB::raw("(CASE 
+							->select('main.*','works.amount','works.work_specific','works.quantity','users.userName','dev_estimatesetting.ProjectType AS ProjectTypeName', 
+								DB::raw("(CASE 
 								WHEN main.classification = 2 THEN 3
 								ELSE 0
 								END) AS orderbysent"))
 							->leftJoin('ext_mstuser AS users', 'main.userId', '=', 'users.id')
 							->leftJoin('extinv_work_amount_det AS works', 'main.invoiceId', '=', 'works.invoice_id')
+							->leftJoin('dev_estimatesetting','dev_estimatesetting.id','=','main.projectType')
 							->WHERE('main.delFlg',0);
 
 			if ($filter == "2") {
@@ -180,13 +182,13 @@ class ExternalInvoice extends Model {
 		} else {
 
 			$db = DB::connection('mysql');
-			$Invoice = $db->TABLE($db->raw("(SELECT main.quot_date, main.id, main.userId,main.invoiceId, main.payment_date, main.delFlg, main.copyFlg, main.projectName, main.classification, main.createdBy, main.projectType, main.mailFlg, main.pdfFlg, main.tax, main.paid_status, works.amount, works.work_specific, works.quantity, works.unit_price, works.remarks, users.userName,
-				(CASE WHEN main.classification = 2 THEN 3
+			$Invoice = $db->TABLE($db->raw("(SELECT main.quot_date, main.id, main.userId,main.invoiceId, main.payment_date, main.delFlg, main.copyFlg, main.projectName, main.classification, main.createdBy, main.projectType, main.mailFlg, main.pdfFlg, main.tax, main.paid_status, works.amount, works.work_specific, works.quantity, works.unit_price, works.remarks, users.userName, dev_estimatesetting.ProjectType AS ProjectTypeName , (CASE WHEN main.classification = 2 THEN 3
         		ELSE 0
 				END) AS orderbysent,main.totalval 
 			FROM  ext_invoice_registration main
 			left join extinv_work_amount_det works on works.invoice_id = main.invoiceId 
 			left join ext_mstuser users on users.id = main.userId 
+			left join dev_estimatesetting on dev_estimatesetting.id = main.projectType
 			WHERE main.delFlg = 0 AND main.quot_date LIKE '%$date_month%'
 			GROUP BY invoiceId Order By invoiceId Asc, quot_date Asc) AS DDD"));
 
@@ -478,11 +480,13 @@ class ExternalInvoice extends Model {
 		$db = DB::connection('mysql');
 
 		$query = $db->TABLE(
-			$db->raw("(SELECT ext_invoice_registration.id, invoiceId, userId, projectName, projectType, tax, quot_date, totalval, special_ins1, special_ins2, special_ins3, special_ins4, special_ins5, payment_date, personalMark, paid_status, pdfFlg, mailFlg, accessFlg, classification, memo, copyFlg, inv_primery_key_id, work_specific, quantity, amount, unit_price, remarks, ext_mstuser.userName FROM ext_invoice_registration
+			$db->raw("(SELECT ext_invoice_registration.id, invoiceId, userId, projectName, ext_invoice_registration.projectType, tax, quot_date, totalval, special_ins1, special_ins2, special_ins3, special_ins4, special_ins5, payment_date, personalMark, paid_status, pdfFlg, mailFlg, accessFlg, classification, memo, copyFlg, inv_primery_key_id, work_specific, quantity, amount, unit_price, remarks, ext_mstuser.userName, dev_estimatesetting.ProjectType AS ProjectTypeName FROM ext_invoice_registration
 
 				LEFT JOIN extinv_work_amount_det ON extinv_work_amount_det.inv_primery_key_id = ext_invoice_registration.id
 
 				LEFT JOIN ext_mstuser ON ext_mstuser.id = ext_invoice_registration.userId 
+
+				LEFT JOIN dev_estimatesetting ON dev_estimatesetting.id = ext_invoice_registration.projectType 
 
 				WHERE ext_invoice_registration.id = '$id') as tb1"))
 
@@ -523,13 +527,14 @@ class ExternalInvoice extends Model {
 
 		$db = DB::connection('mysql');
 
-		$ExtInvoice = $db->TABLE($db->raw("(SELECT main.quot_date, main.id, main.invoiceId, main.userId, main.payment_date, main.delFlg, main.copyFlg, main.projectName, main.CreatedBy, main.pdfFlg, main.projectType, main.mailFlg, main.paid_status, main.tax, main.classification, users.userName, users.bankKanaName, users.bankName, users.branchName, users.branchNo, users.accountNo, works.amount, works.work_specific, works.quantity, works.unit_price, works.remarks, main.totalval,
+		$ExtInvoice = $db->TABLE($db->raw("(SELECT main.quot_date, main.id, main.invoiceId, main.userId, main.payment_date, main.delFlg, main.copyFlg, main.projectName, main.CreatedBy, main.pdfFlg, main.projectType, main.mailFlg, main.paid_status, main.tax, main.classification, users.userName, users.bankKanaName, users.bankName, users.branchName, users.branchNo, users.accountNo, works.amount, works.work_specific, works.quantity, works.unit_price, works.remarks, main.totalval, dev_estimatesetting.ProjectType AS ProjectTypeName
 			(CASE WHEN main.classification = 2 THEN 3
 				ELSE 0
 				END) AS orderbysent
 		FROM ext_invoice_registration main 
 		LEFT JOIN extinv_work_amount_det works on main.invoiceId = works.invoice_id 
 		LEFT JOIN ext_mstuser users ON main.userId = users.id 
+		LEFT JOIN dev_estimatesetting ON main.projectType = dev_estimatesetting.id
 
 		WHERE main.delFlg = 0 AND main.quot_date LIKE '%$date_month%'
 

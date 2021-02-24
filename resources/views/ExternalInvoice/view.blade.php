@@ -290,7 +290,7 @@
 					</div>
 					<div class="col-xs-9 pm0" style="border-bottom: 1px solid #A7D4DD">
 						<label>
-							{{ (isset($getprojecttype[0]->projectType)?$getprojecttype[0]->projectType:"Nill") }}
+							{{ (isset($invoicedata[0]->ProjectTypeName)?$invoicedata[0]->ProjectTypeName:"Nill") }}
 						</label>
 					</div>
 				</div>

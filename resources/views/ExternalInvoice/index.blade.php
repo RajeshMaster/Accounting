@@ -324,7 +324,7 @@
 											{{ trans('messages.lbl_projecttype') }} :
 										</span>
 										<span class="f12">
-											{{ $data->projectType }}
+											{{ $data->ProjectTypeName }}
 										</span>
 									</div>
 									<div class="f12 vam label_gray boxhei24">
