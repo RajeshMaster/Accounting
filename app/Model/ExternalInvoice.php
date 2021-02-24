@@ -526,7 +526,7 @@ class ExternalInvoice extends Model {
 
 		$db = DB::connection('mysql');
 
-		$ExtInvoice = $db->TABLE($db->raw("(SELECT main.quot_date, main.id, main.invoiceId, main.userId, main.payment_date, main.delFlg, main.copyFlg, main.projectName, main.CreatedBy, main.pdfFlg, main.projectType, main.mailFlg, main.paid_status, main.tax, main.classification, users.userName, users.bankKanaName, users.bankName, users.branchName, users.branchNo, users.accountNo, works.amount, works.work_specific, works.quantity, works.unit_price, works.remarks, main.totalval, dev_estimatesetting.ProjectType AS ProjectTypeName
+		$ExtInvoice = $db->TABLE($db->raw("(SELECT main.quot_date, main.id, main.invoiceId, main.userId, main.payment_date, main.delFlg, main.copyFlg, main.projectName, main.CreatedBy, main.pdfFlg, main.projectType, main.mailFlg, main.paid_status, main.tax, main.classification, users.userName, users.bankKanaName, users.bankName, users.branchName, users.branchNo, users.accountNo, works.amount, works.work_specific, works.quantity, works.unit_price, works.remarks, main.totalval, dev_estimatesetting.ProjectType AS ProjectTypeName,
 			(CASE WHEN main.classification = 2 THEN 3
 				ELSE 0
 				END) AS orderbysent
