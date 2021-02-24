@@ -971,7 +971,7 @@ class ExternalInvoiceController extends Controller {
 				// User Id Red Color
 				$pdf->SetTextColor(194,8,8);
 				$pdf->SetXY(19, 49 );
-				$pdf->Write(6, mb_convert_encoding($in_query[0]->userId,'SJIS','UTF-8'));
+				$pdf->Write(6, mb_convert_encoding("",'SJIS','UTF-8'));
 
 				$pdf->SetTextColor(0,0,0);
 				$pdf->SetXY(19, 41.6);
@@ -1556,7 +1556,7 @@ class ExternalInvoiceController extends Controller {
 			// User Id Red Color
 			$pdf->SetTextColor(194,8,8);
 			$pdf->SetXY(19, 49 );
-			$pdf->Write(6, mb_convert_encoding($in_query[0]->userId,'SJIS','UTF-8'));
+			$pdf->Write(6, mb_convert_encoding("",'SJIS','UTF-8'));
 
 			$pdf->SetTextColor(0,0,0);
 			$pdf->SetXY(19, 41.6);
