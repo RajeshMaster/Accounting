@@ -158,6 +158,7 @@
 						<label>{{ trans('messages.lbl_invoiceno') }}<span class="fr ml2 red"> * </span></label>
 					</div>
 					<div class="col-xs-8 pm0">
+						<?php if(isset($invoicedata[0]->invoiceNumber) && $request->editflg =="copy") { $invoicedata[0]->invoiceNumber = ""; } ?>
 						{{ Form::text('invoiceNumber',(isset($invoicedata[0]->invoiceNumber)) ? $invoicedata[0]->invoiceNumber : '',
 								array('id'=>'invoiceNumber',
 									'name' => 'invoiceNumber',

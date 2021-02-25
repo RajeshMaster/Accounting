@@ -1,8 +1,6 @@
 @extends('layouts.app')
 @section('content')
 
-<?php use App\Model\Invoice; ?>
-@php use App\Http\Common; @endphp
 @php use App\Http\Helpers; @endphp
 
 <script type="text/javascript">
