@@ -182,7 +182,7 @@ class ExternalInvoice extends Model {
 		} else {
 
 			$db = DB::connection('mysql');
-			$Invoice = $db->TABLE($db->raw("(SELECT main.quot_date, main.id, main.userId,main.invoiceId, main.payment_date, main.delFlg, main.copyFlg, main.projectName, main.classification, main.createdBy, main.projectType, main.mailFlg, main.pdfFlg, main.tax, main.paid_status, works.amount, works.work_specific, works.quantity, works.unit_price, works.remarks, users.userName, dev_estimatesetting.ProjectType AS ProjectTypeName , (CASE WHEN main.classification = 2 THEN 3
+			$Invoice = $db->TABLE($db->raw("(SELECT main.quot_date, main.id, main.userId,main.invoiceId, main.invoiceNumber, main.payment_date, main.delFlg, main.copyFlg, main.projectName, main.classification, main.createdBy, main.projectType, main.mailFlg, main.pdfFlg, main.tax, main.paid_status, works.amount, works.work_specific, works.quantity, works.unit_price, works.remarks, users.userName, dev_estimatesetting.ProjectType AS ProjectTypeName , (CASE WHEN main.classification = 2 THEN 3
         		ELSE 0
 				END) AS orderbysent,main.totalval 
 			FROM  ext_invoice_registration main
@@ -270,6 +270,7 @@ class ExternalInvoice extends Model {
 
  		$data[] =	[	
  						'invoiceId' =>  $invoiceId,
+ 						'invoiceNumber' =>  $request->invoiceNumber,
 						'userId' => $request->userId,
 						'projectName' => $request->projectName,
 						'projectType' => $request->projectType,
@@ -358,6 +359,7 @@ class ExternalInvoice extends Model {
 
  		$data[] =	[	
  						'invoiceId' =>  $request->invoiceId,
+ 						'invoiceNumber' =>  $request->invoiceNumber,
 						'userId' => $request->userId,
 						'projectName' => $request->projectName,
 						'projectType' => $request->projectType,
@@ -367,6 +369,8 @@ class ExternalInvoice extends Model {
 						'personalMark' => $request->personalMark,
 						'memo' => $request->memo,
 						'totalval' => $request->totval,
+						'pdfFlg' => 0,
+						'pdfName' => "",
 						'updatedBy' => Auth::user()->username
 					];
 
@@ -487,7 +491,7 @@ class ExternalInvoice extends Model {
 		$db = DB::connection('mysql');
 
 		$query = $db->TABLE(
-			$db->raw("(SELECT ext_invoice_registration.id, invoiceId, userId, projectName, ext_invoice_registration.projectType, tax, quot_date, totalval, special_ins1, special_ins2, special_ins3, special_ins4, special_ins5, payment_date, personalMark, paid_status, pdfFlg, mailFlg, accessFlg, classification, memo, copyFlg, inv_primery_key_id, work_specific, quantity, amount, unit_price, remarks, ext_mstuser.userName, dev_estimatesetting.ProjectType AS ProjectTypeName FROM ext_invoice_registration
+			$db->raw("(SELECT ext_invoice_registration.id, invoiceId, invoiceNumber, userId, projectName, ext_invoice_registration.projectType, tax, quot_date, totalval, special_ins1, special_ins2, special_ins3, special_ins4, special_ins5, payment_date, personalMark, paid_status, pdfFlg, mailFlg, accessFlg, classification, memo, copyFlg, inv_primery_key_id, work_specific, quantity, amount, unit_price, remarks, ext_mstuser.userName, dev_estimatesetting.ProjectType AS ProjectTypeName FROM ext_invoice_registration
 
 				LEFT JOIN extinv_work_amount_det ON extinv_work_amount_det.inv_primery_key_id = ext_invoice_registration.id
 
@@ -534,7 +538,7 @@ class ExternalInvoice extends Model {
 
 		$db = DB::connection('mysql');
 
-		$ExtInvoice = $db->TABLE($db->raw("(SELECT main.quot_date, main.id, main.invoiceId, main.userId, main.payment_date, main.delFlg, main.copyFlg, main.projectName, main.CreatedBy, main.pdfFlg, main.projectType, main.mailFlg, main.paid_status, main.tax, main.classification, users.userName, users.bankKanaName, users.bankName, users.branchName, users.branchNo, users.accountNo, works.amount, works.work_specific, works.quantity, works.unit_price, works.remarks, main.totalval, dev_estimatesetting.ProjectType AS ProjectTypeName,
+		$ExtInvoice = $db->TABLE($db->raw("(SELECT main.quot_date, main.id, main.invoiceId, main.invoiceNumber, main.userId, main.payment_date, main.delFlg, main.copyFlg, main.projectName, main.CreatedBy, main.pdfFlg, main.projectType, main.mailFlg, main.paid_status, main.tax, main.classification, users.userName, users.bankKanaName, users.bankName, users.branchName, users.branchNo, users.accountNo, works.amount, works.work_specific, works.quantity, works.unit_price, works.remarks, main.totalval, dev_estimatesetting.ProjectType AS ProjectTypeName,
 			(CASE WHEN main.classification = 2 THEN 3
 				ELSE 0
 				END) AS orderbysent

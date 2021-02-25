@@ -155,10 +155,24 @@
 			<fieldset style="border: 1px solid #79d7ec !important;">
 				<div class="col-xs-12 mt10">
 					<div class="col-xs-4 text-right clr_blue">
+						<label>{{ trans('messages.lbl_invoiceno') }}<span class="fr ml2 red"> * </span></label>
+					</div>
+					<div class="col-xs-8 pm0">
+						{{ Form::text('invoiceNumber',(isset($invoicedata[0]->invoiceNumber)) ? $invoicedata[0]->invoiceNumber : '',
+								array('id'=>'invoiceNumber',
+									'name' => 'invoiceNumber',
+									'maxlength' => '10',
+									'data-label' => trans('messages.lbl_invoiceno'),
+									'class'=>'form-control pl5 box30per')) 
+						}}
+					</div>
+				</div>
+				<div class="col-xs-12 mt10">
+					<div class="col-xs-4 text-right clr_blue">
 						<label>{{ trans('messages.lbl_invoicedate') }}<span class="fr ml2 red"> * </span></label>
 					</div>
 					<div class="col-xs-8 pm0">
-						<?php if($request->editflg =="copy") { $invoicedata[0]->quot_date = ""; } ?>
+						<?php if(isset($invoicedata[0]->quot_date) && $request->editflg =="copy") { $invoicedata[0]->quot_date = ""; } ?>
 							{{ Form::text('quot_date',(isset($invoicedata[0]->quot_date)) ? $invoicedata[0]->quot_date : '',
 								array('id'=>'quot_date',
 									'name' => 'quot_date',
@@ -188,7 +202,8 @@
 							</div>
 							<div class="fll">
 								<label class="ml5 mt3 black fwn" for="tax1">
-								{{ trans('messages.lbl_withoutax') }}</label>
+									{{ trans('messages.lbl_withtax') }}
+								</label>
 							</div>
 						</label>
 						<label>
@@ -201,7 +216,8 @@
 							</div>
 							<div class="fll">
 								<label class="ml5 mt3 black fwn" for="tax2">
-								{{ trans('messages.lbl_withtax') }}</label>
+									{{ trans('messages.lbl_withoutax') }}
+								</label>
 							</div>
 						</label>
 					</div>
@@ -213,6 +229,7 @@
 						</label>
 					</div>
 					<div class="col-xs-8 pm0" style="display: inline-block;">
+						<?php if(isset($invoicedata[0]->payment_date) && $request->editflg =="copy") { $invoicedata[0]->payment_date = ""; } ?>
 						{{ Form::text('payment_date', (isset($invoicedata[0]->payment_date)?$invoicedata[0]->payment_date:""),
 							array('id'=>'payment_date',
 									'autocomplete'=>'off',
@@ -225,7 +242,7 @@
 					<label class="mt10 ml2 fa fa-calendar fa-lg" for="payment_date" aria-hidden="true"></label>
 					</div>
 				</div>
-				<div class="col-xs-12 mt5 mb110">
+				<div class="col-xs-12 mt5 mb40">
 					<div class="col-xs-4 text-right clr_blue">
 						<label>{{ trans('messages.lbl_personalmark') }}
 							<span class="fr ml2 red"> * </span>

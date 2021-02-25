@@ -263,6 +263,7 @@
 								<div class="">
 									<label class="pm0 vam" style="color:#136E83;">
 										{{ $data->invoiceId }}
+										{{ $data->invoiceNumber }}
 									</label>
 								</div>
 								<div>

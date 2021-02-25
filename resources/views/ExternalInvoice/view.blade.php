@@ -228,11 +228,22 @@
 								</span>
 							@endif
 							<?php echo "<br>"; ?>
+							@if(!empty($getbankdetails[0]->pincode))
+								<span>
+									@if(isset($getbankdetails[0]->pincode))
+										{!! nl2br(e($getbankdetails[0]->pincode)) !!}
+									@else
+									@endif
+								</span>
+							@endif
+							<?php echo "<br>"; ?>
 							@if (!empty($getbankdetails[0]->mobileno)) 
 								<span>
 									{{ (isset($getbankdetails[0]->mobileno)?$getbankdetails[0]->mobileno:"") }}
 								</span>
 							@endif
+							<?php echo "<br>"; ?>
+							<span></span>
 						</div>
 					</div>
 				</div>
@@ -242,12 +253,24 @@
 					<div class="col-xs-12 pm0">
 						<div class="col-xs-6 text-right clr_blue" style="background: #b0e0f2">
 							<label class="fwn" style="color: black;">
-								{{ trans('messages.lbl_invoicenumber') }}
+								{{ trans('messages.lbl_reginvoice') }}
 							</label>
 						</div>
 						<div class="col-xs-6 brown">
 							<lablel style="font-weight: bold;">
 								{{ (isset($invoicedata[0]->invoiceId)?$invoicedata[0]->invoiceId:"Nill") }}
+							</lablel>
+						</div>
+					</div>
+					<div class="col-xs-12 pm0">
+						<div class="col-xs-6 text-right clr_blue" style="background: #b0e0f2">
+							<label class="fwn" style="color: black;">
+								{{ trans('messages.lbl_invoicenumber') }}
+							</label>
+						</div>
+						<div class="col-xs-6 brown">
+							<lablel style="font-weight: bold;">
+								{{ (isset($invoicedata[0]->invoiceNumber)?$invoicedata[0]->invoiceNumber:"Nill") }}
 							</lablel>
 						</div>
 					</div>

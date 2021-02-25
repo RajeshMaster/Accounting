@@ -53,6 +53,7 @@ $(document).ready(function() {
 				branchName: {required: true},
 				branchNo: {required: true},
 				bankKanaName: {required: true},
+				invoiceNumber: {required: true},
 
 			},
 

@@ -828,6 +828,7 @@ class ExternalInvoiceController extends Controller {
 			if (isset($in_amount_query[0])) {
 				$set_amount_array[0]['id'] = $in_query[0]->id;
 				$set_amount_array[0]['invoiceId'] = $in_query[0]->invoiceId;
+				$set_amount_array[0]['invoiceNumber'] = $in_query[0]->invoiceNumber;
 				$set_amount_array[0]['userId'] = $in_query[0]->userId;
 				$set_amount_array[0]['quot_date'] = $in_query[0]->quot_date;
 				$set_amount_array[0]['tax'] = $in_query[0]->tax;
@@ -960,7 +961,7 @@ class ExternalInvoiceController extends Controller {
 
 				$pdf->SetFont( 'MS-Mincho', '', 9); 
 				$pdf->SetXY(170, 29 );
-				$pdf->Write(4, iconv('UTF-8', 'SJIS', ""));
+				$pdf->Write(4, iconv('UTF-8', 'SJIS', $in_query[0]->invoiceNumber));
 
 				$pdf->SetXY(153, 20 );
 				$pdf->Cell(20, 6, "", 0, 1, 'L', true);
@@ -1433,6 +1434,7 @@ class ExternalInvoiceController extends Controller {
 		if (isset($in_amount_query[0])) {
 			$set_amount_array[0]['id'] = $in_query[0]->id;
 			$set_amount_array[0]['invoiceId'] = $in_query[0]->invoiceId;
+			$set_amount_array[0]['invoiceNumber'] = $in_query[0]->invoiceNumber;
 			$set_amount_array[0]['userId'] = $in_query[0]->userId;
 			$set_amount_array[0]['quot_date'] = $in_query[0]->quot_date;
 			$set_amount_array[0]['tax'] = $in_query[0]->tax;
@@ -1545,7 +1547,7 @@ class ExternalInvoiceController extends Controller {
 
 			$pdf->SetFont( 'MS-Mincho' ,'',9); 
 			$pdf->SetXY(170, 29 );
-			$pdf->Write(4, iconv('UTF-8', 'SJIS', ""));
+			$pdf->Write(4, iconv('UTF-8', 'SJIS', $in_query[0]->invoiceNumber));
 
 			$pdf->SetXY(153, 20 );
 			$pdf->Cell(20, 6, "", 0, 1, 'L', true);

@@ -1465,7 +1465,7 @@ return [
 	'lbl_expensesDtls' => 'Expenses Details',
 
 	// External User
-	'lbl_extInvoice' => 'External Invoice',
+	'lbl_extInvoice' => '外部請求',
 	'lbl_pincode' => 'Pincode',
 
 ];
