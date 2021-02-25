@@ -387,11 +387,15 @@
 			
 			@endif
 			@if(Session::get('userclassification') == 4 || Session::get('userclassification') == 5)
-				@if(isset($request->mainmenu) && ($request->mainmenu == "Auditing" || $request->mainmenu == "salarycalcplus" || $request->mainmenu == "AuditingAccounting" || $request->mainmenu == "AudPayment" || $request->mainmenu == "AuditingCreditCardPay") || ($request->mainmenu == "AuditingLoanView") || ($request->mainmenu == "AuditingExpensesData"))
+				@if(isset($request->mainmenu) && ($request->mainmenu == "Auditing" || $request->mainmenu == "salarycalcplus" || $request->mainmenu == "AuditingAccounting" || $request->mainmenu == "AudPayment" || $request->mainmenu == "AuditingCreditCardPay") || ($request->mainmenu == "AuditingLoanView") || ($request->mainmenu == "AuditingExpensesData") || ($request->mainmenu == "AuditingExtInvoice"))
 					<div id="auditing_sub_1">
 						<a href="{{ url('Auditing/index?mainmenu=Auditing&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_invoice') }}</a>
 					</div>
-
+					<div id="auditing_sub_7">
+						<a class="pageload" href="{{ url('ExternalInvoice/index?mainmenu=AuditingExtInvoice&time='.date('Ymdhis')) }}" 
+							style="text-decoration:none;color:white;">
+							{{ trans('messages.lbl_extInvoice') }}</a>
+					</div>
 					<div id="auditing_sub_2">
 						<a href="{{ url('salarycalcplus/index?mainmenu=salarycalcplus&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_salary_det') }}</a>
 					</div>

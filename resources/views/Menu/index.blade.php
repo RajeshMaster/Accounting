@@ -336,6 +336,11 @@
 					</a>
 				</div>
 				<div class="alinkEng ml20 mt5 tal">
+					<a class="pageload csrp btn-link" href="{{ url('ExternalInvoice/index?mainmenu=AuditingExtInvoice&time='.date('Ymdhis')) }}" style="color:blue;font-size: 13px;">
+						{{ trans('messages.lbl_extInvoice') }}
+					</a>
+				</div>
+				<div class="alinkEng ml20 mt5 tal">
 				<a class="pageload csrp btn-link" href="{{ url('salarycalcplus/index?mainmenu=salarycalcplus&time='.date('Ymdhis')) }}" style="color:blue;font-size: 13px;">
 						{{ trans('messages.lbl_salary_det') }}
 					</a>

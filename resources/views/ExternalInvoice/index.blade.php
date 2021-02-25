@@ -8,6 +8,15 @@
 	$(document).ready(function() {
 		setDatePicker("from_date");
 		setDatePicker("to_date");
+		if($('#hidAuth').val() == "5" || mainmenu == "AuditingExtInvoice"){
+			$(".divdisplay").css("display", "none");
+			$(".chnageorder").css("display", "none");
+			$(".Auddivdisplay").css("");
+  		} else {
+  			$(".divdisplay").css("");
+  			$(".chnageorder").css("");
+  			$(".Auddivdisplay").css("display", "none");
+  		}
 	});
 
 	function mulclick(divid){
@@ -114,7 +123,11 @@
 
 <div class="CMN_display_block" id="main_contents">
 <!-- article to select the main&sub menu -->
+@if($request->mainmenu =="AuditingExtInvoice")
+<article id="auditing" class="DEC_flex_wrapper " data-category="auditing auditing_sub_7">
+@else
 <article id="external" class="DEC_flex_wrapper " data-category="external external_sub_2">
+@endif
 
 	{{ Form::open(array('name'=>'frmextinvoiceindex', 
 						'id'=>'frmextinvoiceindex', 
@@ -167,17 +180,17 @@
 	<!-- End Heading -->
 
 	<div class="col-xs-12 pm0 pull-left">
-		<div class="col-xs-8 ml10 pm0 pull-left mt10">
+		<div class="col-xs-8 ml10 pm0 pull-left mt10 mb10">
 			<a href="javascript:addedit('add','');"  
-				class="btn btn-success box100"><span class="fa fa-plus"></span> 
+			class="btn btn-success box100 divdisplay"><span class="fa fa-plus"></span> 
 				{{ trans('messages.lbl_register') }}</a>
 			@if(count($TotEstquery) != 0)
 			<a href="javascript:invoiceexceldownload('{{ $date_month }}');"  
-				class="btn btn-primary box145">
+				class="btn btn-primary box145 divdisplay">
 				<span class="fa fa-download"></span> 
 				{{ trans('messages.lbl_excel') }} {{ trans('messages.lbl_download') }}
 			</a>
-			<a href="javascript:invoicepdfdownload();"  class="btn btn-primary box145">
+			<a href="javascript:invoicepdfdownload();" class="btn btn-primary box145">
 				<span class="fa fa-download"></span> 
 				{{ trans('messages.lbl_pdfdwnld') }}</a>
 			@endif
@@ -195,7 +208,7 @@
 		@php Session::forget('success'); @endphp
 		<!-- Session msg -->
 
-		<div class="col-xs-12 pm0 pull-left">
+		<div class="col-xs-12 pm0 pull-left divdisplay">
 			<div class="box55per pm0 CMN_display_block pull-left">
 				<a class="btn btn-link {{ $disabledall }}" 
 					href="javascript:filter('1');">{{ trans('messages.lbl_all') }} 
@@ -301,7 +314,7 @@
 							</td>
 							<td>
 								<div class="ml5 pt5">
-									<div class="mb2">
+									<div class="mb2 divdisplay">
 										<a href="javascript:usernameclick('{{ $data->userId }}');" class="blue">
 											<b class="blue">
 												{{ $data->userName }}
@@ -344,7 +357,7 @@
 									</div>
 
 								</div>
-								<div class="ml5 mb2 smallBlue">
+								<div class="ml5 mb2 smallBlue divdisplay">
 									<div class="CMN_display_block">
 										@if($data->paid_status != 1 && $data->classification==0)
 											<a href="javascript:gotoinvoiceedit('{{ $data->id }}','{{ $key+1 }}');" class="anchorstyle">{{ trans('messages.lbl_edit') }}</a>&nbsp;<span class="ml3">|</span>
@@ -485,7 +498,7 @@
 
 	<!-- SEARCH -->
 
-	<div style="top:134px;position: fixed;" 
+	<div class = "divdisplay" style="top:134px;position: fixed;" 
 		@if ($request->searchmethod == 1 || $request->searchmethod == 2) 
 			class="open CMN_fixed pm0" 
 		@else 
