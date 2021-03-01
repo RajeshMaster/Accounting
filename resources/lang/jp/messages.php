@@ -1367,6 +1367,12 @@ return [
 	'lbl_paymentamount' => '請求金額',
 	'lbl_paidamt' => '入金金額',
 
+	/* Accounting Bank Passbook */
+	'lbl_passbookdetail' => '銀行通帳',
+	'lbl_pageNo' => 'ページ番号',
+	'lbl_next' => 'Next',
+	'lbl_pgupload' => 'ページアップロード',
+
 	/* Auditing  */
 	'lbl_auditing' => 'Auditing',
 	'lbl_autodebit' => 'Auto Debit',

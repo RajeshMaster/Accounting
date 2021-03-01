@@ -363,13 +363,17 @@
 			<!-- //Customer sub -->
 			@endif
 	
-			@if(isset($request->mainmenu) && ($request->mainmenu == "Accounting") || ($request->mainmenu == "AccBankDetail") || ($request->mainmenu == "CreditCardPay") || ($request->mainmenu == "LoanView") || ($request->mainmenu == "ExpensesData"))
+			@if(isset($request->mainmenu) && ($request->mainmenu == "Accounting") || ($request->mainmenu == "AccBankDetail") || ($request->mainmenu == "CreditCardPay") || ($request->mainmenu == "LoanView") || ($request->mainmenu == "ExpensesData") || ($request->mainmenu == "AccBankPassbookDtls"))
 				<div id="accounting_sub_1">
 					<a href="{{ url('Accounting/index?mainmenu=Accounting&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_accounting') }}</a>
 				</div>
 
 				<div id="accounting_sub_4">
 					<a href="{{ url('AccBankDetail/index?mainmenu=AccBankDetail&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_bankdetail') }}</a>
+				</div>
+
+				<div id="accounting_sub_7">
+					<a href="{{ url('AccBankPassbookDtls/index?mainmenu=AccBankPassbookDtls&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_passbookdetail') }}</a>
 				</div>
 
 				<div id="accounting_sub_2">

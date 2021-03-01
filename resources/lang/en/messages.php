@@ -1192,6 +1192,12 @@ return [
 	'lbl_paymentamount' => 'Payment Amount',
 	'lbl_paidamt' => 'Paid Amount',
 
+	/* Accounting Bank Passbook */
+	'lbl_passbookdetail' => 'Passbook',
+	'lbl_pageNo' => 'Page No',
+	'lbl_next' => 'Next',
+	'lbl_pgupload' => 'Page Upload',
+
 	/* Auditing  */
 	'lbl_auditing' => 'Auditing',
 	'lbl_autodebit' => 'Auto Debit',
