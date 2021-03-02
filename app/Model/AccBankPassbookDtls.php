@@ -231,13 +231,13 @@ class AccBankPassbookDtls extends Model {
 
 						->SELECT('*');
 
-		if ($request->edit_id != "") {
+		if ($request->edit_flg == 2) {
 			$result = $result->WHERE('id', '!=' ,$request->edit_id)
 							->WHERE('bankId', '=' ,$request->bankId)
-							->WHERERAW("'$request->dateRangeFrom' BETWEEN dateRangeFrom AND IF(dateRangeTo IS NULL, CURDATE(),dateRangeTo)");
+							->WHERERAW("'$request->dateRange' BETWEEN dateRangeFrom AND IF(dateRangeTo IS NULL, CURDATE(),dateRangeTo)");
 		} else {
 			$result = $result->WHERE('bankId', '=' ,$request->bankId)
-							->WHERERAW("'$request->dateRangeFrom' BETWEEN dateRangeFrom AND IF(dateRangeTo IS NULL, CURDATE(),dateRangeTo)");
+							->WHERERAW("'$request->dateRange' BETWEEN dateRangeFrom AND IF(dateRangeTo IS NULL, CURDATE(),dateRangeTo)");
 		}
 
 		$result = $result->get();

@@ -225,6 +225,15 @@ class AccBankPassbookDtlsController extends Controller {
 											'account_val' => $account_val,
 										]);
 	}
+
+	/**
+	*
+	* AddEdit Page for Passbook
+	* @author Sastha
+	* @return object to particular view page
+	* Created At 2021/03/01
+	*
+	*/
 	public function addedit(Request $request) {
 
 		if (!isset($request->edit_flg)) {
@@ -246,6 +255,15 @@ class AccBankPassbookDtlsController extends Controller {
 												'accBankPassbook' => $accBankPassbook,
 												]);	
 	}
+
+	/**
+	*
+	* AddEdit Process for Passbook
+	* @author Sastha
+	* @return object to particular view page
+	* Created At 2021/03/01
+	*
+	*/
 	public function addeditprocess(Request $request) {
 
 		$autoincId = AccBankPassbookDtls::getautoincrement();
@@ -313,16 +331,15 @@ class AccBankPassbookDtlsController extends Controller {
 
 	/**
 	*
-	* Page No Exists Process for User
+	* Date Already Exists Process for Passbook
 	* @author Sastha
 	* @return object to particular view page
-	* Created At 2021/02/12
+	* Created At 2021/03/02
 	*
 	*/
 	public function DateExists(Request $request){
 
 		$DateExists = AccBankPassbookDtls::getDateExists($request);
-
 		if (count($DateExists) != 0) {
 			print_r("1");exit;
 		} else {

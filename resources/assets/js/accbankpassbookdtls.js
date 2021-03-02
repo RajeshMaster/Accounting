@@ -29,17 +29,18 @@ $(document).ready(function() {
 			},
 			submitHandler: function(form) { // for demo
 				var edit_id = $('#edit_id').val();
+				var edit_flg = $('#edit_flg').val();
 				var bankId = $('#bankId').val();
 				var dateRangeFrom = $('#dateRangeFrom').val();
 				var dateRangeTo = $('#dateRangeTo').val();
 				$.ajax({
 					type: 'GET',
 					url: 'DateExists',
-					data: { "edit_id": edit_id, "bankId": bankId , "dateRangeFrom": dateRangeFrom},
+					data: { "edit_id": edit_id, "edit_flg": edit_flg, "bankId": bankId , "dateRange": dateRangeFrom},
 					success: function(resp) {
 						if (resp != 0) {
 							document.getElementById('errorSectiondisplay').innerHTML = "";
-							err_invalidcer = "Date Range Already exists";
+							err_invalidcer = "From Date Range Already exists";
 							var error='<div align="center" style="padding: 0px;" id="inform">';
 							error+='<table cellspacing="0" class="statusBg1" cellpadding="0" border="0">';
 							error+='<tbody><tr><td style="padding: 4px 10px" align="center"><span class="innerBg" id="mc_msg_txt">'+err_invalidcer+'</span></td>';
@@ -49,21 +50,50 @@ $(document).ready(function() {
 							error+='</tr></tbody></table></div>';
 							document.getElementById('errorSectiondisplay').style.display = 'block';
 							document.getElementById('errorSectiondisplay').innerHTML = error;
-							$("#emailId").focus();
+							$("#dateRangeFrom").focus();
 							return false;
 						} else {
-							if($('#edit_flg').val() == "2") {
-								var confirmprocess = confirm("Do You Want To Update?");
-							} else {
-								var confirmprocess = confirm("Do You Want To Register?");
-							}
-							if(confirmprocess) {
-								pageload();
-								form.submit(); // dont use this cause of double time insert in internet explorer
-								return true;
-							} else {
-								return false;
-							}
+							$.ajax({
+								type: 'GET',
+								url: 'DateExists',
+								data: { "edit_id": edit_id, "edit_flg": edit_flg, "bankId": bankId , "dateRange": dateRangeTo},
+								success: function(resp) {
+									if (resp != 0) {
+										document.getElementById('errorSectiondisplay').innerHTML = "";
+										err_invalidcer = "To Date Range Already exists";
+										var error='<div align="center" style="padding: 0px;" id="inform">';
+										error+='<table cellspacing="0" class="statusBg1" cellpadding="0" border="0">';
+										error+='<tbody><tr><td style="padding: 4px 10px" align="center"><span class="innerBg" id="mc_msg_txt">'+err_invalidcer+'</span></td>';
+										error+='<td width="20" valign="top" style="padding-top: 4px; _padding-top: 2px;"><span>';
+										error+='<a href="javascript:intdisplaymessage();" class="fa fa-times" style="color:white;"/>';
+										error+='</span></td>';
+										error+='</tr></tbody></table></div>';
+										document.getElementById('errorSectiondisplay').style.display = 'block';
+										document.getElementById('errorSectiondisplay').innerHTML = error;
+										$("#dateRangeTo").focus();
+										return false;
+									} else {
+										if($('#edit_flg').val() == "2") {
+											var confirmprocess = confirm("Do You Want To Update?");
+										} else {
+											var confirmprocess = confirm("Do You Want To Register?");
+										}
+										if(confirmprocess) {
+											pageload();
+											form.submit(); // dont use this cause of double time insert in internet explorer
+											return true;
+										} else {
+											return false;
+										}
+									}
+								},
+
+								error: function(data) {
+									// alert(data);
+								}
+
+							});
+
 						}
 					},
 
@@ -112,16 +142,6 @@ function addedit(flg,id) {
 	$('#frmAccBankPassbook').attr('action', 'addedit?mainmenu='+mainmenu+'&time='+datetime);
 	$("#frmAccBankPassbook").submit();
 }
-
-/*function nextData(flg,id) {
-	var confirmgroup = confirm("Do You Want To Next Record?");
-	if(confirmgroup) {
-		$('#edit_flg').val(flg);
-		$('#edit_id').val(id);
-		$('#frmAccBankPassbook').attr('action', 'addeditprocess?mainmenu='+mainmenu+'&time='+datetime);
-		$("#frmAccBankPassbook").submit();
-	} 
-}*/
 
 function getData(month, year, flg, prevcnt, nextcnt, account_period, lastyear, currentyear, account_val) {
 	// alert(month + "***" + flg + "****" + currentyear);

@@ -532,7 +532,7 @@ Route::group(['prefix'=>'AccBankPassbookDtls','middleware' => 'auth'], function(
 	Route::any('index', 'AccBankPassbookDtlsController@index')->middleware('accessright:0,1,2,3,4');
 	Route::any('addedit', 'AccBankPassbookDtlsController@addedit')->middleware('accessright:0,1,2,3,4');
 	Route::any('addeditprocess', 'AccBankPassbookDtlsController@addeditprocess')->middleware('accessright:0,1,2,3,4');
-	Route::any('pageNoExists', 'AccBankPassbookDtlsController@pageNoExists')->middleware('accessright:0,1,2,3,4');
+	Route::any('DateExists', 'AccBankPassbookDtlsController@DateExists')->middleware('accessright:0,1,2,3,4');
 });
 
 Route::group(['prefix'=>'CreditCardPay','middleware' => 'auth'], function() {
