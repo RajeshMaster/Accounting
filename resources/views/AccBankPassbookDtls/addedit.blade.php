@@ -14,8 +14,8 @@
 	var accessDate = '<?php echo Auth::user()->accessDate; ?>';
 	var userclassification = '<?php echo Auth::user()->userclassification; ?>';
 	$(document).ready(function() {
-		setDatePicker("from_date");
-		setDatePicker("to_date");
+		setDatePicker("dateRangeFrom");
+		setDatePicker("dateRangeTo");
 	});
 </script>
 
@@ -38,6 +38,7 @@
 		{{ Form::hidden('mainmenu', $request->mainmenu , array('id' => 'mainmenu')) }}
 		{{ Form::hidden('edit_flg', $request->edit_flg, array('id' => 'edit_flg')) }}
 		{{ Form::hidden('edit_id', $request->edit_id, array('id' => 'edit_id')) }}
+		{{ Form::hidden('pageNo', (isset($accBankPassbook[0]->pageNo)) ? $accBankPassbook[0]->pageNo : '', array('id' => 'pageNo')) }}
 
 		<div class="row hline pm0">
 			<div class="col-xs-12">
@@ -71,41 +72,6 @@
 
 			<div class="col-xs-12 mt10">
 				<div class="col-xs-3 text-right clr_blue">
-					<label>{{ trans('messages.lbl_pageNo') }}
-						<span class="fr ml2 red"> * </span></label>
-				</div>
-				<div class="col-xs-9">
-					@if(isset($accBankPassbook[0]->pageNo))
-						{{--*/ $pageNo = explode('-',$accBankPassbook[0]->pageNo);/*--}}
-						@if(!isset($pageNo[0]))  {{ $pageNo[0]= "" }} @endif
-						@if(!isset($pageNo[1]))  {{ $pageNo[1]= "" }} @endif
-					@else
-						{{ $pageNo[0]= "" }}
-						{{ $pageNo[1]= "" }}
-					@endif
-					{{ Form::text('pageNoFrom', $pageNo[0],
-							array('id'=>'pageNoFrom', 
-									'name' => 'pageNoFrom',
-									'maxlength' => '2',
-									'autocomplete' => 'off',
-									'data-label' => trans('messages.lbl_pageNo'),
-									'class'=>'box5per form-control pl5',
-									'onkeydown' => 'return nextfield("pageNoFrom","pageNoTo","2",event)',
-									'onkeypress' => 'return isNumberKey(event)')) }}
-					<span class="ml5 mr5"> - </span>
-					{{ Form::text('pageNoTo', $pageNo[1],
-							array('id'=>'pageNoTo', 
-									'name' => 'pageNoTo',
-									'maxlength' => '2',
-									'autocomplete' => 'off',
-									'data-label' => trans('messages.lbl_pageNo'),
-									'class'=>'box5per form-control pl5',
-									'onkeypress' => 'return isNumberKey(event)')) }}
-				</div>
-			</div>
-
-			<div class="col-xs-12 mt10">
-				<div class="col-xs-3 text-right clr_blue">
 					<label>{{ trans('messages.lbl_daterange') }}
 						<span class="fr ml2 red"> * </span>
 					</label>
@@ -116,7 +82,7 @@
 									'name' => 'dateRangeFrom',
 									'autocomplete' => 'off',
 									'data-label' => trans('messages.lbl_daterange'),
-									'class'=>'box11per form-control pl5 from_date')) }}
+									'class'=>'box11per form-control pl5 dateRangeFrom')) }}
 					<label class="mt10 ml2 fa fa-calendar fa-lg" for="dateRangeFrom" 
 							aria-hidden="true">
 					</label>
@@ -130,7 +96,7 @@
 									'name' => 'dateRangeTo',
 									'autocomplete' => 'off',
 									'data-label' => trans('messages.lbl_daterange'),
-									'class'=>'box11per form-control pl5 to_date')) }}
+									'class'=>'box11per form-control pl5 dateRangeTo')) }}
 					<label class="mt10 ml2 fa fa-calendar fa-lg" for="dateRangeTo" 
 							aria-hidden="true">
 					</label>
@@ -197,7 +163,7 @@
 
 	{{ Form::open(array('name'=>'frmBankPassportaaddeditcancel',
 						'id'=>'frmBankPassportaaddeditcancel', 
-						'url' => 'AccBankPassbookDtls/addeditprocess?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
+						'url' => 'AccBankPassbookDtls/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'),
 						'files'=>true,'method' => 'POST')) }}
 
 		{{ Form::hidden('mainmenu', $request->mainmenu , array('id' => 'mainmenu')) }}

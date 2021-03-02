@@ -30,7 +30,8 @@ class AccBankPassbookDtls extends Model {
 							->where('dateRangeFrom', '<=', $to_date);
 		}
 
-			$query = $query->orderBy('bankPassbook.id', 'ASC')
+			$query = $query->orderBy('bankPassbook.bankId', 'ASC')
+							->orderBy('bankPassbook.pageNo', 'ASC')
 							->paginate($request->plimit);
 
 		return $query;
@@ -95,7 +96,25 @@ class AccBankPassbookDtls extends Model {
 
 	public static function insertRec($request,$fileName,$orderId) {
 
-		$pageNo = $request->pageNoFrom.'-'.$request->pageNoTo;
+		if($request->edit_flg == "3" && $request->pageNo != "") {
+			$pageNoOrg = explode("-", $request->pageNo);
+			if (isset($pageNoOrg[1])) {
+				$pageNoAdd = $pageNoOrg[1] + 1;
+				if (strlen($pageNoAdd) == 1) {
+					$pageNoAdd = "0".$pageNoAdd;
+				} else {
+					$pageNoAdd = $pageNoAdd;
+				}
+			} 
+			if (isset($pageNoOrg[0]) && isset($pageNoOrg[1])) {
+				$pageNo = $pageNoOrg[0]."-".$pageNoAdd;
+			} else {
+				$pageNo = $request->pageNo;
+			} 
+		} else {
+			$pageNo =  self::getNxtRegPageNo();
+		}
+		
 
 		$name = Session::get('FirstName').' '.Session::get('LastName');
 
@@ -114,14 +133,25 @@ class AccBankPassbookDtls extends Model {
 
 							]);
 
+		if ($request->edit_flg == "3") {
+			
+			$update = DB::table('acc_bankpassbookdtls')
+
+							->where('id', $request->edit_id)
+
+							->update([ 
+
+									'nxtFlg' => 1,
+									'updatedBy' => $name,
+
+								]);
+		}
 		return $insert;
 
 	}
 
 
 	public static function updateRec($request,$fileName) {
-
-		$pageNo = $request->pageNoFrom.'-'.$request->pageNoTo;
 
 		$name = Session::get('FirstName').' '.Session::get('LastName');
 
@@ -132,7 +162,6 @@ class AccBankPassbookDtls extends Model {
 						->update([ 
 
 								'bankId' => $request->bankId,
-								'pageNo' => $pageNo,
 								'dateRangeFrom' => $request->dateRangeFrom,
 								'dateRangeTo' => $request->dateRangeTo,
 								'fileDtl' => $fileName,
@@ -144,37 +173,21 @@ class AccBankPassbookDtls extends Model {
 
 	}
 
-	public static function insertNxtRec($accBankPassbook,$orderId) {
+	public static function getNxtRegPageNo() {
 
 		$maxpageNo = DB::table('acc_bankpassbookdtls')
 						->max('pageNo');
+
 		$maxpageNo = $maxpageNo + 1;
 		if (strlen($maxpageNo) == 1) {
 			$pageNoAdd = "0".$maxpageNo;
 		} else {
 			$pageNoAdd = $maxpageNo;
 		}
+
 		$pageNo = $pageNoAdd ."-01";
 
-		$name = Session::get('FirstName').' '.Session::get('LastName');
-
-		$db = DB::connection('mysql');
-
-		$insert = $db->table('acc_bankpassbookdtls')
-
-					->insert([ 
-								'bankId' => $accBankPassbook->bankId,
-								'pageNo' => $pageNo,
-								'dateRangeFrom' => $accBankPassbook->dateRangeFrom,
-								'dateRangeTo' => $accBankPassbook->dateRangeTo,
-								'fileDtl' => $accBankPassbook->fileDtl,
-								'orderId' => $orderId,
-								'createdBy' => $name,
-
-							]);
-
-
-		return $insert;
+		return $pageNo;
 
 	}
 
@@ -212,7 +225,7 @@ class AccBankPassbookDtls extends Model {
 
 	}
 
-	public static function getpageNoExists($request) {
+	public static function getDateExists($request) {
 
 		$result = DB::table('acc_bankpassbookdtls')
 
@@ -220,9 +233,11 @@ class AccBankPassbookDtls extends Model {
 
 		if ($request->edit_id != "") {
 			$result = $result->WHERE('id', '!=' ,$request->edit_id)
-							->WHERE('pageNo', '=' ,$request->pageNo);
+							->WHERE('bankId', '=' ,$request->bankId)
+							->WHERERAW("'$request->dateRangeFrom' BETWEEN dateRangeFrom AND IF(dateRangeTo IS NULL, CURDATE(),dateRangeTo)");
 		} else {
-			$result = $result->WHERE('pageNo', '=', $request->pageNo);
+			$result = $result->WHERE('bankId', '=' ,$request->bankId)
+							->WHERERAW("'$request->dateRangeFrom' BETWEEN dateRangeFrom AND IF(dateRangeTo IS NULL, CURDATE(),dateRangeTo)");
 		}
 
 		$result = $result->get();

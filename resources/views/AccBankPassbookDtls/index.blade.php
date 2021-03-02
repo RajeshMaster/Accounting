@@ -150,10 +150,12 @@
 							<a href="javascript:addedit(2,'{{ $data['id'] }}');">
 								{{ trans('messages.lbl_edit') }}
 							</a> 
-							&nbsp<span class="fwb"> / </span>&nbsp
-							<a href="javascript:nextData(3,'{{ $data['id'] }}');">
-								{{ trans('messages.lbl_next') }}
-							</a>
+							@if($data['nxtFlg'] == 0)
+								&nbsp<span class="fwb"> / </span>&nbsp
+								<a href="javascript:addedit(3,'{{ $data['id'] }}');">
+									{{ trans('messages.lbl_next') }}
+								</a>
+							@endif
 						</td>
 					</tr>
 					

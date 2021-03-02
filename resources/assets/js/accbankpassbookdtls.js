@@ -23,26 +23,23 @@ $(document).ready(function() {
 			},
 			rules: {
 				bankId: {required: true},
-				pageNoFrom: {required: true, minlength: 2, number: true},
-				pageNoTo: {required: true, minlength: 2, number: true},
 				dateRangeFrom: {required: true, date:true, correctformatdate: true},
-				dateRangeTo: {required: true, date:true, correctformatdate: true},
+				dateRangeTo: {required: true, date:true, correctformatdate: true, greaterThan: "#dateRangeFrom"},
 				bankPassbook : {extension: "jpg,jpeg,png,JPG,JPEG,PNG", filesize : (2 * 1024 * 1024)},
 			},
 			submitHandler: function(form) { // for demo
 				var edit_id = $('#edit_id').val();
-				var pageNoFrom = $('#pageNoFrom').val();
-				var pageNoTo = $('#pageNoTo').val();
-				var pageNo = pageNoFrom + "-" + pageNoTo;
+				var bankId = $('#bankId').val();
+				var dateRangeFrom = $('#dateRangeFrom').val();
+				var dateRangeTo = $('#dateRangeTo').val();
 				$.ajax({
 					type: 'GET',
-					url: 'pageNoExists',
-					data: { "edit_id": edit_id, "pageNo": pageNo },
-
+					url: 'DateExists',
+					data: { "edit_id": edit_id, "bankId": bankId , "dateRangeFrom": dateRangeFrom},
 					success: function(resp) {
 						if (resp != 0) {
 							document.getElementById('errorSectiondisplay').innerHTML = "";
-							err_invalidcer = "Page Number Already exists";
+							err_invalidcer = "Date Range Already exists";
 							var error='<div align="center" style="padding: 0px;" id="inform">';
 							error+='<table cellspacing="0" class="statusBg1" cellpadding="0" border="0">';
 							error+='<tbody><tr><td style="padding: 4px 10px" align="center"><span class="innerBg" id="mc_msg_txt">'+err_invalidcer+'</span></td>';
@@ -76,17 +73,6 @@ $(document).ready(function() {
 
 				});
 
-				/*if($('#edit_flg').val() == "2") {
-					var confirmprocess = confirm("Do You Want To Update?");
-				} else {
-					var confirmprocess = confirm("Do You Want To Register?");
-				}
-				if(confirmprocess) {
-					pageload();
-					return true;
-				} else {
-					return false;
-				}*/
 			}
 		});
 
@@ -127,7 +113,7 @@ function addedit(flg,id) {
 	$("#frmAccBankPassbook").submit();
 }
 
-function nextData(flg,id) {
+/*function nextData(flg,id) {
 	var confirmgroup = confirm("Do You Want To Next Record?");
 	if(confirmgroup) {
 		$('#edit_flg').val(flg);
@@ -135,7 +121,7 @@ function nextData(flg,id) {
 		$('#frmAccBankPassbook').attr('action', 'addeditprocess?mainmenu='+mainmenu+'&time='+datetime);
 		$("#frmAccBankPassbook").submit();
 	} 
-}
+}*/
 
 function getData(month, year, flg, prevcnt, nextcnt, account_period, lastyear, currentyear, account_val) {
 	// alert(month + "***" + flg + "****" + currentyear);
@@ -183,7 +169,7 @@ function gotoindexpage() {
 			return false;
 		}
 	}
-	$('#frmBankPassportaaddeditcancel').attr('action', 'addeditprocess?mainmenu='+mainmenu+'&time='+datetime);
+	$('#frmBankPassportaaddeditcancel').attr('action', 'index?mainmenu='+mainmenu+'&time='+datetime);
 	$("#frmBankPassportaaddeditcancel").submit();
 }
 

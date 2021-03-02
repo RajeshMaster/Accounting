@@ -206,6 +206,8 @@ class AccBankPassbookDtlsController extends Controller {
 			$accBankPassbook[$i]['bnknm'] = $value->bnknm;
 			$accBankPassbook[$i]['brnchid'] = $value->brnchid;
 			$accBankPassbook[$i]['brnchnm'] = $value->brnchnm;
+			$accBankPassbook[$i]['nxtFlg'] = $value->nxtFlg;
+			$accBankPassbook[$i]['delFlg'] = $value->delFlg;
 			$i++;
 		}
 		
@@ -233,6 +235,10 @@ class AccBankPassbookDtlsController extends Controller {
 		$accBankPassbook = array();
 		if ($request->edit_id != "") {
 			$accBankPassbook = AccBankPassbookDtls::accBankPassbook($request->edit_id);
+		} if($request->edit_flg == "3" && isset($accBankPassbook[0])) {
+			$accBankPassbook[0]->dateRangeFrom = "";
+			$accBankPassbook[0]->dateRangeTo = "";
+			$accBankPassbook[0]->fileDtl = "";
 		}
 
 		return view('AccBankPassbookDtls.addedit',['request' => $request,
@@ -265,7 +271,7 @@ class AccBankPassbookDtlsController extends Controller {
 			$fileName = $request->pdffiles;
 		}
 
-		if($request->edit_flg == "1") {
+		if($request->edit_flg != "2") {
 
 			$insert = AccBankPassbookDtls::insertRec($request,$fileName,$autoincId);
 
@@ -277,19 +283,6 @@ class AccBankPassbookDtlsController extends Controller {
 				Session::flash('type', 'alert-danger'); 
 			}
 			
-		} else if($request->edit_flg == "3") {
-			$accBankPassbook = AccBankPassbookDtls::accBankPassbook($request->edit_id);
-			if (isset($accBankPassbook[0])) {
-				$nextRec = AccBankPassbookDtls::insertNxtRec($accBankPassbook[0],$autoincId);
-				if($nextRec) {
-					Session::flash('success', 'Next Record Inserted Sucessfully!'); 
-					Session::flash('type', 'alert-success'); 
-				} else {
-					Session::flash('danger', 'Inserted Unsucessfully!'); 
-					Session::flash('type', 'alert-danger'); 
-				}
-			}
-
 		} else {
 
 			$update = AccBankPassbookDtls::updateRec($request,$fileName);
@@ -326,11 +319,11 @@ class AccBankPassbookDtlsController extends Controller {
 	* Created At 2021/02/12
 	*
 	*/
-	public function pageNoExists(Request $request){
+	public function DateExists(Request $request){
 
-		$pageNoExists = AccBankPassbookDtls::getpageNoExists($request);
+		$DateExists = AccBankPassbookDtls::getDateExists($request);
 
-		if (count($pageNoExists) != 0) {
+		if (count($DateExists) != 0) {
 			print_r("1");exit;
 		} else {
 			print_r("0");exit;
