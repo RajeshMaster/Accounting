@@ -10,7 +10,8 @@ class AccBankPassbookDtls extends Model {
 	public static function bankPassbookindex($from_date,$to_date,$request) {
 
 		$db = DB::connection('mysql');
-		$query= $db->table('acc_bankpassbookdtls AS bankPassbook')
+		
+		$query = $db->table('acc_bankpassbookdtls AS bankPassbook')
 						->SELECT('bankPassbook.*','bank.AccNo','bank.FirstName','bank.LastName','bank.BankName','bank.Bank_NickName','bnkName.id AS bnkid','bnkName.BankName AS bnknm','brnchName.id AS brnchid','brnchName.BranchName AS brnchnm')
 						->leftJoin('mstbank AS bank', 'bankPassbook.bankId', '=', 'bank.id')
 						->leftJoin('mstbanks AS bnkName', 'bnkName.id', '=', 'bank.BankName')
@@ -18,11 +19,20 @@ class AccBankPassbookDtls extends Model {
 							{
 								$join->on('brnchName.BankId', '=', 'bank.BankName');
 								$join->on('brnchName.id', '=', 'bank.BranchName');
-							})
-						->where('dateRangeFrom','>=',$from_date)
-						->where('dateRangeFrom','<=',$to_date)
-						->orderBy('bankPassbook.id','ASC')
-						->paginate($request->plimit);
+							});
+						
+		if ($request->searchmethod == 3) {
+			if (!empty($request->bank_id)) {
+				$query = $query->where('bankPassbook.bankId', '=', $request->bank_id);
+			}
+		} else {
+			$query = $query->where('dateRangeFrom', '>=', $from_date)
+							->where('dateRangeFrom', '<=', $to_date);
+		}
+
+			$query = $query->orderBy('bankPassbook.id', 'ASC')
+							->paginate($request->plimit);
+
 		return $query;
 	}
 

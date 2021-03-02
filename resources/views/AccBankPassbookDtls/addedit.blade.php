@@ -9,6 +9,7 @@
 @php use App\Http\Helpers; @endphp
 <script type="text/javascript">
 	var datetime = '<?php echo date('Ymdhis'); ?>';
+	var mainmenu = '<?php echo $request->mainmenu; ?>';
 	var dates = '<?php echo date('Y-m-d'); ?>';
 	var accessDate = '<?php echo Auth::user()->accessDate; ?>';
 	var userclassification = '<?php echo Auth::user()->userclassification; ?>';
@@ -182,7 +183,7 @@
 							{{ trans('messages.lbl_register') }}
 						</button>&nbsp;
 					@endif
-					<a href="javascript:gotoindexpage('{{ $request->mainmenu }}');" 
+					<a href="javascript:gotoindexpage();" 
 						class="btn btn-danger box120 white">
 						<i class="fa fa-times" aria-hidden="true"></i> {{trans('messages.lbl_cancel')}}
 					</a>

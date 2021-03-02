@@ -51,6 +51,7 @@
 		{{ Form::hidden('bank_id', '', array('id' => 'bank_id')) }}
 		{{ Form::hidden('acc_no', '', array('id' => 'acc_no')) }}
 		{{ Form::hidden('del_flg', '', array('id' => 'del_flg')) }}
+		{{ Form::hidden('searchmethod', '', array('id' => 'searchmethod')) }}
 
 		<!-- Year Bar Start -->
 		{{ Form::hidden('selMonth', $request->selMonth, array('id' => 'selMonth')) }}
@@ -71,7 +72,9 @@
 
 	<div class=" pr10 pl10 ">
 		<div class="mt10 ">
-			{{ Helpers::displayYear_MonthEst($account_period, $year_month, $db_year_month, $date_month, $dbnext, $dbprevious, $last_year, $current_year, $account_val) }}
+			@if($request->searchmethod == "6" || $request->searchmethod == "")
+				{{ Helpers::displayYear_MonthEst($account_period, $year_month, $db_year_month, $date_month, $dbnext, $dbprevious, $last_year, $current_year, $account_val) }}
+			@endif
 		</div>
 	</div>
 
@@ -119,9 +122,12 @@
 					<tr>
 						<td>{{ $i+1 }}</td>
 						<td>
-							{{ $data['Bank_NickName'] }}
-							&nbsp<span class="fwb"> - </span>&nbsp
-							{{ $data['AccNo'] }}
+							<a href="javascript:bankNameclick('{{ $data['bankId'] }}');" 
+								class="blue">
+								{{ $data['Bank_NickName'] }}
+								&nbsp<span class="fwb"> - </span>&nbsp
+								{{ $data['AccNo'] }}
+							</a>
 						</td>
 						<td> 
 							{{ $data['pageNo'] }} 

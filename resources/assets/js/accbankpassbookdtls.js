@@ -137,23 +137,6 @@ function nextData(flg,id) {
 	} 
 }
 
-function getdate(flg) {
-	if (flg == 1) {
-		$('#dateRangeFrom').val(dates);
-	} else if (flg == 2) {
-		$('#dateRangeTo').val(dates);
-	}
-}
-
-function nextfield(input1,input2,length,event) {
-	var event = event.keyCode || event.charCode;
-	if(event != 8){
-		if(document.getElementById(input1).value.length == length) {
-			document.getElementById(input2).focus();
-		}
-	}
-}
-
 function getData(month, year, flg, prevcnt, nextcnt, account_period, lastyear, currentyear, account_val) {
 	// alert(month + "***" + flg + "****" + currentyear);
 	var yearmonth = year + "-" +  ("0" + month).substr(-2);
@@ -176,3 +159,44 @@ function getData(month, year, flg, prevcnt, nextcnt, account_period, lastyear, c
 		$('#frmAccBankPassbook').submit();
 	}
 }
+
+function getdate(flg) {
+	if (flg == 1) {
+		$('#dateRangeFrom').val(dates);
+	} else if (flg == 2) {
+		$('#dateRangeTo').val(dates);
+	}
+}
+
+function nextfield(input1,input2,length,event) {
+	var event = event.keyCode || event.charCode;
+	if(event != 8){
+		if(document.getElementById(input1).value.length == length) {
+			document.getElementById(input2).focus();
+		}
+	}
+}
+
+function gotoindexpage() {
+	if (cancel_check == false) {
+		if (!confirm("Do You Want To Cancel the Page?")) {
+			return false;
+		}
+	}
+	$('#frmBankPassportaaddeditcancel').attr('action', 'addeditprocess?mainmenu='+mainmenu+'&time='+datetime);
+	$("#frmBankPassportaaddeditcancel").submit();
+}
+
+function bankNameclick(bankId){ 
+	pageload();
+	$('#bank_id').val(bankId);
+	$('#plimit').val(50);
+	$('#page').val('');
+	$("#searchmethod").val(3);
+	$('#frmAccBankPassbook').attr('action','index'+'?mainmenu='+mainmenu+'&time='+datetime); 
+	$("#frmAccBankPassbook").submit();
+}
+
+
+
+
