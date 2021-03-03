@@ -243,13 +243,12 @@
 						<span class="fr ml2 red" id = "debitrequired"> * </span></label>
 				</div>
 				<div class="col-xs-9">
-					{{ Form::text('autoDebitContent',(isset($autodebitEdit[0]->content)) ? $autodebitEdit[0]->content : '',
-							array('id'=>'autoDebitContent', 
-									'name' => 'autoDebitContent',
-									'autocomplete' =>'off',
+					{{ Form::select('autoDebitContent',[null=>'']+$contentDetail,(isset($autodebitEdit[0]->content)) ? $autodebitEdit[0]->content : '',
+							array('name' =>'autoDebitContent',
+									'id'=>'autoDebitContent',
 									'onkeyup'=>'disabledloan();',
-									'data-label' => trans('messages.lbl_content'),
-									'class'=>'box31per form-control pl5')) }}
+									'data-label' =>  trans('messages.lbl_content'),
+									'class'=>'pl5 widthauto'))}}
 				</div>
 			</div>
 

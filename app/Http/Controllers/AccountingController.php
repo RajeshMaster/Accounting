@@ -229,6 +229,8 @@ class AccountingController extends Controller {
 			$cashDetails[$i]['subId'] = $value->subjectId;
 			$cashDetails[$i]['subject'] = $value->Subject;
 			$cashDetails[$i]['Subject_jp'] = $value->Subject_jp;
+			$cashDetails[$i]['contentSub'] = $value->contentSub;
+			$cashDetails[$i]['contentSub_jp'] = $value->contentSub_jp;
 			$cashDetails[$i]['employeDetails'] = "";
 			$cashDetails[$i]['invoiceDetails'] = "";
 			$cashDetails[$i]['loanDetails'] = "";
@@ -326,8 +328,11 @@ class AccountingController extends Controller {
 
 		$bankDetail = Accounting::fetchbanknames();
 
+		$contentDetail = Accounting::fetchcontent();
+
 		return view('Accounting.addedit',['request' => $request,
-											'bankDetail' => $bankDetail
+											'bankDetail' => $bankDetail,
+											'contentDetail' => $contentDetail
 										]);
 	}
 
@@ -352,13 +357,15 @@ class AccountingController extends Controller {
 			} else {
 				$bankDetail = Accounting::fetchEditbanknames($request);
 			}
-			
+			$contentDetail = Accounting::fetchEditcontent($request);
 		} else {
 			$bankDetail = Accounting::fetchbanknames();
+			$contentDetail = Accounting::fetchcontent();
 			$editData[0]->date = "";
 		}
 		return view('Accounting.addedit',['request' => $request,
 											'bankDetail' => $bankDetail,
+											'contentDetail' => $contentDetail,
 											'editData' => $editData,
 											'editDataTo' => $editDataTo
 										]);
@@ -451,10 +458,12 @@ class AccountingController extends Controller {
 
 		$bankDetail = Accounting::fetchbanknames();
 		$mainExpDetail = Accounting::getMainExpName();
+		$contentDetail = Accounting::fetchcontent();
 
 		return view('Accounting.transferaddedit',[ 'request' => $request,
 													'mainExpDetail' => $mainExpDetail,
-													'bankDetail' => $bankDetail
+													'bankDetail' => $bankDetail,
+													'contentDetail' => $contentDetail
 												]);
 	}
 
@@ -477,8 +486,10 @@ class AccountingController extends Controller {
 		$transferEdit = Accounting::tranferEditData($request);
 		if ($request->edit_flg == 1) {
 			$bankDetail = Accounting::fetchEditbanknames($request);
+			$contentDetail = Accounting::fetchEditcontent($request);
 		} else {
 			$bankDetail = Accounting::fetchbanknames();
+			$contentDetail = Accounting::fetchcontent();
 			$transferEdit[0]->date = "";
 			$transferEdit[0]->fileDtl = "";
 			$transferEdit[0]->Empname = "";
@@ -491,6 +502,7 @@ class AccountingController extends Controller {
 		return view('Accounting.transferaddedit',[ 'request' => $request,
 													'mainExpDetail' => $mainExpDetail,
 													'bankDetail' => $bankDetail,
+													'contentDetail' => $contentDetail,
 													'transferEdit' => $transferEdit
 												]);
 	}
@@ -734,9 +746,11 @@ class AccountingController extends Controller {
 
 		$bankDetail = Accounting::fetchbanknames();
 		$mainExpDetail = Accounting::getMainExpName();
+		$contentDetail = Accounting::fetchcontent();
 
 		return view('Accounting.autoDebitReg',['request' => $request,
 												'bankDetail' => $bankDetail,
+												'contentDetail' => $contentDetail,
 												'mainExpDetail' => $mainExpDetail
 											]);
 		
@@ -759,8 +773,10 @@ class AccountingController extends Controller {
 		$autodebitEdit = Accounting::fetchEditData($request);
 		if ($request->edit_flg == 1) {
 			$bankDetail = Accounting::fetchEditbanknames($request);
+			$contentDetail = Accounting::fetchEditcontent($request);
 		} else {
 			$bankDetail = Accounting::fetchbanknames();
+			$contentDetail = Accounting::fetchcontent();
 			$autodebitEdit[0]->date = "";
 			$autodebitEdit[0]->loan_ID = "";
 			$autodebitEdit[0]->loanName = "";
@@ -769,10 +785,11 @@ class AccountingController extends Controller {
 		}
 		$mainExpDetail = Accounting::getMainExpName();
 		return view('Accounting.autoDebitReg',[ 'request' => $request,
-													'mainExpDetail' => $mainExpDetail,
-													'bankDetail' => $bankDetail,
-													'autodebitEdit' => $autodebitEdit
-												]);
+												'mainExpDetail' => $mainExpDetail,
+												'bankDetail' => $bankDetail,
+												'contentDetail' => $contentDetail,
+												'autodebitEdit' => $autodebitEdit
+											]);
 	}
 
 	/**

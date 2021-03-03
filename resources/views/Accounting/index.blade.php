@@ -395,7 +395,13 @@
 									</a>
 								@else
 									<a class="blue" href="javascript:contentclick('{{ $data['content'] }}');" >
-										{{ $data['content'] }} 
+										@if($data['contentSub'] != "" && Session::get('languageval') == "en")
+											{{ $data['contentSub'] }}
+										@elseif($data['contentSub_jp'] != "" && Session::get('languageval') == "jp")
+											{{ $data['contentSub_jp'] }}
+										@else
+											{{ $data['content'] }} 
+										@endif
 									</a>
 								@endif
 

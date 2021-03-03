@@ -15,7 +15,20 @@ class Accounting extends Model {
 						->where('mstbank.delflg','=','0')
 						->orderBy('mstbank.Bank_NickName','ASC')
 						->lists('BANKNAME','ID');
-						// ->toSql();
+		return $query;
+	}
+
+	public static function fetchcontent() {
+		$db = DB::connection('mysql');
+		$query = $db->TABLE('acc_contentsetting')
+						->SELECT('id','Subject','Subject_jp')
+						->where('delflg','=','0')
+						->orderBy('Subject','ASC');
+		if (Session::get('languageval') == "jp") {
+			$query = $query->lists('Subject_jp','id');
+		} else {
+			$query = $query->lists('Subject','id');
+		}
 		return $query;
 	}
 
@@ -31,6 +44,18 @@ class Accounting extends Model {
 			$query = $query->orderBy('mstbank.Bank_NickName','ASC')
 							->lists('BANKNAME','ID');
 							// ->toSql();dd($query);
+		return $query;
+	}
+
+	public static function fetchEditcontent($request) {
+		$db = DB::connection('mysql');
+		$query = $db->TABLE('acc_contentsetting')
+						->SELECT('id','Subject','Subject_jp')
+						->orwhere('delflg','=','0')
+						->orwhere('id','=',$request->content_Id)
+						->orderBy('Subject','ASC')
+						->lists('Subject','id');
+						// ->toSql();dd($query);
 		return $query;
 	}
 
@@ -234,8 +259,13 @@ class Accounting extends Model {
 		$db = DB::connection('mysql');
 		$query = $db->TABLE('dev_expensesetting')
 						->SELECT('id','Subject','Subject_jp')
-						->orderBy('id','ASC')
-						->lists('Subject','id');
+						->orderBy('id','ASC');
+		if (Session::get('languageval') == "jp") {
+			$query = $query->lists('Subject_jp','id');
+		} else {
+			$query = $query->lists('Subject','id');
+		}
+						
 		return $query;
 		
 	}
@@ -387,7 +417,7 @@ class Accounting extends Model {
 								'bankIdTo' => $request->transfer,
 								'amount' => preg_replace("/,/", "", $request->transferAmount),
 								'fee' => preg_replace("/,/", "", $request->transferFee),
-								// 'content' => $request->transferContent,
+								'content' => $request->transferContent,
 								'remarks' => $request->transFerRemarks,
 								'fileDtl' => $fileName,
 								'pageFlg' => 2,
@@ -528,7 +558,7 @@ class Accounting extends Model {
 
 		$db = DB::connection('mysql');
 		$query = $db->table('acc_cashregister')
-					->SELECT('acc_cashregister.*','bank.id As bankId','bank.AccNo','bank.FirstName','bank.LastName','bank.BankName','bank.Bank_NickName','dev_expensesetting.Subject','dev_expensesetting.Subject_jp','banname.BankName AS banknm','brncname.id AS brnchid','brncname.BranchName AS brnchnm')
+					->SELECT('acc_cashregister.*','bank.id As bankId','bank.AccNo','bank.FirstName','bank.LastName','bank.BankName','bank.Bank_NickName','dev_expensesetting.Subject','dev_expensesetting.Subject_jp','acc_contentsetting.Subject as contentSub','acc_contentsetting.Subject_jp as contentSub_jp','banname.BankName AS banknm','brncname.id AS brnchid','brncname.BranchName AS brnchnm')
 					->leftJoin('mstbank AS bank', function($join)
 						{
 							$join->on('acc_cashregister.bankIdFrom', '=', 'bank.BankName');
@@ -541,6 +571,7 @@ class Accounting extends Model {
 							$join->on('brncname.id', '=', 'bank.BranchName');
 						})
 					->leftJoin('dev_expensesetting', 'dev_expensesetting.id', '=', 'acc_cashregister.subjectId')
+					->leftJoin('acc_contentsetting', 'acc_contentsetting.id', '=', 'acc_cashregister.content')
 					->where('transcationType','!=',9);
 			if ($request->searchmethod == 3 && $flg == 0) {
 				if (!empty($request->empId)) {

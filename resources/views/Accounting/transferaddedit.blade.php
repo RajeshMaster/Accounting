@@ -243,12 +243,12 @@
 					</label>
 				</div>
 				<div class="col-xs-9">
-					{{ Form::text('transferContent',(isset($transferEdit[0]->content)) ? $transferEdit[0]->content : '',
-							array('id'=>'transferContent', 
-									'name' => 'transferContent',
-									'onkeyup'=>'disabledemp();',
-									'data-label' => trans('messages.lbl_content'),
-									'class'=>'box31per form-control pl5')) }}
+					{{ Form::select('transferContent',[null=>'']+$contentDetail,(isset($transferEdit[0]->content)) ? $transferEdit[0]->content : '',
+							array('name' =>'transferContent',
+									'id'=>'transferContent',
+									'onkeyup'=>'disabledloan();',
+									'data-label' =>  trans('messages.lbl_content'),
+									'class'=>'pl5 widthauto'))}}
 				</div>
 			</div>
 

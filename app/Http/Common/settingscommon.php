@@ -252,6 +252,30 @@ namespace App\Http\Common;
 
 		 										 	'commitfields'=>array('content_japanese')),
 
+						// Accounting Content 
+
+						'acc_contentsetting'=> array('labels'=>
+
+										array('heading' => trans('messages.lbl_content'),
+												'field1lbl' => trans('messages.lbl_subjectinenglish'),
+
+												'field2lbl' => trans('messages.lbl_subjectinjapanese')),
+
+		    	  								'selectfields' => array('id','Subject',
+		    	  							 	'Subject_jp','Ins_DT','delflg'),
+
+		    	  								'selectboxfields' => array('id','Subject', 'Subject_jp','Ins_DT','delflg'),
+
+	 											'displayfields' => array('id','Subject','Subject_jp','delflg'),
+
+	 											'insertfields' => array('Subject','Subject_jp','delflg','Ins_DT','Up_DT','CreatedBy','UpdatedBy'),
+
+	 											'updatefields' => array('Subject','Subject_jp','Up_DT','UpdatedBy'),
+
+												'usenotusefields' => array('delflg'),
+
+	 											'commitfields' => array('Subject')),
+
 						// Main Subject expense 
 
 						'dev_expensesetting'=>array('labels'=>

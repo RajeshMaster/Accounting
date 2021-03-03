@@ -261,11 +261,12 @@
 				<label>{{ trans('messages.lbl_content') }}<span class="fr ml2 red"> * </span></label>
 			</div>
 			<div class="col-xs-9">
-				{{ Form::text('content',(isset($editData[0]->content)) ? $editData[0]->content : '',array('id'=>'content', 
-									'name' => 'content',
-									'autocomplete' =>'off',
-									'data-label' => trans('messages.lbl_content'),
-									'class'=>'box31per form-control pl5')) }}
+				{{ Form::select('content',[null=>'']+$contentDetail,(isset($editData[0]->content)) ? $editData[0]->content : '',
+							array('name' =>'content',
+									'id'=>'content',
+									'data-label' =>  trans('messages.lbl_content'),
+									'class'=>'pl5 widthauto'))}}
+
 			</div>
 		</div>
 
