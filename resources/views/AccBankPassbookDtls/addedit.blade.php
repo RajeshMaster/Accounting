@@ -72,6 +72,33 @@
 
 			<div class="col-xs-12 mt10">
 				<div class="col-xs-3 text-right clr_blue">
+					<label>{{ trans('messages.lbl_pageNo') }}
+						<span class="fr ml2 red"> * </span></label>
+				</div>
+				<div class="col-xs-9">
+					{{ Form::text('pageNoFrom', (isset($accBankPassbook[0]->pageNoFrom)) ? $accBankPassbook[0]->pageNoFrom : '',
+							array('id'=>'pageNoFrom', 
+									'name' => 'pageNoFrom',
+									'maxlength' => '2',
+									'autocomplete' => 'off',
+									'data-label' => trans('messages.lbl_pageNo'),
+									'class'=>'box5per form-control pl5',
+									'onkeydown' => 'return nextfield("pageNoFrom","pageNoTo","2",event)',
+									'onkeypress' => 'return isNumberKey(event)')) }}
+					<span class="ml5 mr5"> - </span>
+					{{ Form::text('pageNoTo', (isset($accBankPassbook[0]->pageNoTo)) ? $accBankPassbook[0]->pageNoTo : '',
+							array('id'=>'pageNoTo', 
+									'name' => 'pageNoTo',
+									'maxlength' => '2',
+									'autocomplete' => 'off',
+									'data-label' => trans('messages.lbl_pageNo'),
+									'class'=>'box5per form-control pl5',
+									'onkeypress' => 'return isNumberKey(event)')) }}
+				</div>
+			</div>
+
+			<div class="col-xs-12 mt10">
+				<div class="col-xs-3 text-right clr_blue">
 					<label>{{ trans('messages.lbl_daterange') }}
 						<span class="fr ml2 red"> * </span>
 					</label>

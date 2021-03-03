@@ -129,12 +129,14 @@
 								{{ $data['AccNo'] }}
 							</a>
 						</td>
-						<td> 
-							{{ $data['pageNo'] }} 
+						<td class="vam tac"> 
+							{{ $data['pageNoFrom'] }}
+							&nbsp<span class="fwb"> - </span>&nbsp
+							{{ $data['pageNoTo'] }}
 						</td>
-						<td>
+						<td class="vam tac">
 							{{ $data['dateRangeFrom'] }}
-							&nbsp<span class="fwb">TO </span>&nbsp
+							&nbsp<span class="fwb"> - </span>&nbsp
 							{{ $data['dateRangeTo'] }}
 						</td>
 						<td align="center">

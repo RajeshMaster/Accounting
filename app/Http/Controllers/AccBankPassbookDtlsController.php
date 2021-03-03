@@ -194,7 +194,8 @@ class AccBankPassbookDtlsController extends Controller {
 		foreach ($bankPassbookindex as $key => $value) {
 			$accBankPassbook[$i]['id'] = $value->id;
 			$accBankPassbook[$i]['bankId'] = $value->bankId;
-			$accBankPassbook[$i]['pageNo'] = $value->pageNo;
+			$accBankPassbook[$i]['pageNoFrom'] = $value->pageNoFrom;
+			$accBankPassbook[$i]['pageNoTo'] = $value->pageNoTo;
 			$accBankPassbook[$i]['dateRangeFrom'] = $value->dateRangeFrom;
 			$accBankPassbook[$i]['dateRangeTo'] = $value->dateRangeTo;
 			$accBankPassbook[$i]['fileDtl'] = $value->fileDtl;
@@ -248,6 +249,11 @@ class AccBankPassbookDtlsController extends Controller {
 			$accBankPassbook[0]->dateRangeFrom = "";
 			$accBankPassbook[0]->dateRangeTo = "";
 			$accBankPassbook[0]->fileDtl = "";
+			$pageNoAdd = $accBankPassbook[0]->pageNoTo + 1;
+			if (strlen($pageNoAdd) == 1) {
+				$pageNoAdd = "0".$pageNoAdd;
+			} 
+			$accBankPassbook[0]->pageNoTo = $pageNoAdd;
 		}
 
 		return view('AccBankPassbookDtls.addedit',['request' => $request,
@@ -341,6 +347,26 @@ class AccBankPassbookDtlsController extends Controller {
 
 		$DateExists = AccBankPassbookDtls::getDateExists($request);
 		if (count($DateExists) != 0) {
+			print_r("1");exit;
+		} else {
+			print_r("0");exit;
+		}
+
+	}
+
+	/**
+	*
+	* Page No Exists Process for Passbook
+	* @author Sastha
+	* @return object to particular view page
+	* Created At 2021/03/02
+	*
+	*/
+	public function pageNoExists(Request $request){
+
+		$pageNoExists = AccBankPassbookDtls::getpageNoExists($request);
+
+		if (count($pageNoExists) != 0) {
 			print_r("1");exit;
 		} else {
 			print_r("0");exit;
