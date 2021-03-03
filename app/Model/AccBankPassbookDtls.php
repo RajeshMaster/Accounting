@@ -264,4 +264,52 @@ class AccBankPassbookDtls extends Model {
 
 	}
 
+	public static function getPassbookMinId($request) {
+		$db = DB::connection('mysql');
+		$latDetails = $db->table('acc_bankpassbookdtls')
+						->WHERE('fileDtl','!=',NULL)
+						->WHERE(DB::raw("SUBSTRING(dateRangeFrom, 1, 4)"),'=', $request->selYear)
+						->WHERE(DB::raw("SUBSTRING(dateRangeFrom, 6, 2)"),'=', $request->selMonth)
+						->min('id');
+		return $latDetails;
+	}
+
+	public static function getPassbookMaxId($request) {
+		$db = DB::connection('mysql');
+		$latDetails = $db->table('acc_bankpassbookdtls')
+						->WHERE('fileDtl','!=',NULL)
+						->WHERE(DB::raw("SUBSTRING(dateRangeFrom, 1, 4)"),'=', $request->selYear)
+						->WHERE(DB::raw("SUBSTRING(dateRangeFrom, 6, 2)"),'=', $request->selMonth)
+						->max('id');
+		return $latDetails;
+	}
+
+	public static function fnGetPassbookImgDtls($request) {
+		$db = DB::connection('mysql');
+		$result = $db->TABLE('acc_bankpassbookdtls')
+						->SELECT('id','fileDtl')
+						->WHERE(DB::raw("SUBSTRING(dateRangeFrom, 1, 4)"),'=', $request->selYear)
+						->WHERE(DB::raw("SUBSTRING(dateRangeFrom, 6, 2)"),'=', $request->selMonth)
+						->ORDERBY('id','ASC')
+						->GET();
+		return $result;
+	}
+
+	public static function getPrevNxtImg($request) {
+		$db = DB::connection('mysql');
+		if ($request->imageFlg == 1) {
+			$request->imageId = $request->imageId - 1;
+		} else {
+			$request->imageId = $request->imageId + 1;
+		}
+		$result = $db->TABLE('acc_bankpassbookdtls')
+					->select('*')
+					->WHERE(DB::raw("SUBSTRING(dateRangeFrom, 1, 4)"),'=', $request->selYear)
+					->WHERE(DB::raw("SUBSTRING(dateRangeFrom, 6, 2)"),'=', $request->selMonth)
+					->WHERE('id', '=' , $request->imageId)
+					->ORDERBY('id', 'ASC')
+					->get();
+		return $result;
+	}
+
 }

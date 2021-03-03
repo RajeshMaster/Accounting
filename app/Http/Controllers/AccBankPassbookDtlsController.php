@@ -320,12 +320,8 @@ class AccBankPassbookDtlsController extends Controller {
 			}
 			
 		}
-
-		if ($request->edit_flg == "3" && isset($accBankPassbook[0])) {
-			$date = explode("-", $accBankPassbook[0]->dateRangeFrom);
-		} else {
-			$date = explode("-", $request->dateRangeFrom);
-		}
+		
+		$date = explode("-", $request->dateRangeFrom);
 		if (isset($date[0])) {
 			Session::flash('selYear', $date[0]); 
 		} if (isset($date[1])) {
@@ -371,7 +367,40 @@ class AccBankPassbookDtlsController extends Controller {
 		} else {
 			print_r("0");exit;
 		}
-
 	}
+
+	/**  
+	*  Image View Popup For Passbook
+	*  @author Sastha 
+	*  @return object to particular view page
+	*  Created At 2021/03/03
+	**/
+	public function imgViewPopup(Request $request){
+
+
+		$passbookPrevId = AccBankPassbookDtls::getPassbookMinId($request);
+		$passbookNextId = AccBankPassbookDtls::getPassbookMaxId($request);
+		$passbookImgdetails = AccBankPassbookDtls::fnGetPassbookImgDtls($request);
+		return view('AccBankPassbookDtls.imgViewPopup',
+										[	'request' => $request,
+											'passbookImgdetails' => $passbookImgdetails,
+											'passbookPrevId' => $passbookPrevId,
+											'passbookNextId' => $passbookNextId,
+										]);
+	}
+
+	/**  
+	*  To Get Next Image Name
+	*  @author Sastha 
+	*  @return object to particular view page
+	*  Created At 2021/03/03
+	**/
+	public function prevNxtImg_ajax(Request $request){
+		$prevNxtImg = AccBankPassbookDtls::getPrevNxtImg($request);
+		$prevNxtImgArray = json_encode($prevNxtImg);
+		echo $prevNxtImgArray;
+		exit();
+	}
+
 
 }

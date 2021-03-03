@@ -38,7 +38,6 @@
 		{{ Form::hidden('mainmenu', $request->mainmenu , array('id' => 'mainmenu')) }}
 		{{ Form::hidden('edit_flg', $request->edit_flg, array('id' => 'edit_flg')) }}
 		{{ Form::hidden('edit_id', $request->edit_id, array('id' => 'edit_id')) }}
-		{{ Form::hidden('pageNo', (isset($accBankPassbook[0]->pageNo)) ? $accBankPassbook[0]->pageNo : '', array('id' => 'pageNo')) }}
 
 		<div class="row hline pm0">
 			<div class="col-xs-12">

@@ -141,8 +141,9 @@
 						</td>
 						<td align="center">
 							@if($data['fileDtl'] != "")
-								<a style="text-decoration:none" href = "{{ URL::asset('../../../../AccountingUpload/AccBankPassbook').'/'.$data['fileDtl'] }}" 
-								data-lightbox = "visa-img">
+								@php $fileName = "AccBankPassbook_".$data['id']; @endphp
+								<a onclick="fileImgPopup('{{ $fileName }}','{{ $request->selYear }}','{{ $request->selMonth }}')" 
+									id ="filelink<?php echo $fileName; ?>" class ="csrp">
 									<img width="20" height="20" name="empimg" id="empimg"
 									class=" box20 viewPic3by2" src= "{{ URL::asset('../../../../AccountingUpload/AccBankPassbook').'/'.$data['fileDtl'] }}">
 								</a>
@@ -186,6 +187,14 @@
 	</div>
 
 </article>
+</div>
+
+<div id="imgViewPopup" class="modal fade">
+	<div id="login-overlay">
+		<div class="modal-content">
+			<!-- Popup will be loaded here -->
+		</div>
+	</div>
 </div>
 
 @endsection

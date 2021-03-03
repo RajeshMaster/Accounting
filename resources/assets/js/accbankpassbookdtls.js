@@ -244,3 +244,52 @@ function nextData(flg,id) {
 		$("#frmAccBankPassbook").submit();
 	} 
 }
+
+function fileImgPopup(fileImage,selYear,selMonth) {
+	var mainmenu = $('#mainmenu').val();
+	$('#imgViewPopup').load('imgViewPopup?mainmenu='+mainmenu+'&time='+datetime+'&selYear='+selYear+'&selMonth='+selMonth+'&fileImage='+fileImage);
+	$("#imgViewPopup").modal({
+		backdrop: 'static',
+		keyboard: false
+	});
+	$('#imgViewPopup').modal('show');
+}
+
+function fnprevnext(fileImage,imageId,imageFlg) {
+	var mainmenu = $('#mainmenu').val();
+	var selYear = $('#selYear').val();
+	var selMonth = $('#selMonth').val();
+	$.ajax({
+		type: 'GET',
+		dataType: "JSON",
+		url: 'prevNxtImg_ajax',
+		data: {
+			"mainmenu": mainmenu,
+			"selYear": selYear,
+			"selMonth": selMonth,
+			"imageId": imageId,
+			"imageFlg": imageFlg
+		},
+		success: function(resp) {
+			for (i = 0; i < resp.length; i++) {
+				$('#imageAccBankPassbook_'+resp[i]["id"]).attr("style", "inline-block");
+				$('#dwnldAccBankPassbook_'+resp[i]["id"]).attr("style", "inline-block");
+				$('#imageAccBankPassbook_'+resp[i]["id"]).attr("style", "cursor: pointer");
+				$('#dwnldAccBankPassbook_'+resp[i]["id"]).attr("style", "cursor: pointer");
+				$('#image'+fileImage).attr("style", "display: none");
+				$('#dwnld'+fileImage).attr("style", "display: none");
+			}
+		},
+		error: function(data) {
+			// alert(data.status);
+		}
+	});
+}
+
+// Download Process
+function download(file,path) {
+	var confirm_download = "Do You Want To Download?";
+	if(confirm(confirm_download)) {
+		window.location.href = "../app/Http/Common/downloadfile.php?file="+file+"&path="+path+"/";
+	}
+}
