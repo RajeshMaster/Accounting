@@ -528,34 +528,45 @@ class Accounting extends Model {
 
 		$db = DB::connection('mysql');
 		$query = $db->table('acc_cashregister')
-						->SELECT('acc_cashregister.*','bank.id As bankId','bank.AccNo','bank.FirstName','bank.LastName','bank.BankName','bank.Bank_NickName','dev_expensesetting.Subject','dev_expensesetting.Subject_jp','banname.BankName AS banknm','brncname.id AS brnchid','brncname.BranchName AS brnchnm')
-						->leftJoin('mstbank AS bank', function($join)
-							{
-								$join->on('acc_cashregister.bankIdFrom', '=', 'bank.BankName');
-								$join->on('acc_cashregister.accountNumberFrom', '=', 'bank.AccNo');
-							})
-						->leftJoin('mstbanks AS banname', 'banname.id', '=', 'bank.BankName')
-						->leftJoin('mstbankbranch AS brncname', function($join)
-							{
-								$join->on('brncname.BankId', '=', 'bank.BankName');
-								$join->on('brncname.id', '=', 'bank.BranchName');
-							})
-						->leftJoin('dev_expensesetting', 'dev_expensesetting.id', '=', 'acc_cashregister.subjectId')
-						->where('transcationType','!=',9)
-						->where('date','>=',$from_date)
-						->where('date','<=',$to_date)
-						->orderBy('acc_cashregister.bankIdFrom','ASC')
-						->orderBy('acc_cashregister.accountNumberFrom','ASC')
-						->orderBy('bank.Bank_NickName','ASC')
-						->orderBy('acc_cashregister.orderId','ASC');
-						if ($flg == 0) {
-							$query = $query->paginate($request->plimit);
-						} else {
-							$query = $query->get();
-											
-						}
-						 // ->toSql();
-						// dd($query);
+					->SELECT('acc_cashregister.*','bank.id As bankId','bank.AccNo','bank.FirstName','bank.LastName','bank.BankName','bank.Bank_NickName','dev_expensesetting.Subject','dev_expensesetting.Subject_jp','banname.BankName AS banknm','brncname.id AS brnchid','brncname.BranchName AS brnchnm')
+					->leftJoin('mstbank AS bank', function($join)
+						{
+							$join->on('acc_cashregister.bankIdFrom', '=', 'bank.BankName');
+							$join->on('acc_cashregister.accountNumberFrom', '=', 'bank.AccNo');
+						})
+					->leftJoin('mstbanks AS banname', 'banname.id', '=', 'bank.BankName')
+					->leftJoin('mstbankbranch AS brncname', function($join)
+						{
+							$join->on('brncname.BankId', '=', 'bank.BankName');
+							$join->on('brncname.id', '=', 'bank.BranchName');
+						})
+					->leftJoin('dev_expensesetting', 'dev_expensesetting.id', '=', 'acc_cashregister.subjectId')
+					->where('transcationType','!=',9);
+			if ($request->searchmethod == 3 && $flg == 0) {
+				if (!empty($request->empId)) {
+					$query = $query->where('acc_cashregister.emp_ID', '=', $request->empId);
+				}
+				if (!empty($request->loanId)) {
+					$query = $query->where('acc_cashregister.loan_ID', '=', $request->loanId);
+				}
+				if (!empty($request->contentId)) {
+					$query = $query->where('acc_cashregister.content', '=', $request->contentId);
+				}
+			} else {
+				$query = $query->where('date', '>=', $from_date)
+								->where('date', '<=', $to_date);
+			}
+			$query = $query->orderBy('acc_cashregister.bankIdFrom','ASC')
+							->orderBy('acc_cashregister.accountNumberFrom','ASC')
+							->orderBy('bank.Bank_NickName','ASC')
+							->orderBy('acc_cashregister.orderId','ASC');
+			if ($flg == 0) {
+				$query = $query->paginate($request->plimit);
+			} else {
+				$query = $query->get();
+			}
+				 // ->toSql();
+				// dd($query);
 		return $query;
 	}
 

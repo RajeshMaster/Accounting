@@ -1335,3 +1335,39 @@ function accExlwnld(){
 		$("#frmaccountingindex").submit();
 	}
 }
+
+function empNameclick(empId){ 
+	pageload();
+	$('#empId').val(empId);
+	$('#loanId').val("");
+	$('#contentId').val("");
+	$('#plimit').val(50);
+	$('#page').val('');
+	$("#searchmethod").val(3);
+	$('#frmaccountingindex').attr('action','index'+'?mainmenu='+mainmenu+'&time='+datetime); 
+	$("#frmaccountingindex").submit();
+}
+
+function loanNameclick(loanId){ 
+	pageload();
+	$('#empId').val("");
+	$('#loanId').val(loanId);
+	$('#contentId').val("");
+	$('#plimit').val(50);
+	$('#page').val('');
+	$("#searchmethod").val(3);
+	$('#frmaccountingindex').attr('action','index'+'?mainmenu='+mainmenu+'&time='+datetime); 
+	$("#frmaccountingindex").submit();
+}
+
+function contentclick(contentId){ 
+	pageload();
+	$('#empId').val("");
+	$('#loanId').val("");
+	$('#contentId').val(contentId);
+	$('#plimit').val(50);
+	$('#page').val('');
+	$("#searchmethod").val(3);
+	$('#frmaccountingindex').attr('action','index'+'?mainmenu='+mainmenu+'&time='+datetime); 
+	$("#frmaccountingindex").submit();
+}

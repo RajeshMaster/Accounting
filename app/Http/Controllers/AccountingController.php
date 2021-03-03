@@ -204,6 +204,8 @@ class AccountingController extends Controller {
 		$balanceAmtonDownTr = 0;
 		foreach ($cashDetailsIndex as $key => $value) {
 			$cashDetails[$i]['id'] = $value->id;
+			$cashDetails[$i]['emp_ID'] = $value->emp_ID;
+			$cashDetails[$i]['loan_ID'] = $value->loan_ID;
 			$cashDetails[$i]['date'] = $value->date;
 			$cashDetails[$i]['content'] = $value->content;
 			$cashDetails[$i]['amount'] = $value->amount;

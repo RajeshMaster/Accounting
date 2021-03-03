@@ -160,7 +160,6 @@
 	    {{ Form::hidden('mainmenu', $request->mainmenu, array('id' => 'mainmenu')) }}
 		{{ Form::hidden('sortOptn',$request->invoicesort , array('id' => 'sortOptn')) }}
 	    {{ Form::hidden('sortOrder', $request->sortOrder , array('id' => 'sortOrder')) }}
-		{{ Form::hidden('searchmethod', $request->searchmethod, array('id' => 'searchmethod')) }}
 		{{ Form::hidden('edit_flg', '', array('id' => 'edit_flg')) }}
 		{{ Form::hidden('editId', '', array('id' => 'editId')) }}
 		{{ Form::hidden('bank_Id', '', array('id' => 'bank_Id')) }}
@@ -184,6 +183,10 @@
 		{{ Form::hidden('startdate', '' , array('id' => 'startdate')) }}
 		{{ Form::hidden('bankids', '' , array('id' => 'bankids')) }}
 		{{ Form::hidden('branchids', '' , array('id' => 'branchids')) }}
+		{{ Form::hidden('searchmethod', '', array('id' => 'searchmethod')) }}
+		{{ Form::hidden('empId', '', array('id' => 'empId')) }}
+		{{ Form::hidden('loanId', '', array('id' => 'loanId')) }}
+		{{ Form::hidden('contentId', '', array('id' => 'contentId')) }}
 
 
 	<!-- Start Heading -->
@@ -195,7 +198,9 @@
 	</div>
 	<div class=" pr10 pl10 ">
 		<div class="mt10 ">
-			{{ Helpers::displayYear_MonthEst($account_period, $year_month, $db_year_month, $date_month, $dbnext, $dbprevious, $last_year, $current_year, $account_val) }}
+			@if($request->searchmethod == "6" || $request->searchmethod == "")
+				{{ Helpers::displayYear_MonthEst($account_period, $year_month, $db_year_month, $date_month, $dbnext, $dbprevious, $last_year, $current_year, $account_val) }}
+			@endif
 		</div>
 	</div>
 
@@ -373,15 +378,25 @@
 								{{ $data['pagecashSubject'] }}
 							@else
 								@if($data['content'] == 'Salary')
-									{{ $data['employeDetails'] }}
+									<a class="blue" href="javascript:empNameclick('{{ $data['emp_ID'] }}');" >
+										{{ $data['employeDetails'] }}
+									</a>
 								@elseif($data['content'] == 'Invoice')
-									{{ $data['invoiceDetails'] }}
+									<a class="blue" href="javascript:loanNameclick('{{ $data['loan_ID'] }}');" >
+										{{ $data['invoiceDetails'] }}
+									</a>
 								@elseif($data['content'] == 'Loan')
-									{{ $data['loanDetails'] }}
+									<a class="blue" href="javascript:loanNameclick('{{ $data['loan_ID'] }}');" >
+										{{ $data['loanDetails'] }}
+									</a>
 								@elseif($data['pageFlg'] == 5 && $data['employeDetails'] != "")
-									{{ $data['employeDetails'] }}
+									<a class="blue" href="javascript:empNameclick('{{ $data['emp_ID'] }}');" >
+										{{ $data['employeDetails'] }}
+									</a>
 								@else
-									{{ $data['content'] }} 
+									<a class="blue" href="javascript:contentclick('{{ $data['content'] }}');" >
+										{{ $data['content'] }} 
+									</a>
 								@endif
 
 							@endif
