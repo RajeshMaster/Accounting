@@ -757,8 +757,9 @@ function fnGetbankDetails() {
 		}
 	});
 }
-function editCashDtl(id, editflg, pgFlg, bankId) {
+function editCashDtl(id, editflg, pgFlg, bankId, content) {
 	$('#bank_Id').val(bankId);
+	$('#content_Id').val(content);
 	$('#edit_flg').val(editflg);
 	$('#editId').val(id);
 	if(pgFlg == 2 || pgFlg == 5) {

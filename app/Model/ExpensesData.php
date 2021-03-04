@@ -13,7 +13,7 @@ class ExpensesData extends Model {
 
 		$db = DB::connection('mysql');
 		$query = $db->table('acc_expensesData')
-						->SELECT('acc_expensesData.*','bank.id As bankId','bank.AccNo','bank.FirstName','bank.LastName','bank.BankName','bank.Bank_NickName','dev_expensesetting.Subject','dev_expensesetting.Subject_jp','banname.BankName AS banknm','brncname.id AS brnchid','brncname.BranchName AS brnchnm')
+						->SELECT('acc_expensesData.*','bank.id As bankId','bank.AccNo','bank.FirstName','bank.LastName','bank.BankName','bank.Bank_NickName','dev_expensesetting.Subject','dev_expensesetting.Subject_jp','acc_contentsetting.Subject as contentSub','acc_contentsetting.Subject_jp as contentSub_jp','banname.BankName AS banknm','brncname.id AS brnchid','brncname.BranchName AS brnchnm')
 						->leftJoin('mstbank AS bank', function($join)
 							{
 								$join->on('acc_expensesData.bankIdFrom', '=', 'bank.BankName');
@@ -26,13 +26,22 @@ class ExpensesData extends Model {
 								$join->on('brncname.id', '=', 'bank.BranchName');
 							})
 						->leftJoin('dev_expensesetting', 'dev_expensesetting.id', '=', 'acc_expensesData.subjectId')
-						->orderBy('acc_expensesData.bankIdFrom','ASC')
-						->orderBy('acc_expensesData.accountNumberFrom','ASC')
-						->orderBy('bank.Bank_NickName','ASC')
-						->orderBy('acc_expensesData.orderId','ASC')
-						->paginate($request->plimit);
-						// ->toSql();
-						// dd($query);
+						->leftJoin('acc_contentsetting', 'acc_contentsetting.id', '=', 'acc_expensesData.content');
+		if ($request->searchmethod == 3) {
+			if (!empty($request->empId)) {
+				$query = $query->where('acc_expensesData.empId', '=', $request->empId);
+			}
+			if (!empty($request->contentId)) {
+				$query = $query->where('acc_expensesData.content', '=', $request->contentId);
+			}
+		} 
+			$query = $query->orderBy('acc_expensesData.bankIdFrom','ASC')
+							->orderBy('acc_expensesData.accountNumberFrom','ASC')
+							->orderBy('bank.Bank_NickName','ASC')
+							->orderBy('acc_expensesData.orderId','ASC')
+							->paginate($request->plimit);
+							// ->toSql();
+							// dd($query);
 		return $query;
 	}
 

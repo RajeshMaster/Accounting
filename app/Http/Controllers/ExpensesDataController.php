@@ -56,6 +56,8 @@ class ExpensesDataController extends Controller {
 			$expensesDetails[$i]['subId'] = $value->subjectId;
 			$expensesDetails[$i]['subject'] = $value->Subject;
 			$expensesDetails[$i]['Subject_jp'] = $value->Subject_jp;
+			$expensesDetails[$i]['contentSub'] = $value->contentSub;
+			$expensesDetails[$i]['contentSub_jp'] = $value->contentSub_jp;
 			$expensesDetails[$i]['employeDetails'] = "";
 			$expensesDetails[$i]['invoiceDetails'] = "";
 			$expensesDetails[$i]['loanDetails'] = "";

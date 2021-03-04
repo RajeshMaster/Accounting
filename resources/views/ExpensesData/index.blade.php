@@ -86,6 +86,10 @@
 		{{ Form::hidden('startdate', '' , array('id' => 'startdate')) }}
 		{{ Form::hidden('bankids', '' , array('id' => 'bankids')) }}
 		{{ Form::hidden('branchids', '' , array('id' => 'branchids')) }}
+		{{ Form::hidden('searchmethod', '', array('id' => 'searchmethod')) }}
+		{{ Form::hidden('empId', '', array('id' => 'empId')) }}
+		{{ Form::hidden('contentId', '', array('id' => 'contentId')) }}
+		{{ Form::hidden('content_Id', '', array('id' => 'content_Id')) }}
 
 
 	<!-- Start Heading -->
@@ -223,9 +227,19 @@
 						</td>
 						<td> 
 							@if($data['empId'] != '')
-								{{ $data['employeDetails'] }}
+								<a class="blue" href="javascript:empNameclick('{{ $data['empId'] }}');" >
+									{{ $data['employeDetails'] }}
+								</a>
 							@else
-								{{ $data['content'] }} 
+								<a class="blue" href="javascript:contentclick('{{ $data['content'] }}');" >
+									@if($data['contentSub'] != "" && Session::get('languageval') == "en")
+										{{ $data['contentSub'] }}
+									@elseif($data['contentSub_jp'] != "" && Session::get('languageval') == "jp")
+										{{ $data['contentSub_jp'] }}
+									@else
+										{{ $data['content'] }} 
+									@endif
+								</a>
 							@endif
 						</td>
 						<td align="right">
@@ -247,10 +261,10 @@
 						@endif
 						</td>
 						<td class="divdisplay" align="center">
-							<a href="javascript:editExpData('{{ $data['id'] }}','1');">
+							<a href="javascript:editExpData('{{ $data['id'] }}','1','{{ $data['bankId'] }}','{{ $data['content'] }}');">
 								<img class="vam" src="{{ URL::asset('resources/assets/images/edit.png') }}" width="20" height="20">
 							</a>
-							<a href="javascript:editExpData('{{ $data['id'] }}','2');">
+							<a href="javascript:editExpData('{{ $data['id'] }}','2','{{ $data['bankId'] }}','{{ $data['content'] }}');">
 								<img class="vam" src="{{ URL::asset('resources/assets/images/copy.png') }}" width="20" height="20">
 							</a>
 							&nbsp&nbsp

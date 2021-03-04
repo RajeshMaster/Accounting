@@ -191,9 +191,11 @@ function fnGetbankDetails() {
 		}
 	});
 }
-function editExpData(id, editflg) {
+function editExpData(id, editflg, bankId, content) {
 	$('#editId').val(id);
 	$('#edit_flg').val(editflg);
+	$('#bank_Id').val(bankId);
+	$('#content_Id').val(content);
 	$('#frmexpensesDataindex').attr('action', 'expensesDataEdit?mainmenu='+mainmenu+'&time='+datetime);
 	$("#frmexpensesDataindex").submit();
 }
@@ -513,4 +515,26 @@ function changeDelFlg(editId,delFlg){
 		$('#frmexpensesDataindex').attr('action', 'changeDelFlg?mainmenu='+mainmenu+'&time='+datetime);
 		$("#frmexpensesDataindex").submit();
 	}
+}
+
+function empNameclick(empId){ 
+	pageload();
+	$('#empId').val(empId);
+	$('#contentId').val("");
+	$('#plimit').val(50);
+	$('#page').val('');
+	$("#searchmethod").val(3);
+	$('#frmexpensesDataindex').attr('action','index'+'?mainmenu='+mainmenu+'&time='+datetime); 
+	$("#frmexpensesDataindex").submit();
+}
+
+function contentclick(contentId){ 
+	pageload();
+	$('#empId').val("");
+	$('#contentId').val(contentId);
+	$('#plimit').val(50);
+	$('#page').val('');
+	$("#searchmethod").val(3);
+	$('#frmexpensesDataindex').attr('action','index'+'?mainmenu='+mainmenu+'&time='+datetime); 
+	$("#frmexpensesDataindex").submit();
 }
