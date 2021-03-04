@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('content')
 {{ HTML::script('resources/assets/js/accounts.js') }}
+{{ HTML::script(asset('resources/assets/js/Setting.js')) }}
 {{ HTML::script('resources/assets/js/lib/bootstrap-datetimepicker.js') }}
 {{ HTML::style('resources/assets/css/lib/bootstrap-datetimepicker.min.css') }}
 @php use App\Http\Helpers; @endphp
@@ -25,6 +26,9 @@
 	}
 	.ime_mode_disable {
 		ime-mode:disabled;
+	}
+	select{
+		min-width: 100px;
 	}
 </style>
 <div class="CMN_display_block" id="main_contents">
@@ -266,7 +270,14 @@
 									'id'=>'content',
 									'data-label' =>  trans('messages.lbl_content'),
 									'class'=>'pl5 widthauto'))}}
-
+				@php
+					$tbl_name = 'acc_contentsetting';
+				@endphp
+				<button type="button" style="background-color: green; color: #fff;" 
+					id="salarybutton" class="btn box10per fa fa-plus"
+					onclick = "javascript:settingpopupsinglefield('twotextpopup','{{ $tbl_name}}')" >
+					{{ trans('messages.lbl_add') }}
+				</button> 
 			</div>
 		</div>
 
@@ -386,6 +397,14 @@
 </div>
 
 <div id="getExpensespopup" class="modal fade">
+	<div id="login-overlay">
+		<div class="modal-content">
+			<!-- Popup will be loaded here -->
+		</div>
+	</div>
+</div>
+
+<div id="showpopup" class="modal fade" style="width: 775px;">
 	<div id="login-overlay">
 		<div class="modal-content">
 			<!-- Popup will be loaded here -->

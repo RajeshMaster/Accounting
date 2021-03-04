@@ -149,9 +149,11 @@ class ExpensesDataController extends Controller {
 
 		$bankDetail = ExpensesData::fetchbanknames();
 		$mainSubDetail = ExpensesData::getMainExpName();
+		$contentDetail = ExpensesData::fetchcontent();
 
 		return view('ExpensesData.addedit',[ 'request' => $request,
 												'mainSubDetail' => $mainSubDetail,
+												'contentDetail' => $contentDetail,
 												'bankDetail' => $bankDetail
 											]);
 	}
@@ -173,18 +175,23 @@ class ExpensesDataController extends Controller {
 		}
 		$expensesDataEdit = array();
 		$expensesDataEdit = ExpensesData::expensesDataEdit($request);
-		$bankDetail = ExpensesData::fetchbanknames();
+		
 		if ($request->edit_flg == 1) {
+			$contentDetail = ExpensesData::fetchEditcontent($request);
+			$bankDetail = ExpensesData::fetchEditbanknames($request);
 		} else {
 			$expensesDataEdit[0]->fileDtl = "";
 			$expensesDataEdit[0]->Empname = "";
 			$expensesDataEdit[0]->subjectId = "";
+			$contentDetail = ExpensesData::fetchcontent();
+			$bankDetail = ExpensesData::fetchbanknames();
 		}
 		
 		$mainSubDetail = ExpensesData::getMainExpName();
 		return view('ExpensesData.addedit',[ 'request' => $request,
 												'mainSubDetail' => $mainSubDetail,
 												'bankDetail' => $bankDetail,
+												'contentDetail' => $contentDetail,
 												'expensesDataEdit' => $expensesDataEdit
 											]);
 	}

@@ -96,13 +96,59 @@ class ExpensesData extends Model {
 		return $query;
 	}
 
+	public static function fetchcontent() {
+		$db = DB::connection('mysql');
+		$query = $db->TABLE('acc_contentsetting')
+						->SELECT('id','Subject','Subject_jp')
+						->where('delflg','=','0')
+						->orderBy('Subject','ASC');
+		if (Session::get('languageval') == "jp") {
+			$query = $query->lists('Subject_jp','id');
+		} else {
+			$query = $query->lists('Subject','id');
+		}
+		return $query;
+	}
+
+	public static function fetchEditbanknames($request,$bankIdTo=null) {
+		$db = DB::connection('mysql');
+		$query = $db->TABLE('mstbank')
+						->SELECT(DB::RAW("CONCAT(mstbank.Bank_NickName,'-',mstbank.AccNo) AS BANKNAME"),DB::RAW("CONCAT(mstbank.BankName,'-',mstbank.AccNo) AS ID"),'mstbank.id')
+						->orwhere('mstbank.delflg','=','0')
+						->orwhere('mstbank.id','=',$request->bank_Id);
+		$query = $query->orderBy('mstbank.Bank_NickName','ASC')
+						->lists('BANKNAME','ID');
+						// ->toSql();dd($query);
+		return $query;
+	}
+
+	public static function fetchEditcontent($request) {
+		$db = DB::connection('mysql');
+		$query = $db->TABLE('acc_contentsetting')
+						->SELECT('id','Subject','Subject_jp')
+						->orwhere('delflg','=','0')
+						->orwhere('id','=',$request->content_Id)
+						->orderBy('Subject','ASC');
+		if (Session::get('languageval') == "jp") {
+			$query = $query->lists('Subject_jp','id');
+		} else {
+			$query = $query->lists('Subject','id');
+		}
+						// ->toSql();dd($query);
+		return $query;
+	}
+
 	public static function getMainExpName() {
 
 		$db = DB::connection('mysql');
 		$query = $db->TABLE('dev_expensesetting')
 						->SELECT('id','Subject','Subject_jp')
-						->orderBy('id','ASC')
-						->lists('Subject','id');
+						->orderBy('id','ASC');
+		if (Session::get('languageval') == "jp") {
+			$query = $query->lists('Subject_jp','id');
+		} else {
+			$query = $query->lists('Subject','id');
+		}
 		return $query;
 		
 	}

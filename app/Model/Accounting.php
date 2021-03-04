@@ -53,8 +53,12 @@ class Accounting extends Model {
 						->SELECT('id','Subject','Subject_jp')
 						->orwhere('delflg','=','0')
 						->orwhere('id','=',$request->content_Id)
-						->orderBy('Subject','ASC')
-						->lists('Subject','id');
+						->orderBy('Subject','ASC');
+		if (Session::get('languageval') == "jp") {
+			$query = $query->lists('Subject_jp','id');
+		} else {
+			$query = $query->lists('Subject','id');
+		}
 						// ->toSql();dd($query);
 		return $query;
 	}

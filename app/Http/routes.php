@@ -514,6 +514,10 @@ Route::group(['prefix'=>'Accounting','middleware' => 'auth'], function() {
 	Route::any('dateBankExists', 'AccountingController@dateBankExists')->middleware('accessright:0,1,2,3,4');
 	// Excel download // Sastha
 	Route::any('accExlwnld', 'AccountingController@accExlwnld')->middleware('accessright:0,1,2,3,4');
+	// Two Text Popup //Sastha
+	Route::get('twotextpopup', 'SettingController@twotextpopup')->middleware('accessright:0,1,2,3,4');
+	Route::get('twoFieldaddedit', 'SettingController@twoFieldaddedit')->middleware('accessright:0,1,2,3,4');
+	Route::any('useNotuse', 'SettingController@useNotuse')->middleware('accessright:0,1,2,3,4');
 });
 
 
@@ -608,6 +612,10 @@ Route::group(['prefix'=>'ExpensesData','middleware' => 'auth'], function() {
 	Route::any('addedit', 'ExpensesDataController@addedit')->middleware('accessright:0,1,2,3,4');
 	Route::any('expensesDataEdit', 'ExpensesDataController@expensesDataEdit')->middleware('accessright:0,1,2,3,4');
 	Route::any('addeditprocess', 'ExpensesDataController@addeditprocess')->middleware('accessright:0,1,2,3,4');
+	// Two Text Popup //Sastha
+	Route::get('twotextpopup', 'SettingController@twotextpopup')->middleware('accessright:0,1,2,3,4');
+	Route::get('twoFieldaddedit', 'SettingController@twoFieldaddedit')->middleware('accessright:0,1,2,3,4');
+	Route::any('useNotuse', 'SettingController@useNotuse')->middleware('accessright:0,1,2,3,4');
 });
 
 // External User Process by Sastha
