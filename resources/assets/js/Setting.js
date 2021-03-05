@@ -461,19 +461,22 @@ function fnaddedittwofield(location,mainmenu,tablename,flag) {
 
 	var opr=$('#process').val();
 
-		if($("#textbox1").val()==""){
-
-		$("#empty_textbox1").show(); 
-
-		$("#textbox1").focus();
-
-		} else if($("#textbox2").val()==""){
+		if($("#textbox2").val()==""){
 
 		$("#empty_textbox2").show(); 
 
 		$("#textbox2").focus();
 
-		$("#empty_textbox1").hide(); 
+		$("#empty_textbox1").hide();
+
+
+		} else if($("#textbox1").val()==""){
+
+		$("#empty_textbox1").show(); 
+
+		$("#textbox1").focus();
+
+		$("#empty_textbox2").hide(); 
 
 		} else {
 
@@ -543,7 +546,7 @@ function fnaddedittwofield(location,mainmenu,tablename,flag) {
 
 									var tempdata= parseInt(data)+1;
 
-									var data='<tr class="h37"><td class="tac" title="Select"><input type = "radio" name="rdoedit" id="rdoedit'+data+'" class="h13 w13" onclick="fnrdochecktwofield(\''+textbox1+'\',\''+textbox2+'\',\''+data+'\');"><input id="rdoid" name="rdoid" type="hidden" value="'+data+'"></td><td class="text-center pt7" title="S.No">'+data+'</td><td class="pl7 pt7" id="dataname1'+data+'">'+textbox1+'</td><td class="pl7 pt7" id="dataname2'+data+'">'+textbox2+'</td><td class="tac pt7" title="Use/Not Use"><a href="javascript:useNotuse(\''+data+'\',\''+tempdata+'\');" class="btn-link" style="color:blue;"><label class="btn-link" id="usenotuselabel'+tempdata+'" data-type="0" style="color: blue;">Use</label></a><input id="curtFlg'+tempdata+'" name="curtFlg'+tempdata+'" type="hidden" value="1"><input id="editid'+tempdata+'" name="editid'+tempdata+'" type="hidden" value="'+data+'"></td></tr>';
+									var data='<tr class="h37"><td class="tac" title="Select"><input type = "radio" name="rdoedit" id="rdoedit'+data+'" class="h13 w13" onclick="fnrdochecktwofield(\''+textbox1+'\',\''+textbox2+'\',\''+data+'\');"><input id="rdoid" name="rdoid" type="hidden" value="'+data+'"></td><td class="text-center pt7" title="S.No">'+data+'</td><td class="pl7 pt7" id="dataname2'+data+'">'+textbox2+'</td><td class="pl7 pt7" id="dataname1'+data+'">'+textbox1+'</td><td class="tac pt7" title="Use/Not Use"><a href="javascript:useNotuse(\''+data+'\',\''+tempdata+'\');" class="btn-link" style="color:blue;"><label class="btn-link" id="usenotuselabel'+tempdata+'" data-type="0" style="color: blue;">Use</label></a><input id="curtFlg'+tempdata+'" name="curtFlg'+tempdata+'" type="hidden" value="1"><input id="editid'+tempdata+'" name="editid'+tempdata+'" type="hidden" value="'+data+'"></td></tr>';
 
 									$('#swaptable1 tr:last').after(data);
 
