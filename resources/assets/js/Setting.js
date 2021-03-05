@@ -1086,6 +1086,7 @@ function fnclosepopdig() {
 
 	$('#modal-container .modal-content').empty();
 
+	window.location.reload();
 }
 
 function divpopupclose() {
@@ -1094,11 +1095,13 @@ function divpopupclose() {
 
 	if (confirm(confirmmsg)) {
 
-		$( "body div" ).removeClass( "modalOverlay" );
+		// $( "body div" ).removeClass( "modalOverlay" );
 
-		$( '#showpopup' ).empty();
+		// $( '#showpopup' ).empty();
 
-		$('#showpopup').modal('toggle');
+		// $('#showpopup').modal('toggle');
+
+		window.location.reload();
 
 	} else {
 
