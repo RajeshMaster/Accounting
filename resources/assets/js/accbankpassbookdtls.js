@@ -61,7 +61,7 @@ $(document).ready(function() {
 							$.ajax({
 								type: 'GET',
 								url: 'DateExists',
-								data: { "edit_id": edit_id, "edit_flg": edit_flg, "bankId": bankId , "dateRange": dateRangeFrom},
+								data: { "edit_id": edit_id, "edit_flg": edit_flg, "bankId": bankId , "dateRange": dateRangeFrom, "flg": 1},
 								success: function(resp) {
 									if (resp != 0) {
 										document.getElementById('errorSectiondisplay').innerHTML = "";
@@ -81,7 +81,7 @@ $(document).ready(function() {
 										$.ajax({
 											type: 'GET',
 											url: 'DateExists',
-											data: { "edit_id": edit_id, "edit_flg": edit_flg, "bankId": bankId , "dateRange": dateRangeTo},
+											data: { "edit_id": edit_id, "edit_flg": edit_flg, "bankId": bankId , "dateRange": dateRangeTo, "flg": 2},
 											success: function(resp) {
 												if (resp != 0) {
 													document.getElementById('errorSectiondisplay').innerHTML = "";

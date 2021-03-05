@@ -186,6 +186,12 @@ class AccBankPassbookDtls extends Model {
 
 	public static function getDateExists($request) {
 
+		if ($request->flg == 1) {
+			$request->dateRange = date("Y-m-d", strtotime("1 day", strtotime($request->dateRange)));
+		} else {
+			$request->dateRange = date("Y-m-d", strtotime("-1 day", strtotime($request->dateRange)));
+		}
+
 		$result = DB::table('acc_bankpassbookdtls')
 
 						->SELECT('*');
