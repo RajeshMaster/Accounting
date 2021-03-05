@@ -231,15 +231,17 @@
 									{{ $data['employeDetails'] }}
 								</a>
 							@else
-								<a class="blue" href="javascript:contentclick('{{ $data['content'] }}');" >
-									@if($data['contentSub'] != "" && Session::get('languageval') == "en")
-										{{ $data['contentSub'] }}
-									@elseif($data['contentSub_jp'] != "" && Session::get('languageval') == "jp")
+								@if($data['contentSub'] != "" && Session::get('languageval') == "en")
+									<a class="blue" href="javascript:contentclick('{{ $data['content'] }}');" >
+									{{ $data['contentSub'] }}
+									</a>
+								@elseif($data['contentSub_jp'] != "" && Session::get('languageval') == "jp")
+									<a class="blue" href="javascript:contentclick('{{ $data['content'] }}');" >
 										{{ $data['contentSub_jp'] }}
-									@else
-										{{ $data['content'] }} 
-									@endif
-								</a>
+									</a>
+								@else
+									{{ $data['content'] }} 
+								@endif
 							@endif
 						</td>
 						<td align="right">

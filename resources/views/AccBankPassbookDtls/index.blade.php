@@ -7,6 +7,17 @@
 	$(document).ready(function() {
 		setDatePicker("from_date");
 		setDatePicker("to_date");
+		if($('#hidAuth').val() == "5" || mainmenu == "AuditingBankPassbook"){
+			$(".divdisplay").css("display", "none");
+			$('.columnspan').attr('colspan','2');
+			$('.columnspannodata').attr('colspan','5');
+			$(".Auddivdisplay").css("");
+		} else {
+			$(".divdisplay").css("");
+			$('.columnspan').attr('colspan','2');
+			$('.columnspannodata').attr('colspan','6');
+			$(".Auddivdisplay").css("display", "none");
+		}
 	});
 
 </script>
@@ -34,7 +45,11 @@
 {{ HTML::style('resources/assets/css/lib/lightbox.css') }}
 <div class="CMN_display_block" id="main_contents" style="width: 100%">
 <!-- article to select the main&sub menu -->
+@if($request->mainmenu =="AuditingBankPassbook")
+<article id="auditing" class="DEC_flex_wrapper " data-category="auditing auditing_sub_8">
+@else
 <article id="accounting" class="DEC_flex_wrapper " data-category="accounting accounting_sub_7">
+@endif
 
 	{{ Form::open(array('name'=>'frmAccBankPassbook', 
 						'id'=>'frmAccBankPassbook', 
@@ -54,11 +69,9 @@
 		{{ Form::hidden('searchmethod', '', array('id' => 'searchmethod')) }}
 
 		<!-- Year Bar Start -->
-		{{ Form::hidden('selMonth', $request->selMonth, array('id' => 'selMonth')) }}
 		{{ Form::hidden('selYear', $request->selYear, array('id' => 'selYear')) }}
 		{{ Form::hidden('prevcnt', $request->prevcnt, array('id' => 'prevcnt')) }}
 		{{ Form::hidden('nextcnt', $request->nextcnt, array('id' => 'nextcnt')) }}
-		{{ Form::hidden('account_val', $account_val, array('id' => 'account_val')) }}
 		<!-- Year Bar End -->
 
 
@@ -73,7 +86,7 @@
 	<div class=" pr10 pl10 ">
 		<div class="mt10 ">
 			@if($request->searchmethod == "6" || $request->searchmethod == "")
-				{{ Helpers::displayYear_MonthEst($account_period, $year_month, $db_year_month, $date_month, $dbnext, $dbprevious, $last_year, $current_year, $account_val) }}
+				 {{ Helpers::displayYear($prev_yrs,$cur_year,$total_yrs,$curtime) }}
 			@endif
 		</div>
 	</div>
@@ -102,7 +115,7 @@
 				<col width="10%">
 				<col width="25%">
 				<col width="10%">
-				<col width="10%">
+				<col class="divdisplay" width="10%">
 			</colgroup>
 
 			<thead class="CMN_tbltheadcolor">
@@ -112,7 +125,7 @@
 					<th class="vam">{{ trans('messages.lbl_pageNo') }}</th>
 					<th class="vam">{{ trans('messages.lbl_daterange') }}</th>
 					<th class="vam">{{ trans('messages.lbl_file') }}</th>
-					<th class="vam"></th>
+					<th class="vam divdisplay"></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -142,7 +155,7 @@
 						<td align="center">
 							@if($data['fileDtl'] != "")
 								@php $fileName = "AccBankPassbook_".$data['id']; @endphp
-								<a onclick="fileImgPopup('{{ $fileName }}','{{ $request->selYear }}','{{ $request->selMonth }}')" 
+								<a onclick="fileImgPopup('{{ $fileName }}','{{ $request->selYear }}')" 
 									id ="filelink<?php echo $fileName; ?>" class ="csrp">
 									<img width="20" height="20" name="empimg" id="empimg"
 									class=" box20 viewPic3by2" src= "{{ URL::asset('../../../../AccountingUpload/AccBankPassbook').'/'.$data['fileDtl'] }}">
@@ -165,7 +178,7 @@
 					@php $i++; @endphp
 				@empty
 					<tr>
-						<td class="text-center" colspan="6" style="color: red;">
+						<td class="text-center columnspannodata" style="color: red;">
 							{{ trans('messages.lbl_nodatafound') }}</td>
 					</tr>
 				@endforelse

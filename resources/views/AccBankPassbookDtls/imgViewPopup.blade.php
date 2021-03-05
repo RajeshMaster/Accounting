@@ -8,30 +8,17 @@
 	}
 </script>
 <style type="text/css">
-	@media all and (min-width:770px) {
-		.modal {
-			width: 50%;
-			position: absolute;
-			top: 25%;
-			left: 20%;
-		}
-		.passbookImage {
-			width:400px;
-			height:400px;
-		}
+	.modal {
+		width: 85%;
+		position: absolute;
+		top: 15%;
+		left: 10%;
 	}
-	@media all and (max-width: 768px) {
-		.modal {
-			width: 95%;
-			position: absolute;
-			top: 5%;
-			left: 5%;
-		}
-		.passbookImage {
-			width:200px;
-			height:200px;
-		}
+	.passbookImage {
+		width:950px;
+		height:550px;
 	}
+	
 </style>
 {{ Form::open(array('name'=>'imgViewPopup', 'id'=>'imgViewPopup',
 							'files'=>true, 
@@ -40,7 +27,6 @@
 							'method' => 'POST')) }}
 	{{ Form::hidden('mainmenu', $request->mainmenu , array('id' => 'mainmenu')) }}
 	{{ Form::hidden('selYear', $request->selYear , array('id' => 'selYear')) }}
-	{{ Form::hidden('selMonth', $request->selMonth , array('id' => 'selMonth')) }}
 	<div class="modal-content">
 		<div class="modal-header popH_color" style="height: 60px;">
 			<button type="button"  data-dismiss="modal" class="close mt7" 
@@ -109,19 +95,11 @@
 						</div>
 						<div class="mt10">
 							@if($image->fileDtl != "")
-								<a style="text-decoration:none !important;" 
-									href="{{ URL::asset($passBookPath) }}" 
-									data-lightbox="img">
-									<img src="{{ URL::asset($passBookPath) }}" 
+								<img src="{{ URL::asset($passBookPath) }}" 
 										class="box200 mt10 mb10 passbookImage">
-								</a>
 							@else
-								<a style="text-decoration:none !important;" 
-									href="{{ URL::asset($noPath) }}" 
-									data-lightbox="img">
-									<img src="{{ URL::asset($noPath) }}" 
-										class="box200 mt10 mb10 passbookImage">
-								</a>
+								<img src="{{ URL::asset($noPath) }}" 
+									class="box200 mt10 mb10 passbookImage">
 							@endif
 						</div>
 					</div>

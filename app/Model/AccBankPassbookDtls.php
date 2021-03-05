@@ -7,7 +7,7 @@ use Input;
 use Auth;
 use Carbon\Carbon;
 class AccBankPassbookDtls extends Model {
-	public static function bankPassbookindex($from_date,$to_date,$request) {
+	public static function bankPassbookindex($request) {
 
 		$db = DB::connection('mysql');
 		
@@ -26,8 +26,7 @@ class AccBankPassbookDtls extends Model {
 				$query = $query->where('bankPassbook.bankId', '=', $request->bank_id);
 			}
 		} else {
-			$query = $query->where('dateRangeFrom', '>=', $from_date)
-							->where('dateRangeFrom', '<=', $to_date);
+			$query = $query->where(DB::raw("SUBSTRING(bankPassbook.dateRangeFrom, 1, 4)"), '=', $request->selYear);
 		}
 
 			$query = $query->orderBy('bankPassbook.bankId', 'ASC')
@@ -38,50 +37,13 @@ class AccBankPassbookDtls extends Model {
 		return $query;
 	}
 
-	public static function fnGetAccountPeriodAcc() {
-		$accperiod = DB::table('dev_kessandetails')
-						->SELECT('*')
-						->WHERE('delflg', '=', 0)
-						->get();
-		return $accperiod;
-	}
-
-	public static function fnGetCashExpenseAllRecord() {
-		
-		$sql = "SELECT SUBSTRING(dateRangeFrom, 1, 7) AS date FROM acc_bankpassbookdtls 
-				ORDER BY date ASC ";
-
-		$cards = DB::select($sql);
-		return $cards;
-	}
-
-	public static function fnGetCashExpenseRecord($from_date, $to_date) {
-	
-		$tbl_name = "acc_bankpassbookdtls";
-		$sql = "SELECT SUBSTRING(dateRangeFrom, 1, 7) AS date 
-				FROM $tbl_name 
-				WHERE (dateRangeFrom > '$from_date' AND dateRangeFrom < '$to_date') 
-				ORDER BY date ASC";
-		$cards = DB::select($sql);
-		return $cards;
-	}
-
-	public static function fnGetCashExpenseRecordPrevious($from_date) {
-
-		$tbl_name = "acc_bankpassbookdtls";
-		$sql = "SELECT SUBSTRING(dateRangeFrom, 1, 7) AS date FROM $tbl_name
-			WHERE (dateRangeFrom <= '$from_date') ORDER BY date ASC";
-		$cards = DB::select($sql);
-		return $cards;
-	}
-
-	public static function fnGetCashExpenseRecordNext($to_date) {
-
-		$tbl_name = "acc_bankpassbookdtls";
-		$sql = "SELECT SUBSTRING(dateRangeFrom, 1, 7) AS date FROM $tbl_name 
-			WHERE (dateRangeFrom >= '$to_date') ORDER BY date ASC";
-		$cards = DB::select($sql);
-		return $cards;
+	public static function getYears($request) {
+		$db = DB::connection('mysql');
+		$years = $db->table('acc_bankpassbookdtls')
+					->select(DB::raw("SUBSTRING(dateRangeFrom, 1, 4) as years"))
+					->groupBy(DB::raw("SUBSTRING(dateRangeFrom, 1, 4)"))
+					->get();
+	 	return $years;
 	}
 
 	public static function fetchbanknames() {
@@ -269,7 +231,6 @@ class AccBankPassbookDtls extends Model {
 		$latDetails = $db->table('acc_bankpassbookdtls')
 						->WHERE('fileDtl','!=',NULL)
 						->WHERE(DB::raw("SUBSTRING(dateRangeFrom, 1, 4)"),'=', $request->selYear)
-						->WHERE(DB::raw("SUBSTRING(dateRangeFrom, 6, 2)"),'=', $request->selMonth)
 						->min('id');
 		return $latDetails;
 	}
@@ -279,7 +240,6 @@ class AccBankPassbookDtls extends Model {
 		$latDetails = $db->table('acc_bankpassbookdtls')
 						->WHERE('fileDtl','!=',NULL)
 						->WHERE(DB::raw("SUBSTRING(dateRangeFrom, 1, 4)"),'=', $request->selYear)
-						->WHERE(DB::raw("SUBSTRING(dateRangeFrom, 6, 2)"),'=', $request->selMonth)
 						->max('id');
 		return $latDetails;
 	}
@@ -289,7 +249,6 @@ class AccBankPassbookDtls extends Model {
 		$result = $db->TABLE('acc_bankpassbookdtls')
 						->SELECT('id','fileDtl')
 						->WHERE(DB::raw("SUBSTRING(dateRangeFrom, 1, 4)"),'=', $request->selYear)
-						->WHERE(DB::raw("SUBSTRING(dateRangeFrom, 6, 2)"),'=', $request->selMonth)
 						->ORDERBY('id','ASC')
 						->GET();
 		return $result;
@@ -297,34 +256,28 @@ class AccBankPassbookDtls extends Model {
 
 	public static function getPrevNxtImg($request) {
 		$db = DB::connection('mysql');
-		/*if ($request->imageFlg == 1) {
-			$request->imageId = $request->imageId - 1;
-		} else {
-			$request->imageId = $request->imageId + 1;
-		}*/
 		if ($request->imageFlg == 2) {
 			$latDetails = $db->table('acc_bankpassbookdtls')
 							->WHERE('fileDtl','!=',NULL)
 							->WHERE(DB::raw("SUBSTRING(dateRangeFrom, 1, 4)"),'=', $request->selYear)
-							->WHERE(DB::raw("SUBSTRING(dateRangeFrom, 6, 2)"),'=', $request->selMonth)
 							->WHERE('id', '>' , $request->imageId)
 							->min('id');
 		} else {
 			$latDetails = $db->table('acc_bankpassbookdtls')
 							->WHERE('fileDtl','!=',NULL)
 							->WHERE(DB::raw("SUBSTRING(dateRangeFrom, 1, 4)"),'=', $request->selYear)
-							->WHERE(DB::raw("SUBSTRING(dateRangeFrom, 6, 2)"),'=', $request->selMonth)
 							->WHERE('id', '<' , $request->imageId)
 							->max('id');
 		}
 		$result = $db->TABLE('acc_bankpassbookdtls')
 					->select('*')
 					->WHERE(DB::raw("SUBSTRING(dateRangeFrom, 1, 4)"),'=', $request->selYear)
-					->WHERE(DB::raw("SUBSTRING(dateRangeFrom, 6, 2)"),'=', $request->selMonth)
 					->WHERE('id', '=' , $latDetails)
 					->ORDERBY('id', 'ASC')
 					->get();
 		return $result;
 	}
 
+
+	
 }

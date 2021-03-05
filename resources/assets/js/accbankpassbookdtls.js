@@ -175,27 +175,9 @@ function addedit(flg,id) {
 	$("#frmAccBankPassbook").submit();
 }
 
-function getData(month, year, flg, prevcnt, nextcnt, account_period, lastyear, currentyear, account_val) {
-	// alert(month + "***" + flg + "****" + currentyear);
-	var yearmonth = year + "-" +  ("0" + month).substr(-2);
-	if ((prevcnt == 0) && (flg == 0) && (parseInt(month) < account_period) && (year == lastyear)) {
-		alert("No Previous Record.");
-		//return false;
-	} else if ((nextcnt == 0) && (flg == 0) && (parseInt(month) > account_period) && (year == currentyear)) {
-		alert("No Next Record.");
-	} else {
-		if (flg == 1) {
-			 $('#previou_next_year').val(year + "-" +  ("0" + month).substr(-2)); 
-		}
-		$('#page').val('');
-		$('#plimit').val('');
-		$('#selMonth').val(("0" + month).substr(-2));
-		$('#selYear').val(year);
-		$('#prevcnt').val(prevcnt);
-		$('#nextcnt').val(nextcnt);
-		$('#account_val').val(account_val);
-		$('#frmAccBankPassbook').submit();
-	}
+function getData(selYear,time) {
+	$('#selYear').val(selYear);
+	$("#frmAccBankPassbook").submit();
 }
 
 function getdate(flg) {
@@ -245,9 +227,9 @@ function nextData(flg,id) {
 	} 
 }
 
-function fileImgPopup(fileImage,selYear,selMonth) {
+function fileImgPopup(fileImage,selYear) {
 	var mainmenu = $('#mainmenu').val();
-	$('#imgViewPopup').load('imgViewPopup?mainmenu='+mainmenu+'&time='+datetime+'&selYear='+selYear+'&selMonth='+selMonth+'&fileImage='+fileImage);
+	$('#imgViewPopup').load('imgViewPopup?mainmenu='+mainmenu+'&time='+datetime+'&selYear='+selYear+'&fileImage='+fileImage);
 	$("#imgViewPopup").modal({
 		backdrop: 'static',
 		keyboard: false
@@ -258,7 +240,6 @@ function fileImgPopup(fileImage,selYear,selMonth) {
 function fnprevnext(fileImage,imageId,imageFlg) {
 	var mainmenu = $('#mainmenu').val();
 	var selYear = $('#selYear').val();
-	var selMonth = $('#selMonth').val();
 	$.ajax({
 		type: 'GET',
 		dataType: "JSON",
@@ -266,7 +247,6 @@ function fnprevnext(fileImage,imageId,imageFlg) {
 		data: {
 			"mainmenu": mainmenu,
 			"selYear": selYear,
-			"selMonth": selMonth,
 			"imageId": imageId,
 			"imageFlg": imageFlg
 		},
