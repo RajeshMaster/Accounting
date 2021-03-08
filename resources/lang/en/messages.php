@@ -1195,8 +1195,9 @@ return [
 	/* Accounting Bank Passbook */
 	'lbl_passbookdetail' => 'Passbook',
 	'lbl_pageNo' => 'Page No',
-	'lbl_next' => 'Next',
 	'lbl_pgupload' => 'Page Upload',
+	'lbl_prev' => 'Prev',
+	'lbl_next' => 'Next',
 
 	/* Auditing  */
 	'lbl_auditing' => 'Auditing',

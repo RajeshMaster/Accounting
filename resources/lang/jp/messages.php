@@ -1370,8 +1370,9 @@ return [
 	/* Accounting Bank Passbook */
 	'lbl_passbookdetail' => '銀行通帳',
 	'lbl_pageNo' => 'ページ番号',
-	'lbl_next' => 'Next',
 	'lbl_pgupload' => 'ページアップロード',
+	'lbl_prev' => '前へ',
+	'lbl_next' => '次へ',
 
 	/* Auditing  */
 	'lbl_auditing' => 'Auditing',

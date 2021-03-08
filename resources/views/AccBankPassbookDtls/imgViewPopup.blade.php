@@ -9,16 +9,19 @@
 </script>
 <style type="text/css">
 	.modal {
-		width: 85%;
+		width: 88%;
 		position: absolute;
-		top: 15%;
-		left: 10%;
+		top: 10%;
+		left: 7%;
 	}
 	.passbookImage {
-		width:950px;
-		height:550px;
+		width:1000px;
+		height:600px;
 	}
-	
+	a:hover {
+	  text-decoration: none;
+	}
+
 </style>
 {{ Form::open(array('name'=>'imgViewPopup', 'id'=>'imgViewPopup',
 							'files'=>true, 
@@ -52,7 +55,7 @@
 					@if($passbookPrevId == $imageId) 
 						{{--*/ $previmg = "/previousdisab.png" /*--}}
 						{{--*/ $disableprev = "disabled" /*--}}
-						{{--*/ $cursorprev = "cursor:default;vertical-align:middle;" /*--}}
+						{{--*/ $cursorprev = "cursor:default;color: black;" /*--}}
 					@else
 						{{--*/ $previmg = "/previousenab.png" /*--}}
 						{{--*/ $disableprev = "" /*--}}
@@ -61,7 +64,7 @@
 					@if($passbookNextId == $imageId)
 						{{--*/ $nextimg = "/nextdisab.png" /*--}}
 						{{--*/ $disablenext = "disabled" /*--}}
-						{{--*/ $cursornext = "cursor:default;vertical-align:middle;" /*--}}
+						{{--*/ $cursornext = "cursor:default;color: black;" /*--}}
 					@else
 						{{--*/ $nextimg = "/nextenab.png" /*--}}
 						{{--*/ $disablenext = "" /*--}}
@@ -72,13 +75,14 @@
 					@else
 						<div id="image<?php echo $ImageName; ?>" style="display: none;">
 					@endif
-						<div class="mt10">
-							<img width='17' height='17' class="vam" 
-							src="{{ URL::asset('resources/assets/images'.$previmg)}}"
-								id = "prev<?php echo $ImageName; ?>"
+						<div class="mt5 mb5">
+							<div class="pull-left ml30" style="display:inline-block;">
+							<a id = "prev<?php echo $ImageName; ?>"
 								@if ($passbookPrevId != $imageId)  
 									onclick = "fnprevnext('{{ $ImageName }}','{{ $image->id }}',1);"
 								@endif {{ $disableprev }} style="{{ $cursorprev }}">
+								<<&nbsp{{ trans('messages.lbl_prev') }}
+							</a>
 							<span class="ml10 mr10">
 								@if($image->fileDtl != "")
 									{{ $image->fileDtl }}
@@ -86,12 +90,22 @@
 									AccBankPassbook_{{ $image->id }}.png
 								@endif
 							</span>
-							<img width='17' height='17' class="vam" 
-								src="{{ URL::asset('resources/assets/images'.$nextimg)}}"
-								id = "next<?php echo $ImageName; ?>"
+							<a id = "next<?php echo $ImageName; ?>"
 								@if ($passbookNextId != $imageId)
 									onclick = "fnprevnext('{{ $ImageName }}','{{ $image->id }}',2);" 
 								@endif {{ $disablenext }} style="{{ $cursornext }}">
+								{{ trans('messages.lbl_next') }}&nbsp>>
+							</a>
+							</div>
+							<div class="pull-right mr30" style="display:inline-block;">
+								@if($image->fileDtl != "")
+									<a id="dwnld<?php echo $ImageName; ?>" 
+										class ="" 
+										href="javascript:download('{{ $image->fileDtl }}','{{ $dwnldPath }}');">
+										{{ trans('messages.lbl_download') }}
+									</a>
+								@endif
+							</div>
 						</div>
 						<div class="mt10">
 							@if($image->fileDtl != "")
@@ -102,19 +116,6 @@
 									class="box200 mt10 mb10 passbookImage">
 							@endif
 						</div>
-					</div>
-					@if($ImageName == $request->fileImage)
-						<div id="dwnld<?php echo $ImageName; ?>" class="mt20">
-					@else
-						<div id="dwnld<?php echo $ImageName; ?>" class="mt20" 
-							style="display: none;">
-					@endif
-						@if($image->fileDtl != "")
-							<a class="fa fa-download" 
-								style="text-decoration:none !important;"
-								href="javascript:download('{{ $image->fileDtl }}','{{ $dwnldPath }}');">
-							</a>
-						@endif
 					</div>
 				@endforeach
 			</div>

@@ -258,7 +258,7 @@ class AccBankPassbookDtls extends Model {
 		$db = DB::connection('mysql');
 		$latDetails = $db->table('acc_bankpassbookdtls')
 						->WHERE('fileDtl','!=',NULL)
-						->WHERE(DB::raw("SUBSTRING(dateRangeFrom, 1, 4)"),'=', $request->selYear)
+						->WHERERAW("'$request->selYear' BETWEEN SUBSTRING(dateRangeFrom, 1, 4) AND SUBSTRING(dateRangeTo, 1, 4)")
 						->min('id');
 		return $latDetails;
 	}
@@ -267,7 +267,7 @@ class AccBankPassbookDtls extends Model {
 		$db = DB::connection('mysql');
 		$latDetails = $db->table('acc_bankpassbookdtls')
 						->WHERE('fileDtl','!=',NULL)
-						->WHERE(DB::raw("SUBSTRING(dateRangeFrom, 1, 4)"),'=', $request->selYear)
+						->WHERERAW("'$request->selYear' BETWEEN SUBSTRING(dateRangeFrom, 1, 4) AND SUBSTRING(dateRangeTo, 1, 4)")
 						->max('id');
 		return $latDetails;
 	}
@@ -276,7 +276,7 @@ class AccBankPassbookDtls extends Model {
 		$db = DB::connection('mysql');
 		$result = $db->TABLE('acc_bankpassbookdtls')
 						->SELECT('id','fileDtl')
-						->WHERE(DB::raw("SUBSTRING(dateRangeFrom, 1, 4)"),'=', $request->selYear)
+						->WHERERAW("'$request->selYear' BETWEEN SUBSTRING(dateRangeFrom, 1, 4) AND SUBSTRING(dateRangeTo, 1, 4)")
 						->ORDERBY('id','ASC')
 						->GET();
 		return $result;
@@ -287,19 +287,19 @@ class AccBankPassbookDtls extends Model {
 		if ($request->imageFlg == 2) {
 			$latDetails = $db->table('acc_bankpassbookdtls')
 							->WHERE('fileDtl','!=',NULL)
-							->WHERE(DB::raw("SUBSTRING(dateRangeFrom, 1, 4)"),'=', $request->selYear)
+							->WHERERAW("'$request->selYear' BETWEEN SUBSTRING(dateRangeFrom, 1, 4) AND SUBSTRING(dateRangeTo, 1, 4)")
 							->WHERE('id', '>' , $request->imageId)
 							->min('id');
 		} else {
 			$latDetails = $db->table('acc_bankpassbookdtls')
 							->WHERE('fileDtl','!=',NULL)
-							->WHERE(DB::raw("SUBSTRING(dateRangeFrom, 1, 4)"),'=', $request->selYear)
+							->WHERERAW("'$request->selYear' BETWEEN SUBSTRING(dateRangeFrom, 1, 4) AND SUBSTRING(dateRangeTo, 1, 4)")
 							->WHERE('id', '<' , $request->imageId)
 							->max('id');
 		}
 		$result = $db->TABLE('acc_bankpassbookdtls')
 					->select('*')
-					->WHERE(DB::raw("SUBSTRING(dateRangeFrom, 1, 4)"),'=', $request->selYear)
+					->WHERERAW("'$request->selYear' BETWEEN SUBSTRING(dateRangeFrom, 1, 4) AND SUBSTRING(dateRangeTo, 1, 4)")
 					->WHERE('id', '=' , $latDetails)
 					->ORDERBY('id', 'ASC')
 					->get();
