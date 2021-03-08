@@ -65,8 +65,18 @@ class AccBankPassbookDtlsController extends Controller {
 		$total_yrs = array();
 
 		foreach ($yearArr as $value) {
-			$prev_yrs[] = $value->years;
-			$total_yrs[] = $value->years;
+			if (!in_array($value->yearFrom, $prev_yrs)) {
+				$prev_yrs[] = $value->yearFrom;
+			} 
+			if (!in_array($value->yearFrom, $total_yrs)) {
+				$total_yrs[] = $value->yearFrom;
+			}
+			if (!in_array($value->yearTo, $prev_yrs)) {
+				array_push($prev_yrs,$value->yearTo);
+			}
+			if (!in_array($value->yearTo, $total_yrs)) {
+				array_push($total_yrs,$value->yearTo);
+			} 
 		}
 
 		if (!in_array($cur_year, $total_yrs)) {

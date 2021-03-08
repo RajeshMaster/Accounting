@@ -130,18 +130,29 @@
 				</tr>
 			</thead>
 			<tbody>
-				@php $i = 0; @endphp
+				@php 
+					$i = 0; 
+					$lastBankId = "";
+				@endphp
 				@forelse($accBankPassbook as $key => $data)
-				
+					@if($lastBankId != $data['bankId'])
+						<tr style="background-color: #f1a2a2">
+							<td colspan="6"> 
+								<a href="javascript:bankNameclick('{{ $data['bankId'] }}');" 
+								class="blue">
+									{{ $data['Bank_NickName'] }}
+										&nbsp<span class="fwb"> - </span>&nbsp
+									{{ $data['AccNo'] }}
+								</a>
+							</td>
+						</tr>
+					@endif
 					<tr>
 						<td>{{ $i+1 }}</td>
 						<td>
-							<a href="javascript:bankNameclick('{{ $data['bankId'] }}');" 
-								class="blue">
-								{{ $data['Bank_NickName'] }}
-								&nbsp<span class="fwb"> - </span>&nbsp
-								{{ $data['AccNo'] }}
-							</a>
+							{{ $data['Bank_NickName'] }}
+							&nbsp<span class="fwb"> - </span>&nbsp
+							{{ $data['AccNo'] }}
 						</td>
 						<td class="vam tac"> 
 							{{ $data['pageNoFrom'] }}
@@ -176,7 +187,10 @@
 						</td>
 					</tr>
 					
-					@php $i++; @endphp
+					@php 
+						$i++;
+						$lastBankId = $data['bankId'];
+					@endphp
 				@empty
 					<tr>
 						<td class="text-center columnspannodata" style="color: red;">

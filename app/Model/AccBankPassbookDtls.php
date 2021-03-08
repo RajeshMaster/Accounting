@@ -26,7 +26,7 @@ class AccBankPassbookDtls extends Model {
 				$query = $query->where('bankPassbook.bankId', '=', $request->bank_id);
 			}
 		} else {
-			$query = $query->where(DB::raw("SUBSTRING(bankPassbook.dateRangeFrom, 1, 4)"), '=', $request->selYear);
+			$query = $query->WHERERAW("'$request->selYear' BETWEEN SUBSTRING(dateRangeFrom, 1, 4) AND SUBSTRING(dateRangeTo, 1, 4)");
 		}
 
 			$query = $query->orderBy('bankPassbook.bankId', 'ASC')
@@ -40,8 +40,8 @@ class AccBankPassbookDtls extends Model {
 	public static function getYears($request) {
 		$db = DB::connection('mysql');
 		$years = $db->table('acc_bankpassbookdtls')
-					->select(DB::raw("SUBSTRING(dateRangeFrom, 1, 4) as years"))
-					->groupBy(DB::raw("SUBSTRING(dateRangeFrom, 1, 4)"))
+					->select(DB::raw("SUBSTRING(dateRangeFrom, 1, 4) as yearFrom"), DB::raw("SUBSTRING(dateRangeTo, 1, 4) as yearTo"))
+					->groupBy(DB::raw("SUBSTRING(dateRangeTo, 1, 4)"), DB::raw("SUBSTRING(dateRangeTo, 1, 4)"))
 					->get();
 	 	return $years;
 	}
