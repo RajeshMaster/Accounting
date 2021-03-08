@@ -105,8 +105,13 @@ class AccBankPassbookDtlsController extends Controller {
 			return Redirect::to('AccBankPassbookDtls/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
 		}
 
-		$bankDetail = AccBankPassbookDtls::fetchbanknames();
 		$accBankPassbook = array();
+		if ($request->edit_flg == "2") {
+			$bankDetail = AccBankPassbookDtls::fetchEditbanknames($request);
+		} else {
+			$bankDetail = AccBankPassbookDtls::fetchbanknames();
+		}
+
 		if ($request->edit_id != "") {
 			$accBankPassbook = AccBankPassbookDtls::accBankPassbook($request->edit_id);
 		} if($request->edit_flg == "3" && isset($accBankPassbook[0])) {
@@ -116,7 +121,7 @@ class AccBankPassbookDtlsController extends Controller {
 			$pageNoAdd = $accBankPassbook[0]->pageNoTo + 1;
 			if (strlen($pageNoAdd) == 1) {
 				$pageNoAdd = "0".$pageNoAdd;
-			} 
+			} 		
 			$accBankPassbook[0]->pageNoTo = $pageNoAdd;
 		}
 
@@ -137,12 +142,20 @@ class AccBankPassbookDtlsController extends Controller {
 	public function addeditprocess(Request $request) {
 
 		$autoincId = AccBankPassbookDtls::getautoincrement();
-		if ($request->edit_flg == "2") {
-			$AccBankPassbookNo = "AccBankPassbook_".$request->edit_id;
+		$bankDetail = AccBankPassbookDtls::fetchbankdtls($request->bankId);
+		if(isset($bankDetail[0])) {
+			if ($request->edit_flg == "2") {
+				$AccBankPassbookNo = $bankDetail[0]->BANKNAME."_".$request->edit_id;
+			} else {
+				$AccBankPassbookNo = $bankDetail[0]->BANKNAME."_".$autoincId;
+			}
 		} else {
-			$AccBankPassbookNo = "AccBankPassbook_".$autoincId;
-		}
-		
+			if ($request->edit_flg == "2") {
+				$AccBankPassbookNo = "AccBankPassbook_".$request->edit_id;
+			} else {
+				$AccBankPassbookNo = "AccBankPassbook_".$autoincId;
+			}
+		}	
 		$fileName = "";
 		$fileid = "bankPassbook";
 

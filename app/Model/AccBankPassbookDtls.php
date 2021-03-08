@@ -57,6 +57,28 @@ class AccBankPassbookDtls extends Model {
 		return $query;
 	}
 
+	public static function fetchEditbanknames($request) {
+		$db = DB::connection('mysql');
+		$query = $db->TABLE('mstbank')
+						->SELECT(DB::RAW("CONCAT(mstbank.Bank_NickName,'-',mstbank.AccNo) AS BANKNAME"),DB::RAW("CONCAT(mstbank.BankName,'-',mstbank.AccNo) AS ID"),'mstbank.id')
+						->orwhere('mstbank.delflg','=','0')
+						->orwhere('mstbank.id','=',$request->bnk_id);
+		
+		$query = $query->orderBy('mstbank.Bank_NickName','ASC')
+						->lists('BANKNAME','mstbank.id');
+						// ->toSql();dd($query);
+		return $query;
+	}
+
+	public static function fetchbankdtls($bankId) {
+		$db = DB::connection('mysql');
+		$query = $db->TABLE('mstbank')
+						->SELECT(DB::RAW("CONCAT(mstbank.Bank_NickName,'-',mstbank.AccNo) AS BANKNAME"),DB::RAW("CONCAT(mstbank.BankName,'-',mstbank.AccNo) AS ID"),'mstbank.id')
+						->where('mstbank.id', '=', $bankId)
+						->get();
+		return $query;
+	}
+
 	public static function insertRec($request,$fileName,$orderId) {
 
 		$name = Session::get('FirstName').' '.Session::get('LastName');

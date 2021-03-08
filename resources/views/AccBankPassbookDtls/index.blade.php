@@ -64,6 +64,7 @@
 		{{ Form::hidden('edit_flg', '', array('id' => 'edit_flg')) }}
 		{{ Form::hidden('edit_id', '', array('id' => 'edit_id')) }}
 		{{ Form::hidden('bank_id', '', array('id' => 'bank_id')) }}
+		{{ Form::hidden('bnk_id', '', array('id' => 'bnk_id')) }}
 		{{ Form::hidden('acc_no', '', array('id' => 'acc_no')) }}
 		{{ Form::hidden('del_flg', '', array('id' => 'del_flg')) }}
 		{{ Form::hidden('searchmethod', '', array('id' => 'searchmethod')) }}
@@ -103,7 +104,7 @@
 			@php Session::forget('success'); @endphp
 			<!-- Session msg -->
 		<div class="col-xs-6  pm0 pull-left mt10 divdisplay">
-			<a href="javascript:addedit(1,'');" class="btn btn-success box100"><span class="fa fa-plus"></span> {{ trans('messages.lbl_register') }}</a>
+			<a href="javascript:addedit(1,'','');" class="btn btn-success box100"><span class="fa fa-plus"></span> {{ trans('messages.lbl_register') }}</a>
 		</div>
 	</div>
 
@@ -163,12 +164,12 @@
 							@endif
 						</td>
 						<td class="divdisplay" align="center">
-							<a href="javascript:addedit(2,'{{ $data['id'] }}');">
+							<a href="javascript:addedit(2,'{{ $data['id'] }}','{{ $data['bankId'] }}');">
 								{{ trans('messages.lbl_edit') }}
 							</a> 
 							@if($data['nxtFlg'] == 0)
 								&nbsp<span class="fwb"> / </span>&nbsp
-								<a href="javascript:addedit(3,'{{ $data['id'] }}');">
+								<a href="javascript:addedit(3,'{{ $data['id'] }}','{{ $data['bankId'] }}');">
 									{{ trans('messages.lbl_next') }}
 								</a>
 							@endif

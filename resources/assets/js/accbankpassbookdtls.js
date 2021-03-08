@@ -166,9 +166,10 @@ function pageLimitClick(pagelimitval) {
 	$("#frmAccBankPassbook").submit();
 }
 
-function addedit(flg,id) {
+function addedit(flg,id,bankId) {
 	$('#edit_flg').val(flg);
 	if (flg != 1) {
+		$('#bnk_id').val(bankId);
 		$('#edit_id').val(id);
 	}
 	$('#frmAccBankPassbook').attr('action', 'addedit?mainmenu='+mainmenu+'&time='+datetime);
