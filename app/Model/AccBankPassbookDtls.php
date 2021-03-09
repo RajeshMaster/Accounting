@@ -73,7 +73,7 @@ class AccBankPassbookDtls extends Model {
 	public static function fetchbankdtls($bankId) {
 		$db = DB::connection('mysql');
 		$query = $db->TABLE('mstbank')
-						->SELECT(DB::RAW("CONCAT(mstbank.Bank_NickName,'-',mstbank.AccNo) AS BANKNAME"),DB::RAW("CONCAT(mstbank.BankName,'-',mstbank.AccNo) AS ID"),'mstbank.id')
+						->SELECT(DB::RAW("CONCAT(mstbank.Bank_NickName,'-',mstbank.AccNo) AS BANKNAME"),'mstbank.Bank_NickName','mstbank.id')
 						->where('mstbank.id', '=', $bankId)
 						->get();
 		return $query;
@@ -305,7 +305,7 @@ class AccBankPassbookDtls extends Model {
 	public static function fnGetPassbookImgDtls($request) {
 		$db = DB::connection('mysql');
 		$result = $db->TABLE('acc_bankpassbookdtls')
-						->SELECT('id','fileDtl')
+						->SELECT('id','fileDtl','pageNoFrom','pageNoTo')
 						->WHERERAW("'$request->selYear' BETWEEN SUBSTRING(dateRangeFrom, 1, 4) AND SUBSTRING(dateRangeTo, 1, 4)")
 						->ORDERBY('id','ASC')
 						->GET();

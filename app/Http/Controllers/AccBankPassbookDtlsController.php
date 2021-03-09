@@ -154,17 +154,9 @@ class AccBankPassbookDtlsController extends Controller {
 		$autoincId = AccBankPassbookDtls::getautoincrement();
 		$bankDetail = AccBankPassbookDtls::fetchbankdtls($request->bankId);
 		if(isset($bankDetail[0])) {
-			if ($request->edit_flg == "2") {
-				$AccBankPassbookNo = $bankDetail[0]->BANKNAME."_".$request->edit_id;
-			} else {
-				$AccBankPassbookNo = $bankDetail[0]->BANKNAME."_".$autoincId;
-			}
+			$AccBankPassbookNo = $bankDetail[0]->Bank_NickName."_".$request->pageNoFrom."_".$request->pageNoTo;
 		} else {
-			if ($request->edit_flg == "2") {
-				$AccBankPassbookNo = "AccBankPassbook_".$request->edit_id;
-			} else {
-				$AccBankPassbookNo = "AccBankPassbook_".$autoincId;
-			}
+			$AccBankPassbookNo = "AccBankPassbook"."_".$request->pageNoFrom."_".$request->pageNoTo;
 		}	
 		$fileName = "";
 		$fileid = "bankPassbook";

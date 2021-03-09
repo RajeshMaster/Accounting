@@ -15,8 +15,8 @@
 		left: 7%;
 	}
 	.passbookImage {
-		width:1000px;
-		height:600px;
+		width: 95%;
+		height: 600px;
 	}
 	a:hover {
 	  text-decoration: none;
@@ -87,7 +87,7 @@
 								@if($image->fileDtl != "")
 									{{ $image->fileDtl }}
 								@else
-									AccBankPassbook_{{ $image->id }}.png
+									AccBankPassbook_{{ $image->pageNoFrom }}_{{ $image->pageNoTo }}
 								@endif
 							</span>
 							<a id = "next<?php echo $ImageName; ?>"
