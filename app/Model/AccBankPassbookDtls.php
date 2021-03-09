@@ -99,7 +99,7 @@ class AccBankPassbookDtls extends Model {
 
 							]);
 
-		self::updNxtFlg($request->pageNoFrom);
+		self::updNxtFlg($request->bankId);
 
 		return $insert;
 
@@ -126,27 +126,51 @@ class AccBankPassbookDtls extends Model {
 
 							]);
 
-		self::updNxtFlg($request->pageNoFrom);
+		self::updNxtFlg($request->bankId);
 
 		return $update;
 
 	}
 
-	public static function updNxtFlg($pageNoFrom) {
+	public static function updNxtFlg($bankId) {
 
 		$name = Session::get('FirstName').' '.Session::get('LastName');
 
+		$maxpageNoFrom = DB::table('acc_bankpassbookdtls')
+
+					->where('bankId','=', $bankId)
+
+					->max('pageNoFrom');
+
 		$maxpageNoTo = DB::table('acc_bankpassbookdtls')
 
-					->where('pageNoFrom','=', $pageNoFrom)
+					->where('bankId','=', $bankId)
+
+					->where('pageNoFrom','=', $maxpageNoFrom)
 
 					->max('pageNoTo');
 
+
 		$update = DB::table('acc_bankpassbookdtls')
 
-					->where('pageNoFrom','=', $pageNoFrom)
+					->where('bankId','=', $bankId)
 
-					->where('pageNoTo','<', $maxpageNoTo)
+					->where('pageNoFrom','=', $maxpageNoFrom)
+
+					->where('pageNoTo','=', $maxpageNoTo)
+
+					->update([ 
+
+							'nxtFlg' => 0,
+							'updatedBy' => $name,
+
+						]);
+
+		$update = DB::table('acc_bankpassbookdtls')
+
+					->where('bankId','=', $bankId)
+
+					->where('pageNoFrom','<', $maxpageNoFrom)
 
 					->update([ 
 
@@ -157,16 +181,20 @@ class AccBankPassbookDtls extends Model {
 
 		$update = DB::table('acc_bankpassbookdtls')
 
-					->where('pageNoFrom','=', $pageNoFrom)
+					->where('bankId','=', $bankId)
 
-					->where('pageNoTo','=', $maxpageNoTo)
+					->where('pageNoFrom','=', $maxpageNoFrom)
+
+					->where('pageNoTo','<', $maxpageNoTo)
 
 					->update([ 
 
-							'nxtFlg' => 0,
+							'nxtFlg' => 1,
 							'updatedBy' => $name,
 
 						]);
+
+		
 
 		return $update;
 
@@ -241,10 +269,12 @@ class AccBankPassbookDtls extends Model {
 
 		if ($request->edit_flg == 2) {
 			$result = $result->WHERE('id', '!=' ,$request->edit_id)
+							->WHERE('bankId', '=' ,$request->bankId)
 							->WHERE('pageNoFrom', '=' ,$request->pageNoFrom)
 							->WHERE('pageNoTo', '=' ,$request->pageNoTo);
 		} else {
-			$result = $result->WHERE('pageNoFrom', '=', $request->pageNoFrom)
+			$result = $result->WHERE('bankId', '=' ,$request->bankId)
+							->WHERE('pageNoFrom', '=', $request->pageNoFrom)
 							->WHERE('pageNoTo', '=' ,$request->pageNoTo);
 		}
 

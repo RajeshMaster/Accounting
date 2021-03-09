@@ -40,7 +40,7 @@ $(document).ready(function() {
 				$.ajax({
 					type: 'GET',
 					url: 'pageNoExists',
-					data: { "edit_id": edit_id, "edit_flg": edit_flg, "pageNoFrom": pageNoFrom, "pageNoTo": pageNoTo },
+					data: { "edit_id": edit_id, "edit_flg": edit_flg, "pageNoFrom": pageNoFrom, "pageNoTo": pageNoTo, "bankId": bankId },
 
 					success: function(resp) {
 						if (resp != 0) {
