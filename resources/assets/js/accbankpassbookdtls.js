@@ -228,9 +228,9 @@ function nextData(flg,id) {
 	} 
 }
 
-function fileImgPopup(fileImage,selYear) {
+function fileImgPopup(fileImage,selYear,bankId) {
 	var mainmenu = $('#mainmenu').val();
-	$('#imgViewPopup').load('imgViewPopup?mainmenu='+mainmenu+'&time='+datetime+'&selYear='+selYear+'&fileImage='+fileImage);
+	$('#imgViewPopup').load('imgViewPopup?mainmenu='+mainmenu+'&time='+datetime+'&selYear='+selYear+'&fileImage='+fileImage+'&bankId='+bankId);
 	$("#imgViewPopup").modal({
 		backdrop: 'static',
 		keyboard: false
@@ -241,6 +241,7 @@ function fileImgPopup(fileImage,selYear) {
 function fnprevnext(fileImage,imageId,imageFlg) {
 	var mainmenu = $('#mainmenu').val();
 	var selYear = $('#selYear').val();
+	var bankId = $('#bankId').val();
 	$.ajax({
 		type: 'GET',
 		dataType: "JSON",
@@ -249,7 +250,8 @@ function fnprevnext(fileImage,imageId,imageFlg) {
 			"mainmenu": mainmenu,
 			"selYear": selYear,
 			"imageId": imageId,
-			"imageFlg": imageFlg
+			"imageFlg": imageFlg,
+			"bankId": bankId
 		},
 		success: function(resp) {
 			for (i = 0; i < resp.length; i++) {

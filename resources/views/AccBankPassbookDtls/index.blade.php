@@ -167,7 +167,7 @@
 						<td align="center">
 							@if($data['fileDtl'] != "")
 								@php $fileName = "AccBankPassbook_".$data['id']; @endphp
-								<a onclick="fileImgPopup('{{ $fileName }}','{{ $request->selYear }}')" 
+								<a onclick="fileImgPopup('{{ $fileName }}','{{ $request->selYear }}','{{ $data['bankId'] }}')" 
 									id ="filelink<?php echo $fileName; ?>" class ="csrp">
 									<img width="20" height="20" name="empimg" id="empimg"
 									class=" box20 viewPic3by2" src= "{{ URL::asset('../../../../AccountingUpload/AccBankPassbook').'/'.$data['fileDtl'] }}">

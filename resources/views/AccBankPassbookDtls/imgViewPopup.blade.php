@@ -30,6 +30,7 @@
 							'method' => 'POST')) }}
 	{{ Form::hidden('mainmenu', $request->mainmenu , array('id' => 'mainmenu')) }}
 	{{ Form::hidden('selYear', $request->selYear , array('id' => 'selYear')) }}
+	{{ Form::hidden('bankId', $request->bankId , array('id' => 'bankId')) }}
 	<div class="modal-content">
 		<div class="modal-header popH_color" style="height: 60px;">
 			<button type="button"  data-dismiss="modal" class="close mt7" 
