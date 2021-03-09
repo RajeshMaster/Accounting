@@ -9,14 +9,14 @@
 </script>
 <style type="text/css">
 	.modal {
-		width: 88%;
+		width: 65%;
 		position: absolute;
-		top: 10%;
-		left: 7%;
+		top: 5%;
+		left: 17%;
 	}
 	.passbookImage {
-		width: 95%;
-		height: 600px;
+		width: 90%;
+		height: 700px;
 	}
 	a:hover {
 	  text-decoration: none;
@@ -41,7 +41,7 @@
 			</span>
 		</div>
 		<div class="form-group mt10 mb10" style="min-height: 100px;">
-			<div class="mt20 mb20 tac">
+			<div class="mt10 mb10 tac">
 				@foreach($passbookImgdetails as $key => $image)
 					<?php
 						$passBookPath = '../../../../AccountingUpload/AccBankPassbook'."/".$image->fileDtl;
@@ -56,19 +56,23 @@
 						{{--*/ $previmg = "/previousdisab.png" /*--}}
 						{{--*/ $disableprev = "disabled" /*--}}
 						{{--*/ $cursorprev = "cursor:default;color: black;" /*--}}
+						{{--*/ $classprev = "btn btn-default" /*--}}
 					@else
 						{{--*/ $previmg = "/previousenab.png" /*--}}
 						{{--*/ $disableprev = "" /*--}}
 						{{--*/ $cursorprev = "cursor:pointer;" /*--}}
+						{{--*/ $classprev = "btn btn-info" /*--}}
 					@endif
 					@if($passbookNextId == $imageId)
 						{{--*/ $nextimg = "/nextdisab.png" /*--}}
 						{{--*/ $disablenext = "disabled" /*--}}
 						{{--*/ $cursornext = "cursor:default;color: black;" /*--}}
+						{{--*/ $classnext = "btn btn-default" /*--}}
 					@else
 						{{--*/ $nextimg = "/nextenab.png" /*--}}
 						{{--*/ $disablenext = "" /*--}}
 						{{--*/ $cursornext = "cursor:pointer;" /*--}}
+						{{--*/ $classnext = "btn btn-info" /*--}}
 					@endif
 					@if($ImageName == $request->fileImage)
 						<div id="image<?php echo $ImageName; ?>">
@@ -78,10 +82,12 @@
 						<div class="mt5 mb5">
 							<div class="pull-left ml30" style="display:inline-block;">
 							<a id = "prev<?php echo $ImageName; ?>"
+								class = "{{ $classprev }}"
 								@if ($passbookPrevId != $imageId)  
 									onclick = "fnprevnext('{{ $ImageName }}','{{ $image->id }}',1);"
 								@endif {{ $disableprev }} style="{{ $cursorprev }}">
-								<<&nbsp{{ trans('messages.lbl_prev') }}
+								<span class="fa fa-backward"></span>&nbsp
+								{{ trans('messages.lbl_prev') }}
 							</a>
 							<span class="ml10 mr10">
 								@if($image->fileDtl != "")
@@ -91,17 +97,19 @@
 								@endif
 							</span>
 							<a id = "next<?php echo $ImageName; ?>"
+								class = "{{ $classnext }}"
 								@if ($passbookNextId != $imageId)
 									onclick = "fnprevnext('{{ $ImageName }}','{{ $image->id }}',2);" 
 								@endif {{ $disablenext }} style="{{ $cursornext }}">
-								{{ trans('messages.lbl_next') }}&nbsp>>
+								{{ trans('messages.lbl_next') }}&nbsp
+								<span class="fa fa-forward"></span>
 							</a>
 							</div>
 							<div class="pull-right mr30" style="display:inline-block;">
 								@if($image->fileDtl != "")
 									<a id="dwnld<?php echo $ImageName; ?>" 
-										class ="" 
-										href="javascript:download('{{ $image->fileDtl }}','{{ $dwnldPath }}');">
+										class = "btn btn-info fa fa-download" 
+										href="javascript:download('{{ $image->fileDtl }}','{{ $dwnldPath }}');">&nbsp
 										{{ trans('messages.lbl_download') }}
 									</a>
 								@endif
