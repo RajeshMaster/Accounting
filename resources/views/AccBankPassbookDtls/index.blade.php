@@ -132,12 +132,18 @@
 			<tbody>
 				@php 
 					$i = 0; 
+					$preBankId = "";
 					$lastBankId = "";
 				@endphp
 				@forelse($accBankPassbook as $key => $data)
+					@if($preBankId !="" && $preBankId != $data['bankId'])
+						<tr>
+							<td class="text-center columnspannodata" style="background-color: white;border: none;"></td>
+						</tr>
+					@endif
 					@if($lastBankId != $data['bankId'])
 						<tr style="background-color: #f1a2a2">
-							<td colspan="6"> 
+							<td class="columnspannodata"> 
 								<a href="javascript:bankNameclick('{{ $data['bankId'] }}');" 
 								class="blue">
 									{{ $data['Bank_NickName'] }}
@@ -189,6 +195,7 @@
 					
 					@php 
 						$i++;
+						$preBankId = $data['bankId'];
 						$lastBankId = $data['bankId'];
 					@endphp
 				@empty
