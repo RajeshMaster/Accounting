@@ -54,6 +54,7 @@ class AccBankPassbookDtlsController extends Controller {
 			$accBankPassbook[$i]['brnchnm'] = $value->brnchnm;
 			$accBankPassbook[$i]['nxtFlg'] = $value->nxtFlg;
 			$accBankPassbook[$i]['delFlg'] = $value->delFlg;
+			$accBankPassbook[$i]['updatedAt'] = date("Y-m-d",strtotime($value->updatedAt));
 			$i++;
 		}
 

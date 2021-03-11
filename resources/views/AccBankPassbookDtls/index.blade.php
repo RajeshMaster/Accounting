@@ -10,12 +10,12 @@
 		if($('#hidAuth').val() == "5" || mainmenu == "AuditingBankPassbook"){
 			$(".divdisplay").css("display", "none");
 			$('.columnspan').attr('colspan','2');
-			$('.columnspannodata').attr('colspan','5');
+			$('.columnspannodata').attr('colspan','6');
 			$(".Auddivdisplay").css("");
 		} else {
 			$(".divdisplay").css("");
 			$('.columnspan').attr('colspan','2');
-			$('.columnspannodata').attr('colspan','6');
+			$('.columnspannodata').attr('colspan','7');
 			$(".Auddivdisplay").css("display", "none");
 		}
 	});
@@ -112,6 +112,7 @@
 		<table class="tablealternate CMN_tblfixed mt10">
 			<colgroup>
 				<col width="5%">
+				<col width="10%">
 				<col width="">
 				<col width="10%">
 				<col width="25%">
@@ -122,7 +123,8 @@
 			<thead class="CMN_tbltheadcolor">
 				<tr id="data">
 					<th class="vam">{{ trans('messages.lbl_sno') }}</th>
-					<th class="vam">{{ trans('messages.lbl_bank_name') }} / {{ trans('messages.lbl_account_no') }}</th>
+					<th class="vam">{{ trans('messages.lbl_Date') }}</th>
+					<th class="vam">{{ trans('messages.lbl_bank_name') }}</th>
 					<th class="vam">{{ trans('messages.lbl_pageNo') }}</th>
 					<th class="vam">{{ trans('messages.lbl_daterange') }}</th>
 					<th class="vam">{{ trans('messages.lbl_file') }}</th>
@@ -155,10 +157,11 @@
 					@endif
 					<tr>
 						<td>{{ $i+1 }}</td>
+						<td class="tac">
+							{{ $data['updatedAt'] }}
+						</td>
 						<td>
-							{{ $data['Bank_NickName'] }}
-							&nbsp<span class="fwb"> - </span>&nbsp
-							{{ $data['AccNo'] }}
+							{{ $data['FirstName'] }}
 						</td>
 						<td class="vam tac"> 
 							{{ $data['pageNoFrom'] }}
