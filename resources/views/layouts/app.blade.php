@@ -391,7 +391,7 @@
 			
 			@endif
 			@if(Session::get('userclassification') == 4 || Session::get('userclassification') == 5)
-				@if(isset($request->mainmenu) && ($request->mainmenu == "Auditing" || $request->mainmenu == "salarycalcplus" || $request->mainmenu == "AuditingAccounting" || $request->mainmenu == "AudPayment" || $request->mainmenu == "AuditingCreditCardPay") || ($request->mainmenu == "AuditingLoanView") || ($request->mainmenu == "AuditingExpensesData") || ($request->mainmenu == "AuditingExtInvoice") || ($request->mainmenu == "AuditingBankPassbook"))
+				@if(isset($request->mainmenu) && ($request->mainmenu == "Auditing" || $request->mainmenu == "salarycalcplus" || $request->mainmenu == "contractEmp" || $request->mainmenu == "AuditingAccounting" || $request->mainmenu == "AudPayment" || $request->mainmenu == "AuditingCreditCardPay") || ($request->mainmenu == "AuditingLoanView") || ($request->mainmenu == "AuditingExpensesData") || ($request->mainmenu == "AuditingExtInvoice") || ($request->mainmenu == "AuditingBankPassbook"))
 					<div id="auditing_sub_1">
 						<a href="{{ url('Auditing/index?mainmenu=Auditing&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_invoice') }}</a>
 					</div>
@@ -402,6 +402,9 @@
 					</div>
 					<div id="auditing_sub_2">
 						<a href="{{ url('salarycalcplus/index?mainmenu=salarycalcplus&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_salary_det') }}</a>
+					</div>
+					<div id="auditing_sub_9">
+						<a href="{{ url('contractEmp/index?mainmenu=contractEmp&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_conEmployee') }}</a>
 					</div>
 					<div id="auditing_sub_3">
 						<a href="{{ url('Accounting/index?mainmenu=AuditingAccounting&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_accounting') }}</a>
@@ -415,9 +418,6 @@
 					<div id="auditing_sub_6">
 						<a href="{{ url('LoanView/index?mainmenu=AuditingLoanView&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_loandetail') }}</a>
 					</div>
-					<!-- <div id="auditing_sub_7">
-						<a href="{{ url('ExpensesData/index?mainmenu=AuditingExpensesData&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_expensesData') }}</a>
-					</div> -->
 					<div id="auditing_sub_8">
 						<a href="{{ url('AccBankPassbookDtls/index?mainmenu=AuditingBankPassbook&time='.date('Ymdhis')) }}" style="text-decoration:none;color:white;">{{ trans('messages.lbl_passbookdetail') }}</a>
 					</div>

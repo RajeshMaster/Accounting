@@ -583,6 +583,20 @@ Route::group(['prefix'=>'salarycalcplus','middleware' => 'auth'], function() {
 
 });
 
+// Contract Employee Process By Sastha
+Route::group(['prefix'=>'contractEmp','middleware' => 'auth'], function() {
+	Route::get('changelanguage', 'AjaxController@index');
+	Route::any('index', 'ContractEmpController@index')->middleware('accessright:4,5');
+	Route::any('view', 'ContractEmpController@view')->middleware('accessright:4,5');
+	Route::any('history', 'ContractEmpController@history')->middleware('accessright:4,5');
+	Route::any('historyTotal', 'ContractEmpController@historyTotal')->middleware('accessright:4,5');
+	Route::any('salarydownloadprocess', 'ContractEmpController@salarydownloadprocess')->middleware('accessright:4,5');
+	Route::any('salaryplusPayrollSingleDownload', 'ContractEmpController@salaryplusPayrollSingleDownload')->middleware('accessright:4,5');
+	Route::any('gensenDownload', 'ContractEmpController@gensenDownload')->middleware('accessright:4,5');
+	Route::any('salarypluspdfdownload', 'ContractEmpController@salarypluspdfdownload')->middleware('accessright:4,5');
+
+});
+
 // Audit Payment Screen Process by Rajesh
 Route::group(['prefix'=>'AudPayment','middleware' => 'auth'], function() {
 	Route::get('changelanguage', 'AjaxController@index');
