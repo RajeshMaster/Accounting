@@ -10,7 +10,7 @@ class ContractEmp extends Model{
 	
 	public static function fnGetdetailsfromemp() {
 		$db = DB::connection('mysql_Salary');
-		$query = $db->table('inv_contractemp_main_emp')
+		$query = $db->table('inv_salaryplus_main_emp')
 					->where('delflg','=',0)
 					->count();
 		return $query;
@@ -28,7 +28,7 @@ class ContractEmp extends Model{
 			$year = $request->selYear;
 		}
 		$db = DB::connection('mysql_Salary');
-		$query=$db->table('inv_contractemp_main_emp')
+		$query=$db->table('inv_salaryplus_main_emp')
 					->SELECT('*')
 					->where('month','=',$month)
 					->where('year','=',$year)
@@ -48,10 +48,11 @@ class ContractEmp extends Model{
 
 	public static function fnGetmnthRecord($from_date, $to_date) {
 		$db = DB::connection('mysql_Salary');
-		$query = $db->table('inv_contractemp_main')
+		$query = $db->table('inv_salaryplus_main')
 					->SELECT('year_mon AS date','year','month')
 					->WHERE('year_mon','>=',$from_date,' AND','year_mon','<',$to_date)
 					->WHERE('delFlg','=',0)
+					->WHERE('empFlg','=',1)
 					->ORDERBY('year_mon', 'ASC')
 	 	 			->GET();
 	 	return $query;
@@ -59,10 +60,11 @@ class ContractEmp extends Model{
 
 	public static function fnGetmnthRecordPrevious($from_date) {
 		$db = DB::connection('mysql_Salary');
-		$query = $db->table('inv_contractemp_main')
+		$query = $db->table('inv_salaryplus_main')
 					->SELECT(DB::raw("SUBSTRING(year_mon, 1, 7) AS date"))
 					->WHERE('delFlg','=',0)
 					->WHERE('year_mon','<=',$from_date)
+					->WHERE('empFlg','=',1)
 					->ORDERBY('year_mon', 'ASC')
 	 	 			->GET();
 	 	return $query;
@@ -70,10 +72,11 @@ class ContractEmp extends Model{
 
 	public static function fnGetmnthRecordNext($to_date) {
 		$db = DB::connection('mysql_Salary');
-		$query = $db->table('inv_contractemp_main')
+		$query = $db->table('inv_salaryplus_main')
 					->SELECT(DB::raw("SUBSTRING(date, 1, 7) AS date"))
 					->WHERE('delFlg','=',0)
 					->WHERE('date','>=',$to_date)
+					->WHERE('empFlg','=',1)
 					->ORDERBY('date', 'ASC')
 	 	 			->GET();
 	 	return $query;
@@ -81,10 +84,11 @@ class ContractEmp extends Model{
 
 	public static function fnGetEmpIdList($year,$month){
 		$db = DB::connection('mysql_Salary');
-		$query = $db->table('inv_contractemp_main_emp')
+		$query = $db->table('inv_salaryplus_main_emp')
 					->select('Emp_ID')
 					->where('year','=', $year)
 					->where('month','=', $month)
+					->WHERE('empFlg','=',1)
 					->orderBy("Emp_ID")
 					->get();
 		return $query;
@@ -113,7 +117,7 @@ class ContractEmp extends Model{
 
 	public static function fnGetEmpSalHistory($Emp_ID,$year,$month = ''){
 		$db = DB::connection('mysql_Salary');
-		$query = $db->table('inv_contractemp_main')
+		$query = $db->table('inv_salaryplus_main')
 					->select('*')
 					->where('Emp_ID','=', $Emp_ID);
 		if ($month !== "") {
@@ -139,7 +143,7 @@ class ContractEmp extends Model{
 
 	public static function fnGetmailFlg($Emp_ID){
 		$db = DB::connection('mysql_Salary');
-		$query = $db->table('inv_contractemp_main')
+		$query = $db->table('inv_salaryplus_main')
 					->select('mailFlg')
 					->where('Emp_ID','=', $Emp_ID)
 					->orderBy('id','DESC')
@@ -153,48 +157,9 @@ class ContractEmp extends Model{
 		}
 	}
 
-	public static function getAllEmpDetails($request) {
-
-		if(($request->year != "") && ($request->month != "")) {
-			$year = $request->year;
-			$month = $request->month;
-		} else {
-			$previous = date('Y-m', strtotime('first day of last month'));
-			$splitPrevious = explode("-", $previous);
-			$year = $splitPrevious[0];
-			$month = $splitPrevious[1];
-		}
-
-		$db = DB::connection('mysql_Salary');
-		$selectedEmployees = $db->table('inv_contractemp_main_emp')
-				->SELECT('Emp_ID')
-				->WHERE('year','=', $year)
-				->WHERE('month','=',$month)
-				->ORDERBY('Emp_ID', 'ASC')
- 	 			->GET();
-
-
- 	 	$hdn_empid = array();
- 		foreach ($selectedEmployees as $k => $v) {
-			$hdn_empid[$k] = $v->Emp_ID;
-		}
-
-		$db_mb = DB::connection('mysql_MB');
-		$employees = $db_mb->TABLE('emp_mstemployees')
-							->SELECT('Emp_ID','FirstName','LastName','resign_id',
-								'resigndate')
-							->WHERE('delFLg', '=', 0)
-							->WHERE('Title', '=', 2)
-							->where('Emp_ID', 'NOT LIKE', '%NST%')
-							->whereNotIn('Emp_ID',$hdn_empid)
-							->orderBy('Emp_ID', 'ASC')
-							->get();
-		return $employees;
-	}
-
 	public static function salaryDetailhistory($request,$flg) {
 		$db = DB::connection('mysql_Salary');
-		$query = $db->table('inv_contractemp_main')
+		$query = $db->table('inv_salaryplus_main')
 					 ->select('*')
 					 ->where('Emp_ID','=', $request->Emp_ID)
 					 ->where('date','LIKE', $request->selYear.'%')
@@ -212,7 +177,7 @@ class ContractEmp extends Model{
 	public static function getYears($request) {
 
 		$db = DB::connection('mysql_Salary');
-		$years = $db->table('inv_contractemp_main')
+		$years = $db->table('inv_salaryplus_main')
 							->select(DB::raw('YEAR(date) as years'))
 							->where('Emp_ID','=', $request->Emp_ID)
 							->groupBy(DB::raw('YEAR(date)'))
@@ -222,9 +187,10 @@ class ContractEmp extends Model{
 
 	public static function fnGetEmpId($request){
 		$db = DB::connection('mysql_Salary');
-		$query = $db->table('inv_contractemp_main_emp')
+		$query = $db->table('inv_salaryplus_main_emp')
 					->select('Emp_ID')
 					->where('year','LIKE', $request->selYear.'%')
+					->WHERE('empFlg','=',1)
 					->groupby("Emp_ID")
 					->orderBy("Emp_ID")
 					->get();
@@ -233,8 +199,9 @@ class ContractEmp extends Model{
 
 	public static function getYearsTotalHistory($request) {
 		$db = DB::connection('mysql_Salary');
-		$years = $db->table('inv_contractemp_main_emp')
+		$years = $db->table('inv_salaryplus_main_emp')
 					->select(DB::raw('year as years'))
+					->WHERE('empFlg','=',1)
 					->groupBy("year")
 					->get();
 	 	return $years;
@@ -242,7 +209,7 @@ class ContractEmp extends Model{
 
 	public static function salarycalcview($request) {
 		$db = DB::connection('mysql_Salary');
-		$query = $db->table('inv_contractemp_main')
+		$query = $db->table('inv_salaryplus_main')
 					->SELECT('*')
 					->WHERE('id', '=', $request->id)
 					->WHERE('Emp_ID', '=', $request->Emp_ID)
@@ -264,8 +231,8 @@ class ContractEmp extends Model{
 								invsal.Salary,
 								invsal.Deduction,
 								invsal.mailFlg,invsal.Travel,
-								invsal.salamt FROM inv_contractemp_main_emp AS salemp 
-						LEFT JOIN inv_contractemp_main AS invsal 
+								invsal.salamt FROM inv_salaryplus_main_emp AS salemp 
+						LEFT JOIN inv_salaryplus_main AS invsal 
 							ON invsal.Emp_ID = salemp.Emp_ID 
 							AND invsal.year = ".$lastyear." 
 							AND invsal.month= ".$lastmonth." 
@@ -282,7 +249,7 @@ class ContractEmp extends Model{
 
 	public static function salarycalcplusview_tot($request) {
 		$db = DB::connection('mysql_Salary');
-		$query = $db->table('inv_contractemp_main')
+		$query = $db->table('inv_salaryplus_main')
 					->SELECT('*')
 					->WHERE('Emp_ID', '=', $request->Emp_ID)
 					->WHERE('year', '=', $request->selYear)
@@ -304,7 +271,7 @@ class ContractEmp extends Model{
 
 	public static function fnGetDataExistsCheck($request) {
 		$db = DB::connection('mysql_Salary');
-		$query = $db->table('inv_contractemp_main')
+		$query = $db->table('inv_salaryplus_main')
 					->select('*')
 					->where('Emp_ID','=',$request->Emp_ID)
 					->where('year','=',$request->selYear)
@@ -316,7 +283,7 @@ class ContractEmp extends Model{
 	public static function salaryDetail_Empid($request) {
 
 		$db = DB::connection('mysql_Salary');
-		$query = $db->table('inv_contractemp_main')
+		$query = $db->table('inv_salaryplus_main')
 					->select('*')
 					->where('Emp_ID','=', $request->Emp_ID)
 					->orderBy('year','DESC')

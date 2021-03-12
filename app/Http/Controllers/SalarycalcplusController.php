@@ -400,41 +400,6 @@ Class SalarycalcplusController extends Controller {
 												'request' => $request]);
 	}
 
-	function salarypopup(Request $request) {
-
-		if ($request->get_prev_yr == 1) {
-			$prev_month_ts = strtotime($request->year.'-'.$request->month.' -1 month');
-			$date_month = date('Y-m', $prev_month_ts);
-			$date_month = explode('-', $date_month);
-			$request->year = $date_month[0];
-			$request->month = $date_month[1];
-		}
-		$employeeUnselect = SalaryCalcplus::getAllEmpDetails($request,0);
-		$employeeSelect = SalaryCalcplus::getAllEmpDetails($request,1);
-		
-		return view('salarycalcplus.salarypopup',['employeeUnselect' => $employeeUnselect,
-													'employeeSelect' => $employeeSelect,
-													'request' => $request]);
-	}
-
-	function empselectprocess(Request $request) {
-		
-		$insert=SalaryCalcplus::InsertEmpFlrDetails($request);
-		if($insert){
-			Session::flash('success', 'Employees Selected Sucessfully!'); 
-			Session::flash('type', 'alert-success'); 
-		}else {
-			Session::flash('type', 'Employees Selected Unsucessfully!!'); 
-			Session::flash('type', 'alert-danger'); 
-		}
-		Session::flash('selMonth', $request->month); 
-		Session::flash('selYear', $request->year); 
-		$request->selected = "";
-		$request->removed = "";
-		
-		return Redirect::to('salarycalcplus/index?mainmenu='.$request->mainmenu.'&time='.date('YmdHis'));
-	}
-
 	public function view(Request $request) {
 
 		if ($request->hdn_id != '') {

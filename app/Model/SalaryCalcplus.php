@@ -52,6 +52,7 @@ class SalaryCalcplus extends Model{
 					->SELECT('year_mon AS date','year','month')
 					->WHERE('year_mon','>=',$from_date,' AND','year_mon','<',$to_date)
 					->WHERE('delFlg','=',0)
+					->WHERE('empFlg','=',0)
 					->ORDERBY('year_mon', 'ASC')
 	 	 			->GET();
 	 	return $query;
@@ -63,6 +64,7 @@ class SalaryCalcplus extends Model{
 					->SELECT(DB::raw("SUBSTRING(year_mon, 1, 7) AS date"))
 					->WHERE('delFlg','=',0)
 					->WHERE('year_mon','<=',$from_date)
+					->WHERE('empFlg','=',0)
 					->ORDERBY('year_mon', 'ASC')
 	 	 			->GET();
 	 	return $query;
@@ -74,6 +76,7 @@ class SalaryCalcplus extends Model{
 					->SELECT(DB::raw("SUBSTRING(date, 1, 7) AS date"))
 					->WHERE('delFlg','=',0)
 					->WHERE('date','>=',$to_date)
+					->WHERE('empFlg','=',0)
 					->ORDERBY('date', 'ASC')
 	 	 			->GET();
 	 	return $query;
@@ -105,46 +108,6 @@ class SalaryCalcplus extends Model{
 						$query = $query ->orderBy('Emp_ID','ASC')
 			        			->get();
 	 	return $query;
-	}
-
-	public static function getAllEmpDetails($request,$flg) {
-		if(($request->year != "")&&($request->month != "")) {
-			$year = $request->year;
-			$month = $request->month ;
-		} else {
-			$previous = date('Y-m', strtotime('first day of last month'));
-			$splitPrevious = explode("-", $previous);
-			$year=$splitPrevious[0];
-			$month=$splitPrevious[1];
-		}
-
-		$db = DB::connection('mysql_Salary');
-		$selectedEmployees = $db->table('inv_salaryplus_main_emp')
-				->SELECT('Emp_ID')
-				->WHERE('year','=', $year)
-				->WHERE('month','=',$month)
-				->ORDERBY('Emp_ID', 'ASC')
- 	 			->GET();
- 	 	$hdn_empid = array();
- 		foreach ($selectedEmployees as $k => $v) {
-			$hdn_empid[$k] = $v->Emp_ID;
-		}
-
-		$db_mb = DB::connection('mysql_MB');
-		$employees = $db_mb->TABLE('emp_mstemployees')
-							->SELECT('Emp_ID','FirstName','LastName','resign_id','resigndate')
-							->WHERE('delFLg', '=', 0)
-							// ->WHERE('resign_id', '=', 0)
-							->WHERE('Title', '=', 2)
-							->where('Emp_ID', 'NOT LIKE', '%NST%');
-			if ($flg == 0) {
-				$employees = $employees ->whereNotIn('Emp_ID', $hdn_empid);
-			} else if ($flg == 1) {
-				$employees = $employees ->whereIn('Emp_ID', $hdn_empid);
-			}
-			$employees = $employees ->orderBy('Emp_ID', 'ASC')
-									->get();
-		return $employees;
 	}
 
 	public static function getsalaryDetails($request,$flg) {
@@ -320,6 +283,7 @@ class SalaryCalcplus extends Model{
 		$db = DB::connection('mysql_Salary');
 		$years = $db->table('inv_salaryplus_main_emp')
 					->select(DB::raw('year as years'))
+					->WHERE('empFlg','=',0)
 					->groupBy("year")
 					->get();
 	 	return $years;
@@ -330,6 +294,7 @@ class SalaryCalcplus extends Model{
 		$query = $db->table('inv_salaryplus_main_emp')
 					->select('Emp_ID')
 					->where('year','LIKE', $request->selYear.'%')
+					->WHERE('empFlg','=',0)
 					->groupby("Emp_ID")
 					->orderBy("Emp_ID")
 					->get();
@@ -385,6 +350,7 @@ class SalaryCalcplus extends Model{
 					->select('Emp_ID')
 					->where('year','=', $year)
 					->where('month','=', $month)
+					->WHERE('empFlg','=',0)
 					->orderBy("Emp_ID")
 					->get();
 		return $query;
