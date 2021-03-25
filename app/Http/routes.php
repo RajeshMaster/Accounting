@@ -533,13 +533,13 @@ Route::group(['prefix'=>'AccBankDetail','middleware' => 'auth'], function() {
 // AccBankPassbookDtls Process by Sastha
 Route::group(['prefix'=>'AccBankPassbookDtls','middleware' => 'auth'], function() {
 	Route::get('changelanguage', 'AjaxController@index');
-	Route::any('index', 'AccBankPassbookDtlsController@index')->middleware('accessright:0,1,2,3,4');
+	Route::any('index', 'AccBankPassbookDtlsController@index')->middleware('accessright:0,1,2,3,4,5');
 	Route::any('addedit', 'AccBankPassbookDtlsController@addedit')->middleware('accessright:0,1,2,3,4');
 	Route::any('addeditprocess', 'AccBankPassbookDtlsController@addeditprocess')->middleware('accessright:0,1,2,3,4');
 	Route::any('pageNoExists', 'AccBankPassbookDtlsController@pageNoExists')->middleware('accessright:0,1,2,3,4');
 	Route::any('DateExists', 'AccBankPassbookDtlsController@DateExists')->middleware('accessright:0,1,2,3,4');
-	Route::any('imgViewPopup', 'AccBankPassbookDtlsController@imgViewPopup')->middleware('accessright:0,1,2,3,4');
-	Route::any('prevNxtImg_ajax', 'AccBankPassbookDtlsController@prevNxtImg_ajax')->middleware('accessright:0,1,2,3,4');
+	Route::any('imgViewPopup', 'AccBankPassbookDtlsController@imgViewPopup')->middleware('accessright:0,1,2,3,4,5');
+	Route::any('prevNxtImg_ajax', 'AccBankPassbookDtlsController@prevNxtImg_ajax')->middleware('accessright:0,1,2,3,4,5');
 });
 
 Route::group(['prefix'=>'CreditCardPay','middleware' => 'auth'], function() {
