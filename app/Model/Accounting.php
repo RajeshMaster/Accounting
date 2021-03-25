@@ -1121,7 +1121,7 @@ class Accounting extends Model {
 		}
 		
 		$query = $db->table('acc_expensesData')
-					->SELECT('acc_expensesData.*','bank.id As bankId','bank.AccNo','bank.FirstName','bank.LastName','bank.BankName','bank.Bank_NickName','dev_expensesetting.Subject','dev_expensesetting.Subject_jp','banname.BankName AS banknm','brncname.id AS brnchid','brncname.BranchName AS brnchnm')
+					->SELECT('acc_expensesData.*','bank.id As bankId','bank.AccNo','bank.FirstName','bank.LastName','bank.BankName','bank.Bank_NickName','dev_expensesetting.Subject','dev_expensesetting.Subject_jp','banname.BankName AS banknm','brncname.id AS brnchid','brncname.BranchName AS brnchnm','acc_contentsetting.Subject as contentSub','acc_contentsetting.Subject_jp as contentSub_jp')
 					->leftJoin('mstbank AS bank', function($join)
 						{
 							$join->on('acc_expensesData.bankIdFrom', '=', 'bank.BankName');
@@ -1134,6 +1134,7 @@ class Accounting extends Model {
 							$join->on('brncname.id', '=', 'bank.BranchName');
 						})
 					->leftJoin('dev_expensesetting', 'dev_expensesetting.id', '=', 'acc_expensesData.subjectId')
+					->leftJoin('acc_contentsetting', 'acc_contentsetting.id', '=', 'acc_expensesData.content')
 					->where('acc_expensesData.delFlg','=',0)
 					->where('acc_expensesData.bankIdFrom','=',$bankIdAccNo['0'])
 					->where('acc_expensesData.accountNumberFrom','=',$bankIdAccNo['1'])

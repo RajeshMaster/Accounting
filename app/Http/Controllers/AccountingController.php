@@ -1067,12 +1067,6 @@ class AccountingController extends Controller {
 		// }
 		if ($request->expensesDate != "" && $request->bankIdAccNo != "") {
 			$expensesData = Accounting::fetchExpensesData($request);
-			if (isset($expensesData[0]->empId)) {
-				$empName = Accounting::fnGetEmpName($expensesData[0]->empId);
-				if (isset($empName[0]->FirstName) && isset($empName[0]->LastName)) {
-					$expensesData[0]->Empname = $empName[0]->FirstName.' '.$empName[0]->LastName;
-				}
-			}
 		}
 
 		return view('Accounting.expensesDatepopup',['request' => $request,

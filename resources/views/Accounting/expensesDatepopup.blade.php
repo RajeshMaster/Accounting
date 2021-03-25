@@ -80,9 +80,15 @@
 							</td>
 							<td align="center">
 								@if($value->empId != "")
-									{{ $value->empId }} - {{ $value->Empname }}
+									{{ $value->empId }}
 								@else
-									{{ $value->content }}
+									@if($value->contentSub != "" && Session::get('languageval') == "en")
+										{{ $value->contentSub }}
+									@elseif($value->contentSub_jp != "" && Session::get('languageval') == "jp")
+										{{ $value->contentSub_jp }}
+									@else
+										{{ $value->content }}
+									@endif
 								@endif
 							</td>
 							<td align="right">
