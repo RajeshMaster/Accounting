@@ -154,7 +154,6 @@ class Accounting extends Model {
 								'content' => $request->content,
 								'remarks' => $request->remarks,
 								'loanName' => $subject,
-								'pageFlg' => 1,
 								'transferId' => '',
 								'UpdatedBy' => $name
 							)
@@ -243,7 +242,6 @@ class Accounting extends Model {
 								'fee' => preg_replace("/,/", "", $request->fee),
 								'content' => $request->content,
 								'remarks' => $request->remarks,
-								'pageFlg' => 1,
 								'transferId' => $maxID,
 								'UpdatedBy' => $name
 							)
@@ -423,7 +421,6 @@ class Accounting extends Model {
 								'content' => $request->transferContent,
 								'remarks' => $request->transFerRemarks,
 								'fileDtl' => $fileName,
-								'pageFlg' => 2,
 								'UpdatedBy' => $name
 							)
 						);
@@ -524,7 +521,6 @@ class Accounting extends Model {
 								'content' => $request->autoDebitContent,
 								'remarks' => $request->autoDebitRemarks,
 								'fileDtl' => $fileName,
-								'pageFlg' => 3,
 								'UpdatedBy' => $name
 							)
 						);
