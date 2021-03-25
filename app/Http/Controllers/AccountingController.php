@@ -1193,7 +1193,7 @@ class AccountingController extends Controller {
 				if($value->pageFlg == 1 || $value->pageFlg == 999) {
 					$pagecashSubject = $value->loanName;
 				}
-				if ($value->content == 'Salary' || ($value->pageFlg == 5 && $value->emp_ID != "")) {
+				if (($value->pageFlg == 2 || $value->pageFlg == 5) && $value->emp_ID != "") {
 					$empIdArr[0] = $value->emp_ID;
 					$empname = Accounting::fnGetEmpName($value->emp_ID);
 					if (isset($empname[0]->LastName)) {
@@ -1202,10 +1202,10 @@ class AccountingController extends Controller {
 						$name ="";
 					}
 					$details = $value->emp_ID.'-'.$name;
-				} elseif ($value->content == 'Invoice') {
+				} elseif ($value->pageFlg == 4 && $value->loan_ID != "") {
 					$empIdArr[0] = $value->loan_ID;
 					$details = $value->loan_ID.'-'.$value->loanName;
-				} elseif ($value->content == 'Loan') {
+				} elseif ($value->pageFlg == 3 && $value->loan_ID != "") {
 					$empIdArr[0] = $value->loan_ID;
 					$details = $value->loanName;
 				}
@@ -1314,13 +1314,9 @@ class AccountingController extends Controller {
 				if($value->pageFlg == 999) {
 					$content = $pagecashSubject;
 				} else {
-					if($value->content == 'Salary') {
+					if(($value->pageFlg == 2 || $value->pageFlg == 5) && $value->emp_ID != "") {
 						$content = $details;
-					} elseif($value->content == 'Invoice') {
-						$content = $details;
-					} elseif($value->content == 'Loan') {
-						$content = $details;
-					} elseif($value->pageFlg == 5 && $value->emp_ID != "") {
+					} elseif(($value->pageFlg == 3 || $value->pageFlg == 4) && $value->loan_ID != "") {
 						$content = $details;
 					} else {
 						$content = $value->content; 
@@ -1357,7 +1353,7 @@ class AccountingController extends Controller {
 				$objPHPExcel->getActiveSheet()->getStyle("G".$i)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
 				if ($value->fee != "") {
 					$i = $i + 1;
-					if ($value->content == 'Loan') {
+					if ($value->pageFlg == 3) {
 					$objPHPExcel->getActiveSheet()->setCellValue("A".$i,'金利');
 					} else {
 						$objPHPExcel->getActiveSheet()->setCellValue("A".$i,'手数料');
