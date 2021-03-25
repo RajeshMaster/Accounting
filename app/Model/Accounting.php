@@ -378,14 +378,13 @@ class Accounting extends Model {
 
 		$db = DB::connection('mysql');
 		$query = $db->table('acc_cashregister')
-						->SELECT('acc_cashregister.*','bank.id As bankId','bank.AccNo','bank.FirstName','bank.LastName','bank.BankName','bank.Bank_NickName','dev_expensesetting.Subject','dev_expensesetting.Subject_jp',DB::RAW("CONCAT(emp_mstemployees.FirstName,' ', emp_mstemployees.LastName) AS Empname"))
+						->SELECT('acc_cashregister.*','bank.id As bankId','bank.AccNo','bank.FirstName','bank.LastName','bank.BankName','bank.Bank_NickName','dev_expensesetting.Subject','dev_expensesetting.Subject_jp')
 						->leftJoin('mstbank AS bank', function($join)
 							{
 								$join->on('acc_cashregister.bankIdFrom', '=', 'bank.BankName');
 								$join->on('acc_cashregister.accountNumberFrom', '=', 'bank.AccNo');
 							})
 						->leftJoin('dev_expensesetting', 'dev_expensesetting.id', '=', 'acc_cashregister.subjectId')
-						->leftJoin('emp_mstemployees', 'emp_mstemployees.Emp_ID', '=', 'acc_cashregister.Emp_ID')
 						->where('acc_cashregister.id','=',$request->editId)
 						->orderBy('bankIdFrom','ASC')
 						->orderBy('acc_cashregister.orderId','ASC')
@@ -522,7 +521,7 @@ class Accounting extends Model {
 								'accountNumberFrom' => $bankacc[1],
 								'amount' => preg_replace("/,/", "", $request->autoDebitAmount),
 								'fee' => preg_replace("/,/", "", $request->autoDebitFee),
-								// 'content' => $request->autoDebitContent,
+								'content' => $request->autoDebitContent,
 								'remarks' => $request->autoDebitRemarks,
 								'fileDtl' => $fileName,
 								'pageFlg' => 3,
@@ -535,8 +534,9 @@ class Accounting extends Model {
 
 	public static function fnGetEmpDetails($request,$empIdArr) {
 
-		$query = DB::table('emp_mstemployees')
-						->select('Emp_ID','FirstName','LastName','nickname','KanaFirstName','KanaLastName',DB::RAW("CONCAT(FirstName,' ', LastName) AS Empname"),DB::RAW("CONCAT(KanaFirstName,'　', KanaLastName) AS Kananame"))
+		$db = DB::connection('mysql_MB');
+		$query = $db->table('emp_mstemployees')
+						->select('Emp_ID','FirstName','LastName','KanaFirstName','KanaLastName',DB::RAW("CONCAT(FirstName,' ', LastName) AS Empname"),DB::RAW("CONCAT(KanaFirstName,'　', KanaLastName) AS Kananame"))
 						->WHERE('delFlg', '=', 0)
 						->WHERE('Emp_ID', 'NOT LIKE', '%NST%')
 						->whereNotIn('Emp_ID', $empIdArr)
@@ -547,14 +547,15 @@ class Accounting extends Model {
 
 	public static function fnGetNonstaffEmpDetails($request,$empIdArr) {
 
-		$query = DB::table('emp_mstemployees')
-						->select('Emp_ID','FirstName','LastName','nickname','KanaFirstName','KanaLastName',DB::RAW("CONCAT(FirstName,' ', LastName) AS Empname"),DB::RAW("CONCAT(KanaFirstName,'　', KanaLastName) AS Kananame"))
-						->WHERE('delFlg', '=', 0)
-						->WHERE('resign_id', '=', 0)
-						->WHERE('Emp_ID', 'LIKE', '%NST%')
-						->whereNotIn('Emp_ID', $empIdArr)
-						->orderBy('Emp_ID', 'ASC')
-						->get();
+		$db = DB::connection('mysql_MB');
+		$query = $db->table('emp_mstemployees')
+					->select('Emp_ID','FirstName','LastName','KanaFirstName','KanaLastName',DB::RAW("CONCAT(FirstName,' ', LastName) AS Empname"),DB::RAW("CONCAT(KanaFirstName,'　', KanaLastName) AS Kananame"))
+					->WHERE('delFlg', '=', 0)
+					->WHERE('resign_id', '=', 0)
+					->WHERE('Emp_ID', 'LIKE', '%NST%')
+					->whereNotIn('Emp_ID', $empIdArr)
+					->orderBy('Emp_ID', 'ASC')
+					->get();
 		return $query;
 	}
 	
@@ -1120,7 +1121,7 @@ class Accounting extends Model {
 		}
 		
 		$query = $db->table('acc_expensesData')
-					->SELECT('acc_expensesData.*','bank.id As bankId','bank.AccNo','bank.FirstName','bank.LastName','bank.BankName','bank.Bank_NickName','dev_expensesetting.Subject','dev_expensesetting.Subject_jp','banname.BankName AS banknm','brncname.id AS brnchid','brncname.BranchName AS brnchnm', DB::RAW("CONCAT(emp_mstemployees.FirstName,' ', emp_mstemployees.LastName) AS Empname"))
+					->SELECT('acc_expensesData.*','bank.id As bankId','bank.AccNo','bank.FirstName','bank.LastName','bank.BankName','bank.Bank_NickName','dev_expensesetting.Subject','dev_expensesetting.Subject_jp','banname.BankName AS banknm','brncname.id AS brnchid','brncname.BranchName AS brnchnm')
 					->leftJoin('mstbank AS bank', function($join)
 						{
 							$join->on('acc_expensesData.bankIdFrom', '=', 'bank.BankName');
@@ -1133,7 +1134,6 @@ class Accounting extends Model {
 							$join->on('brncname.id', '=', 'bank.BranchName');
 						})
 					->leftJoin('dev_expensesetting', 'dev_expensesetting.id', '=', 'acc_expensesData.subjectId')
-					->leftJoin('emp_mstemployees', 'emp_mstemployees.Emp_ID', '=', 'acc_expensesData.empId')
 					->where('acc_expensesData.delFlg','=',0)
 					->where('acc_expensesData.bankIdFrom','=',$bankIdAccNo['0'])
 					->where('acc_expensesData.accountNumberFrom','=',$bankIdAccNo['1'])

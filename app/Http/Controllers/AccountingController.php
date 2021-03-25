@@ -239,7 +239,7 @@ class AccountingController extends Controller {
 				$cashDetails[$i]['pagecashSubject'] = $value->loanName;;
 			}
 
-			if ($cashDetails[$i]['content'] == 'Salary' || ($cashDetails[$i]['pageFlg'] == 5 && $value->emp_ID != "")) {
+			if (($cashDetails[$i]['pageFlg'] == 2 || $cashDetails[$i]['pageFlg'] == 5) && $value->emp_ID != "") {
 				$empIdArr[0] = $value->emp_ID;
 				$empname = Accounting::fnGetEmpName($value->emp_ID);
 				if (isset($empname[0]->LastName)) {
@@ -248,10 +248,10 @@ class AccountingController extends Controller {
 					$name ="";
 				}
 				$cashDetails[$i]['employeDetails'] = $value->emp_ID.'-'.$name;
-			} elseif ($cashDetails[$i]['content'] == 'Invoice') {
+			} elseif ($cashDetails[$i]['pageFlg'] == 4 && $value->loan_ID != "") {
 				$empIdArr[0] = $value->loan_ID;
 				$cashDetails[$i]['invoiceDetails'] = $value->loan_ID.'-'.$value->loanName;
-			} elseif ($cashDetails[$i]['content'] == 'Loan') {
+			} elseif ($cashDetails[$i]['pageFlg'] == 3 && $value->loan_ID != "") {
 				$empIdArr[0] = $value->loan_ID;
 				$cashDetails[$i]['loanDetails'] = $value->loanName;
 			}
@@ -484,6 +484,12 @@ class AccountingController extends Controller {
 		}
 		$transferEdit = array();
 		$transferEdit = Accounting::tranferEditData($request);
+		if (isset($transferEdit[0]->emp_ID)) {
+			$empName = Accounting::fnGetEmpName($transferEdit[0]->emp_ID);
+			if (isset($empName[0]->FirstName) && isset($empName[0]->LastName)) {
+				$transferEdit[0]->Empname = $empName[0]->FirstName.' '.$empName[0]->LastName;
+			}
+		}
 		if ($request->edit_flg == 1) {
 			$bankDetail = Accounting::fetchEditbanknames($request);
 			$contentDetail = Accounting::fetchEditcontent($request);
@@ -1061,6 +1067,12 @@ class AccountingController extends Controller {
 		// }
 		if ($request->expensesDate != "" && $request->bankIdAccNo != "") {
 			$expensesData = Accounting::fetchExpensesData($request);
+			if (isset($expensesData[0]->empId)) {
+				$empName = Accounting::fnGetEmpName($expensesData[0]->empId);
+				if (isset($empName[0]->FirstName) && isset($empName[0]->LastName)) {
+					$expensesData[0]->Empname = $empName[0]->FirstName.' '.$empName[0]->LastName;
+				}
+			}
 		}
 
 		return view('Accounting.expensesDatepopup',['request' => $request,

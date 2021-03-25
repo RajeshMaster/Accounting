@@ -378,21 +378,17 @@
 							@if($data['pageFlg'] == '999')
 								{{ $data['pagecashSubject'] }}
 							@else
-								@if($data['content'] == 'Salary')
+								@if(($cashDetails[$i]['pageFlg'] == 2 || $cashDetails[$i]['pageFlg'] == 5) && $data['emp_ID'] != "")
 									<a class="blue" href="javascript:empNameclick('{{ $data['emp_ID'] }}');" >
 										{{ $data['employeDetails'] }}
 									</a>
-								@elseif($data['content'] == 'Invoice')
+								@elseif($cashDetails[$i]['pageFlg'] == 4 && $data['loan_ID'] != "")
 									<a class="blue" href="javascript:loanNameclick('{{ $data['loan_ID'] }}');" >
 										{{ $data['invoiceDetails'] }}
 									</a>
-								@elseif($data['content'] == 'Loan')
+								@elseif($cashDetails[$i]['pageFlg'] == 3 && $data['loan_ID'] != "")
 									<a class="blue" href="javascript:loanNameclick('{{ $data['loan_ID'] }}');" >
 										{{ $data['loanDetails'] }}
-									</a>
-								@elseif($data['pageFlg'] == 5 && $data['employeDetails'] != "")
-									<a class="blue" href="javascript:empNameclick('{{ $data['emp_ID'] }}');" >
-										{{ $data['employeDetails'] }}
 									</a>
 								@else
 									@if($data['contentSub'] != "" && Session::get('languageval') == "en")
