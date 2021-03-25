@@ -1059,19 +1059,26 @@ class AccountingController extends Controller {
 
 		$getBankDtls = array();
 		$expensesData = array();
+		$expData = array();
+		$i = 1;
 		
 		$getBankDtls = Accounting::fetchExpensesBank($request);
-		// if (count($getBankDtls) == 1) {
-		// 	$userId = array_keys($getBankDtls);
-		// 	$request->bankIdAccNo = $userId[0];
-		// }
+		
 		if ($request->expensesDate != "" && $request->bankIdAccNo != "") {
 			$expensesData = Accounting::fetchExpensesData($request);
+			foreach ($expensesData as $expkey => $expvalue) {
+				$empName = Accounting::fnGetEmpName($expvalue->empId);
+				if (isset($empName[0]->FirstName) && isset($empName[0]->LastName)) {
+					$expData[$i]['empName'] = $empName[0]->FirstName.' '.$empName[0]->LastName;
+				}
+				$i++;
+			}
 		}
 
 		return view('Accounting.expensesDatepopup',['request' => $request,
 													'getBankDtls' => $getBankDtls,
-													'expensesData' => $expensesData
+													'expensesData' => $expensesData,
+													'expData' => $expData
 												]);
 	}
 

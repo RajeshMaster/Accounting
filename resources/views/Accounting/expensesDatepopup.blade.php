@@ -76,11 +76,14 @@
 				 	@forelse($expensesData as $key  => $value)
 						<tr>
 							<td align="center">
-								{{ $i++ }}
+								{{ $i }}
 							</td>
 							<td align="center">
 								@if($value->empId != "")
-									{{ $value->empId }}
+									{{ $value->empId }} 
+									@if(isset($expData[$i]['empName']))
+										- {{ $expData[$i]['empName'] }}
+									@endif
 								@else
 									@if($value->contentSub != "" && Session::get('languageval') == "en")
 										{{ $value->contentSub }}
@@ -126,7 +129,10 @@
 									value="<?php  echo $value->empId."$".$value->subjectId."$".$value->amount."$".$value->fee."$".$j."$".$value->content; ?>">
 							</td>
 						</tr>
-						@php $j++; @endphp
+						@php 
+							$i++;
+							$j++;
+						@endphp
 					@empty
 						<tr>
 							<td class="text-center" colspan="5" style="color: red;">
