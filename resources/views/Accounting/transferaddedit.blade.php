@@ -24,8 +24,10 @@
 		}
 		if ($('#txt_empname').val() != "") {
 			$("#transferContent").attr("disabled", "disabled");
+			$("#addtranscontent").attr("disabled", "disabled");
 		} else {
 			$("#transferContent").removeAttr("disabled");
+			$("#addtranscontent").removeAttr("disabled");
 		}
 		if (userclassification == 1) {
 			accessDate = setNextDay(accessDate);
@@ -257,7 +259,7 @@
 						$tbl_name = 'acc_contentsetting';
 					@endphp
 					<button type="button" style="background-color: green; color: #fff;" 
-						id="salarybutton" class="btn box10per fa fa-plus"
+						id="addtranscontent" class="btn box10per fa fa-plus"
 						onclick = "javascript:settingpopupsinglefield('twotextpopup','{{ $tbl_name}}')" >
 						{{ trans('messages.lbl_add') }}
 					</button> 

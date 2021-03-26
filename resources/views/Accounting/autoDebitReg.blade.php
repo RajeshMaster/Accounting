@@ -23,8 +23,10 @@
 		}
 		if ($('#loanName').val() != "" || $('#edit_flg').val() == 1) {
 			$("#autoDebitContent").attr("disabled", "disabled");
+			$("#addautoDebitContent").attr("disabled", "disabled");
 		} else {
 			$("#autoDebitContent").removeAttr("disabled");
+			$("#addautoDebitContent").attr("disabled", "disabled");
 		}
 	});
 </script>
@@ -258,7 +260,7 @@
 						$tbl_name = 'acc_contentsetting';
 					@endphp
 					<button type="button" style="background-color: green; color: #fff;" 
-						id="salarybutton" class="btn box10per fa fa-plus"
+						id="addautoDebitContent" class="btn box10per fa fa-plus"
 						onclick = "javascript:settingpopupsinglefield('twotextpopup','{{ $tbl_name}}')" >
 						{{ trans('messages.lbl_add') }}
 					</button> 

@@ -824,9 +824,11 @@ function fnaddempid(){
 	$('#divid'+table_id).css('display','inline');
 	if ($('#txt_empname').val() != "") {
 		$("#transferContent").attr("disabled", "disabled");
+		$("#addtranscontent").attr("disabled", "disabled");
 		$("#contentrequired").css("visibility", "hidden");
 	} else {
 		$("#transferContent").removeAttr("disabled");
+		$("#addtranscontent").removeAttr("disabled");
 		$("#contentrequired").css("visibility", "visible");
 	}
 	$('#empnamepopup').modal('toggle');
@@ -865,9 +867,11 @@ function fndbclick(id,empid,empname,name) {
 	$('#divid'+table_id).css('display','inline');
 	if ($('#txt_empname').val() != "") {
 		$("#transferContent").attr("disabled", "disabled");
+		$("#addtranscontent").attr("disabled", "disabled");
 		$("#contentrequired").css("visibility", "hidden");
 	} else {
 		$("#transferContent").removeAttr("disabled");
+		$("#addtranscontent").removeAttr("disabled");
 		$("#contentrequired").css("visibility", "visible");
 	}
 	$('#empnamepopup').modal('toggle');
@@ -938,6 +942,7 @@ function disabledemp(){
 function fnclear(){
 	document.getElementById("txt_empname").value = "";
 	$("#transferContent").removeAttr("disabled");
+	$("#addtranscontent").removeAttr("disabled");
 	$("#contentrequired").css("visibility", "visible");
 }
 
@@ -951,6 +956,7 @@ function fndebitclear(){
 	$("#loanbutton").removeAttr("disabled");
 	$("#debitrequired").css("visibility", "visible");
 	$("#autoDebitContent").removeAttr("disabled");
+	$("#addautoDebitContent").removeAttr("disabled");
 	$("#enableamt").attr("style", "display: none");
 	$("#enablefee").attr("style", "display: none");
 	$("#hidamtfee").attr("style", "display: block");
@@ -964,6 +970,7 @@ function fntransclear(){
 	document.getElementById("transferFee").value = "";
 	$("#salarybutton").removeAttr("disabled");
 	$("#transferContent").removeAttr("disabled");
+	$("#addtranscontent").removeAttr("disabled");
 	$("#browseEmp").attr("style", "display: inline-block");
 	$("#clearEmp").attr("style", "display: inline-block");
 	$("#clearSal").attr("style", "display: none");
