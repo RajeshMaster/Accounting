@@ -906,6 +906,38 @@ class AccountingController extends Controller {
 			}
 			$getLoanDtls = Accounting::getLoanDtls($request,$loanPaidArr);
 			foreach ($getLoanDtls as $loankey => $loanval) {
+
+				$MnthYear = explode("-", $request->autoDebitDate);
+				if (isset($MnthYear[0]) && isset($MnthYear[1])) {
+					$yrMnth = $MnthYear[0]."-".$MnthYear[1];
+					$date = $yrMnth.'-'.date("t");
+				} else {
+					$yrMnth = date('Y-m');
+					$date = $yrMnth.'-'.date("t");
+				}
+				
+				$allEmiData = Accounting::fnGetEMIData($loanval->loanId);
+				$currEmiData = Accounting::fnGetEMIData($loanval->loanId,"","",$yrMnth);
+				$nextEmiData = Accounting::fnGetEMIData($loanval->loanId,$date,"next");
+				$prevEmiData = Accounting::fnGetEMIData($loanval->loanId,$date,"prev");
+
+				if(!empty($currEmiData)){
+					// Current EMI Data
+					if (strtotime($currEmiData[0]->emiDate) < strtotime($date)) {
+						$count = count($prevEmiData);
+					} else{
+						$count = count($prevEmiData) + 1;
+					}
+				} elseif (!empty($nextEmiData)) {
+					// Future EMI Data
+					$count = count($allEmiData) - count($nextEmiData); 
+				} else {    
+					// Past EMI Data
+					$count = count($allEmiData) - count($nextEmiData); 
+				}
+
+				$loanBankId[$loanval->loanId]['nextCount'] = $count;
+
 				$loanBank = Accounting::getLoanBank($request,$loanval->loanId);
 				if (isset($loanBank[0]->ID)) {
 					$loanBankId[$loanval->loanId]['bankId'] = $loanBank[0]->ID;

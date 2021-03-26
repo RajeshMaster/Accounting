@@ -331,13 +331,13 @@ $(document).ready(function() {
 				var res = $(this).val().split("$"); 
 				if (getchecked == 1) {
 					getchecked = 2;
-					$('#hidloan').val(res[0] + ":" + res[1] + ":" + $('#'+"loanAmt"+res[4]).val() + ":" + $('#'+"loanFee"+res[4]).val() + ":" + $('#'+"loanBank"+res[4]).val());
+					$('#hidloan').val(res[0] + ":" + res[1] + ":" + $('#'+"loanAmt"+res[4]).val() + ":" + $('#'+"loanFee"+res[4]).val() + ":" + $('#'+"loanBank"+res[4]).val() + ":" + res[5]);
 					// $('#loanName').val(res[0]);
 					// $('#hidloanId').val(res[1]);
 					// document.getElementById('autoDebitAmountloan').innerHTML = $('#'+"loanAmt"+res[4]).val();
 					// document.getElementById('autoDebitFeeloan').innerHTML = $('#'+"loanFee"+res[4]).val();
 				} else {
-					$('#hidloan').val($('#hidloan').val() + ";" + res[0] + ":" + res[1] + ":" + $('#'+"loanAmt"+res[4]).val() + ":" + $('#'+"loanFee"+res[4]).val() + ":" + $('#'+"loanBank"+res[4]).val());
+					$('#hidloan').val($('#hidloan').val() + ";" + res[0] + ":" + res[1] + ":" + $('#'+"loanAmt"+res[4]).val() + ":" + $('#'+"loanFee"+res[4]).val() + ":" + $('#'+"loanBank"+res[4]).val() + ":" + res[5]);
 					// $('#loanName').val($('#loanName').val() + ";" + res[0]);
 					// $('#hidloanId').val($('#hidloanId').val() + ";" + res[1]);
 					// document.getElementById('autoDebitAmountloan').innerHTML = document.getElementById('autoDebitAmountloan').innerHTML + ";" + $('#'+"loanAmt"+res[4]).val();

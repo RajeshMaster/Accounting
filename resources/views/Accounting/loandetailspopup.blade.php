@@ -186,9 +186,20 @@
 										'data-label' => trans('messages.lbl_totamt'))) }}
 							</td>
 							<td align="center">
+								@php 
+								if(isset($loanBankId[$loan->loanId]['nextCount'])) {
+									$nexcount = $loanBankId[$loan->loanId]['nextCount'];
+								}
+								$loanterm = $loan->loanTerm * $loan->paymentCount;
+								if($nexcount != "") {
+									$period = $nexcount ."/". $loanterm ;
+								} else {
+									$period = $loanterm;
+								}
+								@endphp
 								<input  type="checkbox" name="loan[]" id="loan[]" 
 									class="loanchk" 
-									value="<?php  echo $loan->loanName."$".$loan->loanId."$".($loan->loanAmount * 10000)."$".$loan->monthInterest."$".$j; ?>">
+									value="<?php  echo $loan->loanName."$".$loan->loanId."$".($loan->loanAmount * 10000)."$".$loan->monthInterest."$".$j."$".$period; ?>">
 							</td>
 						</tr>
 						@php $j++; @endphp

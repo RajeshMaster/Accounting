@@ -463,7 +463,7 @@ class Accounting extends Model {
 									'fee' => preg_replace("/,/", "", $loanArr['3']),
 									'content' => "Loan",
 									'subjectId' => $request->loanSub,
-									// 'remarks' => $request->autoDebitRemarks,
+									'remarks' => $loanArr['5'],
 									// 'fileDtl' => $fileName,
 									'orderId' => $orderId,
 									'createdBy' => $name,
@@ -531,11 +531,17 @@ class Accounting extends Model {
 	public static function fnGetEmpDetails($request,$empIdArr) {
 
 		$db = DB::connection('mysql_MB');
+		$date = explode("-", $request->transferDate);
+		if (isset($date[0]) && isset($date[1])) {
+			$date = $date[0]."-".$date[1];
+		}
 		$query = $db->table('emp_mstemployees')
-						->select('Emp_ID','FirstName','LastName','KanaFirstName','KanaLastName',DB::RAW("CONCAT(FirstName,' ', LastName) AS Empname"),DB::RAW("CONCAT(KanaFirstName,'　', KanaLastName) AS Kananame"))
+						->select('Emp_ID','FirstName','LastName','KanaFirstName','KanaLastName','resigndate',DB::RAW("CONCAT(FirstName,' ', LastName) AS Empname"),DB::RAW("CONCAT(KanaFirstName,'　', KanaLastName) AS Kananame"))
 						->WHERE('delFlg', '=', 0)
 						->WHERE('Emp_ID', 'NOT LIKE', '%NST%')
 						->whereNotIn('Emp_ID', $empIdArr)
+						// ->WHERE('resign_id', '=', 0)
+						// ->ORWHERE(DB::raw("SUBSTRING(resigndate, 1, 7)"), '>=', $date)
 						->orderBy('Emp_ID', 'ASC')
 						->get();
 		return $query;
@@ -619,7 +625,7 @@ class Accounting extends Model {
 		$db = DB::connection('mysql_Salary');
 		$MnthYear = explode("-", $request->autoDebitDate);
 		$query = $db->table('ams_loan_details as loan')
-					->SELECT('loan.loanId','loan.loanName','loanEMI.monthPrinciple as loanAmount','loanEMI.monthInterest','bank.bankName','bank.id')
+					->SELECT('loan.loanId','loan.loanName','loan.loanTerm','loan.paymentCount','loanEMI.monthPrinciple as loanAmount','loanEMI.monthInterest','bank.bankName','bank.id')
 					->leftJoin('ams_loan_emidetails as loanEMI','loan.loanId','=','loanEMI.loanId')
 					->leftJoin('ams_bankname_master as bank','loan.bank','=','bank.id')
 					->where('loan.activeFlg','=',0)
@@ -1184,5 +1190,25 @@ class Accounting extends Model {
 		} 
 
 		return $insert;
+	}
+
+	public static function fnGetEMIData($loanId,$date="",$type="",$yrMnth=""){
+		$db = DB::connection('mysql_Salary');
+		$query = $db->table('ams_loan_emidetails')
+					->select("*")
+					->where('loanId', '=', $loanId);
+
+			if ($date != "" && $type != "") {
+				if ($type == "next") {
+					$query = $query ->where('emiDate', '>=', $date);
+				} else if ($type == "prev") {
+					$query = $query ->where('emiDate', '<=', $date);
+				}
+			} elseif ($yrMnth != "") {
+				$query = $query ->where('emiDate', 'LIKE', $yrMnth."%");
+			}
+
+			$query = $query->get();
+		return $query;
 	}
 }
