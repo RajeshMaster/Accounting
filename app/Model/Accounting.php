@@ -539,10 +539,12 @@ class Accounting extends Model {
 						->select('Emp_ID','FirstName','LastName','KanaFirstName','KanaLastName','resigndate',DB::RAW("CONCAT(FirstName,' ', LastName) AS Empname"),DB::RAW("CONCAT(KanaFirstName,'　', KanaLastName) AS Kananame"))
 						->WHERE('delFlg', '=', 0)
 						->WHERE('Emp_ID', 'NOT LIKE', '%NST%')
-						->whereNotIn('Emp_ID', $empIdArr)
-						// ->WHERE('resign_id', '=', 0)
-						// ->ORWHERE(DB::raw("SUBSTRING(resigndate, 1, 7)"), '>=', $date)
-						->orderBy('Emp_ID', 'ASC')
+						->WHERENOTIN('Emp_ID', $empIdArr);
+		$query = $query->WHERE(function($joincont) use ($date) {
+				$joincont->WHERE('resign_id', '=', 0)
+						->ORWHERE(DB::raw("SUBSTRING(resigndate, 1, 7)"), '>=', $date);
+		});
+		$query = $query->orderBy('Emp_ID', 'ASC')
 						->get();
 		return $query;
 	}
