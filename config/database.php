@@ -122,7 +122,7 @@ return [
             'driver' => 'mysql',
             'host' => env('DB_HOST', 'localhost'),
             'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE_SAL', 'salarycalc'),
+            'database' => env('DB_DATABASE_SAL', 'vps10081_devsalarycalc_db'),
             'username' => env('DB_USERNAME_SAL', 'root'),
             'password' => env('DB_PASSWORD_SAL', ''),
             'charset' => 'utf8',
